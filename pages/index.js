@@ -28,9 +28,9 @@ export default function Home() {
 
             <p>🍃your minimalist social media</p>
 
-            <p>done with the rat race on <font color="grey">insta, tiktok, snap, &quot;meta&quot;...</font>?</p>
+            <p>tired of the rat race on <font color="grey">insta, tiktok, snap, &quot;meta&quot;...</font>?</p>
 
-            <p>start your detox to:
+            <p>start your detox with us and:
                 <br />
                 - live in the present
                 <br />
@@ -45,7 +45,7 @@ export default function Home() {
             <p>want an invite? text us @ <font color="grey">949.237.2715</font></p>
 
             <p id="side-note">
-                p.s. we don&apos;t sell your data, nor do we hire phd&apos;s to drug you...
+                p.s. we don&apos;t sell your data or hire phd&apos;s to drug you...
                 <br />
                 <Image src="/zuck.jpg" alt="mark zuckerberg" width={60} height={60} />
             </p>
