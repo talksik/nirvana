@@ -35,6 +35,12 @@ p {
   font-size: 2em;
 }
 
+#marquee-text {
+   font-style: italic;
+   font-size: 1.5em;
+   font-family: 'Baloo Bhaijaan 2', cursive;
+}
+
 
  /* Mobile :320px. */
  @media (max-width: 767px) {
@@ -42,17 +48,21 @@ p {
     padding: 0em;
   }
   #main-title {
-    font-family: 'Satisfy', cursive;
     font-size: 2em;
     color: teal;
   }
   #side-note {
-    font-family: 'Baloo Bhaijaan 2', cursive;
     font-size: 1em;
   }
   
   p {
-    font-family: 'Baloo Bhaijaan 2', cursive;
     font-size: 1.5em;
   }
+
+  #marquee-text {
+    font-size: 1em;
  }
+ 
+ }
+
+ 

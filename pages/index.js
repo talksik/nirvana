@@ -19,7 +19,6 @@ export default function Home() {
         <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet" />
 
         <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2&display=swap" rel="stylesheet" />
       
       </Head>
 
@@ -43,6 +42,10 @@ export default function Home() {
             </p>
 
             <p>want an invite? text us @ <font color="grey">949.237.2715</font></p>
+
+            <marquee direction="left" width="100%" height="100%" behavior="scroll" scrollamount="12" offset="0%">
+              <p id="marquee-text">waitlist currently sitting at 2,324 people...</p>
+            </marquee>
 
             <p id="side-note">
                 p.s. we don&apos;t sell your data or hire phd&apos;s to drug you...
