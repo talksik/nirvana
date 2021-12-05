@@ -14,3 +14,45 @@ a {
 * {
   box-sizing: border-box;
 }
+
+
+/* my personal css */
+main {
+  padding: 4em;
+}
+#main-title {
+  font-family: 'Satisfy', cursive;
+  font-size: 2em;
+  color: teal;
+}
+#side-note {
+  font-family: 'Baloo Bhaijaan 2', cursive;
+  font-size: 1.5em;
+}
+
+p {
+  font-family: 'Baloo Bhaijaan 2', cursive;
+  font-size: 2em;
+}
+
+
+ /* Mobile :320px. */
+ @media (max-width: 767px) {
+  main {
+    padding: 0em;
+  }
+  #main-title {
+    font-family: 'Satisfy', cursive;
+    font-size: 2em;
+    color: teal;
+  }
+  #side-note {
+    font-family: 'Baloo Bhaijaan 2', cursive;
+    font-size: 1em;
+  }
+  
+  p {
+    font-family: 'Baloo Bhaijaan 2', cursive;
+    font-size: 1.5em;
+  }
+ }
