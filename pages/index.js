@@ -58,7 +58,7 @@ export default function Home() {
           wanna test the beta? text us @ <font color="grey">949.237.2715</font>
         </p>
 
-        <marquee
+        {/* <marquee
           direction="left"
           width="100%"
           height="100%"
@@ -67,7 +67,7 @@ export default function Home() {
           offset="0%"
         >
           <p id="marquee-text">waitlist currently sitting at 2,324 people...</p>
-        </marquee>
+        </marquee> */}
 
         <p id="side-note">
           p.s. we don&apos;t sell your data or hire phd&apos;s to drug you...
