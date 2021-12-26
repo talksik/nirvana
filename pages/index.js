@@ -1,6 +1,6 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import Head from 'next/head';
+import Image from 'next/image';
+import styles from '../styles/Home.module.css';
 
 export default function Home() {
   return (
@@ -15,57 +15,66 @@ export default function Home() {
         <link rel="icon" href="/icon.png" />
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
-        <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="true"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap"
+          rel="stylesheet"
+        />
 
-        <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2&display=swap" rel="stylesheet" />
-      
+        <link
+          href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2&display=swap"
+          rel="stylesheet"
+        />
       </Head>
 
-        <main>
-            <p id="main-title">nirvana</p>
+      <main>
+        <p id="main-title">nirvana</p>
 
-            <p>🍃your minimalist social media</p>
+        <p>🍃your minimalist social media</p>
 
-            <p>tired of the rat race on <font color="grey">insta, tiktok, snap, &quot;meta&quot;...</font>?</p>
+        <p>
+          tired of the rat race on{' '}
+          <font color="grey">insta, tiktok, snap, &quot;meta&quot;...</font>?
+        </p>
 
-            <p>start your detox with us and:
-                <br />
-                - live in the present
-                <br />
-                - build a more intimate inner circle
-                <br />
-                - cut out the noise
-                <br />
-                - focus on your goals and personal growth
-                <br />
-            </p>
+        <p>
+          start your detox with us and:
+          <br />
+          - live in the present
+          <br />
+          - build a more intimate inner circle
+          <br />
+          - cut out the noise
+          <br />
+          - focus on your personal goals
+          <br />
+        </p>
 
-            <p>want an invite? text us @ <font color="grey">949.237.2715</font></p>
+        <p>
+          wanna test the beta? text us @ <font color="grey">949.237.2715</font>
+        </p>
 
-            <marquee direction="left" width="100%" height="100%" behavior="scroll" scrollamount="12" offset="0%">
-              <p id="marquee-text">waitlist currently sitting at 2,324 people...</p>
-            </marquee>
-
-            <p id="side-note">
-                p.s. we don&apos;t sell your data or hire phd&apos;s to drug you...
-                <br />
-                <Image src="/zuck.jpg" alt="mark zuckerberg" width={60} height={60} />
-            </p>
-            
-        </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="anonymous/top/secret"
-          target="_blank"
-          rel="noopener noreferrer"
+        <marquee
+          direction="left"
+          width="100%"
+          height="100%"
+          behavior="scroll"
+          scrollamount="12"
+          offset="0%"
         >
-          Powered by{' '}
-          🍃
-          anonymous
-        </a>
-      </footer>
+          <p id="marquee-text">waitlist currently sitting at 2,324 people...</p>
+        </marquee>
+
+        <p id="side-note">
+          p.s. we don&apos;t sell your data or hire phd&apos;s to drug you...
+          <br />
+          <Image src="/zuck.jpg" alt="mark zuckerberg" width={60} height={60} />
+        </p>
+      </main>
     </div>
-  )
+  );
 }
