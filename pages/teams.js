@@ -68,7 +68,7 @@ export default function Teams() {
         </marquee> */}
 
         <p id="side-note">
-          why? we live in a distracted world. let's fix it, because less is more. 
+          why? we live in a distracted world. let&apos;s fix it, because less is more. 
         </p>
       </main>
     </div>
