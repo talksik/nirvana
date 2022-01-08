@@ -1,3 +1,5 @@
+
+
 html,
 body {
   padding: 0;
@@ -65,4 +67,6 @@ p {
  
  }
 
- 
+ @tailwind base;
+@tailwind components;
+@tailwind utilities;
