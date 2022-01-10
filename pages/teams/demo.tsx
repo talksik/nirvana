@@ -9,37 +9,37 @@ let testFriends = [
     {
         name: "Liam",
         role: "engineer",
-        systemAvatar: "1",
+        systemAvatar: "01",
         status: UserStatus.online
     },
     {
         name: "Emily",
         role: "engineer",
-        systemAvatar: "2",
+        systemAvatar: "02",
         status: UserStatus.online
     },
     {
         name: "Paul",
         role: "architect",
-        systemAvatar: "3",
+        systemAvatar: "03",
         status: UserStatus.online
     },
     {
         name: "Mark",
         role: "engineer",
-        systemAvatar: "4",
+        systemAvatar: "04",
         status: UserStatus.busy
     },
     {
         name: "Adriana",
         role: "design",
-        systemAvatar: "5",
+        systemAvatar: "05",
         status: UserStatus.busy
     },
     {
         name: "Josh",
         role: "design",
-        systemAvatar: "6",
+        systemAvatar: "06",
         status: UserStatus.offline
     }
 ]
@@ -48,7 +48,7 @@ export default class Demo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedChannel: 1
+            selectedChannel: null
         }
 
         this.handleKeyboardShortcut = this.handleKeyboardShortcut.bind(this);
@@ -172,7 +172,7 @@ export default class Demo extends React.Component {
                                                 
                                                 {this.statusBubble(friend.status)}
 
-                                                <Image src="/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-05.svg" alt="profile" width={50} height={50} />
+                                                <Image src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-" + (friend.systemAvatar) + ".svg"} alt="profile" width={50} height={50} />
                                             </span>
                         
                                             <span className='flex flex-col'>
@@ -219,20 +219,20 @@ export default class Demo extends React.Component {
                 
                 <div className='fixed bottom-10 w-full'>
                     {/* dynamic footer based on selection */}
-                    <section className='flex flex-row bg-gray-300 max-w-screen-md mx-auto p-5 shadow-xl rounded-xl justify-between'>
+                    <section className={"flex flex-row bg-gray-300 max-w-screen-md mx-auto p-5 shadow-xl rounded-xl justify-between ease-in-out duration-300 scale-0" + (this.state.selectedChannel != null ? "scale-100" : " ")}>
                         <span className='flex flex-row'>
                             <span className='relative flex mr-2'>
                                 <span className="bg-gray-200 rounded-full shadow-md absolute w-full h-full"></span>
                                 
                                 {this.statusBubble(UserStatus.online)}
 
-                                <Image src="/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-05.svg" alt="profile" width={50} height={50} />
+                                <Image src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-" + (this.state.selectedChannel == null ? "" : testFriends[this.state.selectedChannel].systemAvatar) + ".svg"} alt="profile" width={50} height={50} />
                             </span>
         
                             <span className='flex flex-col'>
-                                <font className="text-sm text-black font-bold">{testFriends[this.state.selectedChannel].name} </font>
+                                <font className="text-sm text-black font-bold">{this.state.selectedChannel == null ? "" : testFriends[this.state.selectedChannel].name} </font>
         
-                                <font className={"text-xs font-sans text-gray-300 text-black"}>{testFriends[this.state.selectedChannel].role}</font>
+                                <font className={"text-xs font-sans text-gray-300 text-black"}>{this.state.selectedChannel == null ? "" : testFriends[this.state.selectedChannel].role}</font>
                             </span> 
                         </span>
 
