@@ -22,6 +22,15 @@ a {
 main {
   padding: 4em;
 }
+
+.font-satisfy {
+  font-family: 'Satisfy', cursive;
+}
+
+.text-teal {
+  color: teal;
+}
+
 #main-title {
   font-family: 'Satisfy', cursive;
   font-size: 2em;
