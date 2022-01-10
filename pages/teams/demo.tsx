@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image';
 import React from 'react';
-import { FaMicrophoneAlt, FaHeadphonesAlt, FaTh, FaAngleDown, FaPlusSquare, FaBroom } from "react-icons/fa";
+import { FaMicrophoneAlt, FaHeadphonesAlt, FaTh, FaAngleDown, FaPlusSquare, FaBroom, FaBell } from "react-icons/fa";
 import { IoPulseOutline, IoRemoveOutline } from "react-icons/io5";
 import { BsThreeDots } from "react-icons/bs";
 
@@ -158,6 +158,7 @@ export default class Demo extends React.Component {
                         
                         {/* avatar */}
                         <span className="flex flex-row items-center space-x-5">
+                            <FaBell className='text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer' />
                             <FaHeadphonesAlt className='text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer' />
                             <FaMicrophoneAlt className='text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer' />
                             <FaTh className='text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer' />
@@ -171,12 +172,9 @@ export default class Demo extends React.Component {
                     
                     <div className='flex flex-row items-baseline space-x-5'>
                         {/* personal line */}
-                        <section className='flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
-                            <span className='p-5 flex flex-col'>
+                        <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
+                            <span className='pb-1 flex flex-col'>
                                 <span className="text-white">TEAM</span>
-                                <span className="font-sans text-sm text-white pt-2">
-                                    <span className="rounded-full p-1 bg-opacity-30 bg-white text-white font-bold">3</span> teammates open for collab
-                                </span>
                             </span>
                             
                             {/* list of team members */}
@@ -192,25 +190,29 @@ export default class Demo extends React.Component {
                                                 <Image src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-" + (friend.systemAvatar) + ".svg"} alt="profile" width={50} height={50} />
                                             </span>
                         
-                                            <span className='flex flex-col'>
-                                                <span className="text-sm text-white font-bold">{friend.name} </span>
-                        
-                                                <span className={"text-xs span-sans text-gray-300" + (this.state.selectedChannel == i ? "text-black" : " ")}>{friend.role}</span>
-                                            </span>                                        
-                                            
-                                            {
-                                                this.state.selectedChannel == i ? 
-                                                <>
-                                                    <span className="rounded-lg p-2 ml-auto bg-gray-400 shadow-lg w-10 h-10 text-center">
-                                                        <span className="text-white text-sm">{i}</span>
-                                                    </span>
-                                                </>
-                                                
-                                                :
-                                                <span className="rounded-lg p-2 ml-auto border border-gray-100 shadow-md w-10 h-10 text-center">
-                                                    <span className="text-gray-200 text-sm">{i}</span>
+                                            <span className='flex flex-col mr-10'>
+                                                <span className='flex flex-row items-center space-x-2'>
+                                                    <span className="text-sm text-white font-bold">{friend.name} </span>
+                                                    {
+                                                        this.state.selectedChannel == i ? 
+                                                        <>
+                                                            <button className="rounded-lg bg-gray-400 shadow-lg text-center text-white text-sm py-1 px-2 ">
+                                                                {i}
+                                                            </button>
+                                                        </>
+                                                        
+                                                        :
+                                                        <button className="rounded-lg border py-1 px-2 border-gray-100 shadow-md text-center text-gray-200 text-sm">
+                                                            {i}
+                                                        </button>
+                                                    }
                                                 </span>
-                                            }
+
+
+                                                <span className={"text-xs span-sans text-gray-300" + (this.state.selectedChannel == i ? "text-black" : " ")}>{friend.role}</span>
+                                            </span>
+                                            
+                                            
 
                                             {this.renderPulse(friend.status)}
                                         </span>
@@ -260,7 +262,7 @@ export default class Demo extends React.Component {
 
                                     <FaBroom className='text-xl text-white' />
 
-                                    <button className='bg-transparent hover:bg-white-500 text-white font-semibold hover:text-white py-1 px-4 border border-white-500 hover:border-transparent rounded'>
+                                    <button className='bg-transparent hover:bg-white text-white font-semibold hover:text-black py-1 px-4 border border-white-500 hover:border-transparent rounded'>
                                             Create
                                         </button>
 
