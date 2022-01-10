@@ -2,43 +2,44 @@ import Head from 'next/head'
 import Image from 'next/image';
 import React from 'react';
 import { FaMicrophoneAlt, FaHeadphonesAlt, FaTh } from "react-icons/fa";
+import { UserStatus, User } from '../../models/user'
 
-let testFriends = [
+let testFriends = [ 
     {
         name: "Liam",
         role: "engineer",
         systemAvatar: "1",
-        status: "online"
+        status: UserStatus.online
     },
     {
         name: "Emily",
         role: "engineer",
         systemAvatar: "2",
-        status: "online"
+        status: UserStatus.online
     },
     {
         name: "Paul",
         role: "architect",
         systemAvatar: "3",
-        status: "online"
+        status: UserStatus.online
     },
     {
         name: "Mark",
         role: "engineer",
         systemAvatar: "4",
-        status: "busy"
+        status: UserStatus.busy
     },
     {
         name: "Adriana",
         role: "design",
         systemAvatar: "5",
-        status: "busy"
+        status: UserStatus.busy
     },
     {
         name: "Josh",
         role: "design",
         systemAvatar: "6",
-        status: "offline"
+        status: UserStatus.offline
     }
 ]
 
@@ -50,8 +51,19 @@ export default class Demo extends React.Component {
         }
     }
 
-    statusBubble(status) {
+    statusBubble(status: UserStatus) {
+        console.log(status)
 
+        switch(status) {
+            case UserStatus.online:
+                return <span className="absolute top-0 right-0 w-3 h-3 bg-green-400 rounded-full"></span>
+            case UserStatus.busy:
+                return <span className="absolute top-0 right-0 w-3 h-3 bg-orange-400 rounded-full"></span>
+            case UserStatus.offline:
+                return <span className="absolute top-0 right-0 w-3 h-3 bg-gray-400 rounded-full"></span>
+            default:
+                return <span className="absolute top-0 right-0 w-3 h-3 bg-green-400 rounded-full"></span>
+        }
     }
 
     render() {
@@ -102,12 +114,13 @@ export default class Demo extends React.Component {
                         {/* list of team members */}
                         {
                             testFriends.map((friend, i) => {
-                                console.log(friend)
                                 return (
                                     <span key={i} className={`flex flex-row items-center border-t-2 py-2 px-2 justify-items-start w-60${this.state.selectedNumber == i ? "bg-gray-300" : " "}`}>
                                         <span className='relative flex mr-2'>
                                             <span className="bg-gray-200 rounded-full shadow-md absolute w-full h-full"></span>
-                                            <span className="absolute top-0 right-0 w-3 h-3 bg-green-400 rounded-full"></span>
+                                            
+                                            {this.statusBubble(friend.status)}
+
                                             <Image src="/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-05.svg" alt="profile" width={50} height={50} />
                                         </span>
                     
@@ -115,17 +128,14 @@ export default class Demo extends React.Component {
                                             <font className="text-sm text-black font-bold">{friend.name} {friend.status}</font>
                     
                                             <font className="text-gray-300 text-xs font-sans">{friend.role}</font>
-                                        </span>
-                                        
+                                        </span>                                        
                                         
                                         {
                                             this.state.selectedNumber == i ? 
                                             <span className="rounded-lg p-2 ml-auto border border-gray-300 shadow-lg">
                                                 <font className="text-gray-200">{i}</font>
                                             </span>
-                                            
                                             :
-
                                             <span className="rounded-lg p-2 ml-auto border border-gray-100 shadow-md">
                                                 <font className="text-gray-200">{i}</font>
                                             </span>
