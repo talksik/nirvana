@@ -62,7 +62,7 @@ export default class Demo extends React.Component {
         document.removeEventListener("keydown", this.handleKeyboardShortcut);
     }
 
-    statusBubble(status: UserStatus): React.Component {
+    statusBubble(status: UserStatus) {
         console.log(status)
 
         switch(status) {
