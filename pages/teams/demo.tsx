@@ -1,7 +1,10 @@
 import Head from 'next/head'
 import Image from 'next/image';
 import React from 'react';
-import { FaMicrophoneAlt, FaHeadphonesAlt, FaTh } from "react-icons/fa";
+import { FaMicrophoneAlt, FaHeadphonesAlt, FaTh, FaAngleDown, FaPlusSquare, FaBroom } from "react-icons/fa";
+import { IoPulseOutline, IoRemoveOutline } from "react-icons/io5";
+import { BsThreeDots } from "react-icons/bs";
+
 import { UserStatus, User } from '../../models/user'
 import { KeyCode } from '../../globals/keycode'
 
@@ -77,6 +80,19 @@ export default class Demo extends React.Component {
         }
     }
 
+    renderPulse(status: UserStatus) {
+        switch(status) {
+            case UserStatus.online:
+                return <IoPulseOutline className="text-green-500 text-2xl animate-pulse mx-2" />
+            case UserStatus.busy:
+                return <IoPulseOutline className="text-orange-400 text-2xl animate-pulse mx-2" />
+            case UserStatus.offline:
+                return <IoRemoveOutline className="text-gray-400 text-2xl mx-2" />
+            default:
+                return <IoPulseOutline className="text-green-400 text-2xl animate-pulse mx-2" />
+        }
+    }
+
     handleKeyboardShortcut(event) {    
         console.log(event.keyCode)
 
@@ -119,7 +135,7 @@ export default class Demo extends React.Component {
     render() {
         return (
             <>
-                <div className="container mx-auto max-w-screen-xl pt-10 flex flex-col">
+                <div className="container mx-auto max-w-screen-xl pt-10 flex flex-col space-y-5 ">
                     <Head>
                         <link
                         href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2&display=swap"
@@ -136,15 +152,15 @@ export default class Demo extends React.Component {
                     <section className="flex-1 flex flex-row items-center justify-between py-5">
                         {/* welcome message */}
                         <span className='flex flex-col'>
-                            <font className="font-sans font-bold text-xl">👋Hey Arjun, Good Afternoon!</font>
+                            <font className="font-sans font-bold text-xl text-white">👋Hey Arjun, Good Afternoon!</font>
                             <font className="font-sans text-md text-gray-300">you collabed <font className="text-green-500">1.5 hours</font> and worked <font className="text-orange-500">2 hours</font> yesterday</font>
                         </span>
                         
                         {/* avatar */}
                         <span className="flex flex-row items-center space-x-5">
-                            <FaHeadphonesAlt className='text-lg text-gray-400 hover:text-teal-900 ease-in-out duration-300 hover:scale-110 hover:cursor-pointer' />
-                            <FaMicrophoneAlt className='text-lg text-gray-400 hover:text-teal-900 ease-in-out duration-300 hover:scale-110 hover:cursor-pointer' />
-                            <FaTh className='text-lg text-gray-400 hover:text-teal-900 ease-in-out duration-300 hover:scale-110 hover:cursor-pointer' />
+                            <FaHeadphonesAlt className='text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer' />
+                            <FaMicrophoneAlt className='text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer' />
+                            <FaTh className='text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer' />
                             <span className='relative flex'>
                                 <span className="bg-gray-200 rounded-full shadow-md absolute w-full h-full"></span>
                                 <span className="absolute top-0 right-0 w-3 h-3 bg-green-400 rounded-full"></span>
@@ -157,9 +173,9 @@ export default class Demo extends React.Component {
                         {/* personal line */}
                         <section className='flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
                             <span className='p-5 flex flex-col'>
-                                <span className="text-gray-300">Team</span>
-                                <font className="font-sans text-sm text-gray-400 pt-2">
-                                    <font className="rounded-full p-1 bg-opacity-30 bg-teal-700 text-teal-700 font-bold">3</font> teammates open for collab
+                                <span className="text-white">TEAM</span>
+                                <font className="font-sans text-sm text-white pt-2">
+                                    <font className="rounded-full p-1 bg-opacity-30 bg-white text-white font-bold">3</font> teammates open for collab
                                 </font>
                             </span>
                             
@@ -167,9 +183,9 @@ export default class Demo extends React.Component {
                             {
                                 testFriends.map((friend, i) => {
                                     return (
-                                        <span key={i} className={"flex flex-row items-center border-t-2 py-2 px-2 justify-items-start w-60 ease-in-out duration-300 " + (this.state.selectedChannel == i ? "bg-gray-300 scale-105 shadow-2xl" : " ")}>
+                                        <span key={i} className={"flex flex-row items-center py-2 px-2 justify-items-start ease-in-out duration-300 " + (this.state.selectedChannel == i ? "bg-gray-300 scale-105 shadow-2xl" : " ")}>
                                             <span className='relative flex mr-2'>
-                                                <span className="bg-gray-200 rounded-full shadow-md absolute w-full h-full"></span>
+                                                <span className="bg-gray-200 bg-opacity-30 rounded-full shadow-md absolute w-full h-full"></span>
                                                 
                                                 {this.statusBubble(friend.status)}
 
@@ -177,7 +193,7 @@ export default class Demo extends React.Component {
                                             </span>
                         
                                             <span className='flex flex-col'>
-                                                <font className="text-sm text-black font-bold">{friend.name} </font>
+                                                <font className="text-sm text-white font-bold">{friend.name} </font>
                         
                                                 <font className={"text-xs font-sans text-gray-300" + (this.state.selectedChannel == i ? "text-black" : " ")}>{friend.role}</font>
                                             </span>                                        
@@ -195,41 +211,100 @@ export default class Demo extends React.Component {
                                                     <font className="text-gray-200 text-sm">{i}</font>
                                                 </span>
                                             }
+
+                                            {this.renderPulse(friend.status)}
                                         </span>
                                     )
                                 })
                             }
                         </section>
             
-                        <div className='flex flex-col'>
+                        <div className='flex flex-1 flex-col space-y-5 items-baseline'>
                             {/* announcements */}
                             <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
-                                <span className="text-gray-300">ANNOUNCEMENTS</span>
-                
-                                <span>
-                
+                                <span className='flex flex-row justify-end space-x-2 pb-5'>
+                                    <span className="text-white mr-auto">ANNOUNCEMENTS</span>
+
+                                    
+
+                                    <span className='text-sm text-gray-300 flex flex-row items-center'>
+                                        TODAY <FaAngleDown />
+                                    </span>
                                 </span>
+                
+                                <div className="flex flex-row overflow-auto whitespace-nowrap space-x-5">
+                                            <span className='relative mr-2 grid items-center justify-items-center p-4'>
+                                                <span className="bg-white bg-opacity-50 rounded-full shadow-md absolute w-full h-full"></span>
+                                                <FaMicrophoneAlt className='text-xl text-white' />
+                                            </span>
+                                    {
+                                         testFriends.map((friend, i) => {
+                                            return (
+                                            <span key={i} className='relative mr-2 grid items-center justify-items-center'>
+                                                <span className="bg-gray-200 bg-opacity-30 rounded-full shadow-md absolute w-full h-full"></span>
+                                                
+                                                {this.statusBubble(friend.status)}
+
+                                                <Image src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-" + (friend.systemAvatar) + ".svg"} alt="profile" width={50} height={50} />
+                                            </span>
+                                            )
+                                         })
+                                    }
+                                </div>
                             </section>
 
-                            {/* live conversations */}
-                            <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
-                                <span className="text-gray-300">LIVE CONVERSATIONS</span>
+                            {/* rooms */}
+                            <section className='p-5 w-full flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
+                                <span className='flex flex-row justify-end space-x-2 pb-5 items-center'>
+                                    <span className="text-white mr-auto">ROOMS</span>
+
+                                    <FaBroom className='text-xl text-white' />
+
+                                    <button className='bg-transparent hover:bg-white-500 text-white font-semibold hover:text-white py-1 px-4 border border-white-500 hover:border-transparent rounded'>
+                                            Create
+                                        </button>
+
+                                    <BsThreeDots className='text-xl text-white' />
+                                </span>
                 
-                                <span>
-                
+                                {/* all rooms */}
+                                <span className='flex flex-row space-x-2'>
+
+                                    {/* bugs room */}
+                                    <span className='flex flex-col bg-white bg-opacity-60 p-5 rounded-lg'>
+                                        <span className='flex flex-row justify-between items-center space-x-1'>
+ 
+                                            <span className='flex flex-row pr-10'>
+                                                <span className="inline-flex flex-row-reverse items-center">
+                                                    <span className=''>
+                                                        <Image className="" src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-20.svg"} alt="profile" width={30} height={30} />
+                                                    </span>
+                                                    <span className='-mr-4'>
+                                                        <Image className="" src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-22.svg"} alt="profile" width={30} height={30} />
+                                                    </span>
+                                                </span>
+                                                
+
+                                                <span className='flex flex-col items-baseline'>
+                                                    <span className='font-bold text-black mr-auto'>Bugs</span>
+                                                    <span className='text-xs text-gray-400'>started 5 minutes ago</span>
+                                                </span>
+                                                
+                                            </span>
+                                            
+
+                                            <button className='ml-auto bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-1 px-4 border border-green-500 hover:border-transparent rounded'>
+                                                Join
+                                            </button>
+                                        </span>
+                                        
+                                    </span>
                                 </span>
                             </section>
-
-
                         </div>
                         
                     </div>
                     
-                    
-                    {/*  */}
-                    <section className=''>
-            
-                    </section>
                 </div>
                 
                 <div className='fixed bottom-10 w-full'>
