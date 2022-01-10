@@ -38,7 +38,7 @@ export default function Home() {
 
         <p>
           tired of the rat race on{' '}
-          <font color="grey">insta, tiktok, snap, &quot;meta&quot;...</font>?
+          <font className='text-gray-300'>insta, tiktok, snap, &quot;meta&quot;...</font>?
         </p>
 
         <p>
@@ -55,7 +55,7 @@ export default function Home() {
         </p>
 
         <p>
-          wanna test the beta? text us @ <font color="grey">949.237.2715</font>
+          wanna test the beta? text us @ <font className='text-gray-300'>949.237.2715</font>
         </p>
 
         {/* <marquee

@@ -141,7 +141,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
     render() {
         return (
             <>
-                <div className="container mx-auto max-w-screen-xl pt-10 flex flex-col space-y-5 ">
+                <div className="container mx-auto max-w-screen-xl pt-10 flex flex-col space-y-5">
                     <Head>
                         <link
                         href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2&display=swap"
@@ -316,6 +316,11 @@ export default class Demo extends React.Component<MyProps, MyState> {
                 </div>
                 
                 <div className='fixed bottom-10 w-full'>
+                    {/* logo */}
+                    <div className='left-0 -bottom-5 absolute pl-5'>
+                        <p id="main-title">nirvana</p>
+                    </div>
+                            
                     {/* dynamic footer based on selection */}
                     <section className={"flex flex-row bg-gray-300 max-w-screen-md mx-auto p-5 shadow-xl rounded-xl justify-between ease-in-out duration-300 scale-0" + (this.state.selectedChannel != null ? "scale-100" : " ")}>
                         <span className='flex flex-row'>

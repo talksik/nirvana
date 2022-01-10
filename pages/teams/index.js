@@ -36,7 +36,7 @@ export default function Home() {
 
         <p>
           tired of spending most of the work day on{' '}
-          <font color="grey" className="text-3xl">slack, <font className="text-2xl">zoom,</font> <font className="text-xl">ms teams,</font> <font className="text-lg">trello,</font> <font className="text-base">outlook,</font> <font className="text-base">gcal, </font><font className="text-sm">notion,</font> <font className="text-xs">gmail...</font>?</font>
+          <font className="text-gray-300 text-3xl">slack, <font className="text-2xl">zoom,</font> <font className="text-xl">ms teams,</font> <font className="text-lg">trello,</font> <font className="text-base">outlook,</font> <font className="text-base">gcal, </font><font className="text-sm">notion,</font> <font className="text-xs">gmail...</font>?</font>
         </p>
 
         <p>
@@ -53,7 +53,7 @@ export default function Home() {
         </p>
 
         <p>
-          wanna test the beta? text us @ <font color="grey">949.237.2715</font>
+          wanna test the beta? text us @ <font className="text-gray-300">949.237.2715</font>
         </p>
 
         {/* <marquee
