@@ -83,13 +83,13 @@ export default class Demo extends React.Component {
     renderPulse(status: UserStatus) {
         switch(status) {
             case UserStatus.online:
-                return <IoPulseOutline className="text-green-500 text-2xl animate-pulse mx-2" />
+                return <IoPulseOutline className="text-green-500 text-2xl animate-pulse mx-2 ml-auto" />
             case UserStatus.busy:
-                return <IoPulseOutline className="text-orange-400 text-2xl animate-pulse mx-2" />
+                return <IoPulseOutline className="text-orange-400 text-2xl animate-pulse mx-2 ml-auto" />
             case UserStatus.offline:
-                return <IoRemoveOutline className="text-gray-400 text-2xl mx-2" />
+                return <IoRemoveOutline className="text-gray-400 text-2xl mx-2 ml-auto" />
             default:
-                return <IoPulseOutline className="text-green-400 text-2xl animate-pulse mx-2" />
+                return <IoPulseOutline className="text-green-400 text-2xl animate-pulse mx-2 ml-auto" />
         }
     }
 
