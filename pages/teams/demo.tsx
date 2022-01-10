@@ -59,7 +59,7 @@ export default class Demo extends React.Component {
     }
 
     componentWillUnmount(): void {
-        // this.removeEventListener("keydown", this.handleKeyboardShortcut);
+        document.removeEventListener("keydown", this.handleKeyboardShortcut);
     }
 
     statusBubble(status: UserStatus): React.Component {
@@ -137,7 +137,7 @@ export default class Demo extends React.Component {
                         {/* welcome message */}
                         <span className='flex flex-col'>
                             <font className="font-sans font-bold text-xl">👋Hey Arjun, Good Afternoon!</font>
-                            
+                            <font className="font-sans text-md text-gray-300">you collabed <font className="text-green-500">1.5 hours</font> and worked <font className="text-orange-500">2 hours</font> yesterday</font>
                         </span>
                         
                         {/* avatar */}
@@ -157,9 +157,10 @@ export default class Demo extends React.Component {
                         {/* personal line */}
                         <section className='flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
                             <span className='p-5 flex flex-col'>
-                                <span className="text-gray-300">PERSONAL LINE</span>
+                                <span className="text-gray-300">Team</span>
                                 <font className="font-sans text-sm text-gray-400 pt-2">
-                                    <font className="rounded-full p-1 bg-opacity-30 bg-teal-700 text-teal-700 font-bold">3</font> teammates open for collab</font>
+                                    <font className="rounded-full p-1 bg-opacity-30 bg-teal-700 text-teal-700 font-bold">3</font> teammates open for collab
+                                </font>
                             </span>
                             
                             {/* list of team members */}
@@ -200,14 +201,28 @@ export default class Demo extends React.Component {
                             }
                         </section>
             
-                        {/* live conversations */}
-                        <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
-                            <span className="text-gray-300">LIVE CONVERSATIONS</span>
-            
-                            <span>
-            
-                            </span>
-                        </section>
+                        <div className='flex flex-col'>
+                            {/* announcements */}
+                            <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
+                                <span className="text-gray-300">ANNOUNCEMENTS</span>
+                
+                                <span>
+                
+                                </span>
+                            </section>
+
+                            {/* live conversations */}
+                            <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
+                                <span className="text-gray-300">LIVE CONVERSATIONS</span>
+                
+                                <span>
+                
+                                </span>
+                            </section>
+
+
+                        </div>
+                        
                     </div>
                     
                     
@@ -238,10 +253,10 @@ export default class Demo extends React.Component {
 
                         {/* shortcuts */}
                         <span className='flex flex-row space-x-3'>
-                            <span className="rounded-lg p-2 ml-auto bg-gray-400 shadow-lg w-10 h-10 text-center">
+                            <span className="rounded-lg p-2 ml-auto bg-gray-400 shadow-lg w-10 h-10 text-center animate-pulse">
                                 <font className="text-white text-sm font-bold">R</font>
                             </span>
-                            <span className="rounded-lg p-2 ml-auto bg-gray-400 shadow-lg w-20 h-10 text-center">
+                            <span className="rounded-lg p-2 ml-auto bg-gray-400 shadow-lg w-20 h-10 text-center animate-pulse">
                                 <font className="text-white text-sm font-bold">SPACE</font>
                             </span>
                         </span>
