@@ -47,7 +47,13 @@ let testFriends = [
     }
 ]
 
-export default class Demo extends React.Component {
+type MyProps = {  };
+type MyState = {
+    selectedChannel?: number
+};
+
+
+export default class Demo extends React.Component<MyProps, MyState> {
     constructor(props) {
         super(props);
         this.state = {
