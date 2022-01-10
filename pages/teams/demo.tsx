@@ -152,8 +152,8 @@ export default class Demo extends React.Component {
                     <section className="flex-1 flex flex-row items-center justify-between py-5">
                         {/* welcome message */}
                         <span className='flex flex-col'>
-                            <font className="font-sans font-bold text-xl text-white">👋Hey Arjun, Good Afternoon!</font>
-                            <font className="font-sans text-md text-gray-300">you collabed <font className="text-green-500">1.5 hours</font> and worked <font className="text-orange-500">2 hours</font> yesterday</font>
+                            <span className="font-sans font-bold text-xl text-white">👋Hey Arjun, Good Afternoon!</span>
+                            <span className="font-sans text-md text-gray-300">you collabed <span className="text-green-500">1.5 hours</span> and worked <span className="text-orange-500">2 hours</span> yesterday</span>
                         </span>
                         
                         {/* avatar */}
@@ -174,9 +174,9 @@ export default class Demo extends React.Component {
                         <section className='flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
                             <span className='p-5 flex flex-col'>
                                 <span className="text-white">TEAM</span>
-                                <font className="font-sans text-sm text-white pt-2">
-                                    <font className="rounded-full p-1 bg-opacity-30 bg-white text-white font-bold">3</font> teammates open for collab
-                                </font>
+                                <span className="font-sans text-sm text-white pt-2">
+                                    <span className="rounded-full p-1 bg-opacity-30 bg-white text-white font-bold">3</span> teammates open for collab
+                                </span>
                             </span>
                             
                             {/* list of team members */}
@@ -193,22 +193,22 @@ export default class Demo extends React.Component {
                                             </span>
                         
                                             <span className='flex flex-col'>
-                                                <font className="text-sm text-white font-bold">{friend.name} </font>
+                                                <span className="text-sm text-white font-bold">{friend.name} </span>
                         
-                                                <font className={"text-xs font-sans text-gray-300" + (this.state.selectedChannel == i ? "text-black" : " ")}>{friend.role}</font>
+                                                <span className={"text-xs span-sans text-gray-300" + (this.state.selectedChannel == i ? "text-black" : " ")}>{friend.role}</span>
                                             </span>                                        
                                             
                                             {
                                                 this.state.selectedChannel == i ? 
                                                 <>
                                                     <span className="rounded-lg p-2 ml-auto bg-gray-400 shadow-lg w-10 h-10 text-center">
-                                                        <font className="text-white text-sm">{i}</font>
+                                                        <span className="text-white text-sm">{i}</span>
                                                     </span>
                                                 </>
                                                 
                                                 :
                                                 <span className="rounded-lg p-2 ml-auto border border-gray-100 shadow-md w-10 h-10 text-center">
-                                                    <font className="text-gray-200 text-sm">{i}</font>
+                                                    <span className="text-gray-200 text-sm">{i}</span>
                                                 </span>
                                             }
 
@@ -254,7 +254,7 @@ export default class Demo extends React.Component {
                             </section>
 
                             {/* rooms */}
-                            <section className='p-5 w-full flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
+                            <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
                                 <span className='flex flex-row justify-end space-x-2 pb-5 items-center'>
                                     <span className="text-white mr-auto">ROOMS</span>
 
@@ -320,19 +320,19 @@ export default class Demo extends React.Component {
                             </span>
         
                             <span className='flex flex-col'>
-                                <font className="text-sm text-black font-bold">{this.state.selectedChannel == null ? "" : testFriends[this.state.selectedChannel].name} </font>
+                                <span className="text-sm text-black font-bold">{this.state.selectedChannel == null ? "" : testFriends[this.state.selectedChannel].name} </span>
         
-                                <font className={"text-xs font-sans text-gray-300 text-black"}>{this.state.selectedChannel == null ? "" : testFriends[this.state.selectedChannel].role}</font>
+                                <span className={"text-xs font-sans text-gray-300 text-black"}>{this.state.selectedChannel == null ? "" : testFriends[this.state.selectedChannel].role}</span>
                             </span> 
                         </span>
 
                         {/* shortcuts */}
                         <span className='flex flex-row space-x-3'>
                             <span className="rounded-lg p-2 ml-auto bg-gray-400 shadow-lg w-10 h-10 text-center animate-pulse">
-                                <font className="text-white text-sm font-bold">R</font>
+                                <span className="text-white text-sm font-bold">R</span>
                             </span>
                             <span className="rounded-lg p-2 ml-auto bg-gray-400 shadow-lg w-20 h-10 text-center animate-pulse">
-                                <font className="text-white text-sm font-bold">SPACE</font>
+                                <span className="text-white text-sm font-bold">SPACE</span>
                             </span>
                         </span>
                     </section>
