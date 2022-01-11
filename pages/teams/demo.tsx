@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import Image from 'next/image';
 import React from 'react';
 import { FaMicrophoneAlt, FaHeadphonesAlt, FaTh, FaAngleDown, FaPlusSquare, FaBroom, FaBell } from "react-icons/fa";
@@ -271,14 +270,6 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                         <span className='flex flex-row justify-between items-center space-x-1'>
  
                                             <span className='flex flex-row pr-10'>
-                                                <span className="inline-flex flex-row-reverse items-center">
-                                                    <span className=''>
-                                                        <Image className="" src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-20.svg"} alt="profile" width={30} height={30} />
-                                                    </span>
-                                                    <span className='-mr-4'>
-                                                        <Image className="" src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-22.svg"} alt="profile" width={30} height={30} />
-                                                    </span>
-                                                </span>
 
                                                 <div className="symbol-group symbol-hover flex-nowrap flex-grow-1 min-w-100px pe-2">
                                                     <div className="symbol symbol-circle symbol-25px">

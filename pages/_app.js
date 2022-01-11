@@ -33,13 +33,10 @@ function MyApp({ Component, pageProps }) {
         <link href="/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
       </Head>
 
-      <body>
-        <Component {...pageProps} />
-        
-        <Script type="text/javascript" defer src="/assets/plugins/global/plugins.bundle.js"></Script>
-        <Script type="text/javascript" defer  src="/assets/js/scripts.bundle.js"></Script>
-      </body>
+      <Component {...pageProps} />
       
+      <Script type="text/javascript" defer src="/assets/plugins/global/plugins.bundle.js"></Script>
+      <Script type="text/javascript" defer src="/assets/js/scripts.bundle.js"></Script>
   </>
 }
 

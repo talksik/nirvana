@@ -17,9 +17,8 @@ a {
   box-sizing: border-box;
 }
 
-
 /* my personal css */
-html { 
+body { 
   background: url('/wallpapers/dark-mountains.jpg') no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
