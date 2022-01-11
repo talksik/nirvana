@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image';
 import React from 'react';
-import { FaMicrophoneAlt, FaHeadphonesAlt, FaTh, FaAngleDown, FaPlusSquare, FaBroom, FaBell } from "react-icons/fa";
+import { FaMicrophoneAlt, FaHeadphonesAlt, FaTh, FaAngleDown, FaPlusSquare, FaBroom, FaBell, FaFilePdf } from "react-icons/fa";
 import { IoPulseOutline, IoRemoveOutline } from "react-icons/io5";
 import { BsThreeDots } from "react-icons/bs";
 
@@ -164,7 +164,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                         </span>
                     </section>
                     
-                    <div className='flex flex-row items-baseline space-x-5'>
+                    <div className='flex flex-row items-baseline space-x-5 space-y-5 flex-wrap'>
                         {/* personal line */}
                         <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
                             <span className='pb-1 flex flex-col'>
@@ -205,23 +205,19 @@ export default class Demo extends React.Component<MyProps, MyState> {
 
                                                 <span className={"text-xs span-sans text-gray-300" + (this.state.selectedChannel == i ? "text-black" : " ")}>{friend.role}</span>
                                             </span>
-                                            
-                                            
 
                                             {this.renderPulse(friend.status)}
                                         </span>
                                     )
                                 })
-                            }
+                            }	
                         </section>
-            
-                        <div className='flex flex-1 flex-col space-y-5 items-baseline'>
+												
+                        <div className='flex grow flex-col space-y-5 items-baseline shrink-0'>
                             {/* announcements */}
-                            <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
+                            <section className='p-5 w-full flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
                                 <span className='flex flex-row justify-end space-x-2 pb-5'>
                                     <span className="text-white mr-auto">ANNOUNCEMENTS</span>
-
-                                    
 
                                     <span className='text-sm text-gray-300 flex flex-row items-center'>
                                         TODAY <FaAngleDown />
@@ -250,7 +246,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                             </section>
 
                             {/* rooms */}
-                            <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
+                            <section className='p-5 w-full flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
                                 <span className='flex flex-row justify-end space-x-2 pb-5 items-center'>
                                     <span className="text-white mr-auto">ROOMS</span>
 
@@ -298,8 +294,30 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                 </span>
                             </section>
                         </div>
-                        
+
+                        {/* files */}
+                        <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
+                            <span className='flex flex-row justify-end space-x-2 pb-5 items-center'>
+                                <span className="text-white mr-auto">FILES</span>
+                            </span>
+                            
+
+                            <div className='flex flex-row'>
+                                <div className='flex flex-row bg-white p-5 rounded-lg items-center justify-start'>
+                                    <FaFilePdf className='text-4xl text-orange-300' />
+
+                                    <span className="text-gray-400 text-sm">report.pdf</span>
+
+                                    <button className='p-2 text-mx'>
+                                        
+                                    </button>
+                                </div>
+                                
+                            </div>
+                        </section>
                     </div>
+
+                    
                     
                 </div>
                 
