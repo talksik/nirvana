@@ -10,7 +10,7 @@ import { FaMicrophoneAlt,
     FaBell, 
     FaFilePdf,
     FaCopy, FaClock } from "react-icons/fa";
-import { IoPulseOutline, IoRemoveOutline } from "react-icons/io5";
+import { IoPulseOutline, IoRemoveOutline, IoTimer } from "react-icons/io5";
 import { BsThreeDots } from "react-icons/bs";
 
 import { UserStatus, User } from '../../models/user'
@@ -221,7 +221,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                             }	
                         </section>
 												
-                        <div className='flex grow flex-col space-y-5 items-baseline shrink-0'>
+                        <div className='flex-1 flex flex-col space-y-5 items-baseline'>
                             {/* announcements */}
                             <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
                                 <span className='flex flex-row justify-end space-x-2 pb-5'>
@@ -268,10 +268,9 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                 </span>
                 
                                 {/* all rooms */}
-                                <span className='flex flex-row space-x-2 flex-wrap'>
-
+                                <span className='flex flex-row flex-wrap'>
                                     {/* bugs room */}
-                                    <span className='flex flex-col bg-white bg-opacity-80 rounded-lg w-96 justify-between'>
+                                    <span className='flex flex-col bg-white bg-opacity-80 rounded-lg w-96 justify-between m-2'>
                                         {/* header */}
                                         <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
                                             {/* meeting details */}
@@ -324,7 +323,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                         </span>
 
                                     {/* scheduled room */}
-                                    <span className='flex flex-col bg-white bg-opacity-80 rounded-lg justify-between w-96'>
+                                    <span className='flex flex-col bg-white bg-opacity-80 rounded-lg justify-between w-96 m-2'>
                                         {/* header */}
                                         <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
                                             {/* meeting details */}
@@ -341,8 +340,10 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                             </span>
 
                                             {/* room status */}
-                                            <span className='text-blue-700 bg-blue-200 p-1 rounded-md text-xs font-bold'>
-                                                scheduled</span>
+                                            <span className='text-blue-700 bg-blue-200 p-1 rounded-md text-xs font-bold flex flex-row items-center space-x-1'>
+                                                <FaClock />
+                                                <span>scheduled</span>
+                                            </span>
                                         </span>
 
                                         {/* footer */}
@@ -360,11 +361,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
 
                                             <span className='text-xs text-gray-400'>Arjun and Liam</span>
 
-                                            <button className='ml-auto text-sm bg-gray-200 text-gray-500 rounded py-1 px-4'>
-                                                Interrupt
-                                            </button>
-
-                                            <button className='ml-2 text-sm bg-transparent hover:bg-green-500 text-green-500 font-semibold hover:text-white py-1 px-4 border border-green-500 hover:border-transparent rounded'>
+                                            <button className='ml-auto text-sm bg-transparent hover:bg-green-500 text-green-500 font-semibold hover:text-white py-1 px-4 border border-green-500 hover:border-transparent rounded'>
                                                 Join
                                             </button>
 
@@ -372,27 +369,34 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                         </span>
 
                                     {/* async room */}
-                                    <span className='flex flex-col bg-white bg-opacity-80 rounded-lg justify-between w-96'>
+                                    <span className='flex flex-col bg-white bg-opacity-80 rounded-lg justify-between w-96 m-2'>
                                         {/* header */}
                                         <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
                                             {/* meeting details */}
                                             <span className='flex flex-col items-baseline max-w-xs pr-20'>
                                                 <span className='text-gray-500 mr-auto'>
-                                                    
+                                                    Daily Standup
                                                 </span>
                                                 <span className='text-sm text-gray-400 overflow-wrap'></span>                                                    
                                                 
                                                 {/* badges and tags */}
                                                 <span className='flex flex-row flex-wrap space-x-2'>
-                                                    <span className='text-xs my-3 text-white bg-purple-400 p-1 rounded-md font-bold flex flex-row space-x-2 items-center'>                                                       
-                                                        <span>design</span>
+                                                    <span className='text-xs my-3 text-white bg-cyan-400 p-1 rounded-md font-bold flex flex-row space-x-2 items-center'>                                                       
+                                                        <span>scrum</span>
                                                     </span>
                                                 </span>
                                             </span>
 
                                             {/* room status */}
-                                            <span className='text-blue-700 bg-blue-200 p-1 rounded-md text-xs font-bold'>
-                                                scheduled</span>
+                                            <span className='flex flex-col items-center justify-start'>
+                                                <span className='text-yellow-700 bg-yellow-200 p-1 rounded-md text-xs font-bold flex flex-row items-center space-x-1'>
+                                                    <IoTimer />
+                                                    <span>recurring</span>
+                                                </span>
+
+                                                <span className='text-gray-400 text-xs'>10am daily</span>
+                                            </span>
+                                            
                                         </span>
 
                                         {/* footer */}
