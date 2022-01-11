@@ -26,6 +26,11 @@ function MyApp({ Component, pageProps }) {
           href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2&display=swap"
           rel="stylesheet"
         />
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+        <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+        
       </Head>
 
       <Component {...pageProps} />
