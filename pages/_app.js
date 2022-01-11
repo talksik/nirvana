@@ -1,5 +1,6 @@
 import '../styles/globals.css'
 import Head from 'next/head'
+import Script from 'next/script'
 
 function MyApp({ Component, pageProps }) {
   return <>
@@ -28,12 +29,17 @@ function MyApp({ Component, pageProps }) {
         />
 
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
-        <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-        <link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
-        
+        <link href="/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+        <link href="/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
       </Head>
 
-      <Component {...pageProps} />
+      <body>
+        <Component {...pageProps} />
+        
+        <Script type="text/javascript" defer src="/assets/plugins/global/plugins.bundle.js"></Script>
+        <Script type="text/javascript" defer  src="/assets/js/scripts.bundle.js"></Script>
+      </body>
+      
   </>
 }
 

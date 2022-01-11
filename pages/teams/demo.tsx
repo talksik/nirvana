@@ -279,11 +279,27 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                                         <Image className="" src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-22.svg"} alt="profile" width={30} height={30} />
                                                     </span>
                                                 </span>
+
+                                                <div className="symbol-group symbol-hover flex-nowrap flex-grow-1 min-w-100px pe-2">
+                                                    <div className="symbol symbol-circle symbol-25px">
+                                                        <img src="/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-20.svg" alt="img" />
+                                                    </div>
+                                                    <div className="symbol symbol-circle symbol-25px">
+                                                        <img src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-22.svg"} alt="img" />
+                                                    </div>
+                                                    <div className="symbol symbol-circle symbol-25px">
+                                                        <div className="symbol-label fs-8 fw-bold bg-primary text-inverse-primary">A</div>
+                                                    </div>
+                                                </div>
                                                 
 
                                                 <span className='flex flex-col items-baseline'>
                                                     <span className='font-bold text-black mr-auto'>Bugs</span>
                                                     <span className='text-xs text-gray-400'>started 5 minutes ago</span>
+
+                                                    <div className="min-w-125px pe-2">
+                                                        <span className="badge badge-light-primary">In Progress</span>
+                                                    </div>
                                                 </span>
                                                 
                                             </span>
