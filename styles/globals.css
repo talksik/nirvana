@@ -1,5 +1,3 @@
-
-
 html,
 body {
   padding: 0;
@@ -17,10 +15,10 @@ a {
   box-sizing: border-box;
 }
 
-
 /* my personal css */
-html { 
-  background: url('/wallpapers/dark-mountains.jpg') no-repeat center center fixed; 
+html {
+  background: url("/wallpapers/dark-mountains.jpg") no-repeat center center
+    fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -29,10 +27,14 @@ html {
 
 main {
   padding: 4em;
+  font-family: "Poppins", sans-serif;
 }
 
 .font-satisfy {
-  font-family: 'Satisfy', cursive;
+  font-family: "Satisfy", cursive;
+}
+.font-poppins {
+  font-family: "Poppins", sans-serif;
 }
 
 .text-teal {
@@ -40,30 +42,29 @@ main {
 }
 
 #main-title {
-  font-family: 'Satisfy', cursive;
+  font-family: "Satisfy", cursive;
   font-size: 2em;
   color: teal;
 }
 #side-note {
-  font-family: 'Baloo Bhaijaan 2', cursive;
+  font-family: "Baloo Bhaijaan 2", cursive;
   font-size: 1.5em;
 }
 
 p {
-  font-family: 'Baloo Bhaijaan 2', cursive;
+  font-family: "Baloo Bhaijaan 2", cursive;
   font-size: 2em;
-  color:white;
+  color: white;
 }
 
 #marquee-text {
-   font-style: italic;
-   font-size: 1.5em;
-   font-family: 'Baloo Bhaijaan 2', cursive;
+  font-style: italic;
+  font-size: 1.5em;
+  font-family: "Baloo Bhaijaan 2", cursive;
 }
 
-
- /* Mobile :320px. */
- @media (max-width: 767px) {
+/* Mobile :320px. */
+@media (max-width: 767px) {
   main {
     padding: 0em;
   }
@@ -74,17 +75,16 @@ p {
   #side-note {
     font-size: 1em;
   }
-  
+
   p {
     font-size: 1.5em;
   }
 
   #marquee-text {
     font-size: 1em;
- }
- 
- }
+  }
+}
 
- @tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities;

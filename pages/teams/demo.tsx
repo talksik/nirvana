@@ -1,7 +1,15 @@
 import Head from 'next/head'
 import Image from 'next/image';
 import React from 'react';
-import { FaMicrophoneAlt, FaHeadphonesAlt, FaTh, FaAngleDown, FaPlusSquare, FaBroom, FaBell, FaFilePdf } from "react-icons/fa";
+import { FaMicrophoneAlt, 
+    FaHeadphonesAlt, 
+    FaTh, 
+    FaAngleDown, 
+    FaPlusSquare, 
+    FaBroom, 
+    FaBell, 
+    FaFilePdf,
+    FaCopy } from "react-icons/fa";
 import { IoPulseOutline, IoRemoveOutline } from "react-icons/io5";
 import { BsThreeDots } from "react-icons/bs";
 
@@ -146,8 +154,8 @@ export default class Demo extends React.Component<MyProps, MyState> {
                     <section className="flex-1 flex flex-row items-center justify-between py-5">
                         {/* welcome message */}
                         <span className='flex flex-col'>
-                            <span className="font-sans font-bold text-xl text-white">👋Hey Arjun, Good Afternoon!</span>
-                            <span className="font-sans text-md text-gray-300">you collabed <span className="text-green-500">1.5 hours</span> and worked <span className="text-orange-500">2 hours</span> yesterday</span>
+                            <span className="font-bold text-xl text-white">👋Hey Arjun, Good Afternoon!</span>
+                            <span className="text-md text-gray-300">you collabed <span className="text-green-500">1.5 hours</span> and worked <span className="text-orange-500">2 hours</span> yesterday</span>
                         </span>
                         
                         {/* avatar */}
@@ -215,7 +223,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
 												
                         <div className='flex grow flex-col space-y-5 items-baseline shrink-0'>
                             {/* announcements */}
-                            <section className='p-5 w-full flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
+                            <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
                                 <span className='flex flex-row justify-end space-x-2 pb-5'>
                                     <span className="text-white mr-auto">ANNOUNCEMENTS</span>
 
@@ -246,7 +254,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                             </section>
 
                             {/* rooms */}
-                            <section className='p-5 w-full flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
+                            <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
                                 <span className='flex flex-row justify-end space-x-2 pb-5 items-center'>
                                     <span className="text-white mr-auto">ROOMS</span>
 
@@ -263,7 +271,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                 <span className='flex flex-row space-x-2'>
 
                                     {/* bugs room */}
-                                    <span className='flex flex-col bg-white bg-opacity-60 p-5 rounded-lg'>
+                                    <span className='flex flex-col bg-white bg-opacity-80 py-5 px-3 rounded-lg'>
                                         <span className='flex flex-row justify-between items-center space-x-1'>
  
                                             <span className='flex flex-row pr-10'>
@@ -276,9 +284,8 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                                     </span>
                                                 </span>
                                                 
-
                                                 <span className='flex flex-col items-baseline'>
-                                                    <span className='font-bold text-black mr-auto'>Bugs</span>
+                                                    <span className='text-grey-300 mr-auto'>Bugs</span>
                                                     <span className='text-xs text-gray-400'>started 5 minutes ago</span>
                                                 </span>
                                                 
@@ -295,29 +302,29 @@ export default class Demo extends React.Component<MyProps, MyState> {
                             </section>
                         </div>
 
-                        {/* files */}
-                        <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
+                        
+                    </div>
+
+                    {/* files */}
+                    <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
                             <span className='flex flex-row justify-end space-x-2 pb-5 items-center'>
                                 <span className="text-white mr-auto">FILES</span>
                             </span>
                             
 
                             <div className='flex flex-row'>
-                                <div className='flex flex-row bg-white p-5 rounded-lg items-center justify-start'>
+                                <div className='flex flex-row bg-gray-300 bg-opacity-25 py-5 px-3 rounded-lg items-center justify-start'>
                                     <FaFilePdf className='text-4xl text-orange-300' />
 
-                                    <span className="text-gray-400 text-sm">report.pdf</span>
+                                    <span className="text-gray-200 text-sm mr-10">report.pdf</span>
 
-                                    <button className='p-2 text-mx'>
-                                        
+                                    <button className='ml-auto p-2 text-sm'>
+                                        <FaCopy className='text-gray-200'/>
                                     </button>
                                 </div>
                                 
                             </div>
                         </section>
-                    </div>
-
-                    
                     
                 </div>
                 
@@ -341,7 +348,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                             <span className='flex flex-col'>
                                 <span className="text-sm text-black font-bold">{this.state.selectedChannel == null ? "" : testFriends[this.state.selectedChannel].name} </span>
         
-                                <span className={"text-xs font-sans text-gray-300 text-black"}>{this.state.selectedChannel == null ? "" : testFriends[this.state.selectedChannel].role}</span>
+                                <span className={"text-xs text-gray-300 text-black"}>{this.state.selectedChannel == null ? "" : testFriends[this.state.selectedChannel].role}</span>
                             </span> 
                         </span>
 
