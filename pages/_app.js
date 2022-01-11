@@ -35,8 +35,8 @@ function MyApp({ Component, pageProps }) {
 
       <Component {...pageProps} />
       
-      <Script type="text/javascript" defer src="/assets/plugins/global/plugins.bundle.js"></Script>
-      <Script type="text/javascript" defer src="/assets/js/scripts.bundle.js"></Script>
+      <Script type="text/javascript" src="/assets/plugins/global/plugins.bundle.js"></Script>
+      <Script type="text/javascript" src="/assets/js/scripts.bundle.js"></Script>
   </>
 }
 
