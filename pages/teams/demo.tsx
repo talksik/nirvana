@@ -9,7 +9,7 @@ import { FaMicrophoneAlt,
     FaBroom, 
     FaBell, 
     FaFilePdf,
-    FaCopy } from "react-icons/fa";
+    FaCopy, FaClock } from "react-icons/fa";
 import { IoPulseOutline, IoRemoveOutline } from "react-icons/io5";
 import { BsThreeDots } from "react-icons/bs";
 
@@ -268,41 +268,161 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                 </span>
                 
                                 {/* all rooms */}
-                                <span className='flex flex-row space-x-2'>
+                                <span className='flex flex-row space-x-2 flex-wrap'>
 
                                     {/* bugs room */}
-                                    <span className='flex flex-col bg-white bg-opacity-80 py-5 px-3 rounded-lg'>
-                                        <span className='flex flex-row justify-between items-center space-x-1'>
- 
-                                            <span className='flex flex-row pr-10'>
-                                                <span className="inline-flex flex-row-reverse items-center">
-                                                    <span className=''>
-                                                        <Image className="" src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-20.svg"} alt="profile" width={30} height={30} />
-                                                    </span>
-                                                    <span className='-mr-4'>
-                                                        <Image className="" src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-22.svg"} alt="profile" width={30} height={30} />
-                                                    </span>
-                                                </span>
+                                    <span className='flex flex-col bg-white bg-opacity-80 rounded-lg w-96 justify-between'>
+                                        {/* header */}
+                                        <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
+                                            {/* meeting details */}
+                                            <span className='flex flex-col items-baseline max-w-xs pr-20'>
+                                                <span className='text-gray-500 mr-auto'>bug fixing</span>
+                                                <span className='text-sm text-gray-400 overflow-wrap'>were just fixing that jsx bug that's a paiiinnnn</span>                                                    
                                                 
-                                                <span className='flex flex-col items-baseline'>
-                                                    <span className='text-grey-300 mr-auto'>Bugs</span>
-                                                    <span className='text-xs text-gray-400'>started 5 minutes ago</span>
-                                                </span>
-                                                
-                                            </span>
-                                            
+                                                {/* badges and tags */}
+                                                <span className='flex flex-row flex-wrap space-x-2'>
+                                                    <span className='text-xs my-3 bg-gray-400 
+                                                    text-white p-1 rounded-md flex flex-row space-x-2 items-center'>
+                                                        <FaClock /> 
+                                                        <span>00:12</span>
+                                                    </span>
 
-                                            <button className='ml-auto bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-1 px-4 border border-green-500 hover:border-transparent rounded'>
+                                                    <span className='text-xs my-3 text-white bg-red-400 p-1 rounded-md font-bold flex flex-row space-x-2 items-center'>                                                       
+                                                        <span>blockers</span>
+                                                    </span>
+                                                </span>
+                                            </span>
+
+                                            {/* room status */}
+                                            <span className='text-red-700 bg-red-200 p-1 rounded-md text-xs font-bold'>live</span>
+                                        </span>
+
+                                        {/* footer */}
+                                        <span className='flex flex-row items-center bg-gray-400 bg-opacity-30 p-3'>
+                                            <span className="inline-flex flex-row-reverse items-center shrink-0 mr-1">
+                                                <span className='relative flex'>
+                                                    <span className="bg-gray-200 rounded-full shadow-md absolute w-full h-full"></span>
+                                                    <Image className="" src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-20.svg"} alt="profile" width={30} height={30} />
+                                                </span>
+                                                <span className='-mr-4 relative flex'>
+                                                <span className="bg-gray-200 rounded-full shadow-md absolute w-full h-full"></span>
+                                                    <Image className="" src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-22.svg"} alt="profile" width={30} height={30} />
+                                                </span>
+                                            </span>
+
+                                            <span className='text-xs text-gray-400'>Arjun and Liam</span>
+
+                                            <button className='ml-auto text-sm bg-gray-200 text-gray-500 rounded py-1 px-4'>
+                                                Interrupt
+                                            </button>
+
+                                            <button className='ml-2 text-sm bg-transparent hover:bg-green-500 text-green-500 font-semibold hover:text-white py-1 px-4 border border-green-500 hover:border-transparent rounded'>
                                                 Join
                                             </button>
+
+                                            <BsThreeDots className='text-gray-400 ml-2 hover:cursor-pointer' />                                        </span>
                                         </span>
-                                        
-                                    </span>
+
+                                    {/* scheduled room */}
+                                    <span className='flex flex-col bg-white bg-opacity-80 rounded-lg justify-between w-96'>
+                                        {/* header */}
+                                        <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
+                                            {/* meeting details */}
+                                            <span className='flex flex-col items-baseline max-w-xs pr-20'>
+                                                <span className='text-gray-500 mr-auto'>Design - Shopping Cart Experience</span>
+                                                <span className='text-sm text-gray-400 overflow-wrap'></span>                                                    
+                                                
+                                                {/* badges and tags */}
+                                                <span className='flex flex-row flex-wrap space-x-2'>
+                                                    <span className='text-xs my-3 text-white bg-purple-400 p-1 rounded-md font-bold flex flex-row space-x-2 items-center'>                                                       
+                                                        <span>design</span>
+                                                    </span>
+                                                </span>
+                                            </span>
+
+                                            {/* room status */}
+                                            <span className='text-blue-700 bg-blue-200 p-1 rounded-md text-xs font-bold'>
+                                                scheduled</span>
+                                        </span>
+
+                                        {/* footer */}
+                                        <span className='flex flex-row items-center bg-gray-400 bg-opacity-30 p-3'>
+                                            <span className="inline-flex flex-row-reverse items-center shrink-0 mr-1">
+                                                <span className='relative flex'>
+                                                    <span className="bg-gray-200 rounded-full shadow-md absolute w-full h-full"></span>
+                                                    <Image className="" src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-20.svg"} alt="profile" width={30} height={30} />
+                                                </span>
+                                                <span className='-mr-4 relative flex'>
+                                                <span className="bg-gray-200 rounded-full shadow-md absolute w-full h-full"></span>
+                                                    <Image className="" src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-22.svg"} alt="profile" width={30} height={30} />
+                                                </span>
+                                            </span>
+
+                                            <span className='text-xs text-gray-400'>Arjun and Liam</span>
+
+                                            <button className='ml-auto text-sm bg-gray-200 text-gray-500 rounded py-1 px-4'>
+                                                Interrupt
+                                            </button>
+
+                                            <button className='ml-2 text-sm bg-transparent hover:bg-green-500 text-green-500 font-semibold hover:text-white py-1 px-4 border border-green-500 hover:border-transparent rounded'>
+                                                Join
+                                            </button>
+
+                                            <BsThreeDots className='text-gray-400 ml-2 hover:cursor-pointer' />                                        </span>
+                                        </span>
+
+                                    {/* async room */}
+                                    <span className='flex flex-col bg-white bg-opacity-80 rounded-lg justify-between w-96'>
+                                        {/* header */}
+                                        <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
+                                            {/* meeting details */}
+                                            <span className='flex flex-col items-baseline max-w-xs pr-20'>
+                                                <span className='text-gray-500 mr-auto'>
+                                                    
+                                                </span>
+                                                <span className='text-sm text-gray-400 overflow-wrap'></span>                                                    
+                                                
+                                                {/* badges and tags */}
+                                                <span className='flex flex-row flex-wrap space-x-2'>
+                                                    <span className='text-xs my-3 text-white bg-purple-400 p-1 rounded-md font-bold flex flex-row space-x-2 items-center'>                                                       
+                                                        <span>design</span>
+                                                    </span>
+                                                </span>
+                                            </span>
+
+                                            {/* room status */}
+                                            <span className='text-blue-700 bg-blue-200 p-1 rounded-md text-xs font-bold'>
+                                                scheduled</span>
+                                        </span>
+
+                                        {/* footer */}
+                                        <span className='flex flex-row items-center bg-gray-400 bg-opacity-30 p-3'>
+                                            <span className="inline-flex flex-row-reverse items-center shrink-0 mr-1">
+                                                <span className='relative flex'>
+                                                    <span className="bg-gray-200 rounded-full shadow-md absolute w-full h-full"></span>
+                                                    <Image className="" src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-20.svg"} alt="profile" width={30} height={30} />
+                                                </span>
+                                                <span className='-mr-4 relative flex'>
+                                                <span className="bg-gray-200 rounded-full shadow-md absolute w-full h-full"></span>
+                                                    <Image className="" src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-22.svg"} alt="profile" width={30} height={30} />
+                                                </span>
+                                            </span>
+
+                                            <span className='text-xs text-gray-400'>Arjun and Liam</span>
+
+                                            <button className='ml-auto text-sm bg-gray-200 text-gray-500 rounded py-1 px-4'>
+                                                Interrupt
+                                            </button>
+
+                                            <button className='ml-2 text-sm bg-transparent hover:bg-green-500 text-green-500 font-semibold hover:text-white py-1 px-4 border border-green-500 hover:border-transparent rounded'>
+                                                Join
+                                            </button>
+
+                                            <BsThreeDots className='text-gray-400 ml-2 hover:cursor-pointer' />                                        </span>
+                                        </span>
                                 </span>
                             </section>
                         </div>
-
-                        
                     </div>
 
                     {/* files */}
