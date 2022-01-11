@@ -142,18 +142,6 @@ export default class Demo extends React.Component<MyProps, MyState> {
         return (
             <>
                 <div className="container mx-auto max-w-screen-xl pt-10 flex flex-col space-y-5">
-                    <Head>
-                        <link
-                        href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2&display=swap"
-                        rel="stylesheet"
-                        />
-            
-                        <link
-                        href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap"
-                        rel="stylesheet"
-                        />
-                    </Head>
-                    
                     {/* header content */}
                     <section className="flex-1 flex flex-row items-center justify-between py-5">
                         {/* welcome message */}
