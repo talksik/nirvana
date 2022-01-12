@@ -367,7 +367,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                     {/* spontaneous bugs room */}
                                     <span className='flex flex-col bg-white bg-opacity-80 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip'>
                                         {/* header */}
-                                        <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
+                                        <span className='flex flex-1 flex-row justify-between items-baseline space-x-1 p-5'>
                                             {/* meeting details */}
                                             <span className='flex flex-col items-baseline max-w-xs pr-10'>
                                                 <span className='text-gray-500 font-semibold mr-auto'>bug fixing</span>
@@ -386,14 +386,23 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                             </span>
 
                                             {/* room status */}
-                                            <span className='flex flex-col items-end space-y-1'>
+                                            <span className='flex flex-col items-end space-y-1 justify-between h-full'>
                                                 <span className='text-xs bg-red-500
                                                 text-white font-bold p-1 rounded-md flex flex-row space-x-2 items-center'>
                                                     <FaClock /> 
-                                                    <span>00:35</span>
-                                                </span>
+                                                    <span>live</span>
+                                                </span>                    
 
-                                                <span className='text-red-700 bg-red-200 p-1 rounded-md text-xs font-bold'>spontaneous</span>                                                
+                                                {/* room attachments */}
+                                                <span className='flex flex-row space-x-2'>
+                                                    <button className='bg-gray-400 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40'>
+                                                        <FaLink className='text-sm text-gray-400' />
+                                                    </button>
+
+                                                    <button className='bg-gray-400 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40'>
+                                                        <FaLink className='text-sm text-gray-400' />
+                                                    </button>
+                                                </span>
                                             </span>
                                                 
                                         </span>
@@ -411,14 +420,14 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                                 </span>
                                             </span>
 
-                                            <span className='text-xs text-gray-400'>Arjun and Liam</span>
+                                            <span className='text-xs text-gray-400'>Arjun and Liam</span>                                            
 
                                             <button className='ml-auto text-sm text-orange-500 font-semibold py-1 px-4 bg-gray-200 rounded'>👋 Leave</button>
 
                                             <BsThreeDots className='text-white ml-2 hover:cursor-pointer' />                                        </span>
                                         </span>
 
-                                    {/* scheduled room - design meeting */}
+                                    {/* live room - design meeting */}
                                     <span className='flex flex-col bg-gray-300 bg-opacity-25 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip'>
                                         {/* header */}
                                         <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
@@ -436,16 +445,23 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                             </span>
 
                                             {/* room status */}
-                                            <span className='flex flex-col items-end space-y-1'>
+                                            <span className='flex flex-col items-end justify-between h-full'>
                                                 <span className='text-xs bg-red-500
                                                 text-white font-bold p-1 rounded-md flex flex-row space-x-2 items-center'>
                                                     <FaClock /> 
-                                                    <span>00:35</span>
+                                                    <span>live</span>
                                                 </span>
+                                                <span className='text-gray-200 text-xs text-right mb-auto'>on and off all day</span>
 
-                                                <span className='text-blue-700 bg-blue-200 p-1 rounded-md text-xs font-bold flex flex-row items-center space-x-1'>
-                                                    <FaClock />
-                                                    <span>scheduled</span>
+                                                {/* room attachments */}
+                                                <span className='flex flex-row space-x-2'>
+                                                    <button className='bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40'>
+                                                        <FaLink className='text-sm text-white' />
+                                                    </button>
+
+                                                    <button className='bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40'>
+                                                        <FaLink className='text-sm text-white' />
+                                                    </button>
                                                 </span>
                                             </span>
                                         </span>
