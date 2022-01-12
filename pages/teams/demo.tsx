@@ -300,7 +300,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                         </span>
 
                                         <span className='flex flex-col items-baseline'>
-                                            <span className='text-sm font-bold text-white'>Adriana</span>
+                                            <span className='text-md font-bold text-white'>Adriana</span>
                                             <span className='text-xs text-gray-200'>5 minutes ago</span>
                                             <span className='text-xs text-white bg-red-400 p-1 rounded-md font-semibold flex flex-row items-center'>                                                       
                                                 <span>blockers</span>
@@ -319,7 +319,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                         </span>
 
                                         <span className='flex flex-col items-baseline mr-5'>
-                                            <span className='text-sm font-bold text-white'>Arjun</span>
+                                            <span className='text-md font-bold text-white'>Arjun</span>
                                             <span className='text-xs text-gray-200'>30 minutes ago</span>
                                             <span className='text-xs text-white bg-indigo-400 p-1 rounded-md font-semibold flex flex-row items-center'>                                                       
                                                 <span>engineering</span>
@@ -369,7 +369,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                         <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
                                             {/* meeting details */}
                                             <span className='flex flex-col items-baseline max-w-xs pr-10'>
-                                                <span className='text-gray-500 mr-auto'>bug fixing</span>
+                                                <span className='text-gray-500 font-semibold mr-auto'>bug fixing</span>
                                                 <span className='text-xs text-gray-400 overflow-wrap'>were just fixing that jsx bug thats a paiiinnnn</span>                                                    
                                                 
                                                 {/* badges and tags */}
@@ -420,7 +420,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                         <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
                                             {/* meeting details */}
                                             <span className='flex flex-col items-baseline max-w-xs pr-20'>
-                                                <span className='text-white mr-auto'>Shopping Cart Experience</span>
+                                                <span className='text-white font-semibold mr-auto'>Shopping Cart Experience</span>
                                                 <span className='text-xs text-gray-200 overflow-wrap'>lets finish the mockups @josh, @mark, and @arjun please step in for feedback</span>                                                    
                                                 
                                                 {/* badges and tags */}
@@ -473,7 +473,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                         <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
                                             {/* meeting details */}
                                             <span className='flex flex-col items-baseline max-w-xs pr-20'>
-                                                <span className='text-white mr-auto'>Arjun and Paul - One on one</span>
+                                                <span className='text-white font-semibold mr-auto'>Arjun and Paul - One on one</span>
                                                 <span className='text-xs text-gray-200 overflow-wrap'>performance review</span>                                                    
                                                 
                                                 {/* badges and tags */}
@@ -510,7 +510,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                         <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
                                             {/* meeting details */}
                                             <span className='flex flex-col items-baseline max-w-xs pr-20'>
-                                                <span className='text-white mr-auto'>
+                                                <span className='text-white font-semibold mr-auto'>
                                                     Daily Standup
                                                 </span>
                                                 <span className='text-xs text-gray-200 overflow-wrap'></span>                                                    
@@ -556,7 +556,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                         <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
                                             {/* meeting details */}
                                             <span className='flex flex-col items-baseline max-w-xs pr-20'>
-                                                <span className='text-white mr-auto'>
+                                                <span className='text-white font-semibold mr-auto'>
                                                     Sprint Demo
                                                 </span>
                                                 <span className='text-xs text-gray-200 overflow-wrap'>all hands on deck...lets have fun :)</span>                                                    
@@ -598,7 +598,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                         <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
                                             {/* meeting details */}
                                             <span className='flex flex-col items-baseline max-w-xs pr-20'>
-                                                <span className='text-white mr-auto'>
+                                                <span className='text-white font-semibold mr-auto'>
                                                     Wine Wednesdays
                                                 </span>
                                                 <span className='text-xs text-gray-200 overflow-wrap'>@JOSH YOU BETTER COME</span>                                                    
@@ -643,11 +643,14 @@ export default class Demo extends React.Component<MyProps, MyState> {
                     <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
                         {/* header row */}
                         <span className='flex flex-row justify-start pb-5 items-center'>
-                            <span className="text-white uppercase">Attachments  
-                                <button className="rounded-lg border py-1 px-2 ml-1 border-gray-100 
-                                shadow-md text-center text-gray-200 text-sm font-bold">
-                                    T
-                                </button>
+                            <span className='flex flex-col mr-20'>
+                                <span className="text-white mr-auto">Attachments
+                                    <button className="rounded-lg border py-1 px-2 ml-1 border-gray-100 
+                                    shadow-md text-center text-gray-200 text-sm font-bold">
+                                        T
+                                    </button>
+                                </span>
+                                <span className='text-gray-300 text-xs'>code, links (jira tickets, drive folders, powerpoints), screenshots</span>
                             </span>
 
                             <button className='ml-auto bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40'>
@@ -670,7 +673,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                     <FaFilePdf className='text-4xl text-orange-300 mr-1' />
 
                                     <span className='flex flex-col items-baseline mr-10 space-y-1'>
-                                        <span className='text-sm font-bold text-white'>report.pdf</span>
+                                        <span className='text-md font-bold text-white'>report.pdf</span>
                                         
                                         <span className='text-xs text-white bg-red-400 p-1 rounded-md font-semibold flex flex-row items-center'>                                                       
                                             <span>blockers</span>
