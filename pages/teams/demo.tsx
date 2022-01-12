@@ -17,7 +17,8 @@ import { FaMicrophoneAlt,
     FaCode,
     FaLink,
     FaExternalLinkAlt,
-    FaArchive
+    FaArchive,
+    FaAtlassian
 
 } from "react-icons/fa";
 import { IoPulseOutline, IoRemoveOutline, IoTimer } from "react-icons/io5";
@@ -617,13 +618,13 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                             </span>
 
                                             {/* room status */}
-                                            <span className='flex flex-col items-center justify-start'>
+                                            <span className='flex flex-col items-end'>
                                                 <span className='text-yellow-700 bg-yellow-200 p-1 rounded-md text-xs font-bold flex flex-row items-center space-x-1'>
                                                     <IoTimer />
                                                     <span>recurring</span>
                                                 </span>
 
-                                                <span className='text-gray-200 text-xs text-center'>wednesdays 7-9pm</span>
+                                                <span className='text-gray-200 text-xs text-right'>wednesdays 7-9pm</span>
                                             </span>
                                         </span>
 
@@ -656,6 +657,10 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                     shadow-md text-center text-gray-200 text-sm font-bold">
                                         T
                                     </button>
+                                    <button className="rounded-lg border py-1 px-2 ml-1 border-gray-100 
+                                    shadow-md text-center text-gray-200 text-sm font-bold">
+                                        CTRL + V
+                                    </button>
                                 </span>
                                 <span className='text-gray-300 text-xs'>code, links (jira tickets, drive folders, powerpoints), screenshots</span>
                             </span>
@@ -683,12 +688,12 @@ export default class Demo extends React.Component<MyProps, MyState> {
                         </span>
                         
                         {/* row of attachments */}
-                        <div className='flex flex-row flex-wrap'>
+                        <div className='flex flex-row flex-wrap space-x-2'>
                             {/* pdf example */}
                             <span className='flex flex-col rounded-lg'>
                                 {/* attmnt header */}
                                 <span className='flex flex-row bg-gray-300 bg-opacity-25 py-5 px-3 items-center justify-start'>
-                                    <FaFilePdf className='text-4xl text-orange-300 mr-1' />
+                                    <FaFilePdf className='text-4xl text-orange-300 mr-2' />
 
                                     <span className='flex flex-col items-baseline mr-10 space-y-1'>
                                         <span className='text-md font-bold text-white'>report.pdf</span>
@@ -723,6 +728,52 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                     <span className='flex flex-col items-baseline'>
                                         <span className='text-xs text-gray-200 font-bold'>Adriana</span>
                                         <span className='text-xs text-gray-200 font-extralight'>5 minutes ago</span>
+                                    </span>
+
+                                    <BsThreeDots className='text-white ml-auto hover:cursor-pointer' />                                        
+                                </span>
+                            </span>
+
+                            {/* jira example */}
+                            <span className='flex flex-col rounded-lg'>
+                                {/* attmnt header */}
+                                <span className='flex flex-row bg-gray-300 bg-opacity-25 py-5 px-3 items-center justify-start'>
+                                    <FaAtlassian className='text-4xl text-sky-300 mr-2' />
+
+                                    <span className='flex flex-col items-baseline mr-10 space-y-1'>
+                                        <span className='text-md font-bold text-white'>RAM-22</span>
+                                        <span className='text-xs text-gray-200'>technical doc - stripe</span>
+
+                                        <span className='text-xs text-white bg-indigo-400 p-1 rounded-md font-semibold flex flex-row items-center'>                                                       
+                                            <span>engineering</span>
+                                        </span>
+                                    </span>
+
+                                    {/* attachment actions */}
+                                    <button className='bg-gray-300 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40'>
+                                        <FaCopy className='text-sm text-white' />
+                                    </button>
+                                    <button className='bg-gray-300 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40'>
+                                        <FaExternalLinkAlt className='text-sm text-white' />
+                                    </button>
+
+                                    <button className='bg-orange-300 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40'>
+                                        <FaArchive className='text-sm text-orange-500' />
+                                    </button>
+                                </span>
+
+                                {/* attmnt footer */}
+                                <span className='flex flex-row items-center bg-gray-400 bg-opacity-30 p-3'>
+                                    <span className="inline-flex flex-row-reverse items-center shrink-0 mr-1">
+                                        <span className='relative flex'>
+                                            <span className="bg-gray-200 rounded-full shadow-md absolute w-full h-full"></span>
+                                            <Image className="" src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-43.svg"} alt="profile" width={30} height={30} />
+                                        </span>
+                                    </span>
+
+                                    <span className='flex flex-col items-baseline'>
+                                        <span className='text-xs text-gray-200 font-bold'>Paul</span>
+                                        <span className='text-xs text-gray-200 font-extralight'>2 hours ago</span>
                                     </span>
 
                                     <BsThreeDots className='text-white ml-auto hover:cursor-pointer' />                                        
