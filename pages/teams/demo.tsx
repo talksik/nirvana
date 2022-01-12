@@ -192,9 +192,16 @@ export default class Demo extends React.Component<MyProps, MyState> {
                     <div className='flex flex-row items-baseline space-x-5 space-y-5 flex-wrap'>
                         {/* personal line */}
                         <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
-                            <span className='pb-1 flex flex-col'>
-                                <span className="text-white">TEAM</span>
+                            <span className='flex flex-row justify-start items-center pb-5'>
+                                <span className='flex flex-col'>
+                                    <span className="text-white">TEAM</span>
+                                </span>
+
+                                <button className='bg-gray-300 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40'>
+                                    <FaPlus className='text-lg text-white' />
+                                </button>
                             </span>
+                            
                             
                             {/* list of team members */}
                             {
@@ -255,13 +262,13 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                     </span>
                                     
                                     {/* tab pane */}
-                                    <span className='ml-auto flex flex-row space-x-5 uppercase'>
+                                    <span className='ml-auto flex flex-row space-x-5 uppercase mr-5'>
                                         <span className='underline underline-offset-8 decoration-white text-white hover:text-white hover:cursor-pointer'>Active</span>
 
                                         <span className='text-gray-300 hover:text-white hover:cursor-pointer'>Resolved</span>
                                     </span>
 
-                                    <span className='ml-2 text-sm text-gray-300 flex flex-row items-center'>
+                                    <span className='text-sm text-gray-300 flex flex-row items-center'>
                                         TODAY <FaAngleDown />
                                     </span>
 
@@ -329,7 +336,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                         </span>
                                     
                                     {/* tab pane */}
-                                    <span className='flex flex-row space-x-5 uppercase'>
+                                    <span className='flex flex-row space-x-5 uppercase mr-5'>
                                         <span className='underline underline-offset-8 decoration-white text-white hover:text-white hover:cursor-pointer'>All</span>
 
                                         <span className='text-gray-300 hover:text-white hover:cursor-pointer'>Live</span>
@@ -339,7 +346,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                         <span className='text-gray-300 hover:text-white hover:cursor-pointer'>Recurring</span>
                                     </span>
 
-                                    <button className='bg-gray-300 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40'>
+                                    <button className='bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40'>
                                         <FaPlus className='text-lg text-white' />
                                     </button>
 
