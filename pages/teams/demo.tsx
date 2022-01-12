@@ -686,6 +686,8 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                 <span className='underline underline-offset-8 decoration-white text-white hover:text-white hover:cursor-pointer'>Team</span>
 
                                 <span className='text-gray-300 hover:text-white hover:cursor-pointer'>Personal</span>
+
+                                <span className='text-gray-300 hover:text-white hover:cursor-pointer'>Favorites</span>
                             </span>
 
                             <span className='text-sm mr-5 text-gray-300 flex flex-row items-center'>
