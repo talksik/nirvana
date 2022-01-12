@@ -264,67 +264,21 @@ export default class Demo extends React.Component<MyProps, MyState> {
                             <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
                                 <span className='flex flex-row justify-end space-x-3 pb-5 items-center'>
                                     <span className="text-white mr-auto">ROOMS</span>
+                                    
+                                    {/* tab page */}
+                                    <span className='flex flex-row space-x-5 uppercase'>
+                                        <span className='underline underline-offset-8 decoration-white text-white hover:text-white hover:cursor-pointer'>All</span>
 
-                                    <Tabs defaultActiveKey="1" className='text-white'>
-                                        <TabPane
-                                            tab={
-                                                <span>
-                                                All
-                                                </span>
-                                            }
-                                            key="1"
-                                            >
-                                        </TabPane>
-                                        <TabPane
-                                            tab={
-                                                <span>
-                                                Live
-                                                </span>
-                                            }
-                                            className='text-white'
-                                            key="2"
-                                            >
-                                        </TabPane>
-                                        <TabPane
-                                            tab={
-                                                <span>
-                                                Scheduled
-                                                </span>
-                                            }
-                                            className='text-white'
-                                            key="3"
-                                            >
-                                        </TabPane>
-                                        <TabPane
-                                            tab={
-                                                <span>
-                                                Recurring
-                                                </span>
-                                            }
-                                            className='text-white'
-                                            key="4"
-                                            >
+                                        <span className='text-gray-300 hover:text-white hover:cursor-pointer'>Live</span>
 
-                                                tetasedtg
-                                        </TabPane>
+                                        <span className='text-gray-300 hover:text-white hover:cursor-pointer'>Scheduled</span>
 
-                                        <TabPane
-                                            tab={
-                                                <span>
-                                                Archive
-                                                </span>
-                                            }
-                                            className='text-white'
-                                            key="5"
-                                            >
-                                        </TabPane>
-                                    </Tabs>
+                                        <span className='text-gray-300 hover:text-white hover:cursor-pointer'>Recurring</span>
 
-                                    <span className='text-sm text-gray-300 flex flex-row items-center'>
-                                        TODAY <FaAngleDown />
+
                                     </span>
 
-                                    <button className='bg-transparent hover:bg-white text-white font-semibold hover:text-black py-1 px-4 border border-white-500 hover:border-transparent rounded'>
+                                    <button className='p-2 text-sm text-white font-semibold bg-cyan-500 shadow-lg rounded-lg'>
                                         Create
                                     </button>
 
