@@ -13,7 +13,11 @@ import { FaMicrophoneAlt,
     FaClock,
     FaPlay,
     FaPlus,
-    FaCheck
+    FaCheck,
+    FaCode,
+    FaLink,
+    FaExternalLinkAlt,
+    FaArchive
 
 } from "react-icons/fa";
 import { IoPulseOutline, IoRemoveOutline, IoTimer } from "react-icons/io5";
@@ -124,6 +128,11 @@ export default class Demo extends React.Component<MyProps, MyState> {
         console.log(event.keyCode)
 
         switch(event.keyCode) {
+            case KeyCode.Escape:
+                this.setState({
+                    selectedChannel: null
+                })
+                break
             case KeyCode.Zero:
                 this.setState({
                     selectedChannel: 0
@@ -162,8 +171,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
     render() {
         return (
             <>
-                <div className="container mx-auto max-w-screen-xl pt-10 flex flex-col space-y-5">
-                    
+                <div className="container mx-auto max-w-screen-xl py-10 flex flex-col space-y-5">
                     {/* header content */}
                     <section className="flex-1 flex flex-row items-center justify-between py-5">
                         {/* welcome message */}
@@ -328,12 +336,12 @@ export default class Demo extends React.Component<MyProps, MyState> {
                             {/* rooms */}
                             <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
                                 <span className='flex flex-row justify-end space-x-3 pb-5 items-center'>
-                                        <span className="text-white mr-auto">ROOMS  
-                                            <button className="rounded-lg border py-1 px-2 ml-1 border-gray-100 
-                                            shadow-md text-center text-gray-200 text-sm font-bold">
-                                                R
-                                            </button>
-                                        </span>
+                                    <span className="text-white mr-auto">ROOMS  
+                                        <button className="rounded-lg border py-1 px-2 ml-1 border-gray-100 
+                                        shadow-md text-center text-gray-200 text-sm font-bold">
+                                            R
+                                        </button>
+                                    </span>
                                     
                                     {/* tab pane */}
                                     <span className='flex flex-row space-x-5 uppercase mr-5'>
@@ -403,17 +411,17 @@ export default class Demo extends React.Component<MyProps, MyState> {
 
                                             <button className='ml-auto text-sm text-orange-500 font-semibold py-1 px-4 bg-gray-200 rounded'>👋 Leave</button>
 
-                                            <BsThreeDots className='text-gray-400 ml-2 hover:cursor-pointer' />                                        </span>
+                                            <BsThreeDots className='text-white ml-2 hover:cursor-pointer' />                                        </span>
                                         </span>
 
                                     {/* scheduled room - design meeting */}
-                                    <span className='flex flex-col bg-white bg-opacity-80 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip'>
+                                    <span className='flex flex-col bg-gray-300 bg-opacity-25 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip'>
                                         {/* header */}
                                         <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
                                             {/* meeting details */}
                                             <span className='flex flex-col items-baseline max-w-xs pr-20'>
-                                                <span className='text-gray-500 mr-auto'>Shopping Cart Experience</span>
-                                                <span className='text-xs text-gray-400 overflow-wrap'>lets finish the mockups @josh, @mark, and @arjun please step in for feedback</span>                                                    
+                                                <span className='text-white mr-auto'>Shopping Cart Experience</span>
+                                                <span className='text-xs text-gray-200 overflow-wrap'>lets finish the mockups @josh, @mark, and @arjun please step in for feedback</span>                                                    
                                                 
                                                 {/* badges and tags */}
                                                 <span className='flex flex-row flex-wrap space-x-2'>
@@ -436,7 +444,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                                     <span>scheduled</span>
                                                 </span>
 
-                                                <span className='text-gray-400 text-xs text-center'>sometime this afternoon?</span>
+                                                <span className='text-gray-200 text-xs text-center'>sometime this afternoon?</span>
                                             </span>
                                         </span>
 
@@ -449,23 +457,24 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                                 </span>
                                             </span>
 
-                                            <span className='text-xs text-gray-400'>Adriana</span>
+                                            <span className='text-xs text-white'>Adriana</span>
 
-                                            <button className='ml-auto text-sm bg-transparent hover:bg-green-500 text-green-500 font-semibold hover:text-white py-1 px-4 border border-green-500 hover:border-transparent rounded'>
+                                            <button className='ml-auto text-sm font-semibold py-1 px-4 rounded bg-gray-300 text-green-500'>
                                                 Join
                                             </button>
 
-                                            <BsThreeDots className='text-gray-400 ml-2 hover:cursor-pointer' />                                        </span>
+                                            <BsThreeDots className='text-white ml-2 hover:cursor-pointer' />                                        
                                         </span>
+                                    </span>
                                     
                                     {/* scheduled room - one on one */}
-                                    <span className='flex flex-col bg-white bg-opacity-80 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip'>
+                                    <span className='flex flex-col bg-gray-300 bg-opacity-25 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip'>
                                         {/* header */}
                                         <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
                                             {/* meeting details */}
                                             <span className='flex flex-col items-baseline max-w-xs pr-20'>
-                                                <span className='text-gray-500 mr-auto'>Arjun and Paul - One on one</span>
-                                                <span className='text-xs text-gray-400 overflow-wrap'>performance review</span>                                                    
+                                                <span className='text-white mr-auto'>Arjun and Paul - One on one</span>
+                                                <span className='text-xs text-gray-200 overflow-wrap'>performance review</span>                                                    
                                                 
                                                 {/* badges and tags */}
                                                 <span className='flex flex-row flex-wrap space-x-2'>
@@ -482,29 +491,29 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                                     <span>scheduled</span>
                                                 </span>
 
-                                                <span className='text-gray-400 text-xs text-center'>3ish? Ill ping you Arjun</span>
+                                                <span className='text-gray-200 text-xs text-center'>3ish? Ill ping you Arjun</span>
                                             </span>
                                         </span>
 
                                         {/* footer */}
                                         <span className='flex flex-row items-center bg-gray-400 bg-opacity-30 p-3'>
-                                            <button className='ml-auto text-sm bg-transparent hover:bg-green-500 text-green-500 font-semibold hover:text-white py-1 px-4 border border-green-500 hover:border-transparent rounded'>
+                                            <button className='ml-auto text-sm font-semibold py-1 px-4 rounded bg-gray-300 text-green-500'>
                                                 Join
                                             </button>
 
-                                            <BsThreeDots className='text-gray-400 ml-2 hover:cursor-pointer' />                                        </span>
+                                            <BsThreeDots className='text-white ml-2 hover:cursor-pointer' />                                        </span>
                                         </span>
 
                                     {/* recurring room - dsu */}
-                                    <span className='flex flex-col bg-white bg-opacity-80 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip'>
+                                    <span className='flex flex-col bg-gray-300 bg-opacity-25 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip'>
                                         {/* header */}
                                         <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
                                             {/* meeting details */}
                                             <span className='flex flex-col items-baseline max-w-xs pr-20'>
-                                                <span className='text-gray-500 mr-auto'>
+                                                <span className='text-white mr-auto'>
                                                     Daily Standup
                                                 </span>
-                                                <span className='text-xs text-gray-400 overflow-wrap'></span>                                                    
+                                                <span className='text-xs text-gray-200 overflow-wrap'></span>                                                    
                                                 
                                                 {/* badges and tags */}
                                                 <span className='flex flex-row flex-wrap space-x-2'>
@@ -525,32 +534,32 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                                     <span>recurring</span>
                                                 </span>
 
-                                                <span className='text-gray-400 text-xs'>10am daily</span>
+                                                <span className='text-gray-200 text-xs'>10am daily</span>
                                             </span>
                                         </span>
 
                                         {/* footer */}
                                         <span className='flex flex-row items-center bg-gray-400 bg-opacity-30 p-3'>
 
-                                            <button className='ml-auto text-sm bg-transparent hover:bg-green-500 text-green-500 font-semibold hover:text-white py-1 px-4 border border-green-500 hover:border-transparent rounded'>
+                                            <button className='ml-auto text-sm font-semibold py-1 px-4 rounded bg-gray-300 text-green-500'>
                                                 Join
                                             </button>
 
                                             <FaBell className='ml-2 text-orange-500'/>
 
-                                            <BsThreeDots className='text-gray-400 ml-2 hover:cursor-pointer' />                                        </span>
+                                            <BsThreeDots className='text-white ml-2 hover:cursor-pointer' />                                        </span>
                                         </span>
 
                                     {/* recurring  room - demo */}
-                                    <span className='flex flex-col bg-white bg-opacity-80 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip'>
+                                    <span className='flex flex-col bg-gray-300 bg-opacity-25 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip'>
                                         {/* header */}
                                         <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
                                             {/* meeting details */}
                                             <span className='flex flex-col items-baseline max-w-xs pr-20'>
-                                                <span className='text-gray-500 mr-auto'>
+                                                <span className='text-white mr-auto'>
                                                     Sprint Demo
                                                 </span>
-                                                <span className='text-xs text-gray-400 overflow-wrap'>all hands on deck...lets have fun :)</span>                                                    
+                                                <span className='text-xs text-gray-200 overflow-wrap'>all hands on deck...lets have fun :)</span>                                                    
                                                 
                                                 {/* badges and tags */}
                                                 <span className='flex flex-row flex-wrap space-x-2'>
@@ -567,31 +576,32 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                                     <span>recurring</span>
                                                 </span>
 
-                                                <span className='text-gray-400 text-xs text-center'>biweekly fridays!</span>
+                                                <span className='text-gray-200 text-xs text-center'>biweekly fridays!</span>
                                             </span>
                                         </span>
 
                                         {/* footer */}
                                         <span className='flex flex-row items-center bg-gray-400 bg-opacity-30 p-3'>
 
-                                            <button className='ml-auto text-sm bg-transparent hover:bg-green-500 text-green-500 font-semibold hover:text-white py-1 px-4 border border-green-500 hover:border-transparent rounded'>
+                                        <button className='ml-auto text-sm font-semibold py-1 px-4 rounded bg-gray-300 text-green-500'>
                                                 Join
                                             </button>
 
                                             <FaBell className='ml-2 text-orange-500'/>
 
-                                            <BsThreeDots className='text-gray-400 ml-2 hover:cursor-pointer' />                                        </span>
+                                            <BsThreeDots className='text-white ml-2 hover:cursor-pointer' />                                        </span>
                                         </span>
 
-                                    <span className='flex flex-col bg-white bg-opacity-80 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip'>
+                                    {/* recurring room - wine wednesdays */}
+                                    <span className='flex flex-col bg-gray-300 bg-opacity-25 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip'>
                                         {/* header */}
                                         <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
                                             {/* meeting details */}
                                             <span className='flex flex-col items-baseline max-w-xs pr-20'>
-                                                <span className='text-gray-500 mr-auto'>
+                                                <span className='text-white mr-auto'>
                                                     Wine Wednesdays
                                                 </span>
-                                                <span className='text-xs text-gray-400 overflow-wrap'>all hands on deck...lets have fun :)</span>                                                    
+                                                <span className='text-xs text-gray-200 overflow-wrap'>@JOSH YOU BETTER COME</span>                                                    
                                                 
                                                 {/* badges and tags */}
                                                 <span className='flex flex-row flex-wrap space-x-2'>
@@ -608,20 +618,20 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                                     <span>recurring</span>
                                                 </span>
 
-                                                <span className='text-gray-400 text-xs text-center'>wednesdays 7-9pm</span>
+                                                <span className='text-gray-200 text-xs text-center'>wednesdays 7-9pm</span>
                                             </span>
                                         </span>
 
                                         {/* footer */}
                                         <span className='flex flex-row items-center bg-gray-400 bg-opacity-30 p-3'>
 
-                                            <button className='ml-auto text-sm bg-transparent hover:bg-green-500 text-green-500 font-semibold hover:text-white py-1 px-4 border border-green-500 hover:border-transparent rounded'>
+                                            <button className='ml-auto text-sm font-semibold py-1 px-4 rounded bg-gray-300 text-green-500'>
                                                 Join
                                             </button>
 
                                             <FaBell className='ml-2 text-orange-500'/>
 
-                                            <BsThreeDots className='text-gray-400 ml-2 hover:cursor-pointer' />                                        
+                                            <BsThreeDots className='text-white ml-2 hover:cursor-pointer' />                                        
                                         </span>
                                     </span>
                                 </span>
@@ -631,31 +641,77 @@ export default class Demo extends React.Component<MyProps, MyState> {
 
                     {/* attachments */}
                     <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
-                        <span className='flex flex-row justify-end space-x-2 pb-5 items-center'>
-                            <span className="text-white mr-auto uppercase">Attachments  
+                        {/* header row */}
+                        <span className='flex flex-row justify-start pb-5 items-center'>
+                            <span className="text-white uppercase">Attachments  
                                 <button className="rounded-lg border py-1 px-2 ml-1 border-gray-100 
                                 shadow-md text-center text-gray-200 text-sm font-bold">
                                     T
                                 </button>
                             </span>
+
+                            <button className='ml-auto bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40'>
+                                <FaCode className='text-lg text-white' />
+                            </button>
+
+                            <button className='bg-gray-300 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40'>
+                                <FaLink className='text-lg text-white' />
+                            </button>
+
+                            <BsThreeDots className='text-xl text-white ml-2' />
                         </span>
                         
+                        {/* row of attachments */}
+                        <div className='flex flex-row flex-wrap'>
+                            {/* pdf example */}
+                            <span className='flex flex-col rounded-lg'>
+                                {/* attmnt header */}
+                                <span className='flex flex-row bg-gray-300 bg-opacity-25 py-5 px-3 items-center justify-start'>
+                                    <FaFilePdf className='text-4xl text-orange-300 mr-1' />
 
-                        <div className='flex flex-row'>
-                            <div className='flex flex-row bg-gray-300 bg-opacity-25 py-5 px-3 rounded-lg items-center justify-start'>
-                                <FaFilePdf className='text-4xl text-orange-300' />
+                                    <span className='flex flex-col items-baseline mr-10 space-y-1'>
+                                        <span className='text-sm font-bold text-white'>report.pdf</span>
+                                        
+                                        <span className='text-xs text-white bg-red-400 p-1 rounded-md font-semibold flex flex-row items-center'>                                                       
+                                            <span>blockers</span>
+                                        </span>
+                                    </span>
 
-                                <span className="text-gray-200 text-sm mr-10">report.pdf</span>
+                                    {/* attachment actions */}
+                                    <button className='bg-gray-300 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40'>
+                                        <FaCopy className='text-sm text-white' />
+                                    </button>
+                                    <button className='bg-gray-300 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40'>
+                                        <FaExternalLinkAlt className='text-sm text-white' />
+                                    </button>
 
-                                <button className='ml-auto p-2 text-sm'>
-                                    <FaCopy className='text-gray-200'/>
-                                </button>
-                            </div>                            
+                                    <button className='bg-orange-300 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40'>
+                                        <FaArchive className='text-sm text-orange-500 ' />
+                                    </button>
+                                </span>
+
+                                {/* attmnt footer */}
+                                <span className='flex flex-row items-center bg-gray-400 bg-opacity-30 p-3'>
+                                    <span className="inline-flex flex-row-reverse items-center shrink-0 mr-1">
+                                        <span className='relative flex'>
+                                            <span className="bg-gray-200 rounded-full shadow-md absolute w-full h-full"></span>
+                                            <Image className="" src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-06.svg"} alt="profile" width={30} height={30} />
+                                        </span>
+                                    </span>
+
+                                    <span className='flex flex-col items-baseline'>
+                                        <span className='text-xs text-gray-200 font-bold'>Adriana</span>
+                                        <span className='text-xs text-gray-200 font-extralight'>5 minutes ago</span>
+                                    </span>
+
+                                    <BsThreeDots className='text-white ml-auto hover:cursor-pointer' />                                        
+                                </span>
+                            </span>
                         </div>
                     </section>
                 </div>
                 
-                <div className='fixed bottom-10 w-full'>                            
+                <div className='fixed bottom-10 w-full -z-10'>                            
                     {/* dynamic footer based on selection */}
                     <section className={"flex flex-row bg-gray-300 max-w-screen-md mx-auto p-5 shadow-xl rounded-xl justify-between ease-in-out duration-300 scale-0" + (this.state.selectedChannel != null ? "scale-100" : " ")}>
                         <span className='flex flex-row'>
