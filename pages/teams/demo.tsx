@@ -521,6 +521,48 @@ export default class Demo extends React.Component<MyProps, MyState> {
 
                                             <BsThreeDots className='text-gray-400 ml-2 hover:cursor-pointer' />                                        </span>
                                         </span>
+
+                                    <span className='flex flex-col bg-white bg-opacity-80 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip'>
+                                        {/* header */}
+                                        <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
+                                            {/* meeting details */}
+                                            <span className='flex flex-col items-baseline max-w-xs pr-20'>
+                                                <span className='text-gray-500 mr-auto'>
+                                                    Wine Wednesdays
+                                                </span>
+                                                <span className='text-xs text-gray-400 overflow-wrap'>all hands on deck...lets have fun :)</span>                                                    
+                                                
+                                                {/* badges and tags */}
+                                                <span className='flex flex-row flex-wrap space-x-2'>
+                                                    <span className='text-xs my-3 text-white bg-lime-400 p-1 rounded-md font-bold flex flex-row space-x-2 items-center'>                                                       
+                                                        <span>party 🎉</span>
+                                                    </span>
+                                                </span>
+                                            </span>
+
+                                            {/* room status */}
+                                            <span className='flex flex-col items-center justify-start'>
+                                                <span className='text-yellow-700 bg-yellow-200 p-1 rounded-md text-xs font-bold flex flex-row items-center space-x-1'>
+                                                    <IoTimer />
+                                                    <span>recurring</span>
+                                                </span>
+
+                                                <span className='text-gray-400 text-xs text-center'>wednesdays 7-9pm</span>
+                                            </span>
+                                        </span>
+
+                                        {/* footer */}
+                                        <span className='flex flex-row items-center bg-gray-400 bg-opacity-30 p-3'>
+
+                                            <button className='ml-auto text-sm bg-transparent hover:bg-green-500 text-green-500 font-semibold hover:text-white py-1 px-4 border border-green-500 hover:border-transparent rounded'>
+                                                Join
+                                            </button>
+
+                                            <FaBell className='ml-2 text-orange-500'/>
+
+                                            <BsThreeDots className='text-gray-400 ml-2 hover:cursor-pointer' />                                        
+                                        </span>
+                                    </span>
                                 </span>
                             </section>
                         </div>
