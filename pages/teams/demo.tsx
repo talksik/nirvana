@@ -215,7 +215,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                             {
                                 testFriends.map((friend, i) => {
                                     return (
-                                        <span key={i} className={"flex flex-row items-center py-2 px-2 justify-items-start ease-in-out duration-300 " + (this.state.selectedChannel == i ? "bg-gray-300 scale-105 shadow-2xl" : " ")}>
+                                        <span key={i} className={"flex flex-row items-center py-2 px-2 justify-items-start ease-in-out duration-300 " + (this.state.selectedChannel == i ? "bg-white bg-opacity-80 scale-105 shadow-2xl" : " ")}>
                                             <span className='relative flex mr-2'>
                                                 <span className="bg-gray-200 bg-opacity-30 rounded-full shadow-md absolute w-full h-full"></span>
                                                 
@@ -373,13 +373,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                                 <span className='text-xs text-gray-400 overflow-wrap'>were just fixing that jsx bug thats a paiiinnnn</span>                                                    
                                                 
                                                 {/* badges and tags */}
-                                                <span className='flex flex-row flex-wrap'>
-                                                    <span className='text-xs bg-gray-400 
-                                                    text-white p-1 rounded-md flex flex-row space-x-2 items-center m-1'>
-                                                        <FaClock /> 
-                                                        <span>00:35</span>
-                                                    </span>
-
+                                                <span className='flex flex-row flex-wrap'>                                                    
                                                     <span className='text-xs m-1 text-white bg-red-400 p-1 rounded-md font-bold flex flex-row items-center'>                                                       
                                                         <span>blockers</span>
                                                     </span>
@@ -391,7 +385,16 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                             </span>
 
                                             {/* room status */}
-                                            <span className='text-red-700 bg-red-200 p-1 rounded-md text-xs font-bold'>spontaneous</span>
+                                            <span className='flex flex-col items-end space-y-1'>
+                                                <span className='text-xs bg-red-500
+                                                text-white font-bold p-1 rounded-md flex flex-row space-x-2 items-center'>
+                                                    <FaClock /> 
+                                                    <span>00:35</span>
+                                                </span>
+
+                                                <span className='text-red-700 bg-red-200 p-1 rounded-md text-xs font-bold'>spontaneous</span>                                                
+                                            </span>
+                                                
                                         </span>
 
                                         {/* footer */}
@@ -425,12 +428,6 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                                 
                                                 {/* badges and tags */}
                                                 <span className='flex flex-row flex-wrap space-x-2'>
-                                                    <span className='text-xs my-3 bg-gray-400 
-                                                    text-white p-1 rounded-md flex flex-row space-x-2 items-center'>
-                                                        <FaClock /> 
-                                                        <span>00:01</span>
-                                                    </span>
-
                                                     <span className='text-xs my-3 text-white bg-purple-400 p-1 rounded-md font-bold flex flex-row space-x-2 items-center'>                                                       
                                                         <span>design</span>
                                                     </span>
@@ -438,13 +435,17 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                             </span>
 
                                             {/* room status */}
-                                            <span className='flex flex-col items-center justify-start'>
+                                            <span className='flex flex-col items-end space-y-1'>
+                                                <span className='text-xs bg-red-500
+                                                text-white font-bold p-1 rounded-md flex flex-row space-x-2 items-center'>
+                                                    <FaClock /> 
+                                                    <span>00:35</span>
+                                                </span>
+
                                                 <span className='text-blue-700 bg-blue-200 p-1 rounded-md text-xs font-bold flex flex-row items-center space-x-1'>
                                                     <FaClock />
                                                     <span>scheduled</span>
                                                 </span>
-
-                                                <span className='text-gray-200 text-xs text-center'>sometime this afternoon?</span>
                                             </span>
                                         </span>
 
@@ -485,7 +486,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                             </span>
 
                                             {/* room status */}
-                                            <span className='flex flex-col items-center justify-start'>
+                                            <span className='flex flex-col items-end'>
                                                 <span className='text-blue-700 bg-blue-200 p-1 rounded-md text-xs font-bold flex flex-row items-center space-x-1'>
                                                     <FaClock />
                                                     <span>scheduled</span>
