@@ -229,12 +229,16 @@ export default class Demo extends React.Component<MyProps, MyState> {
                         </section>
 												
                         <div className='flex-1 flex flex-col space-y-5 items-baseline'>
-                            {/* announcements */}
+                            {/* pinned */}
                             <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
-                                <span className='flex flex-row justify-end space-x-2 pb-5'>
-                                    <span className="text-white mr-auto">ANNOUNCEMENTS</span>
+                                <span className='flex flex-row justify-start pb-5'>
+                                    <span className='flex flex-col'>
+                                        <span className="text-white mr-auto">ANNOUNCEMENTS</span>
+                                        <span className='text-gray-300 text-xs'>updates, pep talks, blockers, reminders</span>
+                                    </span>
+                                    
 
-                                    <span className='text-sm text-gray-300 flex flex-row items-center'>
+                                    <span className='ml-auto text-sm text-gray-300 flex flex-row items-center'>
                                         TODAY <FaAngleDown />
                                     </span>
                                 </span>
@@ -287,25 +291,29 @@ export default class Demo extends React.Component<MyProps, MyState> {
                 
                                 {/* all rooms */}
                                 <span className='flex flex-row flex-wrap'>
-                                    {/* spontaneous room */}
+                                    {/* spontaneous bugs room */}
                                     <span className='flex flex-col bg-white bg-opacity-80 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip'>
                                         {/* header */}
                                         <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
                                             {/* meeting details */}
                                             <span className='flex flex-col items-baseline max-w-xs pr-10'>
                                                 <span className='text-gray-500 mr-auto'>bug fixing</span>
-                                                <span className='text-xs text-gray-400 overflow-wrap'>were just fixing that jsx bug that's a paiiinnnn</span>                                                    
+                                                <span className='text-xs text-gray-400 overflow-wrap'>were just fixing that jsx bug thats a paiiinnnn</span>                                                    
                                                 
                                                 {/* badges and tags */}
-                                                <span className='flex flex-row flex-wrap space-x-2'>
-                                                    <span className='text-xs my-3 bg-gray-400 
-                                                    text-white p-1 rounded-md flex flex-row space-x-2 items-center'>
+                                                <span className='flex flex-row flex-wrap'>
+                                                    <span className='text-xs bg-gray-400 
+                                                    text-white p-1 rounded-md flex flex-row space-x-2 items-center m-1'>
                                                         <FaClock /> 
                                                         <span>00:35</span>
                                                     </span>
 
-                                                    <span className='text-xs my-3 text-white bg-red-400 p-1 rounded-md font-bold flex flex-row space-x-2 items-center'>                                                       
+                                                    <span className='text-xs m-1 text-white bg-red-400 p-1 rounded-md font-bold flex flex-row items-center'>                                                       
                                                         <span>blockers</span>
+                                                    </span>
+
+                                                    <span className='text-xs m-1 text-white bg-indigo-400 p-1 rounded-md font-bold flex flex-row items-center'>                                                       
+                                                        <span>engineering</span>
                                                     </span>
                                                 </span>
                                             </span>
@@ -334,13 +342,13 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                             <BsThreeDots className='text-gray-400 ml-2 hover:cursor-pointer' />                                        </span>
                                         </span>
 
-                                    {/* scheduled room */}
+                                    {/* scheduled room - design meeting */}
                                     <span className='flex flex-col bg-white bg-opacity-80 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip'>
                                         {/* header */}
                                         <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
                                             {/* meeting details */}
                                             <span className='flex flex-col items-baseline max-w-xs pr-20'>
-                                                <span className='text-gray-500 mr-auto'>Design - Shopping Cart Experience</span>
+                                                <span className='text-gray-500 mr-auto'>Shopping Cart Experience</span>
                                                 <span className='text-xs text-gray-400 overflow-wrap'>lets finish the mockups @josh, @mark, and @arjun please step in for feedback</span>                                                    
                                                 
                                                 {/* badges and tags */}
@@ -364,7 +372,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                                     <span>scheduled</span>
                                                 </span>
 
-                                                <span className='text-gray-400 text-xs'>sometime this afternoon?</span>
+                                                <span className='text-gray-400 text-xs text-center'>sometime this afternoon?</span>
                                             </span>
                                         </span>
 
@@ -385,8 +393,45 @@ export default class Demo extends React.Component<MyProps, MyState> {
 
                                             <BsThreeDots className='text-gray-400 ml-2 hover:cursor-pointer' />                                        </span>
                                         </span>
+                                    
+                                    {/* scheduled room - one on one */}
+                                    <span className='flex flex-col bg-white bg-opacity-80 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip'>
+                                        {/* header */}
+                                        <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
+                                            {/* meeting details */}
+                                            <span className='flex flex-col items-baseline max-w-xs pr-20'>
+                                                <span className='text-gray-500 mr-auto'>Arjun and Paul - One on one</span>
+                                                <span className='text-xs text-gray-400 overflow-wrap'>performance review</span>                                                    
+                                                
+                                                {/* badges and tags */}
+                                                <span className='flex flex-row flex-wrap space-x-2'>
+                                                    <span className='text-xs my-3 text-white bg-gray-400 p-1 rounded-md font-bold flex flex-row space-x-2 items-center'>                                                       
+                                                        <span>private</span>
+                                                    </span>
+                                                </span>
+                                            </span>
 
-                                    {/* recurring room */}
+                                            {/* room status */}
+                                            <span className='flex flex-col items-center justify-start'>
+                                                <span className='text-blue-700 bg-blue-200 p-1 rounded-md text-xs font-bold flex flex-row items-center space-x-1'>
+                                                    <FaClock />
+                                                    <span>scheduled</span>
+                                                </span>
+
+                                                <span className='text-gray-400 text-xs text-center'>3ish? Ill ping you Arjun</span>
+                                            </span>
+                                        </span>
+
+                                        {/* footer */}
+                                        <span className='flex flex-row items-center bg-gray-400 bg-opacity-30 p-3'>
+                                            <button className='ml-auto text-sm bg-transparent hover:bg-green-500 text-green-500 font-semibold hover:text-white py-1 px-4 border border-green-500 hover:border-transparent rounded'>
+                                                Join
+                                            </button>
+
+                                            <BsThreeDots className='text-gray-400 ml-2 hover:cursor-pointer' />                                        </span>
+                                        </span>
+
+                                    {/* recurring room - dsu */}
                                     <span className='flex flex-col bg-white bg-opacity-80 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip'>
                                         {/* header */}
                                         <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
@@ -403,7 +448,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                                         <span>scrum</span>
                                                     </span>
 
-                                                    <span className='text-xs my-3 text-white bg-teal-400 p-1 rounded-md font-bold flex flex-row space-x-2 items-center'>                                                       
+                                                    <span className='text-xs my-3 text-white bg-indigo-400 p-1 rounded-md font-bold flex flex-row space-x-2 items-center'>                                                       
                                                         <span>engineering</span>
                                                     </span>
                                                 </span>
@@ -431,15 +476,57 @@ export default class Demo extends React.Component<MyProps, MyState> {
 
                                             <BsThreeDots className='text-gray-400 ml-2 hover:cursor-pointer' />                                        </span>
                                         </span>
+
+                                    {/* recurring  room - demo */}
+                                    <span className='flex flex-col bg-white bg-opacity-80 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip'>
+                                        {/* header */}
+                                        <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
+                                            {/* meeting details */}
+                                            <span className='flex flex-col items-baseline max-w-xs pr-20'>
+                                                <span className='text-gray-500 mr-auto'>
+                                                    Sprint Demo
+                                                </span>
+                                                <span className='text-xs text-gray-400 overflow-wrap'>all hands on deck...lets have fun :)</span>                                                    
+                                                
+                                                {/* badges and tags */}
+                                                <span className='flex flex-row flex-wrap space-x-2'>
+                                                    <span className='text-xs my-3 text-white bg-cyan-400 p-1 rounded-md font-bold flex flex-row space-x-2 items-center'>                                                       
+                                                        <span>scrum</span>
+                                                    </span>
+                                                </span>
+                                            </span>
+
+                                            {/* room status */}
+                                            <span className='flex flex-col items-center justify-start'>
+                                                <span className='text-yellow-700 bg-yellow-200 p-1 rounded-md text-xs font-bold flex flex-row items-center space-x-1'>
+                                                    <IoTimer />
+                                                    <span>recurring</span>
+                                                </span>
+
+                                                <span className='text-gray-400 text-xs text-center'>biweekly fridays!</span>
+                                            </span>
+                                        </span>
+
+                                        {/* footer */}
+                                        <span className='flex flex-row items-center bg-gray-400 bg-opacity-30 p-3'>
+
+                                            <button className='ml-auto text-sm bg-transparent hover:bg-green-500 text-green-500 font-semibold hover:text-white py-1 px-4 border border-green-500 hover:border-transparent rounded'>
+                                                Join
+                                            </button>
+
+                                            <FaBell className='ml-2 text-orange-500'/>
+
+                                            <BsThreeDots className='text-gray-400 ml-2 hover:cursor-pointer' />                                        </span>
+                                        </span>
                                 </span>
                             </section>
                         </div>
                     </div>
 
-                    {/* files */}
+                    {/* attachments */}
                     <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
                         <span className='flex flex-row justify-end space-x-2 pb-5 items-center'>
-                            <span className="text-white mr-auto">FILES</span>
+                            <span className="text-white mr-auto uppercase">Attachments</span>
                         </span>
                         
 
@@ -455,15 +542,9 @@ export default class Demo extends React.Component<MyProps, MyState> {
                             </div>                            
                         </div>
                     </section>
-                    
                 </div>
                 
-                <div className='fixed bottom-10 w-full'>
-                    {/* logo */}
-                    <div className='left-0 -bottom-5 absolute pl-5'>
-                        <p id="main-title">nirvana</p>
-                    </div>
-                            
+                <div className='fixed bottom-10 w-full'>                            
                     {/* dynamic footer based on selection */}
                     <section className={"flex flex-row bg-gray-300 max-w-screen-md mx-auto p-5 shadow-xl rounded-xl justify-between ease-in-out duration-300 scale-0" + (this.state.selectedChannel != null ? "scale-100" : " ")}>
                         <span className='flex flex-row'>
@@ -493,7 +574,6 @@ export default class Demo extends React.Component<MyProps, MyState> {
                         </span>
                     </section>
                 </div>
-                
             </>
             )
     }
