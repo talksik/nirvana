@@ -545,7 +545,9 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                                 Join
                                             </button>
 
-                                            <FaBell className='ml-2 text-orange-500'/>
+                                            <button className='bg-orange-300 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40'>
+                                                <FaBell className='text-sm text-orange-500' />
+                                            </button>
 
                                             <BsThreeDots className='text-white ml-2 hover:cursor-pointer' />                                        </span>
                                         </span>
@@ -587,7 +589,9 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                                 Join
                                             </button>
 
-                                            <FaBell className='ml-2 text-orange-500'/>
+                                            <button className='bg-orange-300 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40'>
+                                                <FaBell className='text-sm text-orange-500' />
+                                            </button>
 
                                             <BsThreeDots className='text-white ml-2 hover:cursor-pointer' />                                        </span>
                                         </span>
@@ -629,7 +633,9 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                                 Join
                                             </button>
 
-                                            <FaBell className='ml-2 text-orange-500'/>
+                                            <button className='bg-orange-300 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40'>
+                                                <FaBell className='text-sm text-orange-500' />
+                                            </button>
 
                                             <BsThreeDots className='text-white ml-2 hover:cursor-pointer' />                                        
                                         </span>
