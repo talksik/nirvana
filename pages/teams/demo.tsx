@@ -16,6 +16,8 @@ import { BsThreeDots } from "react-icons/bs";
 import { UserStatus, User } from '../../models/user'
 import { KeyCode } from '../../globals/keycode'
 
+import { Tabs } from "antd";
+
 let testFriends = [ 
     {
         name: "Liam",
@@ -273,7 +275,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                 
                                 {/* all rooms */}
                                 <span className='flex flex-row flex-wrap'>
-                                    {/* bugs room */}
+                                    {/* spontaneous room */}
                                     <span className='flex flex-col bg-white bg-opacity-80 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip'>
                                         {/* header */}
                                         <span className='flex flex-row justify-between items-baseline space-x-1 p-5'>
@@ -287,7 +289,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                                     <span className='text-xs my-3 bg-gray-400 
                                                     text-white p-1 rounded-md flex flex-row space-x-2 items-center'>
                                                         <FaClock /> 
-                                                        <span>00:12</span>
+                                                        <span>00:35</span>
                                                     </span>
 
                                                     <span className='text-xs my-3 text-white bg-red-400 p-1 rounded-md font-bold flex flex-row space-x-2 items-center'>                                                       
@@ -331,6 +333,12 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                                 
                                                 {/* badges and tags */}
                                                 <span className='flex flex-row flex-wrap space-x-2'>
+                                                    <span className='text-xs my-3 bg-gray-400 
+                                                    text-white p-1 rounded-md flex flex-row space-x-2 items-center'>
+                                                        <FaClock /> 
+                                                        <span>00:01</span>
+                                                    </span>
+
                                                     <span className='text-xs my-3 text-white bg-purple-400 p-1 rounded-md font-bold flex flex-row space-x-2 items-center'>                                                       
                                                         <span>design</span>
                                                     </span>
@@ -353,7 +361,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                             <span className="inline-flex flex-row-reverse items-center shrink-0 mr-1">
                                                 <span className='relative flex'>
                                                     <span className="bg-gray-200 rounded-full shadow-md absolute w-full h-full"></span>
-                                                    <Image className="" src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-05.svg"} alt="profile" width={30} height={30} />
+                                                    <Image className="" src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-06.svg"} alt="profile" width={30} height={30} />
                                                 </span>
                                             </span>
 
@@ -381,6 +389,10 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                                 <span className='flex flex-row flex-wrap space-x-2'>
                                                     <span className='text-xs my-3 text-white bg-cyan-400 p-1 rounded-md font-bold flex flex-row space-x-2 items-center'>                                                       
                                                         <span>scrum</span>
+                                                    </span>
+
+                                                    <span className='text-xs my-3 text-white bg-teal-400 p-1 rounded-md font-bold flex flex-row space-x-2 items-center'>                                                       
+                                                        <span>engineering</span>
                                                     </span>
                                                 </span>
                                             </span>
@@ -414,24 +426,23 @@ export default class Demo extends React.Component<MyProps, MyState> {
 
                     {/* files */}
                     <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
-                            <span className='flex flex-row justify-end space-x-2 pb-5 items-center'>
-                                <span className="text-white mr-auto">FILES</span>
-                            </span>
-                            
+                        <span className='flex flex-row justify-end space-x-2 pb-5 items-center'>
+                            <span className="text-white mr-auto">FILES</span>
+                        </span>
+                        
 
-                            <div className='flex flex-row'>
-                                <div className='flex flex-row bg-gray-300 bg-opacity-25 py-5 px-3 rounded-lg items-center justify-start'>
-                                    <FaFilePdf className='text-4xl text-orange-300' />
+                        <div className='flex flex-row'>
+                            <div className='flex flex-row bg-gray-300 bg-opacity-25 py-5 px-3 rounded-lg items-center justify-start'>
+                                <FaFilePdf className='text-4xl text-orange-300' />
 
-                                    <span className="text-gray-200 text-sm mr-10">report.pdf</span>
+                                <span className="text-gray-200 text-sm mr-10">report.pdf</span>
 
-                                    <button className='ml-auto p-2 text-sm'>
-                                        <FaCopy className='text-gray-200'/>
-                                    </button>
-                                </div>
-                                
-                            </div>
-                        </section>
+                                <button className='ml-auto p-2 text-sm'>
+                                    <FaCopy className='text-gray-200'/>
+                                </button>
+                            </div>                            
+                        </div>
+                    </section>
                     
                 </div>
                 
