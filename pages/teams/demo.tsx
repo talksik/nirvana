@@ -9,7 +9,13 @@ import { FaMicrophoneAlt,
     FaBroom, 
     FaBell, 
     FaFilePdf,
-    FaCopy, FaClock } from "react-icons/fa";
+    FaCopy, 
+    FaClock,
+    FaPlay,
+    FaPlus,
+    FaCheck
+
+} from "react-icons/fa";
 import { IoPulseOutline, IoRemoveOutline, IoTimer } from "react-icons/io5";
 import { BsThreeDots } from "react-icons/bs";
 
@@ -157,6 +163,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
         return (
             <>
                 <div className="container mx-auto max-w-screen-xl pt-10 flex flex-col space-y-5">
+                    
                     {/* header content */}
                     <section className="flex-1 flex flex-row items-center justify-between py-5">
                         {/* welcome message */}
@@ -236,8 +243,8 @@ export default class Demo extends React.Component<MyProps, MyState> {
                         <div className='flex-1 flex flex-col space-y-5 items-baseline'>
                             {/* pinned */}
                             <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
-                                <span className='flex flex-row justify-start pb-5'>
-                                    <span className='flex flex-col'>
+                                <span className='flex flex-row justify-start items-center pb-5'>
+                                    <span className='flex flex-col mr-20'>
                                         <span className="text-white mr-auto">ANNOUNCEMENTS  
                                             <button className="rounded-lg border py-1 px-2 ml-1 border-gray-100 
                                             shadow-md text-center text-gray-200 text-sm font-bold">
@@ -247,19 +254,28 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                         <span className='text-gray-300 text-xs'>updates, pep talks, blockers, reminders</span>
                                     </span>
                                     
+                                    {/* tab pane */}
+                                    <span className='ml-auto flex flex-row space-x-5 uppercase'>
+                                        <span className='underline underline-offset-8 decoration-white text-white hover:text-white hover:cursor-pointer'>Active</span>
 
-                                    <span className='ml-auto text-sm text-gray-300 flex flex-row items-center'>
+                                        <span className='text-gray-300 hover:text-white hover:cursor-pointer'>Resolved</span>
+                                    </span>
+
+                                    <span className='ml-2 text-sm text-gray-300 flex flex-row items-center'>
                                         TODAY <FaAngleDown />
                                     </span>
+
+                                    <button className='bg-gray-300 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40'>
+                                        <FaMicrophoneAlt className='text-lg text-white' />
+                                    </button>
+                                    <button className='bg-gray-300 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40'>
+                                        <FaPlay className='text-lg text-white' />
+                                    </button>
                                 </span>
                 
                                 <div className="flex flex-row overflow-auto whitespace-nowrap space-x-5 items-center">
-                                    <span className='relative mr-2 grid items-center justify-items-center p-4'>
-                                        <span className="bg-white bg-opacity-50 rounded-full shadow-md absolute w-full h-full"></span>
-                                        <FaMicrophoneAlt className='text-xl text-white' />
-                                    </span>
-
-                                    <span className='flex flex-row p-3 bg-white bg-opacity-80 rounded-lg items-center'>
+                                    {/* adriana's announcement */}
+                                    <span className='flex flex-row p-3 bg-gray-300 bg-opacity-25 rounded-lg items-center'>
                                         <span className='relative mr-2 grid items-center justify-items-center'>
                                             <span className="bg-gray-200 bg-opacity-20 rounded-full shadow-md absolute w-full h-full"></span>
                                             
@@ -269,12 +285,35 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                         </span>
 
                                         <span className='flex flex-col items-baseline'>
-                                            <span className='text-xs font-semibold text-gray-500'>Adriana</span>
-                                            <span className='text-xs text-gray-400'>5 minutes ago</span>
-                                            <span className='text-xs text-white bg-red-400 p-1 rounded-md font-bold flex flex-row items-center'>                                                       
+                                            <span className='text-sm font-bold text-white'>Adriana</span>
+                                            <span className='text-xs text-gray-200'>5 minutes ago</span>
+                                            <span className='text-xs text-white bg-red-400 p-1 rounded-md font-semibold flex flex-row items-center'>                                                       
                                                 <span>blockers</span>
                                             </span>
                                         </span>
+                                    </span>
+
+                                    {/* arjun's announcement */}
+                                    <span className='flex flex-row p-3 bg-gray-300 bg-opacity-25 rounded-lg items-center'>
+                                        <span className='relative mr-2 grid items-center justify-items-center'>
+                                            <span className="bg-gray-200 bg-opacity-20 rounded-full shadow-md absolute w-full h-full"></span>
+                                            
+                                            {this.statusBubble(UserStatus.busy)}
+
+                                            <Image src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-22.svg"} alt="profile" width={50} height={50} />
+                                        </span>
+
+                                        <span className='flex flex-col items-baseline mr-5'>
+                                            <span className='text-sm font-bold text-white'>Arjun</span>
+                                            <span className='text-xs text-gray-200'>30 minutes ago</span>
+                                            <span className='text-xs text-white bg-indigo-400 p-1 rounded-md font-semibold flex flex-row items-center'>                                                       
+                                                <span>engineering</span>
+                                            </span>
+                                        </span>
+
+                                        <button className='bg-gray-300 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40'>
+                                            <FaCheck className='text-lg text-white' />
+                                        </button>
                                     </span>
                                 </div>
                             </section>
@@ -289,7 +328,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                             </button>
                                         </span>
                                     
-                                    {/* tab page */}
+                                    {/* tab pane */}
                                     <span className='flex flex-row space-x-5 uppercase'>
                                         <span className='underline underline-offset-8 decoration-white text-white hover:text-white hover:cursor-pointer'>All</span>
 
@@ -300,8 +339,8 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                         <span className='text-gray-300 hover:text-white hover:cursor-pointer'>Recurring</span>
                                     </span>
 
-                                    <button className='p-2 text-sm text-white font-semibold bg-cyan-500 shadow-lg rounded-lg'>
-                                        Create
+                                    <button className='bg-gray-300 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40'>
+                                        <FaPlus className='text-lg text-white' />
                                     </button>
 
                                     <BsThreeDots className='text-xl text-white' />
