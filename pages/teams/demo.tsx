@@ -236,7 +236,11 @@ export default class Demo extends React.Component<MyProps, MyState> {
                             <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
                                 <span className='flex flex-row justify-start pb-5'>
                                     <span className='flex flex-col'>
-                                        <span className="text-white mr-auto">ANNOUNCEMENTS</span>
+                                        <span className="text-white mr-auto">ANNOUNCEMENTS  
+                                            <button className="rounded-lg border py-1 px-2 ml-1 border-gray-100 shadow-md text-center text-gray-200 text-sm">
+                                                A
+                                            </button>
+                                        </span>
                                         <span className='text-gray-300 text-xs'>updates, pep talks, blockers, reminders</span>
                                     </span>
                                     
@@ -246,24 +250,29 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                     </span>
                                 </span>
                 
-                                <div className="flex flex-row overflow-auto whitespace-nowrap space-x-5">
-                                            <span className='relative mr-2 grid items-center justify-items-center p-4'>
-                                                <span className="bg-white bg-opacity-50 rounded-full shadow-md absolute w-full h-full"></span>
-                                                <FaMicrophoneAlt className='text-xl text-white' />
-                                            </span>
-                                    {
-                                         testFriends.map((friend, i) => {
-                                            return (
-                                            <span key={i} className='relative mr-2 grid items-center justify-items-center'>
-                                                <span className="bg-gray-200 bg-opacity-30 rounded-full shadow-md absolute w-full h-full"></span>
-                                                
-                                                {this.statusBubble(friend.status)}
+                                <div className="flex flex-row overflow-auto whitespace-nowrap space-x-5 items-center">
+                                    <span className='relative mr-2 grid items-center justify-items-center p-4'>
+                                        <span className="bg-white bg-opacity-50 rounded-full shadow-md absolute w-full h-full"></span>
+                                        <FaMicrophoneAlt className='text-xl text-white' />
+                                    </span>
 
-                                                <Image src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-" + (friend.systemAvatar) + ".svg"} alt="profile" width={50} height={50} />
+                                    <span className='flex flex-row p-3 bg-white bg-opacity-80 rounded-lg items-center'>
+                                        <span className='relative mr-2 grid items-center justify-items-center'>
+                                            <span className="bg-gray-200 bg-opacity-20 rounded-full shadow-md absolute w-full h-full"></span>
+                                            
+                                            {this.statusBubble(UserStatus.busy)}
+
+                                            <Image src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-06.svg"} alt="profile" width={50} height={50} />
+                                        </span>
+
+                                        <span className='flex flex-col items-baseline'>
+                                            <span className='text-xs font-semibold text-gray-500'>Adriana</span>
+                                            <span className='text-xs text-gray-400'>5 minutes ago</span>
+                                            <span className='text-xs text-white bg-red-400 p-1 rounded-md font-bold flex flex-row items-center'>                                                       
+                                                <span>blockers</span>
                                             </span>
-                                            )
-                                         })
-                                    }
+                                        </span>
+                                    </span>
                                 </div>
                             </section>
 
@@ -281,8 +290,6 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                         <span className='text-gray-300 hover:text-white hover:cursor-pointer'>Scheduled</span>
 
                                         <span className='text-gray-300 hover:text-white hover:cursor-pointer'>Recurring</span>
-
-
                                     </span>
 
                                     <button className='p-2 text-sm text-white font-semibold bg-cyan-500 shadow-lg rounded-lg'>
