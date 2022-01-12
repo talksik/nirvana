@@ -375,6 +375,10 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                         <span className='text-gray-300 hover:text-white hover:cursor-pointer'>Recurring</span>
                                     </span>
 
+                                    <span className='text-sm text-gray-300 flex flex-row items-center uppercase'>
+                                        Week <FaAngleDown />
+                                    </span>
+
                                     <button className='bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40'>
                                         <FaPlus className='text-lg text-white' />
                                     </button>
