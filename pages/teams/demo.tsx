@@ -74,20 +74,14 @@ function getUser(name: string) : User {
     return new User()
 }
 
-type MyProps = {  };
 type MyState = {
     selectedChannel?: number
 };
 
 
-export default class Demo extends React.Component<MyProps, MyState> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            selectedChannel: null
-        }
-
-        this.handleKeyboardShortcut = this.handleKeyboardShortcut.bind(this);
+export default class Demo extends React.Component<{ }, MyState> {
+    state: MyState = {
+        selectedChannel: null
     }
 
     componentDidMount(): void {
@@ -126,7 +120,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
         }
     }
 
-    handleKeyboardShortcut(event) {    
+    handleKeyboardShortcut = (event) => {    
         console.log(event.keyCode)
 
         switch(event.keyCode) {
