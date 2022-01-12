@@ -160,9 +160,12 @@ export default class Demo extends React.Component<MyProps, MyState> {
                     {/* header content */}
                     <section className="flex-1 flex flex-row items-center justify-between py-5">
                         {/* welcome message */}
-                        <span className='flex flex-col'>
+                        <span className='flex flex-col items-baseline'>
                             <span className="font-bold text-xl text-white">👋Hey Arjun, Good Afternoon!</span>
                             <span className="text-md text-gray-300">you collabed <span className="text-green-500">1.5 hours</span> and worked <span className="text-orange-500">2 hours</span> yesterday</span>
+
+                            {/* Date and time */}
+                            <span className='text-sky-700 bg-sky-200 p-1 rounded-md text-xs font-bold mt-2'>Tues, Jan 11th</span>
                         </span>
                         
                         {/* avatar */}
