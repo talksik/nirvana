@@ -208,13 +208,15 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                                     {
                                                         this.state.selectedChannel == i ? 
                                                         <>
-                                                            <button className="rounded-lg bg-gray-400 shadow-lg text-center text-white text-sm py-1 px-2 ">
+                                                            <button className="rounded-lg bg-gray-400 shadow-lg text-center 
+                                                            text-white text-sm py-1 px-2 font-bold">
                                                                 {i}
                                                             </button>
                                                         </>
                                                         
                                                         :
-                                                        <button className="rounded-lg border py-1 px-2 border-gray-100 shadow-md text-center text-gray-200 text-sm">
+                                                        <button className="rounded-lg border py-1 px-2 border-gray-100 shadow-md 
+                                                        text-center text-gray-200 text-smf font-bold">
                                                             {i}
                                                         </button>
                                                     }
@@ -237,7 +239,8 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                 <span className='flex flex-row justify-start pb-5'>
                                     <span className='flex flex-col'>
                                         <span className="text-white mr-auto">ANNOUNCEMENTS  
-                                            <button className="rounded-lg border py-1 px-2 ml-1 border-gray-100 shadow-md text-center text-gray-200 text-sm">
+                                            <button className="rounded-lg border py-1 px-2 ml-1 border-gray-100 
+                                            shadow-md text-center text-gray-200 text-sm font-bold">
                                                 A
                                             </button>
                                         </span>
@@ -279,7 +282,12 @@ export default class Demo extends React.Component<MyProps, MyState> {
                             {/* rooms */}
                             <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
                                 <span className='flex flex-row justify-end space-x-3 pb-5 items-center'>
-                                    <span className="text-white mr-auto">ROOMS</span>
+                                        <span className="text-white mr-auto">ROOMS  
+                                            <button className="rounded-lg border py-1 px-2 ml-1 border-gray-100 
+                                            shadow-md text-center text-gray-200 text-sm font-bold">
+                                                R
+                                            </button>
+                                        </span>
                                     
                                     {/* tab page */}
                                     <span className='flex flex-row space-x-5 uppercase'>
@@ -578,7 +586,12 @@ export default class Demo extends React.Component<MyProps, MyState> {
                     {/* attachments */}
                     <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
                         <span className='flex flex-row justify-end space-x-2 pb-5 items-center'>
-                            <span className="text-white mr-auto uppercase">Attachments</span>
+                            <span className="text-white mr-auto uppercase">Attachments  
+                                <button className="rounded-lg border py-1 px-2 ml-1 border-gray-100 
+                                shadow-md text-center text-gray-200 text-sm font-bold">
+                                    T
+                                </button>
+                            </span>
                         </span>
                         
 
