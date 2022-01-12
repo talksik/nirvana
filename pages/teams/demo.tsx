@@ -18,7 +18,8 @@ import { FaMicrophoneAlt,
     FaLink,
     FaExternalLinkAlt,
     FaArchive,
-    FaAtlassian
+    FaAtlassian,
+    FaSearch
 
 } from "react-icons/fa";
 import { IoPulseOutline, IoRemoveOutline, IoTimer } from "react-icons/io5";
@@ -186,12 +187,29 @@ export default class Demo extends React.Component<MyProps, MyState> {
                         
                         {/* avatar */}
                         <span className="flex flex-row items-center space-x-5">
+                            {/* search bar */}
+                            <div className="pt-2 flex flex-row relative items-center">
+                                <button type="submit" className="absolute left-0 top-0 mt-5 ml-5">
+                                    <FaSearch className='text-white' />
+                                </button>
+
+                                <input className=" bg-white bg-opacity-40 h-10 px-5 pl-10 pr-16 rounded-lg text-white text-sm focus:outline-none"
+                                type="search" name="search" placeholder="Search" />
+
+                                <button className="absolute right-1 rounded-lg py-1 px-2 ml-1 
+                                            shadow-md text-center text-white text-sm font-bold">
+                                    CTRL + K
+                                </button>
+                            </div>
+
                             <FaBell className='text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer' />
                             <FaHeadphonesAlt className='text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer' />
                             <FaMicrophoneAlt className='text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer' />
                             <FaTh className='text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer' />
+                            
+                            {/* avatar */}
                             <span className='relative flex'>
-                                <span className="bg-gray-200 rounded-full shadow-md absolute w-full h-full"></span>
+                                <span className="bg-gray-200 bg-opacity-30 rounded-full shadow-md absolute w-full h-full"></span>
                                 <span className="absolute top-0 right-0 w-3 h-3 bg-green-400 rounded-full"></span>
                                 <Image src="/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-22.svg" alt="profile" width={50} height={50} />
                             </span>
@@ -262,10 +280,10 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                 <span className='flex flex-row justify-start items-center pb-5'>
                                     <span className='flex flex-col mr-20'>
                                         <span className="text-white mr-auto">ANNOUNCEMENTS  
-                                            <button className="rounded-lg border py-1 px-2 ml-1 border-gray-100 
-                                            shadow-md text-center text-gray-200 text-sm font-bold">
-                                                A
-                                            </button>
+                                        <button className="right-1 rounded-lg py-1 px-2 ml-1 
+                                            shadow-md text-center text-white text-sm font-bold">
+                                            CTRL + A
+                                        </button>
                                         </span>
                                         <span className='text-gray-300 text-xs'>updates, pep talks, blockers, reminders</span>
                                     </span>
@@ -338,9 +356,9 @@ export default class Demo extends React.Component<MyProps, MyState> {
                             <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
                                 <span className='flex flex-row justify-end space-x-3 pb-5 items-center'>
                                     <span className="text-white mr-auto">ROOMS  
-                                        <button className="rounded-lg border py-1 px-2 ml-1 border-gray-100 
-                                        shadow-md text-center text-gray-200 text-sm font-bold">
-                                            R
+                                        <button className="right-1 rounded-lg py-1 px-2 ml-1 
+                                            shadow-md text-center text-white text-sm font-bold">
+                                            CTRL + R
                                         </button>
                                     </span>
                                     
