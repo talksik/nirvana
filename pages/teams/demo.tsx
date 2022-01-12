@@ -659,7 +659,18 @@ export default class Demo extends React.Component<MyProps, MyState> {
                                 <span className='text-gray-300 text-xs'>code, links (jira tickets, drive folders, powerpoints), screenshots</span>
                             </span>
 
-                            <button className='ml-auto bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40'>
+                            {/* tab pane */}
+                            <span className='ml-auto flex flex-row space-x-5 uppercase mr-5'>
+                                <span className='underline underline-offset-8 decoration-white text-white hover:text-white hover:cursor-pointer'>Team</span>
+
+                                <span className='text-gray-300 hover:text-white hover:cursor-pointer'>Personal</span>
+                            </span>
+
+                            <span className='text-sm mr-5 text-gray-300 flex flex-row items-center'>
+                                TODAY <FaAngleDown />
+                            </span>
+
+                            <button className='bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40'>
                                 <FaCode className='text-lg text-white' />
                             </button>
 
@@ -735,7 +746,7 @@ export default class Demo extends React.Component<MyProps, MyState> {
                             <span className='flex flex-col'>
                                 <span className="text-sm text-black font-bold">{this.state.selectedChannel == null ? "" : testFriends[this.state.selectedChannel].name} </span>
         
-                                <span className={"text-xs text-gray-300 text-black"}>{this.state.selectedChannel == null ? "" : testFriends[this.state.selectedChannel].role}</span>
+                                <span className={"text-xs text-gray-300"}>{this.state.selectedChannel == null ? "" : testFriends[this.state.selectedChannel].role}</span>
                             </span> 
                         </span>
 
