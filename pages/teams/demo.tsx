@@ -16,7 +16,8 @@ import { BsThreeDots } from "react-icons/bs";
 import { UserStatus, User } from '../../models/user'
 import { KeyCode } from '../../globals/keycode'
 
-import { Tabs } from "antd";
+import { Tabs } from 'antd';
+const { TabPane } = Tabs;
 
 let testFriends = [ 
     {
@@ -261,14 +262,71 @@ export default class Demo extends React.Component<MyProps, MyState> {
 
                             {/* rooms */}
                             <section className='p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md'> 
-                                <span className='flex flex-row justify-end space-x-2 pb-5 items-center'>
+                                <span className='flex flex-row justify-end space-x-3 pb-5 items-center'>
                                     <span className="text-white mr-auto">ROOMS</span>
 
-                                    <FaBroom className='text-xl text-white' />
+                                    <Tabs defaultActiveKey="1" className='text-white'>
+                                        <TabPane
+                                            tab={
+                                                <span>
+                                                All
+                                                </span>
+                                            }
+                                            key="1"
+                                            >
+                                        </TabPane>
+                                        <TabPane
+                                            tab={
+                                                <span>
+                                                Live
+                                                </span>
+                                            }
+                                            className='text-white'
+                                            key="2"
+                                            >
+                                        </TabPane>
+                                        <TabPane
+                                            tab={
+                                                <span>
+                                                Scheduled
+                                                </span>
+                                            }
+                                            className='text-white'
+                                            key="3"
+                                            >
+                                        </TabPane>
+                                        <TabPane
+                                            tab={
+                                                <span>
+                                                Recurring
+                                                </span>
+                                            }
+                                            className='text-white'
+                                            key="4"
+                                            >
+
+                                                tetasedtg
+                                        </TabPane>
+
+                                        <TabPane
+                                            tab={
+                                                <span>
+                                                Archive
+                                                </span>
+                                            }
+                                            className='text-white'
+                                            key="5"
+                                            >
+                                        </TabPane>
+                                    </Tabs>
+
+                                    <span className='text-sm text-gray-300 flex flex-row items-center'>
+                                        TODAY <FaAngleDown />
+                                    </span>
 
                                     <button className='bg-transparent hover:bg-white text-white font-semibold hover:text-black py-1 px-4 border border-white-500 hover:border-transparent rounded'>
-                                            Create
-                                        </button>
+                                        Create
+                                    </button>
 
                                     <BsThreeDots className='text-xl text-white' />
                                 </span>
