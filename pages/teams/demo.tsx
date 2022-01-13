@@ -28,9 +28,6 @@ import { BsThreeDots } from "react-icons/bs";
 import { UserStatus, User } from '../../models/user'
 import { KeyCode } from '../../globals/keycode'
 
-import { Tabs } from 'antd';
-const { TabPane } = Tabs;
-
 let testFriends = [ 
     {
         name: "Liam",
