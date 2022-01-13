@@ -1,6 +1,7 @@
 import '../styles/globals.css'
 import 'antd/dist/antd.css';
 import Head from 'next/head'
+import { AuthProvider } from '../contexts/authContext'
 
 function MyApp({ Component, pageProps }) {
   return <>
@@ -32,7 +33,9 @@ function MyApp({ Component, pageProps }) {
       </Head>
 
       <main>
-        <Component {...pageProps} />
+        <AuthProvider>
+          <Component {...pageProps} />
+        </AuthProvider>
       </main>
   </>
 }

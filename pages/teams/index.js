@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import styles from '/styles/Home.module.css';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -70,6 +71,10 @@ export default function Home() {
         <p id="side-note">
           why? we live in a distracted world. let&apos;s fix it, because less is more. 
         </p>
+
+        <Link exact href='/teams/login' className='text-3xl text-white'>
+          <button className='mt-10 text-sm text-emerald-500 font-semibold py-1 px-4 bg-gray-200 rounded'>👋 Login</button>
+        </Link>
       </main>
     </div>
   );
