@@ -1,6 +1,5 @@
-import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, User } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut, User } from "firebase/auth";
 import React, { useContext, useEffect, useState } from "react";
-import { useRouter } from 'next/router'
 import firebase from '../services/firebase'
 
 const AuthContext = React.createContext(null);
@@ -9,31 +8,29 @@ const googleProvider = new GoogleAuthProvider()
 const auth = getAuth();
 
 export function AuthProvider({ children }) {
-  const [currUser, setCurrUser] = useState(null);
+  const [currUser, setCurrUser] = useState();
   const [loading, setLoading] = useState(true)
-
-  const router = useRouter()
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
-      setLoading(false)
-
-      console.log(user)
+      console.log('change in auth')
 
       // will be null or the firebase logged in user
       setCurrUser(user)
+
+      setLoading(false)
     });
 
     return unsubscribe
   }, [])
 
   const signInGoogle = () => {
-    signInWithPopup(auth, googleProvider).then((res) => {
+    return signInWithPopup(auth, googleProvider).then((res) => {
       // This gives you a Google Access Token. You can use it to access the Google API.
-      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const credential = GoogleAuthProvider.credentialFromResult(res);
       const token = credential.accessToken;
       // The signed-in user info.
-      const user = result.user;
+      const user = res.user;
 
       setCurrUser(user)
 
@@ -47,27 +44,20 @@ export function AuthProvider({ children }) {
       // The AuthCredential type that was used.
       const credential = GoogleAuthProvider.credentialFromError(error);
       console.log(error)
+      throw error
     })
   }
 
-  const signOut = () => {
+  const logOut = () => {
     console.log('logging user out')
-    
-    signOut(auth).then(() => {
-      // Sign-out successful.      
-      console.log("signed out fine, redirecting to proper place")
 
-      router.push('/')
-    }).catch((error) => {
-      // An error happened.
-      console.log(error)
-    });
+    return signOut(auth)
   }
 
   const value = {
     currUser,
     signInGoogle,
-    signOut
+    logOut
   }
 
   return (
