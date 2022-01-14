@@ -13,14 +13,19 @@ import {
   FaBullhorn
 } from "react-icons/fa";
 import BackgroundLayout from "../../components/Layouts/BackgroundLayout"
+import TeamService from "../../services/teamService"
 
 /**
  * figure out where to take the user based on everything
  */
+
+const userService: UserService = new UserService()
+const teamService: TeamService = new TeamService()
+
 function RouteHandler() {
   const { currUser } = useAuth()
   const router = useRouter()
-  const userService: UserService = new UserService()
+  
   const [loading, setLoading] = useState<Boolean>(true)
   const [user, setUser] = useState<User | null>(null)
 
@@ -44,6 +49,12 @@ function RouteHandler() {
         setUser(returnedUser)
         
         // check if user is in a team go to the team dashboard
+        const returnedTeamMembers = await teamService.getTeamMembersByUserId(currUser.uid)
+        if (returnedTeamMembers.length > 0) {
+          console.log('in a team! going to the team dashboard of the first one!')
+          router.push('/teams/' + returnedTeamMembers[0].teamId)
+          return
+        }
 
       } catch(error) {
         console.log(error)

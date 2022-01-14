@@ -104,6 +104,35 @@ export default class TeamService implements IService {
     return teamMember
   }
 
+  async getTeamMembersByUserId(userId: string): Promise<TeamMember[]> {
+    const q = query(
+      collection(this.db, Collections.teamMembers), 
+      where("userId", "==", userId),
+    )
+    
+    const querySnapshot = await getDocs(q);
+    
+    if (querySnapshot.size > 1) {
+      console.log('this user is part of multiple teams')
+    }
+
+    console.log(querySnapshot)
+
+    var teamMembers: TeamMember[] = []
+
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      // get the first one and just return...shouldn't be more
+      console.log('got teammember data')
+      let teamMember:TeamMember = doc.data() as TeamMember
+      teamMember.id = doc.id
+
+      teamMembers.push(teamMember)
+    });
+
+    return teamMembers
+  }
+
   async updateTeamMember(teamMember: TeamMember) {
     const docRef = doc(this.db, Collections.teamMembers, teamMember.id);
     await setDoc(docRef, { ...teamMember, lastUpdatedDate: serverTimestamp() }, { merge: true })
