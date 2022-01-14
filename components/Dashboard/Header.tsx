@@ -15,6 +15,7 @@ import router from "next/router";
 import Moment from "react-moment";
 import { User } from "../../models/user";
 import { generateGreetings } from "../../helpers/dateTime";
+import { Dropdown, Menu } from "antd";
 
 export default function Header() {
   const { logOut } = useAuth();
@@ -31,6 +32,17 @@ export default function Header() {
       console.log(error);
     }
   }
+
+  const UserMenu = (
+    <Menu>
+      <Menu.Item>
+        <button onClick={handleSignOut}>manage team</button>
+      </Menu.Item>
+      <Menu.Item danger>
+        <button onClick={handleSignOut}>sign out</button>
+      </Menu.Item>
+    </Menu>
+  );
 
   const today = new Date();
   const periodOfDay = generateGreetings();
@@ -96,16 +108,17 @@ export default function Header() {
         <FaTh className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
 
         {/* avatar */}
-        <span className="relative flex">
-          <span className="bg-gray-200 bg-opacity-30 rounded-full shadow-md absolute w-full h-full"></span>
-          <span className="absolute top-0 right-0 w-3 h-3 bg-green-400 rounded-full"></span>
-          <Image
-            src="/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-22.svg"
-            alt="profile"
-            width={50}
-            height={50}
-          />
-        </span>
+        <Dropdown overlay={UserMenu}>
+          <span className="relative flex hover:cursor-pointer">
+            <span className="bg-gray-200 bg-opacity-30 rounded-full shadow-md absolute w-full h-full"></span>
+            <span className="absolute top-0 right-0 w-3 h-3 bg-green-400 rounded-full"></span>
+            <img
+              src={user.avatarUrl}
+              alt="asdf"
+              className="rounded-full w-12"
+            />
+          </span>
+        </Dropdown>
       </span>
     </section>
   );

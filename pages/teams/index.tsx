@@ -10,6 +10,7 @@ import unfetch from "isomorphic-unfetch";
 import { FaPeopleCarry, FaArrowRight, FaBullhorn } from "react-icons/fa";
 import BackgroundLayout from "../../components/Layouts/BackgroundLayout";
 import TeamService from "../../services/teamService";
+import Loading from "../../components/Loading";
 
 /**
  * figure out where to take the user based on everything
@@ -68,13 +69,13 @@ function RouteHandler() {
         console.log(error);
         router.push("/teams/login");
       }
-    })();
 
-    setLoading(false);
+      setLoading(false);
+    })();
   }, [currUser]);
 
   if (loading || !user) {
-    return <div></div>;
+    return <Loading />;
   }
 
   // not in a team yet, and have not created a team yet
