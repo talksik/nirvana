@@ -1,6 +1,6 @@
 import { useAuth } from "../../contexts/authContext"
 import { useRouter } from "next/router"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import UserService from '../../services/userService'
 import { User } from "../../models/user"
 import { GetServerSidePropsContext } from "next"
@@ -15,6 +15,7 @@ function RouteHandler({ user }) {
   const { currUser } = useAuth()
   const router = useRouter()
   const userService: UserService = new UserService()
+  const [loading, setLoading] = useState<Boolean>(false)
 
   useEffect(() => {
     
@@ -35,7 +36,9 @@ function RouteHandler({ user }) {
           router.push('/teams/profile')
         }
 
-        // check if user is in a team or has created one
+        // check if user is in a team go to the team dashboard
+
+        
 
       } catch(error) {
         console.log(error)
@@ -43,6 +46,10 @@ function RouteHandler({ user }) {
       }
     })();
   }, [currUser])
+
+  if (loading)  {
+    return <div>figuring out where you should go</div>
+  }
 
   return (
     <div className="text-black">this is the route handler page</div>

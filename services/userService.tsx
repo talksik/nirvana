@@ -5,11 +5,7 @@ import { User } from '../models/user'
 export default class UserService {
   private db : Firestore = getFirestore()
   private static collectionName: string = "users"
-
-  constructor() {
-
-  }
-
+  
   // give back the avatar based on the person's google account avatar
   getUserAvatar(displayName: string) {
     return `https://ui-avatars.com/api/?name=${displayName}`
