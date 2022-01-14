@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+
 export class TeamMember {
   id: string;
   userId: string;
@@ -8,6 +10,9 @@ export class TeamMember {
   
   role: TeamMemberRole
   status: TeamMemberStatus 
+
+  createdDate: Timestamp
+  lastUpdatedDate: Timestamp
 }
 
 export enum TeamMemberRole {

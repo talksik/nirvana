@@ -8,7 +8,9 @@ export class Team {
 
   allowedUserCount:number;
 
-  createdBy: string;
+  companySite: string;
+
+  createdByUserId: string;
   createdDate: Timestamp;
 
   lastUpdatedDate: Timestamp;
