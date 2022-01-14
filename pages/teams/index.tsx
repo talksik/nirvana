@@ -55,7 +55,7 @@ function RouteHandler() {
   }, [currUser])
 
   if (loading || !user) {
-    return <div>figuring out where you should go</div>
+    return <div></div>
   }
 
   // not in a team yet, and have not created a team yet
@@ -65,7 +65,7 @@ function RouteHandler() {
       <div className="flex flex-row items-center justify-between">
         <span className="flex flex-col justify-start">
           <div className="text-lg">👋Hey, {user.firstName}</div>
-          <span className="text-gray-300 text-md">Let&apos;s get you started</span>
+          <span className="text-gray-300 text-md">Let&apos;s get you started.</span>
         </span>
         
         <button onClick={() => router.push('/teams/profile')}>
@@ -82,9 +82,9 @@ function RouteHandler() {
           <span className="text-gray-300 text-sm text-left">Add members, and get started immediately.</span>
         </span>
 
-        <button className='ml-auto bg-gray-500 bg-opacity-25 p-2 rounded group-hover:bg-opacity-40 group-hover:bg-teal-500'>
+        <span className='ml-auto bg-gray-500 bg-opacity-25 p-2 rounded group-hover:bg-opacity-40 group-hover:bg-teal-500'>
             <FaArrowRight className='text-sm text-white' />
-        </button>
+        </span>
       </button>
 
       {/* tell your manager to add your email */}
@@ -98,7 +98,7 @@ function RouteHandler() {
 
       </button>
 
-      <span className="text-gray-300 ml-auto text-md mt-10">Learn more about <button onClick={() => router.push('/teams/landing')} className="underline font-satisfy text-xl text-teal-500 decoration-teal-500">nirvana</button></span>
+      <span className="text-gray-300 ml-auto text-md mt-10">or learn more about <button onClick={() => router.push('/teams/landing')} className="underline font-satisfy text-xl text-teal-500 decoration-teal-500">nirvana</button></span>
     </div>
   )
 }
