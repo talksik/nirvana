@@ -28,6 +28,8 @@ import { BsThreeDots } from "react-icons/bs";
 import { UserStatus, User } from '../../models/user'
 import { KeyCode } from '../../globals/keycode'
 
+import BackgroundLayout from '../../components/Layouts/BackgroundLayout'
+
 let testFriends = [ 
     {
         name: "Liam",
@@ -163,7 +165,7 @@ export default class Demo extends React.Component<{ }, MyState> {
 
     render() {
         return (
-            <>
+            <BackgroundLayout>
                 <div className="container mx-auto max-w-screen-xl py-10 flex flex-col space-y-5">
                     {/* header content */}
                     <section className="flex-1 flex flex-row items-center justify-between py-5">
@@ -846,7 +848,7 @@ export default class Demo extends React.Component<{ }, MyState> {
                         </span>
                     </section>
                 </div>
-            </>
+            </BackgroundLayout>
             )
     }
     

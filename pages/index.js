@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function Home() {
   return (
-    <div className={styles.container}>
+    <div className='container m-20'>
       <main className="space-y-10">
         <p id="main-title">nirvana</p>
 

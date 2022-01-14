@@ -1,3 +1,8 @@
+/**
+ * 
+ * wrapper for authentication for the future for each individual component
+ */
+
 export function requireAuthentication(gssp) {
   return async (context) => {
       const { req, res } = context;

@@ -1,7 +1,7 @@
 
 import Head from "next/head"
 
-export default function Layout({ children }) {
+export default function SiteLayout({ children }) {
   return (
     <>
       <Head>

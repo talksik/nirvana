@@ -16,12 +16,15 @@ a {
 }
 
 /* my personal css */
+body {
+  @apply bg-slate-100 !important;
+}
 
 main {
   font-family: "Poppins", sans-serif;
 }
 
-bg {
+#bg {
   background: url("/wallpapers/dark-mountains.jpg") no-repeat center center
     fixed;
   -webkit-background-size: cover;
