@@ -13,10 +13,12 @@ import {
 import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
 import router from "next/router";
 import Moment from "react-moment";
+import { User } from "../../models/user";
+import { generateGreetings } from "../../helpers/dateTime";
 
 export default function Header() {
   const { logOut } = useAuth();
-  const { team } = useTeamDashboardContext();
+  const { team, user } = useTeamDashboardContext();
 
   async function handleSignOut() {
     console.log("clicked log out button");
@@ -30,14 +32,14 @@ export default function Header() {
     }
   }
 
-  var today = new Date();
-
+  const today = new Date();
+  const periodOfDay = generateGreetings();
   return (
     <section className="flex-1 flex flex-row items-center justify-between py-5">
       {/* welcome message */}
       <span className="flex flex-col items-baseline">
-        <span className="font-bold text-xl text-white">
-          👋Hey Arjun, Good Afternoon!
+        <span className="font-bold text-xl text-white capitalize ">
+          👋Hey {user.firstName}, {periodOfDay}!
         </span>
 
         {/* Date and time */}
