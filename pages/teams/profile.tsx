@@ -105,26 +105,26 @@ export default function Profile() {
 
       <span className="flex flex-col items-start">
         <span className="text-md">Email</span>
-        <span className="text-gray-300 text-xs">This is set from your Google account and cannot be changed.</span>
-        <input disabled className="w-full rounded-lg bg-gray-50 p-3" value={user ? user.emailAddress : currUser.email} readOnly />
+        <span className="text-gray-300 text-xs mb-2">This is set from your Google account and cannot be changed.</span>
+        <input disabled className="w-full rounded-lg bg-gray-100 p-3" value={user ? user.emailAddress : currUser.email} readOnly />
       </span>
 
       <span className="flex flex-col items-start">
         <span className="text-md">First Name</span>
-        <span className="text-gray-300 text-xs"></span>
-        <input placeholder="ex. John" className="w-full rounded-lg bg-gray-100 p-3" value={firstName} onChange={e => setFirstName(e.target.value)} />        
+        <span className="text-gray-300 text-xs mb-2"></span>
+        <input placeholder="ex. John" className="w-full rounded-lg bg-gray-50 p-3" value={firstName} onChange={e => setFirstName(e.target.value)} />        
       </span>
 
       <span className="flex flex-col items-start">
         <span className="text-md">Last Name</span>
-        <span className="text-gray-300 text-xs"></span>
-        <input placeholder="ex. Brown" className="w-full rounded-lg bg-gray-100 p-3" value={lastName} onChange={e => setLastName(e.target.value)} />
+        <span className="text-gray-300 text-xs mb-2"></span>
+        <input placeholder="ex. Brown" className="w-full rounded-lg bg-gray-50 p-3" value={lastName} onChange={e => setLastName(e.target.value)} />
       </span>
 
       <span className="flex flex-col items-start">
         <span className="text-md">Nickname</span>
-        <span className="text-gray-300 text-xs">What does your team call you?</span>
-        <input placeholder="ex. nicky" className="w-full rounded-lg bg-gray-100 p-3" value={nickname} onChange={e => setNickname(e.target.value)} />
+        <span className="text-gray-300 text-xs mb-2">What does your team call you?</span>
+        <input placeholder="ex. nicky" className="w-full rounded-lg bg-gray-50 p-3" value={nickname} onChange={e => setNickname(e.target.value)} />
       </span>
 
       <Divider />
