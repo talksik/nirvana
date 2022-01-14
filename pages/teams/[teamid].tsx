@@ -1,6 +1,7 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Header from "../../components/Dashboard/Header";
 import BackgroundLayout from "../../components/Layouts/BackgroundLayout";
 import Loading from "../../components/Loading";
 import { useAuth } from "../../contexts/authContext";
@@ -19,7 +20,11 @@ function TeamDashboard() {
 
   console.log(teamDashboardContext);
 
-  return <div>{JSON.stringify(teamDashboardContext)}</div>;
+  return (
+    <div className="container mx-auto max-w-screen-xl py-10 px-10 flex flex-col space-y-5">
+      <Header />
+    </div>
+  );
 }
 
 export default function TeamDashboardWrapper() {
