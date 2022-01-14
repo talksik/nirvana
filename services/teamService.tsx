@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, DocumentReference, Firestore, getDoc, getDocs, getFirestore, orderBy, query, serverTimestamp, where } from 'firebase/firestore'
+import { addDoc, collection, doc, DocumentReference, Firestore, getDoc, getDocs, getFirestore, orderBy, query, serverTimestamp, setDoc, where } from 'firebase/firestore'
 import { Team } from '../models/team'
 import { TeamMember, TeamMemberRole, TeamMemberStatus } from '../models/teamMember'
 import { Collections } from './collections'
@@ -38,6 +38,7 @@ export default class TeamService implements IService {
     if (docSnap.exists()) {
       console.log('got team data')
       let team: Team = docSnap.data() as Team
+      team.id = docSnap.id
       return team
     } else {
       // doc.data() will be undefined in this case
@@ -47,7 +48,7 @@ export default class TeamService implements IService {
     }
   }
   
-  async getTeamMember(teamId: string, userId: string): Promise<TeamMember | null> {
+  async getTeamMemberByUserId(teamId: string, userId: string): Promise<TeamMember | null> {
     const q = query(
       collection(this.db, Collections.teamMembers), 
       where("teamId", "==", teamId),
@@ -68,8 +69,43 @@ export default class TeamService implements IService {
       // get the first one and just return...shouldn't be more
       console.log('got teammember data')
       teamMember = doc.data() as TeamMember
+
+      teamMember.id = doc.id
     });
 
     return teamMember
   }
+
+  async getTeamMemberByEmailInvite(teamId: string, emailAddress: string): Promise<TeamMember | null> {
+    const q = query(
+      collection(this.db, Collections.teamMembers), 
+      where("teamId", "==", teamId),
+      where("inviteEmailAddress", "==", emailAddress)
+    )
+    
+    const querySnapshot = await getDocs(q);
+    
+    if (querySnapshot.size > 1) {
+      console.log('there are multiple teammembers for this user...error in teamservice')
+    }
+
+    console.log(querySnapshot)
+
+    var teamMember: TeamMember | null = null
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      // get the first one and just return...shouldn't be more
+      console.log('got teammember data')
+      teamMember = doc.data() as TeamMember
+
+      teamMember.id = doc.id
+    });
+
+    return teamMember
+  }
+
+  async updateTeamMember(teamMember: TeamMember) {
+    const docRef = doc(this.db, Collections.teamMembers, teamMember.id);
+    await setDoc(docRef, { ...teamMember, lastUpdatedDate: serverTimestamp() }, { merge: true })
+  } 
 }

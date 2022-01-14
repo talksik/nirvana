@@ -27,29 +27,50 @@ export default function TeamDashboard() {
           return
         }
 
+        if (typeof teamid !== "string") {
+          console.log('not a proper query with teamid')
+          router.push('/teams')
+          return
+        }
+
         // check if the team is a valid team and that user is in it
-        if (typeof teamid === "string") {
-          const returnedTeam = await teamService.getTeam(teamid)
-          const returnedTeamMember = await teamService.getTeamMember(teamid, currUser.uid)
+        const returnedTeam = await teamService.getTeam(teamid)
+        if (!returnedTeam) {
+          console.log('team doesnt exist')
+          router.push('/teams')
+          return
+        }
 
-          console.log(returnedTeam)
-          console.log(returnedTeamMember)
+        const returnedTeamMember = await teamService.getTeamMemberByUserId(teamid, currUser.uid)          
 
-          // if there is no such team OR
-          //   if you are not a member of this team, then get out of here
-          if (!returnedTeam || !returnedTeamMember || returnedTeamMember.status == TeamMemberStatus.deleted) {
-            console.log('no team exists, or am not activated in it')
-            // router.push('/teams')
-            return
+        console.log(returnedTeam)
+        console.log(returnedTeamMember)
+
+        //  if you are not a member of this team, then get out of here
+        //   but have to check through email invite and userid
+        if (returnedTeamMember && returnedTeamMember.status == TeamMemberStatus.deleted) {
+          console.log('user was deleted from team')
+          router.push('/teams')
+          return
+        }
+
+        // if there is no team member through user id,
+        // give him last chance and see if he was invited
+        if (!returnedTeamMember) {
+          const invitedTeamMember = await teamService.getTeamMemberByEmailInvite(teamid, currUser.email)
+
+          if (!invitedTeamMember) {
+            console.log('not invited to team either')
+            router.push('/teams')
+            return 
           }
 
           // if I am new to the team but I was invited, and this is my first time, then activate me into the team
           // and proceed with showing the dashboard stuff
 
-        } else {
-          console.log('not a proper query with teamid')
-          router.push('/teams')
-          return
+          invitedTeamMember.status = TeamMemberStatus.activated
+          invitedTeamMember.userId = currUser.uid
+          await teamService.updateTeamMember(invitedTeamMember)
         }
       } catch(error) {
         console.log(error)
