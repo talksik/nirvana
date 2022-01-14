@@ -1,4 +1,4 @@
-{
+const serviceAccount = {
   "type": "service_account",
   "project_id": "nirvana-for-business",
   "private_key_id": "8720d0ab82c42545bb151e3e394d03d81acdb208",
@@ -10,3 +10,5 @@
   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-e05xh%40nirvana-for-business.iam.gserviceaccount.com"
 }
+
+export default serviceAccount

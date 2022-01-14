@@ -4,6 +4,9 @@ import { useEffect } from "react"
 import UserService from '../../services/userService'
 import { User } from "../../models/user"
 import { GetServerSidePropsContext } from "next"
+import nookies from 'nookies'
+import firebaseAdmin from 'firebase-admin'
+import unfetch from 'isomorphic-unfetch'
 
 /**
  * figure out where to take the user based on everything
@@ -11,16 +14,30 @@ import { GetServerSidePropsContext } from "next"
 function RouteHandler({ user }) {
   const { currUser, logOut } = useAuth()
   const router = useRouter()
+  const userService: UserService = new UserService()
 
   useEffect(() => {
-    // if not authenticated, take user to the login
-    if (!currUser) {
-      console.log('not authenticated...routing from dashboard to teams home')
-      router.push('/teams/login')
-    }
     
-    // if user has no profile, then go to create profile
-    
+    (async function() {
+      try {
+        // if not authenticated, take user to the login
+        if (!currUser) {
+          console.log('not authenticated...routing from dashboard to teams home')
+          router.push('/teams/login')
+        }
+
+        // get user 
+        const user: User | null = await userService.getUser(currUser.uid)
+        console.log(user)
+        // if user has no profile, then go to create profile
+        if (!user || !user.firstName || !user.lastName || !user.nickName) {
+
+        }
+      } catch(error) {
+        console.log(error)
+        router.push('/teams/login')
+      }
+    })();
   }, [currUser])
 
   return (
@@ -28,24 +45,43 @@ function RouteHandler({ user }) {
   )
 }
 
-
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  // get user data
-  const userService: UserService = new UserService()
+  // const cookies = nookies.get(context);
 
-  var user: User | null = null
+  // var user: User | null = null
 
-  try {
-    user = await userService.getUser("asdf")
-  } catch(error) {
-    console.log(error)
-  }
+  // if (cookies.token) {
+  //   try {
+  //     const headers: HeadersInit = {
+  //       'Content-Type': 'application/json',
+  //        Authorization: JSON.stringify({ token: cookies.token })
+  //     };
+  //     const result = await unfetch('/api/auth/validateToken', { headers });
+  //     console.log(result)
 
-  // Pass data to the page via props
-  return { props: { 
-    user
-   }
-  }
+  //      // get user data
+  //     const userService: UserService = new UserService()
+
+  //     // the user is authenticated!
+
+  //     // FETCH STUFF HERE!! 🚀
+
+  //     // user = await userService.getUser("asdf")
+  //   } catch (e) {
+  //     // let exceptions fail silently
+  //     // could be invalid token, just let client-side deal with that
+
+  //     console.log(e)
+  //   }
+  // }
+  
+  // // Pass data to the page via props
+  // return { props: { 
+  //   user
+  //  }
+  // }
+
+  return { props: { }}
 }
 
 export default RouteHandler

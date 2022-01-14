@@ -1,11 +1,12 @@
 
-import { credential } from 'firebase-admin';
-import { initializeApp } from 'firebase-admin/app';
+import fbAdm, { credential } from 'firebase-admin';
+import firebaseAdmin, { App } from 'firebase-admin/app';
+
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import serviceAccount from '../../../nirvana-for-business-firebase-adminsdk.json'
+import serviceAccount from '../../../nirvana-for-business-firebase-adminsdk'
 
-initializeApp({
+const adminApp = firebaseAdmin.initializeApp({
   credential: credential.cert({
     privateKey: serviceAccount.private_key,
     clientEmail: serviceAccount.client_email,
@@ -13,8 +14,10 @@ initializeApp({
   })
 });
 
-export default validateToken = async (req: NextApiRequest, res: NextApiResponse) => {
+
+export default async function(req: NextApiRequest, res: NextApiResponse) {
   console.log('Validating token...');
+  
   try {
     const { token } = JSON.parse(req.headers.authorization || '{}');
     if (!token) {
@@ -23,8 +26,10 @@ export default validateToken = async (req: NextApiRequest, res: NextApiResponse)
         message: 'Auth token missing.'
       });
     }
-    const result = await validate(token);
-    return res.status(200).send(result);
+
+    const verifiedToken = fbAdm.auth().verifyIdToken(token)
+
+    return res.status(200).send(verifiedToken);
   } catch (err) {
     return res.status(err.code).send({
       errorCode: err.code,

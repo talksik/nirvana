@@ -1,6 +1,7 @@
 import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut, User } from "firebase/auth";
 import React, { useContext, useEffect, useState } from "react";
 import firebase from '../services/firebaseService'
+import nookies from 'nookies'
 
 const AuthContext = React.createContext(null);
 const googleProvider = new GoogleAuthProvider()
@@ -12,12 +13,20 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, user => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       console.log('change in auth')
+      if (user) {
+        setCurrUser(user)
 
-      // will be null or the firebase logged in user
-      setCurrUser(user)
-
+        // set the token in the cookies for ssr verification
+        const token = await user.getIdToken();
+        nookies.set(undefined, 'token', token, { path: '/' });
+      } else {
+        nookies.set(undefined, 'token', '', { path: '/' });
+        
+        setCurrUser(null)
+      }
+      
       setLoading(false)
     });
 

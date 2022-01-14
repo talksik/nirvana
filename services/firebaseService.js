@@ -39,3 +39,19 @@ console.log('initialized firebase')
 
 setPersistence(getAuth(), browserSessionPersistence)
 
+
+// import { credential } from 'firebase-admin';
+// import { initializeApp } from 'firebase-admin/app';
+
+// import serviceAccount from '../nirvana-for-business-firebase-adminsdk'
+
+// if(typeof window === 'undefined') {
+//   console.log('initializing firebase admin')
+//   initializeApp({
+//     credential: credential.cert({
+//       privateKey: serviceAccount.private_key,
+//       clientEmail: serviceAccount.client_email,
+//       projectId: serviceAccount.project_id,
+//     })
+//   });
+// }
