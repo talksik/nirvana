@@ -75,17 +75,17 @@ export default function Dashboard() {
   const { currUser, logOut } = useAuth()
   const router = useRouter()
 
+  useEffect(() => {
+    // if not authenticated, take user to the login
+    if (!currUser) {
+      console.log('not authenticated...routing from dashboard to teams home')
+      router.push('/teams/login')
+    }
+  }, [currUser])
+
   const [selectedChannel, setSelectedChannel] = useState(null)
 
   console.log("in dashboard " + currUser)
-
-  useEffect(() => {
-    // if not authed, go to home    
-    if (!currUser) {
-      console.log('not authenticated...routing from dashboard to teams home')
-      router.push('/teams')
-    }
-  }, [currUser])
 
   async function handleSignOut() {
     console.log("clicked log out button")
@@ -217,7 +217,6 @@ export default function Dashboard() {
                             <FaPlus className='text-lg text-white' />
                         </button>
                     </span>
-                    
                     
                     {/* list of team members */}
                     {

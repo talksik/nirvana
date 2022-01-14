@@ -10,8 +10,8 @@ export default function Login() {
   useEffect(() => {
     // if auth, go to dashboard
     if (currUser) {
-      console.log('already logged in, redirecting to the dashboard')
-      router.push('/teams/dashboard')
+      console.log('already logged in, redirecting to router')
+      router.push('/teams')
     }
   }, [currUser])
 

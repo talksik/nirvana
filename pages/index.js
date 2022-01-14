@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import Image from 'next/image';
-import styles from '../styles/Home.module.css';
 
 export default function Home() {
   return (
@@ -12,7 +11,7 @@ export default function Home() {
 
         <p>
           tired of the rat race on{' '}
-          <font className='text-gray-300'>insta, tiktok, snap, &quot;meta&quot;...</font>?
+          <font className='text-gray-500'>insta, tiktok, snap, &quot;meta&quot;...</font>?
         </p>
 
         <p>

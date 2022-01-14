@@ -21,7 +21,7 @@ main {
   font-family: "Poppins", sans-serif;
 }
 
-body {
+bg {
   background: url("/wallpapers/dark-mountains.jpg") no-repeat center center
     fixed;
   -webkit-background-size: cover;
@@ -47,20 +47,16 @@ body {
   color: teal;
 }
 #side-note {
-  font-family: "Baloo Bhaijaan 2", cursive;
   font-size: 1.5em;
 }
 
 p {
-  font-family: "Baloo Bhaijaan 2", cursive;
   font-size: 2em;
-  color: white;
 }
 
 #marquee-text {
   font-style: italic;
   font-size: 1.5em;
-  font-family: "Baloo Bhaijaan 2", cursive;
 }
 
 /* Mobile :320px. */
