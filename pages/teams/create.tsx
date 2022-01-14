@@ -22,7 +22,7 @@ export default function CreateTeam() {
         // if not authenticated, take user to the login
         if (!currUser) {
           console.log('not authenticated...routing from dashboard to teams home')
-          // router.push('/teams/login')
+          router.push('/teams/login')
         }
 
         // todo if user is in a team already, notify them to make sure
@@ -32,9 +32,9 @@ export default function CreateTeam() {
         console.log(error)
         router.push('/teams/login')
       }
-    })();
 
-    setLoading(false)
+      setLoading(false)
+    })();
   }, [])
 
   async function handleSubmit(e) {

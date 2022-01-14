@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, DocumentReference, Firestore, getFirestore, serverTimestamp } from 'firebase/firestore'
+import { addDoc, collection, doc, DocumentReference, Firestore, getDoc, getDocs, getFirestore, orderBy, query, serverTimestamp, where } from 'firebase/firestore'
 import { Team } from '../models/team'
 import { TeamMember, TeamMemberRole, TeamMemberStatus } from '../models/teamMember'
 import { Collections } from './collections'
@@ -29,5 +29,47 @@ export default class TeamService implements IService {
     console.log('created team')
 
     return teamDocRef.id
+  }
+
+  async getTeam(teamId: string): Promise<Team | null> {
+    const docRef = doc(this.db, Collections.teams, teamId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      console.log('got team data')
+      let team: Team = docSnap.data() as Team
+      return team
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("team not found!");
+      
+      return null
+    }
+  }
+  
+  async getTeamMember(teamId: string, userId: string): Promise<TeamMember | null> {
+    const q = query(
+      collection(this.db, Collections.teamMembers), 
+      where("teamId", "==", teamId),
+      where("userId", "==", userId)
+    )
+    
+    const querySnapshot = await getDocs(q);
+    
+    if (querySnapshot.size > 1) {
+      console.log('there are multiple teammembers for this user...error in teamservice')
+    }
+
+    console.log(querySnapshot)
+
+    var teamMember: TeamMember | null = null
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      // get the first one and just return...shouldn't be more
+      console.log('got teammember data')
+      teamMember = doc.data() as TeamMember
+    });
+
+    return teamMember
   }
 }
