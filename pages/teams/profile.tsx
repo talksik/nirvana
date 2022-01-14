@@ -44,7 +44,9 @@ export default function Profile() {
     })();
   }, [])
 
-  async function handleSubmit() {
+  async function handleSubmit(e) {
+    e.preventDefault();
+
     if (!firstName) {
       setError('Must input first name')
       return
@@ -133,7 +135,7 @@ export default function Profile() {
         {
           user && user.nickName ?
               <>
-                <button className="bg-gray-100 py-2 px-5 rounded text-gray-400">Cancel</button>                
+                <button onClick={() => router.push('/teams') } className="bg-gray-100 py-2 px-5 rounded text-gray-400">Cancel</button>                
                 <button type="submit" className='text-sm text-white font-semibold py-2 px-5 bg-teal-500 rounded'>
                   Save
                 </button>

@@ -7,18 +7,24 @@ import { GetServerSidePropsContext } from "next"
 import nookies from 'nookies'
 import firebaseAdmin from 'firebase-admin'
 import unfetch from 'isomorphic-unfetch'
+import {
+  FaPeopleCarry,
+  FaArrowRight,
+  FaBullhorn
+} from "react-icons/fa";
+import BackgroundLayout from "../../components/Layouts/BackgroundLayout"
 
 /**
  * figure out where to take the user based on everything
  */
-function RouteHandler({ user }) {
+function RouteHandler() {
   const { currUser } = useAuth()
   const router = useRouter()
   const userService: UserService = new UserService()
-  const [loading, setLoading] = useState<Boolean>(false)
+  const [loading, setLoading] = useState<Boolean>(true)
+  const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
-    
     (async function() {
       try {
         // if not authenticated, take user to the login
@@ -28,31 +34,72 @@ function RouteHandler({ user }) {
         }
 
         // get user 
-        const user: User | null = await userService.getUser(currUser.uid)
-        console.log(user)
+        const returnedUser: User | null = await userService.getUser(currUser.uid)
+        console.log(returnedUser)
         // if user has no profile, then go to create profile
-        if (!user || !user.firstName || !user.lastName || !user.nickName) {
+        if (!returnedUser || !returnedUser.firstName || !returnedUser.lastName || !returnedUser.nickName) {
           console.log('no profile for the user, routing him/her there')
           router.push('/teams/profile')
         }
-
-        // check if user is in a team go to the team dashboard
-
+        setUser(returnedUser)
         
+        // check if user is in a team go to the team dashboard
 
       } catch(error) {
         console.log(error)
         router.push('/teams/login')
       }
     })();
+
+    setLoading(false)
   }, [currUser])
 
-  if (loading)  {
+  if (loading || !user) {
     return <div>figuring out where you should go</div>
   }
 
+  // not in a team yet, and have not created a team yet
   return (
-    <div className="text-black">this is the route handler page</div>
+    <div className="container mx-auto flex flex-col max-w-md m-10 bg-white p-10 rounded-lg shadow-md space-y-5">
+      {/* header */}
+      <div className="flex flex-row items-center justify-between">
+        <span className="flex flex-col justify-start">
+          <div className="text-lg">👋Hey, {user.firstName}</div>
+          <span className="text-gray-300 text-md">Let&apos;s get you started</span>
+        </span>
+        
+        <button onClick={() => router.push('/teams/profile')}>
+          <img src={user ? user.avatarUrl : currUser.photoURL} alt="asdf" className="rounded-full w-12" />
+        </button>
+      </div>
+
+      {/* create team hover thing */}
+      <button onClick={() => router.push('/teams/create')} className="group flex flex-row py-5 px-3 items-center border border-dashed rounded hover:shadow-lg transition duration-400">
+        <FaPeopleCarry className="text-5xl text-teal-500" />
+
+        <span className="flex flex-col items-start ml-2 mr-10">
+          <span className="text-gray-500">Create a Team</span>
+          <span className="text-gray-300 text-sm text-left">Add members, and get started immediately.</span>
+        </span>
+
+        <button className='ml-auto bg-gray-500 bg-opacity-25 p-2 rounded group-hover:bg-opacity-40 group-hover:bg-teal-500'>
+            <FaArrowRight className='text-sm text-white' />
+        </button>
+      </button>
+
+      {/* tell your manager to add your email */}
+      <button className="group flex flex-row py-5 px-3 items-center border border-dashed rounded">
+        <FaBullhorn className="text-5xl text-orange-300" />
+
+        <span className="flex flex-col items-start ml-2 mr-10">
+          <span className="text-gray-500">Remind Your Manager</span>
+          <span className="text-gray-300 text-sm text-left">Your account email is {user.emailAddress}</span>
+        </span>
+
+      </button>
+
+      <span className="text-gray-300 ml-auto text-md mt-10">Learn more about <button onClick={() => router.push('/teams/landing')} className="underline font-satisfy text-xl text-teal-500 decoration-teal-500">nirvana</button></span>
+    </div>
   )
 }
 
