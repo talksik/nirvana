@@ -12,7 +12,7 @@ import unfetch from 'isomorphic-unfetch'
  * figure out where to take the user based on everything
  */
 function RouteHandler({ user }) {
-  const { currUser, logOut } = useAuth()
+  const { currUser } = useAuth()
   const router = useRouter()
   const userService: UserService = new UserService()
 
@@ -31,7 +31,7 @@ function RouteHandler({ user }) {
         console.log(user)
         // if user has no profile, then go to create profile
         if (!user || !user.firstName || !user.lastName || !user.nickName) {
-
+          router.push('/teams/profile')
         }
       } catch(error) {
         console.log(error)

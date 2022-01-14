@@ -1,5 +1,5 @@
 import { User as FirUser } from "firebase/auth";
-import { Firestore, getFirestore, doc, getDoc } from "firebase/firestore";
+import { Firestore, getFirestore, doc, getDoc, setDoc, Timestamp, serverTimestamp } from "firebase/firestore";
 import { User } from '../models/user'
 
 export default class UserService {
@@ -10,13 +10,9 @@ export default class UserService {
 
   }
 
-  // give back the avatar based on the person's google account avatar or if they set one then
-  getUserAvatar(firstName: string, lastName: string, avatar: string = null) {
-    if (avatar) {
-      return avatar
-    }
-
-    return `https://ui-avatars.com/api/?name=${firstName}+${lastName}`
+  // give back the avatar based on the person's google account avatar
+  getUserAvatar(displayName: string) {
+    return `https://ui-avatars.com/api/?name=${displayName}`
   }
 
   async getUser(userId: string) : Promise<User | null> {
@@ -24,7 +20,7 @@ export default class UserService {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
+      console.log('got user data')
       let user: User = docSnap.data() as User
       return user
     } else {
@@ -33,5 +29,15 @@ export default class UserService {
       
       return null
     }
+  }
+
+  async createUser(userId: string, emailAddress: string, avatarUrl: string) {
+    const docRef = doc(this.db, UserService.collectionName, userId);
+    await setDoc(docRef, { emailAddress, avatarUrl, createdDate: serverTimestamp() }, { merge: true })
+  }
+
+  async updateUser(user: User) {
+    const docRef = doc(this.db, UserService.collectionName, user.id);
+    await setDoc(docRef, { ...user, lastUpdatedDate: serverTimestamp() }, { merge: true })
   }
 }

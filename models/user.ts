@@ -3,12 +3,15 @@ import IFirestoreSerializable from "./firestoreSerializable";
 
 export class User {
     id: string;
+    emailAddress: string;
     nickName: string;
     firstName: string;
     lastName: string;
+    avatarUrl: string;
+    userStatus: UserStatus
 
-    createdDate: Date
-    lastUpdatedDate: Date
+    createdDate: Timestamp;
+    lastUpdatedDate: Timestamp;
 
     // serialize() {
     //     return {            
