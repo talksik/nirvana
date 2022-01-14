@@ -31,8 +31,12 @@ function RouteHandler({ user }) {
         console.log(user)
         // if user has no profile, then go to create profile
         if (!user || !user.firstName || !user.lastName || !user.nickName) {
+          console.log('no profile for the user, routing him/her there')
           router.push('/teams/profile')
         }
+
+        // check if user is in a team or has created one
+
       } catch(error) {
         console.log(error)
         router.push('/teams/login')

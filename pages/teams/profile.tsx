@@ -44,7 +44,7 @@ export default function Profile() {
     })();
   }, [])
 
-  function handleSubmit() {
+  async function handleSubmit() {
     if (!firstName) {
       setError('Must input first name')
       return
@@ -67,7 +67,13 @@ export default function Profile() {
     newUser.nickName = nickname
     newUser.avatarUrl = currUser.photoURL
 
-    userService.updateUser(newUser)
+    try {
+      await userService.updateUser(newUser)
+      router.push('/teams')
+    }
+    catch(error) {
+      setError('Something went wrong in saving your information. Please try again.')
+    }
   }
 
   const [firstName, setFirstName] = useState<string>(currUser.displayName.split(" ")[0]);
