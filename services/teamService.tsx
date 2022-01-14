@@ -1,34 +1,55 @@
-import { addDoc, collection, doc, DocumentReference, Firestore, getDoc, getDocs, getFirestore, orderBy, query, serverTimestamp, setDoc, where } from 'firebase/firestore'
-import { Team } from '../models/team'
-import { TeamMember, TeamMemberRole, TeamMemberStatus } from '../models/teamMember'
-import { Collections } from './collections'
-import IService from './IService'
+import {
+  addDoc,
+  collection,
+  doc,
+  DocumentReference,
+  Firestore,
+  getDoc,
+  getDocs,
+  getFirestore,
+  orderBy,
+  query,
+  serverTimestamp,
+  setDoc,
+  where,
+} from "firebase/firestore";
+import { Team } from "../models/team";
+import {
+  TeamMember,
+  TeamMemberRole,
+  TeamMemberStatus,
+} from "../models/teamMember";
+import { Collections } from "./collections";
+import IService from "./IService";
 
 export default class TeamService implements IService {
-  db : Firestore = getFirestore()
+  db: Firestore = getFirestore();
 
   async createTeam(team: Team): Promise<string> {
     // create team
     const teamDocRef = await addDoc(collection(this.db, Collections.teams), {
       ...team,
-      createdDate: serverTimestamp()
-    })
+      createdDate: serverTimestamp(),
+    });
 
-    const teamMember = new TeamMember()
-    teamMember.role = TeamMemberRole.admin
-    teamMember.teamId = teamDocRef.id
-    teamMember.userId = team.createdByUserId
-    teamMember.status = TeamMemberStatus.activated
+    const teamMember = new TeamMember();
+    teamMember.role = TeamMemberRole.admin;
+    teamMember.teamId = teamDocRef.id;
+    teamMember.userId = team.createdByUserId;
+    teamMember.status = TeamMemberStatus.activated;
 
     // create team member as admin who created the team
-    const teamMemberRef = await addDoc(collection(this.db, Collections.teamMembers), {
-      ...teamMember,
-      createdDate: serverTimestamp()
-    })
+    const teamMemberRef = await addDoc(
+      collection(this.db, Collections.teamMembers),
+      {
+        ...teamMember,
+        createdDate: serverTimestamp(),
+      }
+    );
 
-    console.log('created team')
+    console.log("created team");
 
-    return teamDocRef.id
+    return teamDocRef.id;
   }
 
   async getTeam(teamId: string): Promise<Team | null> {
@@ -36,105 +57,135 @@ export default class TeamService implements IService {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      console.log('got team data')
-      let team: Team = docSnap.data() as Team
-      team.id = docSnap.id
-      return team
+      console.log("got team data");
+      let team: Team = docSnap.data() as Team;
+      team.id = docSnap.id;
+      return team;
     } else {
       // doc.data() will be undefined in this case
       console.log("team not found!");
-      
-      return null
+
+      return null;
     }
   }
-  
-  async getTeamMemberByUserId(teamId: string, userId: string): Promise<TeamMember | null> {
+
+  async getTeamMemberByUserId(
+    teamId: string,
+    userId: string
+  ): Promise<TeamMember | null> {
     const q = query(
-      collection(this.db, Collections.teamMembers), 
+      collection(this.db, Collections.teamMembers),
       where("teamId", "==", teamId),
       where("userId", "==", userId)
-    )
-    
+    );
+
     const querySnapshot = await getDocs(q);
-    
+
     if (querySnapshot.size > 1) {
-      console.log('there are multiple teammembers for this user...error in teamservice')
+      console.log(
+        "there are multiple teammembers for this user...error in teamservice"
+      );
     }
 
-    console.log(querySnapshot)
-
-    var teamMember: TeamMember | null = null
+    var teamMember: TeamMember | null = null;
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
       // get the first one and just return...shouldn't be more
-      console.log('got teammember data')
-      teamMember = doc.data() as TeamMember
+      console.log("got teammember data");
+      teamMember = doc.data() as TeamMember;
 
-      teamMember.id = doc.id
+      teamMember.id = doc.id;
     });
 
-    return teamMember
+    return teamMember;
   }
 
-  async getTeamMemberByEmailInvite(teamId: string, emailAddress: string): Promise<TeamMember | null> {
+  async getTeamMemberByEmailInvite(
+    teamId: string,
+    emailAddress: string
+  ): Promise<TeamMember | null> {
     const q = query(
-      collection(this.db, Collections.teamMembers), 
+      collection(this.db, Collections.teamMembers),
       where("teamId", "==", teamId),
       where("inviteEmailAddress", "==", emailAddress)
-    )
-    
+    );
+
     const querySnapshot = await getDocs(q);
-    
+
     if (querySnapshot.size > 1) {
-      console.log('there are multiple teammembers for this user...error in teamservice')
+      console.log(
+        "there are multiple teammembers for this user...error in teamservice"
+      );
     }
 
-    console.log(querySnapshot)
-
-    var teamMember: TeamMember | null = null
+    var teamMember: TeamMember | null = null;
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
       // get the first one and just return...shouldn't be more
-      console.log('got teammember data')
-      teamMember = doc.data() as TeamMember
+      console.log("got teammember data");
+      teamMember = doc.data() as TeamMember;
 
-      teamMember.id = doc.id
+      teamMember.id = doc.id;
     });
 
-    return teamMember
+    return teamMember;
   }
 
   async getTeamMembersByUserId(userId: string): Promise<TeamMember[]> {
     const q = query(
-      collection(this.db, Collections.teamMembers), 
-      where("userId", "==", userId),
-    )
-    
+      collection(this.db, Collections.teamMembers),
+      where("userId", "==", userId)
+    );
+
     const querySnapshot = await getDocs(q);
-    
+
     if (querySnapshot.size > 1) {
-      console.log('this user is part of multiple teams')
+      console.log("this user is part of multiple teams");
     }
 
-    console.log(querySnapshot)
-
-    var teamMembers: TeamMember[] = []
+    var teamMembers: TeamMember[] = [];
 
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
       // get the first one and just return...shouldn't be more
-      console.log('got teammember data')
-      let teamMember:TeamMember = doc.data() as TeamMember
-      teamMember.id = doc.id
+      console.log("got teammember data");
+      let teamMember: TeamMember = doc.data() as TeamMember;
+      teamMember.id = doc.id;
 
-      teamMembers.push(teamMember)
+      teamMembers.push(teamMember);
     });
 
-    return teamMembers
+    return teamMembers;
+  }
+
+  async getTeamMembersByTeamId(teamId: string): Promise<TeamMember[]> {
+    const q = query(
+      collection(this.db, Collections.teamMembers),
+      where("teamId", "==", teamId)
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    var teamMembers: TeamMember[] = [];
+
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      // get the first one and just return...shouldn't be more
+      let teamMember: TeamMember = doc.data() as TeamMember;
+      teamMember.id = doc.id;
+
+      teamMembers.push(teamMember);
+    });
+
+    return teamMembers;
   }
 
   async updateTeamMember(teamMember: TeamMember) {
     const docRef = doc(this.db, Collections.teamMembers, teamMember.id);
-    await setDoc(docRef, { ...teamMember, lastUpdatedDate: serverTimestamp() }, { merge: true })
-  } 
+    await setDoc(
+      docRef,
+      { ...teamMember, lastUpdatedDate: serverTimestamp() },
+      { merge: true }
+    );
+  }
 }
