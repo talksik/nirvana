@@ -10,6 +10,8 @@ import {
   FaCalendarDay,
   FaClock,
   FaPeopleCarry,
+  FaAngleDown,
+  FaCheck,
 } from "react-icons/fa";
 import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
 import router from "next/router";
@@ -35,8 +37,6 @@ export default function Header() {
   const { teamid } = router.query;
 
   const [usersTeams, setUserTeams] = useState<Team[]>(null);
-  console.log("rendering");
-  console.log(usersTeams);
 
   useEffect(() => {
     (async function () {
@@ -44,7 +44,7 @@ export default function Header() {
         // get all the teams that this user is part of
         const newTeams: Team[] =
           await teamService.getActiveOrInvitedTeamsbyUser(currUser.uid);
-        console.log(newTeams);
+
         setUserTeams(newTeams);
       } catch (error) {
         console.log("problem getting teams of this user");
@@ -75,45 +75,66 @@ export default function Header() {
     toast.error("You are not a team admin!");
   }
 
+  const TeamsMenu = (
+    <Menu key={2} title="teams">
+      {/* all current teams that this person is a part of */}
+      {usersTeams &&
+        usersTeams.map((uteam, i) => {
+          return (
+            <Menu.Item
+              key={i + 5}
+              icon={team.id == uteam.id ? <FaCheck /> : <></>}
+            >
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  console.log("going to " + uteam.id);
+                  window.location.href = "/teams/" + uteam.id;
+                }}
+              >
+                {uteam.name}
+              </button>
+            </Menu.Item>
+          );
+        })}
+
+      <Menu.Divider />
+
+      <Menu.Item key={"createteam"} icon={<FaPeopleCarry />}>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            router.push("/teams/create");
+          }}
+        >
+          create team
+        </button>
+      </Menu.Item>
+    </Menu>
+  );
   const UserMenu = (
-    <Menu>
+    <Menu title="user menu">
       <Menu.Item key={1}>
-        <button onClick={handleAdminRoute}>admin</button>
+        <button onClick={handleAdminRoute}>Admin</button>
       </Menu.Item>
 
-      <SubMenu key={2} title="teams">
-        {/* all current teams that this person is a part of */}
-        {usersTeams &&
-          usersTeams.map((team, i) => {
-            return (
-              <Menu.Item key={i + 5}>
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    console.log("going to " + team.name);
-                    router.push("/teams/" + team.id);
-                  }}
-                >
-                  {team.name}
-                </button>
-              </Menu.Item>
-            );
-          })}
+      <Menu.Divider />
 
-        <Menu.Item key={"createteam"} icon={<FaPeopleCarry />}>
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              router.push("/teams/create");
-            }}
-          >
-            create team
-          </button>
-        </Menu.Item>
-      </SubMenu>
+      <Menu.Item key={2}>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            router.push("/teams/profile");
+          }}
+        >
+          Profile
+        </button>
+      </Menu.Item>
+
+      <Menu.Divider />
 
       <Menu.Item danger key={3}>
-        <button onClick={handleSignOut}>sign out</button>
+        <button onClick={handleSignOut}>Sign Out</button>
       </Menu.Item>
     </Menu>
   );
@@ -145,7 +166,6 @@ export default function Header() {
   return (
     <section className="flex-1 flex flex-row items-center justify-between py-5">
       {/* welcome message */}
-      {usersTeams && usersTeams.length}
       <span className="flex flex-col items-baseline">
         <span className="font-bold text-xl text-white capitalize ">
           👋Hey {user.firstName}, {periodOfDay}!
@@ -153,17 +173,12 @@ export default function Header() {
 
         {/* Date and time */}
         <span className="flex flex-row space-x-2">
-          <span className="text-teal-700 bg-teal-200 p-1 rounded-md text-xs font-bold mt-2 flex flex-row items-center space-x-1">
-            <FaBuilding />
-            <span>{team.name}</span>
-          </span>
-
           <span className="text-sky-700 bg-sky-200 p-1 rounded-md text-xs font-bold mt-2 flex flex-row items-center space-x-1">
             <FaCalendarDay />
             <Moment date={today} format="ddd, MMM DD" />
           </span>
 
-          <span className="text-sky-700 bg-sky-200 p-1 rounded-md text-xs font-bold mt-2 flex flex-row items-center space-x-1">
+          <span className="text-emerald-700 bg-emerald-200 p-1 rounded-md text-xs font-bold mt-2 flex flex-row items-center space-x-1">
             <FaClock />
             <Moment format="h:mm a" />
           </span>
@@ -178,6 +193,17 @@ export default function Header() {
         <FaHeadphonesAlt className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
         <FaMicrophoneAlt className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
         <FaTh className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
+
+        {/* teams menu */}
+
+        <Dropdown overlay={TeamsMenu} trigger={["click"]}>
+          <button
+            className="text-gray-200 flex flex-row items-center"
+            onClick={(e) => e.preventDefault()}
+          >
+            {team.name} <FaAngleDown />
+          </button>
+        </Dropdown>
 
         {/* avatar */}
         <Dropdown overlay={UserMenu} trigger={["click"]}>
