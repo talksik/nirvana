@@ -14,7 +14,12 @@ import {
 import { toast } from "react-hot-toast";
 import { Team, TeamStatus } from "../../../models/team";
 
-import { FaMoneyBillWave, FaTrash, FaPaperPlane } from "react-icons/fa";
+import {
+  FaMoneyBillWave,
+  FaTrash,
+  FaPaperPlane,
+  FaArrowLeft,
+} from "react-icons/fa";
 import TeamService from "../../../services/teamService";
 import Router from "next/router";
 import Moment from "react-moment";
@@ -201,7 +206,13 @@ function TeamAdmin() {
         className="flex flex-col space-y-5"
       >
         {/* header */}
-        <div className="text-lg">🙌Manage Team</div>
+        <div className="text-lg flex flex-row items-center space-x-2">
+          <FaArrowLeft
+            className="hover:cursor-pointer"
+            onClick={() => router.push("/teams/" + teamid)}
+          />{" "}
+          <span>Manage Team</span>
+        </div>
 
         {error && <span className="text-red-300 text-md">{error}</span>}
 
@@ -235,7 +246,7 @@ function TeamAdmin() {
 
         <span className="flex flex-row justify-end space-x-2">
           <button
-            onClick={() => router.push("/teams")}
+            onClick={() => router.push("/teams/" + team.id)}
             className="bg-gray-100 py-2 px-5 rounded text-gray-400"
           >
             Cancel

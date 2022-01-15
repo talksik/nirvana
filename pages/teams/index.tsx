@@ -59,15 +59,21 @@ function RouteHandler() {
         );
         console.log(returnedTeamMembers);
         // if the user is deleted from a team, don't let them go there
+        var teamId = "";
         returnedTeamMembers.map((tm) => {
           if (tm.status != TeamMemberStatus.deleted) {
             console.log(
               "in a team! going to the team dashboard of the first one!"
             );
-            router.push("/teams/" + returnedTeamMembers[0].teamId);
-            return;
+
+            teamId = returnedTeamMembers[0].teamId;
           }
         });
+
+        if (teamId) {
+          router.push("/teams/" + teamId);
+          return;
+        }
 
         setLoading(false);
       } catch (error) {
