@@ -144,7 +144,9 @@ function TeamAdmin() {
     }
   }
 
-  async function handleDeleteTeamMember(teamMemberId: string) {
+  async function handleDeleteTeamMember(e, teamMemberId: string) {
+    e.preventDefault();
+
     setLoading(true);
 
     try {
@@ -163,7 +165,8 @@ function TeamAdmin() {
     return <Loading />;
   }
 
-  async function handleInviteTeamMember(teamMemberId: string) {
+  async function handleInviteTeamMember(e, teamMemberId: string) {
+    e.preventDefault();
     setLoading(true);
 
     try {
@@ -312,7 +315,7 @@ function TeamAdmin() {
               {tmember.status == TeamMemberStatus.deleted &&
               teamSpotsRemaining > 0 ? (
                 <button
-                  onClick={() => handleInviteTeamMember(tmember.id)}
+                  onClick={(e) => handleInviteTeamMember(e, tmember.id)}
                   className="ml-auto bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40"
                 >
                   <FaPaperPlane className="text-sm text-teal-500 " />
@@ -323,7 +326,7 @@ function TeamAdmin() {
               {tmember.status == TeamMemberStatus.invited ||
               tmember.status == TeamMemberStatus.activated ? (
                 <button
-                  onClick={() => handleDeleteTeamMember(tmember.id)}
+                  onClick={(e) => handleDeleteTeamMember(e, tmember.id)}
                   className="bg-orange-300 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40"
                 >
                   <FaTrash className="text-sm text-orange-500 " />
