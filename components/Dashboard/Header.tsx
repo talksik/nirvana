@@ -17,10 +17,11 @@ import { User } from "../../models/user";
 import { generateGreetings } from "../../helpers/dateTime";
 import { Dropdown, Menu } from "antd";
 import { useRouter } from "next/router";
+import { TeamMemberRole, TeamMemberStatus } from "../../models/teamMember";
 
 export default function Header() {
   const { logOut } = useAuth();
-  const { team, user } = useTeamDashboardContext();
+  const { team, user, userTeamMember } = useTeamDashboardContext();
   const router = useRouter();
   const { teamid } = router.query;
 
@@ -38,15 +39,40 @@ export default function Header() {
 
   const UserMenu = (
     <Menu>
-      <Menu.Item>
-        <button onClick={() => router.push("/teams/" + teamid + "/admin")}>
-          manage team
-        </button>
-      </Menu.Item>
-      <Menu.Item danger>
+      {userTeamMember.role == TeamMemberRole.admin && (
+        <Menu.Item key={1}>
+          <button onClick={() => router.push("/teams/" + teamid + "/admin")}>
+            manage team
+          </button>
+        </Menu.Item>
+      )}
+
+      <Menu.Item danger key={2}>
         <button onClick={handleSignOut}>sign out</button>
       </Menu.Item>
     </Menu>
+  );
+
+  const searchBar = (
+    <div className="pt-2 flex flex-row relative items-center">
+      <button type="submit" className="absolute left-0 top-0 mt-5 ml-5">
+        <FaSearch className="text-white" />
+      </button>
+
+      <input
+        className=" bg-white bg-opacity-40 h-10 px-5 pl-10 pr-16 rounded-lg text-white text-sm focus:outline-none"
+        type="search"
+        name="search"
+        placeholder="Search"
+      />
+
+      <button
+        className="absolute right-1 rounded-lg py-1 px-2 ml-1 
+                                    shadow-md text-center text-white text-sm font-bold"
+      >
+        CTRL + K
+      </button>
+    </div>
   );
 
   const today = new Date();
@@ -80,32 +106,7 @@ export default function Header() {
 
       {/* header control section */}
       <span className="flex flex-row items-center space-x-5">
-        <button
-          onClick={handleSignOut}
-          className="mt-10 text-sm text-orange-500 font-semibold py-1 px-4 bg-orange-200 rounded"
-        >
-          👋 Logout
-        </button>
         {/* search bar */}
-        <div className="pt-2 flex flex-row relative items-center">
-          <button type="submit" className="absolute left-0 top-0 mt-5 ml-5">
-            <FaSearch className="text-white" />
-          </button>
-
-          <input
-            className=" bg-white bg-opacity-40 h-10 px-5 pl-10 pr-16 rounded-lg text-white text-sm focus:outline-none"
-            type="search"
-            name="search"
-            placeholder="Search"
-          />
-
-          <button
-            className="absolute right-1 rounded-lg py-1 px-2 ml-1 
-                                    shadow-md text-center text-white text-sm font-bold"
-          >
-            CTRL + K
-          </button>
-        </div>
 
         <FaBell className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
         <FaHeadphonesAlt className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />

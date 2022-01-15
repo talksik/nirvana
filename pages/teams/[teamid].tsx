@@ -2,6 +2,7 @@ import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Header from "../../components/Dashboard/Header";
+import TeamVoiceLine from "../../components/Dashboard/TeamVoiceLine";
 import BackgroundLayout from "../../components/Layouts/BackgroundLayout";
 import Loading from "../../components/Loading";
 import { useAuth } from "../../contexts/authContext";
@@ -23,6 +24,10 @@ function TeamDashboard() {
   return (
     <div className="container mx-auto max-w-screen-xl py-10 px-10 flex flex-col space-y-5">
       <Header />
+
+      <div className="flex flex-row items-baseline space-x-5 space-y-5 flex-wrap">
+        <TeamVoiceLine />
+      </div>
     </div>
   );
 }
