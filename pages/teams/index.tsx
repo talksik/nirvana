@@ -11,6 +11,7 @@ import { FaPeopleCarry, FaArrowRight, FaBullhorn } from "react-icons/fa";
 import BackgroundLayout from "../../components/Layouts/BackgroundLayout";
 import TeamService from "../../services/teamService";
 import Loading from "../../components/Loading";
+import { TeamMemberStatus } from "../../models/teamMember";
 
 /**
  * figure out where to take the user based on everything
@@ -58,13 +59,16 @@ function RouteHandler() {
         const returnedTeamMembers = await teamService.getTeamMembersByUserId(
           currUser.uid
         );
-        if (returnedTeamMembers.length > 0) {
-          console.log(
-            "in a team! going to the team dashboard of the first one!"
-          );
-          router.push("/teams/" + returnedTeamMembers[0].teamId);
-          return;
-        }
+        // if the user is deleted from a team, don't let them go there
+        returnedTeamMembers.map((tm) => {
+          if (tm.status != TeamMemberStatus.deleted) {
+            console.log(
+              "in a team! going to the team dashboard of the first one!"
+            );
+            router.push("/teams/" + returnedTeamMembers[0].teamId);
+            return;
+          }
+        });
       } catch (error) {
         console.log(error);
         router.push("/teams/login");
