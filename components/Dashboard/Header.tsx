@@ -16,10 +16,13 @@ import Moment from "react-moment";
 import { User } from "../../models/user";
 import { generateGreetings } from "../../helpers/dateTime";
 import { Dropdown, Menu } from "antd";
+import { useRouter } from "next/router";
 
 export default function Header() {
   const { logOut } = useAuth();
   const { team, user } = useTeamDashboardContext();
+  const router = useRouter();
+  const { teamid } = router.query;
 
   async function handleSignOut() {
     console.log("clicked log out button");
@@ -36,7 +39,9 @@ export default function Header() {
   const UserMenu = (
     <Menu>
       <Menu.Item>
-        <button onClick={handleSignOut}>manage team</button>
+        <button onClick={() => router.push("/teams/" + teamid + "/admin")}>
+          manage team
+        </button>
       </Menu.Item>
       <Menu.Item danger>
         <button onClick={handleSignOut}>sign out</button>
