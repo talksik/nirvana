@@ -158,14 +158,10 @@ export default class TeamService implements IService {
     return teamMembers;
   }
 
-  async getTeamMembersByTeamIdNotUser(
-    teamId: string,
-    userId: string
-  ): Promise<TeamMember[]> {
+  async getTeamMembersByTeamId(teamId: string): Promise<TeamMember[]> {
     const q = query(
       collection(this.db, Collections.teamMembers),
-      where("teamId", "==", teamId),
-      where("userId", "!=", userId)
+      where("teamId", "==", teamId)
     );
 
     const querySnapshot = await getDocs(q);
@@ -189,6 +185,41 @@ export default class TeamService implements IService {
     await setDoc(
       docRef,
       { ...teamMember, lastUpdatedDate: serverTimestamp() },
+      { merge: true }
+    );
+  }
+
+  async createTeamInvite(teamMember: TeamMember) {
+    // if a person was already invited, then update that record, otherwise create a new one
+    const existingTeamMember = await this.getTeamMemberByEmailInvite(
+      teamMember.teamId,
+      teamMember.inviteEmailAddress
+    );
+
+    if (!existingTeamMember) {
+      const teamMemberRef = await addDoc(
+        collection(this.db, Collections.teamMembers),
+        {
+          ...teamMember,
+          createdDate: serverTimestamp(),
+        }
+      );
+
+      return;
+    }
+
+    // just update the current user to active since we are activating again
+    await this.updateTeamMemberStatus(
+      existingTeamMember.id,
+      TeamMemberStatus.invited
+    );
+  }
+
+  async updateTeamMemberStatus(teamMemberId: string, status: TeamMemberStatus) {
+    const docRef = doc(this.db, Collections.teamMembers, teamMemberId);
+    await setDoc(
+      docRef,
+      { status, lastUpdatedDate: serverTimestamp() },
       { merge: true }
     );
   }

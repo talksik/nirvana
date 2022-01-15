@@ -38,13 +38,12 @@ export default class UserService {
     }
   }
 
-  async getUserRealtime(
-    userId: string,
-    handleDataFetch: (doc: DocumentSnapshot) => void
-  ): Promise<Unsubscribe> {
+  async getUserRealtime(userId: string): Promise<Unsubscribe> {
     const docRef = doc(this.db, Collections.users, userId);
 
-    const unsub = onSnapshot(docRef, handleDataFetch);
+    const unsub = onSnapshot(docRef, (doc) => {
+      console.log(doc.data());
+    });
 
     return unsub;
   }

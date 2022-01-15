@@ -6,11 +6,19 @@ import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
 import { User, UserStatus } from "../../models/user";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { TeamMemberRole } from "../../models/teamMember";
+import { TeamMemberRole, TeamMemberStatus } from "../../models/teamMember";
 import UserService from "../../services/userService";
-import { DocumentSnapshot, Unsubscribe } from "firebase/firestore";
+import {
+  doc,
+  DocumentSnapshot,
+  getFirestore,
+  onSnapshot,
+  Unsubscribe,
+} from "firebase/firestore";
+import { Collections } from "../../services/collections";
 
 const userService = new UserService();
+const db = getFirestore();
 
 function statusBubble(status: UserStatus) {
   console.log(status);
@@ -72,31 +80,18 @@ export default function TeamVoiceLine() {
       try {
         // listeners for all teammates' status
         if (teamMembers) {
-          teamMembers.forEach(async (tmember) => {
-            const unsub = await userService.getUserRealtime(
-              tmember.userId,
-              (doc: DocumentSnapshot) => {
-                // setTeamUsers((prevTeamUsers) => ({
-                //   ...prevTeamUsers,
-                // }));
+          teamMembers.map((tmember) => {
+            if (tmember.status == TeamMemberStatus.activated) {
+              const docRef = doc(this.db, Collections.users, tmember.userId);
 
-                // updated user
-                const updatedUser = doc.data() as User;
+              const unsub = onSnapshot(docRef, (doc) => {
+                console.log(doc.data());
+              });
 
-                // update the teamUsers array in state
-                const newUsers: User[] = teamUsers.map((user, i) => {
-                  if (user.id == updatedUser.id) {
-                    return updatedUser;
-                  }
+              unsubs.push(unsub);
+            }
 
-                  return user;
-                });
-
-                setTeamUsers(newUsers);
-              }
-            );
-
-            unsubs.push(unsub);
+            return;
           });
         }
       } catch (error) {

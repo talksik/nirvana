@@ -105,7 +105,7 @@ export default function Header() {
 
           <span className="text-sky-700 bg-sky-200 p-1 rounded-md text-xs font-bold mt-2 flex flex-row items-center space-x-1">
             <FaClock />
-            <Moment format="h:m a" />
+            <Moment format="h:mm a" />
           </span>
         </span>
       </span>

@@ -119,15 +119,17 @@ export function TeamDashboardContextProvider({ children }) {
         }
 
         // SECTION: get all teammembers for team, will have listeners in other subcomponents
-        const teamMembers = await teamService.getTeamMembersByTeamIdNotUser(
-          returnedTeam.id,
-          currUser.uid
+        var teamMembers: TeamMember[] =
+          await teamService.getTeamMembersByTeamId(returnedTeam.id);
+
+        teamMembers = teamMembers.filter(
+          (element) => element.userId != currUser.uid
         );
 
         setValue((prevValue) => ({ ...prevValue, teamMembers }));
       } catch (error) {
         console.log(error);
-        router.push("/teams/login");
+        router.push("/teams/landing");
       }
 
       setLoading(false);
