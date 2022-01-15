@@ -68,6 +68,9 @@ export default function Profile() {
     } else if (nickname.length > 22) {
       setError("nickname must be less than 22 characters");
       return;
+    } else if (!teamRole) {
+      setError("Must input team role!");
+      return;
     }
 
     // create the user in the backend or just merge results
@@ -77,6 +80,7 @@ export default function Profile() {
     newUser.lastName = lastName;
     newUser.nickName = nickname;
     newUser.avatarUrl = currUser.photoURL;
+    newUser.teamRole = teamRole;
 
     try {
       await userService.updateUser(newUser);
@@ -93,11 +97,12 @@ export default function Profile() {
   );
   const [lastName, setLastName] = useState<string>("");
   const [nickname, setNickname] = useState<string>("");
+  const [teamRole, setTeamRole] = useState<string>("");
   const [error, setError] = useState<string>("");
 
   return (
     <form
-      className="container mx-auto flex flex-col max-w-md m-10 bg-white p-10 rounded-lg shadow-md space-y-5"
+      className="container mx-auto max-w-screen-sm flex flex-col m-10 bg-white p-10 rounded-lg shadow-md space-y-5"
       onSubmit={handleSubmit}
     >
       {/* header */}
@@ -132,38 +137,55 @@ export default function Profile() {
         />
       </span>
 
-      <span className="flex flex-col items-start">
-        <span className="text-md">First Name</span>
-        <span className="text-gray-300 text-xs mb-2"></span>
-        <input
-          placeholder="ex. John"
-          className="w-full rounded-lg bg-gray-50 p-3"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-        />
-      </span>
+      <div className="flex flex-row justify-between space-x-3">
+        <span className="flex flex-col items-start flex-1">
+          <span className="text-md">First Name</span>
+          <span className="text-gray-300 text-xs mb-2"></span>
+          <input
+            placeholder="ex. John"
+            className="w-full rounded-lg bg-gray-50 p-3"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+        </span>
 
-      <span className="flex flex-col items-start">
-        <span className="text-md">Last Name</span>
-        <span className="text-gray-300 text-xs mb-2"></span>
-        <input
-          placeholder="ex. Brown"
-          className="w-full rounded-lg bg-gray-50 p-3"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-        />
-      </span>
+        <span className="flex flex-col items-start flex-1">
+          <span className="text-md">Last Name</span>
+          <span className="text-gray-300 text-xs mb-2"></span>
+          <input
+            placeholder="ex. Brown"
+            className="w-full rounded-lg bg-gray-50 p-3"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
+        </span>
+      </div>
+
+      <Divider />
 
       <span className="flex flex-col items-start">
         <span className="text-md">Nickname</span>
         <span className="text-gray-300 text-xs mb-2">
-          What does your team call you?
+          What does your team call you? This is what is displayed.
         </span>
         <input
           placeholder="ex. nicky"
           className="w-full rounded-lg bg-gray-50 p-3"
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
+        />
+      </span>
+
+      <span className="flex flex-col items-start">
+        <span className="text-md">Role</span>
+        <span className="text-gray-300 text-xs mb-2">
+          Are you a developer? designer? manager?
+        </span>
+        <input
+          placeholder="ex. designer"
+          className="w-full rounded-lg bg-gray-50 p-3"
+          value={teamRole}
+          onChange={(e) => setTeamRole(e.target.value)}
         />
       </span>
 

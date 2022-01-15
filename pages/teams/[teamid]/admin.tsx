@@ -109,11 +109,8 @@ function TeamAdmin() {
         team.companySite = companySite;
       }
 
-      // check again that the team has allowed count of people
-
-      // create invites for new people
-
       // update team name and company site if it changed
+      await teamService.updateTeam(team);
 
       // take user back to team dashboard
       router.push("/teams/" + team.id);

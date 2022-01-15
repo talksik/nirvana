@@ -52,6 +52,15 @@ export default class TeamService implements IService {
     return teamDocRef.id;
   }
 
+  async updateTeam(team: Team) {
+    const docRef = doc(this.db, Collections.teams, team.id);
+    await setDoc(
+      docRef,
+      { ...team, lastUpdatedDate: serverTimestamp() },
+      { merge: true }
+    );
+  }
+
   async getTeam(teamId: string): Promise<Team | null> {
     const docRef = doc(this.db, Collections.teams, teamId);
     const docSnap = await getDoc(docRef);

@@ -173,7 +173,7 @@ export default function TeamVoiceLine() {
             </span>
 
             <span className={"text-xs span-sans text-gray-300"}>
-              {tmember.firstName + " " + tmember.lastName}
+              {tmember.teamRole}
             </span>
           </span>
 

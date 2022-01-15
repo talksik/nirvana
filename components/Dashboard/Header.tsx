@@ -12,6 +12,7 @@ import {
   FaPeopleCarry,
   FaAngleDown,
   FaCheck,
+  FaDatabase,
 } from "react-icons/fa";
 import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
 import router from "next/router";
@@ -77,6 +78,12 @@ export default function Header() {
 
   const TeamsMenu = (
     <Menu key={2} title="teams">
+      <Menu.Item key={1} icon={<FaDatabase />}>
+        <button onClick={handleAdminRoute}>Admin</button>
+      </Menu.Item>
+
+      <Menu.Divider />
+
       {/* all current teams that this person is a part of */}
       {usersTeams &&
         usersTeams.map((uteam, i) => {
@@ -100,6 +107,7 @@ export default function Header() {
 
       <Menu.Divider />
 
+      {/* create TEAM */}
       <Menu.Item key={"createteam"} icon={<FaPeopleCarry />}>
         <button
           onClick={(e) => {
@@ -107,19 +115,13 @@ export default function Header() {
             router.push("/teams/create");
           }}
         >
-          create team
+          Create Team
         </button>
       </Menu.Item>
     </Menu>
   );
   const UserMenu = (
     <Menu title="user menu">
-      <Menu.Item key={1}>
-        <button onClick={handleAdminRoute}>Admin</button>
-      </Menu.Item>
-
-      <Menu.Divider />
-
       <Menu.Item key={2}>
         <button
           onClick={(e) => {
@@ -192,7 +194,6 @@ export default function Header() {
         <FaBell className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
         <FaHeadphonesAlt className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
         <FaMicrophoneAlt className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
-        <FaTh className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
 
         {/* teams menu */}
 

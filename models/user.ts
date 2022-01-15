@@ -1,33 +1,41 @@
-import { documentId, Firestore, serverTimestamp, Timestamp } from "firebase/firestore";
+import {
+  documentId,
+  Firestore,
+  serverTimestamp,
+  Timestamp,
+} from "firebase/firestore";
 import IFirestoreSerializable from "./firestoreSerializable";
 
 export class User {
-    id: string;
-    emailAddress: string;
-    nickName: string;
-    firstName: string;
-    lastName: string;
-    avatarUrl: string;
-    userStatus: UserStatus
+  id: string;
+  emailAddress: string;
+  nickName: string;
+  firstName: string;
+  lastName: string;
+  avatarUrl: string;
+  userStatus: UserStatus;
 
-    createdDate: Timestamp;
-    lastUpdatedDate: Timestamp;
+  /**designer? dev? */
+  teamRole: string;
 
-    // serialize() {
-    //     return {            
-    //         createdDate: Timestamp.fromDate(this.createdDate),
-    //         lastUpdatedDate: Timestamp.fromDate(this.lastUpdatedDate)
-    //     }
-    // }
+  createdDate: Timestamp;
+  lastUpdatedDate: Timestamp;
 
-    // deserialize(firestoreData: {}) {
-    //     this.lastUpdatedDate = firestoreData.lastUpdatedDate.toDate()
-    // }
+  // serialize() {
+  //     return {
+  //         createdDate: Timestamp.fromDate(this.createdDate),
+  //         lastUpdatedDate: Timestamp.fromDate(this.lastUpdatedDate)
+  //     }
+  // }
+
+  // deserialize(firestoreData: {}) {
+  //     this.lastUpdatedDate = firestoreData.lastUpdatedDate.toDate()
+  // }
 }
 
 export enum UserStatus {
-    online = "online",
-    offline = "offline",
-    inCall = "in call",
-    busy = "busy"
+  online = "online",
+  offline = "offline",
+  inCall = "in call",
+  busy = "busy",
 }
