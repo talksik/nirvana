@@ -32,9 +32,10 @@ export default function Header() {
     try {
       await logOut();
 
-      router.push("/teams");
+      router.push("/teams/landing");
     } catch (error) {
       console.log(error);
+      toast.error("Unable to log out!");
     }
   }
 

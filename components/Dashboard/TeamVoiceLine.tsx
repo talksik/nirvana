@@ -38,7 +38,7 @@ function statusBubble(status: UserStatus) {
       );
     default:
       return (
-        <span className="absolute top-0 right-0 w-3 h-3 bg-green-400 rounded-full"></span>
+        <span className="absolute top-0 right-0 w-3 h-3 bg-gray-400 rounded-full"></span>
       );
   }
 }
@@ -59,7 +59,7 @@ function renderPulse(status: UserStatus) {
       );
     default:
       return (
-        <IoPulseOutline className="text-green-400 text-2xl animate-pulse mx-2 ml-auto" />
+        <IoPulseOutline className="text-gray-400 text-2xl animate-pulse mx-2 ml-auto" />
       );
   }
 }
@@ -82,10 +82,19 @@ export default function TeamVoiceLine() {
         if (teamMembers) {
           teamMembers.map((tmember) => {
             if (tmember.status == TeamMemberStatus.activated) {
-              const docRef = doc(this.db, Collections.users, tmember.userId);
+              const docRef = doc(db, Collections.users, tmember.userId);
 
               const unsub = onSnapshot(docRef, (doc) => {
-                console.log(doc.data());
+                const updatedteamMateUser = doc.data() as User;
+
+                setTeamUsers((prevTeamUsers) => {
+                  const newTeamUsers = prevTeamUsers.filter(
+                    (tm) => tm.id != updatedteamMateUser.id
+                  );
+                  newTeamUsers.push(updatedteamMateUser);
+
+                  return newTeamUsers;
+                });
               });
 
               unsubs.push(unsub);
@@ -97,7 +106,7 @@ export default function TeamVoiceLine() {
       } catch (error) {
         console.log(error);
         toast.error("Something went wrong");
-        router.push("/teams/login");
+        router.push("/teams/landing");
       }
 
       setLoading(false);
@@ -136,7 +145,7 @@ export default function TeamVoiceLine() {
       return <span className="text-gray-300">Please add team members.</span>;
     }
 
-    return teamMembers.map((tmember, i) => {
+    return teamUsers.map((tmember, i) => {
       return (
         <span
           key={i}
@@ -147,24 +156,28 @@ export default function TeamVoiceLine() {
           <span className="relative flex mr-2">
             <span className="bg-gray-200 bg-opacity-30 rounded-full shadow-md absolute w-full h-full"></span>
 
-            {statusBubble(UserStatus.online)}
+            {statusBubble(tmember.userStatus)}
 
-            <img src={""} alt="asdf" className="rounded-full w-12" />
+            <img
+              src={tmember.avatarUrl}
+              alt="asdf"
+              className="rounded-full w-12"
+            />
           </span>
 
           <span className="flex flex-col mr-10">
             <span className="flex flex-row items-center space-x-2">
               <span className="text-sm text-white font-bold">
-                {tmember.inviteEmailAddress}
+                {tmember.nickName}
               </span>
             </span>
 
             <span className={"text-xs span-sans text-gray-300"}>
-              {tmember.role}
+              {tmember.firstName + " " + tmember.lastName}
             </span>
           </span>
 
-          {renderPulse(UserStatus.online)}
+          {renderPulse(tmember.userStatus)}
         </span>
       );
     });

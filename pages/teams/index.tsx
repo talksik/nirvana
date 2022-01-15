@@ -40,7 +40,7 @@ function RouteHandler() {
         const returnedUser: User | null = await userService.getUser(
           currUser.uid
         );
-        console.log(returnedUser);
+
         // if user has no profile, then go to create profile
         if (
           !returnedUser ||
@@ -57,6 +57,7 @@ function RouteHandler() {
         const returnedTeamMembers = await teamService.getTeamMembersByUserId(
           currUser.uid
         );
+        console.log(returnedTeamMembers);
         // if the user is deleted from a team, don't let them go there
         returnedTeamMembers.map((tm) => {
           if (tm.status != TeamMemberStatus.deleted) {
@@ -67,12 +68,12 @@ function RouteHandler() {
             return;
           }
         });
+
+        setLoading(false);
       } catch (error) {
         console.log(error);
         router.push("/teams/login");
       }
-
-      setLoading(false);
     })();
   }, [currUser]);
 
