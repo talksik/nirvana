@@ -12,7 +12,7 @@ function MyApp({ Component, pageProps }) {
         <Component {...pageProps} />
       </AuthProvider>
 
-      <Toaster />
+      <Toaster position="top-center" />
     </SiteLayout>
   );
 }

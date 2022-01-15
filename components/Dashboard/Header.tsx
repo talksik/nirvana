@@ -18,6 +18,7 @@ import { generateGreetings } from "../../helpers/dateTime";
 import { Dropdown, Menu } from "antd";
 import { useRouter } from "next/router";
 import { TeamMemberRole, TeamMemberStatus } from "../../models/teamMember";
+import { toast } from "react-hot-toast";
 
 export default function Header() {
   const { logOut } = useAuth();
@@ -37,15 +38,20 @@ export default function Header() {
     }
   }
 
+  async function handleAdminRoute() {
+    if (userTeamMember.role == TeamMemberRole.admin) {
+      router.push("/teams/" + teamid + "/admin");
+      return;
+    }
+
+    toast.error("You are not a team admin!");
+  }
+
   const UserMenu = (
     <Menu>
-      {userTeamMember.role == TeamMemberRole.admin && (
-        <Menu.Item key={1}>
-          <button onClick={() => router.push("/teams/" + teamid + "/admin")}>
-            manage team
-          </button>
-        </Menu.Item>
-      )}
+      <Menu.Item key={1}>
+        <button onClick={handleAdminRoute}>manage team</button>
+      </Menu.Item>
 
       <Menu.Item danger key={2}>
         <button onClick={handleSignOut}>sign out</button>

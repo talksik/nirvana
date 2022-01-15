@@ -5,14 +5,26 @@ import { BsThreeDots } from "react-icons/bs";
 import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
 import { UserStatus } from "../../models/user";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
+import { TeamMemberRole } from "../../models/teamMember";
 
 export default function TeamVoiceLine() {
   const router = useRouter();
   const { teamid } = router.query;
+  const { team, user, userTeamMember } = useTeamDashboardContext();
   const { teamMembers } = useTeamDashboardContext();
   const [loading, setLoading] = useState<Boolean>(true);
 
   //listeners for all teammates' status
+
+  async function handleAdminRoute() {
+    if (userTeamMember.role == TeamMemberRole.admin) {
+      router.push("/teams/" + teamid + "/admin");
+      return;
+    }
+
+    toast.error("You are not a team admin!");
+  }
 
   function statusBubble(status: UserStatus) {
     console.log(status);
@@ -118,7 +130,7 @@ export default function TeamVoiceLine() {
         </span>
 
         <button
-          onClick={() => router.push("/team/" + teamid + "/admin")}
+          onClick={handleAdminRoute}
           className="bg-gray-300 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40"
         >
           <FaPlus className="text-lg text-white" />
