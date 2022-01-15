@@ -1,39 +1,69 @@
 import { User as FirUser } from "firebase/auth";
-import { Firestore, getFirestore, doc, getDoc, setDoc, Timestamp, serverTimestamp } from "firebase/firestore";
-import { User } from '../models/user'
+import {
+  Firestore,
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  Timestamp,
+  serverTimestamp,
+  onSnapshot,
+  Unsubscribe,
+  DocumentSnapshot,
+} from "firebase/firestore";
+import { User } from "../models/user";
 import { Collections } from "./collections";
 
 export default class UserService {
-  private db : Firestore = getFirestore()
+  private db: Firestore = getFirestore();
 
   // give back the avatar based on the person's google account avatar
   getUserAvatar(displayName: string) {
-    return `https://ui-avatars.com/api/?name=${displayName}`
+    return `https://ui-avatars.com/api/?name=${displayName}`;
   }
 
-  async getUser(userId: string) : Promise<User | null> {
+  async getUser(userId: string): Promise<User | null> {
     const docRef = doc(this.db, Collections.users, userId);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      console.log('got user data')
-      let user: User = docSnap.data() as User
-      return user
+      console.log("got user data");
+      let user: User = docSnap.data() as User;
+      return user;
     } else {
       // doc.data() will be undefined in this case
       console.log("user not found!");
-      
-      return null
+
+      return null;
     }
+  }
+
+  async getUserRealtime(
+    userId: string,
+    handleDataFetch: (doc: DocumentSnapshot) => void
+  ): Promise<Unsubscribe> {
+    const docRef = doc(this.db, Collections.users, userId);
+
+    const unsub = onSnapshot(docRef, handleDataFetch);
+
+    return unsub;
   }
 
   async createUser(userId: string, emailAddress: string, avatarUrl: string) {
     const docRef = doc(this.db, Collections.users, userId);
-    await setDoc(docRef, { emailAddress, avatarUrl, createdDate: serverTimestamp() }, { merge: true })
+    await setDoc(
+      docRef,
+      { emailAddress, avatarUrl, createdDate: serverTimestamp() },
+      { merge: true }
+    );
   }
 
   async updateUser(user: User) {
     const docRef = doc(this.db, Collections.users, user.id);
-    await setDoc(docRef, { ...user, lastUpdatedDate: serverTimestamp() }, { merge: true })
+    await setDoc(
+      docRef,
+      { ...user, lastUpdatedDate: serverTimestamp() },
+      { merge: true }
+    );
   }
 }

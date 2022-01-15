@@ -158,10 +158,14 @@ export default class TeamService implements IService {
     return teamMembers;
   }
 
-  async getTeamMembersByTeamId(teamId: string): Promise<TeamMember[]> {
+  async getTeamMembersByTeamIdNotUser(
+    teamId: string,
+    userId: string
+  ): Promise<TeamMember[]> {
     const q = query(
       collection(this.db, Collections.teamMembers),
-      where("teamId", "==", teamId)
+      where("teamId", "==", teamId),
+      where("userId", "!=", userId)
     );
 
     const querySnapshot = await getDocs(q);

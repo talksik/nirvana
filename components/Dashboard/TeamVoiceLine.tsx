@@ -3,19 +3,115 @@ import { FaPlus } from "react-icons/fa";
 import { IoPulseOutline, IoRemoveOutline, IoTimer } from "react-icons/io5";
 import { BsThreeDots } from "react-icons/bs";
 import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
-import { UserStatus } from "../../models/user";
-import { useState } from "react";
+import { User, UserStatus } from "../../models/user";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { TeamMemberRole } from "../../models/teamMember";
+import UserService from "../../services/userService";
+import { DocumentSnapshot, Unsubscribe } from "firebase/firestore";
+
+const userService = new UserService();
+
+function statusBubble(status: UserStatus) {
+  console.log(status);
+
+  switch (status) {
+    case UserStatus.online:
+      return (
+        <span className="absolute top-0 right-0 w-3 h-3 bg-green-400 rounded-full"></span>
+      );
+    case UserStatus.busy:
+      return (
+        <span className="absolute top-0 right-0 w-3 h-3 bg-orange-400 rounded-full"></span>
+      );
+    case UserStatus.offline:
+      return (
+        <span className="absolute top-0 right-0 w-3 h-3 bg-gray-400 rounded-full"></span>
+      );
+    default:
+      return (
+        <span className="absolute top-0 right-0 w-3 h-3 bg-green-400 rounded-full"></span>
+      );
+  }
+}
+
+function renderPulse(status: UserStatus) {
+  switch (status) {
+    case UserStatus.online:
+      return (
+        <IoPulseOutline className="text-green-500 text-2xl animate-pulse mx-2 ml-auto" />
+      );
+    case UserStatus.busy:
+      return (
+        <IoPulseOutline className="text-orange-400 text-2xl animate-pulse mx-2 ml-auto" />
+      );
+    case UserStatus.offline:
+      return (
+        <IoRemoveOutline className="text-gray-400 text-2xl mx-2 ml-auto" />
+      );
+    default:
+      return (
+        <IoPulseOutline className="text-green-400 text-2xl animate-pulse mx-2 ml-auto" />
+      );
+  }
+}
 
 export default function TeamVoiceLine() {
   const router = useRouter();
   const { teamid } = router.query;
-  const { team, user, userTeamMember } = useTeamDashboardContext();
-  const { teamMembers } = useTeamDashboardContext();
+  const { team, user, userTeamMember, teamMembers } = useTeamDashboardContext();
   const [loading, setLoading] = useState<Boolean>(true);
 
-  //listeners for all teammates' status
+  const [teamUsers, setTeamUsers] = useState<User[]>([]);
+  const [count, setCount] = useState<number>(0);
+
+  useEffect(() => {
+    const unsubs: Unsubscribe[] = [];
+
+    (async function () {
+      try {
+        // listeners for all teammates' status
+        if (teamMembers) {
+          teamMembers.forEach(async (tmember) => {
+            const unsub = await userService.getUserRealtime(
+              tmember.userId,
+              (doc: DocumentSnapshot) => {
+                // setTeamUsers((prevTeamUsers) => ({
+                //   ...prevTeamUsers,
+                // }));
+
+                // updated user
+                const updatedUser = doc.data() as User;
+
+                // update the teamUsers array in state
+                const newUsers: User[] = teamUsers.map((user, i) => {
+                  if (user.id == updatedUser.id) {
+                    return updatedUser;
+                  }
+
+                  return user;
+                });
+
+                setTeamUsers(newUsers);
+              }
+            );
+
+            unsubs.push(unsub);
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong");
+        router.push("/teams/login");
+      }
+
+      setLoading(false);
+    })();
+
+    return () => {
+      unsubs.map((listener) => listener());
+    };
+  }, []);
 
   async function handleAdminRoute() {
     if (userTeamMember.role == TeamMemberRole.admin) {
@@ -24,50 +120,6 @@ export default function TeamVoiceLine() {
     }
 
     toast.error("You are not a team admin!");
-  }
-
-  function statusBubble(status: UserStatus) {
-    console.log(status);
-
-    switch (status) {
-      case UserStatus.online:
-        return (
-          <span className="absolute top-0 right-0 w-3 h-3 bg-green-400 rounded-full"></span>
-        );
-      case UserStatus.busy:
-        return (
-          <span className="absolute top-0 right-0 w-3 h-3 bg-orange-400 rounded-full"></span>
-        );
-      case UserStatus.offline:
-        return (
-          <span className="absolute top-0 right-0 w-3 h-3 bg-gray-400 rounded-full"></span>
-        );
-      default:
-        return (
-          <span className="absolute top-0 right-0 w-3 h-3 bg-green-400 rounded-full"></span>
-        );
-    }
-  }
-
-  function renderPulse(status: UserStatus) {
-    switch (status) {
-      case UserStatus.online:
-        return (
-          <IoPulseOutline className="text-green-500 text-2xl animate-pulse mx-2 ml-auto" />
-        );
-      case UserStatus.busy:
-        return (
-          <IoPulseOutline className="text-orange-400 text-2xl animate-pulse mx-2 ml-auto" />
-        );
-      case UserStatus.offline:
-        return (
-          <IoRemoveOutline className="text-gray-400 text-2xl mx-2 ml-auto" />
-        );
-      default:
-        return (
-          <IoPulseOutline className="text-green-400 text-2xl animate-pulse mx-2 ml-auto" />
-        );
-    }
   }
 
   function renderTeamMemberList() {
@@ -85,7 +137,8 @@ export default function TeamVoiceLine() {
     }
 
     // if not teammates, stale state message to tell admin to add people
-    if (!teamMembers.length) {
+    if (!teamUsers.length) {
+      return <span className="text-gray-300">Please add team members.</span>;
     }
 
     return teamMembers.map((tmember, i) => {
