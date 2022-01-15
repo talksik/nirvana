@@ -99,23 +99,25 @@ function TeamAdmin() {
     }
 
     try {
-      const team = new Team();
-      team.name = teamName;
-      team.createdByUserId = user.id;
-      team.status = TeamStatus.created;
+      const updatedTeam = new Team();
+      updatedTeam.id = team.id;
+      updatedTeam.name = teamName;
+      updatedTeam.createdByUserId = user.id;
+      updatedTeam.status = TeamStatus.created;
 
       if (companySite != initialSite) {
         // make sure to put null in database for the team
-        team.companySite = companySite;
+        updatedTeam.companySite = companySite;
       }
 
       // update team name and company site if it changed
-      await teamService.updateTeam(team);
+      await teamService.updateTeam(updatedTeam);
 
       // take user back to team dashboard
       router.push("/teams/" + team.id);
     } catch (error) {
       setError(error.message);
+      console.log(error);
     }
 
     setLoading(false);

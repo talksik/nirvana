@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaExternalLinkAlt, FaLink } from "react-icons/fa";
 import { IoPulseOutline, IoRemoveOutline, IoTimer } from "react-icons/io5";
+import { MdScreenShare } from "react-icons/md";
 import { BsThreeDots } from "react-icons/bs";
 import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
 import { User, UserStatus } from "../../models/user";
@@ -16,13 +17,13 @@ import {
   Unsubscribe,
 } from "firebase/firestore";
 import { Collections } from "../../services/collections";
+import { KeyCode } from "../../globals/keycode";
+import { Tooltip } from "antd";
 
 const userService = new UserService();
 const db = getFirestore();
 
 function statusBubble(status: UserStatus) {
-  console.log(status);
-
   switch (status) {
     case UserStatus.online:
       return (
@@ -64,6 +65,8 @@ function renderPulse(status: UserStatus) {
   }
 }
 
+const maxNumberOfKeyboardMappings: number = 9;
+
 export default function TeamVoiceLine() {
   const router = useRouter();
   const { teamid } = router.query;
@@ -102,6 +105,9 @@ export default function TeamVoiceLine() {
 
             return;
           });
+
+          document.addEventListener("keypress", handleKeyboardShortcut);
+          document.addEventListener("keydown", handleRecording);
         }
       } catch (error) {
         console.log(error);
@@ -114,6 +120,9 @@ export default function TeamVoiceLine() {
 
     return () => {
       unsubs.map((listener) => listener());
+
+      document.removeEventListener("keypress", handleKeyboardShortcut);
+      document.removeEventListener("keydown", handleRecording);
     };
   }, []);
 
@@ -124,6 +133,40 @@ export default function TeamVoiceLine() {
     }
 
     toast.error("You are not a team admin!");
+  }
+
+  // SECTION: set up for shortcuts and recording and such
+  const [selectedTeammate, setSelectedTeammate] = useState<string>(); // id of selected teammate
+
+  const shortcutMappings = new Map(); // keycode number to the user id
+  teamUsers.forEach((tmUser, i) => {
+    // make sure we don't map a user if they are past the max allowed
+    if (i < maxNumberOfKeyboardMappings) {
+      let shortcut: number = i + 49; // 49 is what number 1 is on the keyboard
+      shortcutMappings.set(shortcut, tmUser.id);
+    }
+  });
+
+  function handleRecording(event) {
+    // recording
+    if (event.keyCode == KeyCode.R) {
+      console.log("recording");
+    }
+  }
+
+  function handleKeyboardShortcut(event) {
+    console.log(event.keyCode);
+
+    // if we have a valid user for such a shortcut, then go ahead...otherwise
+    if (shortcutMappings.has(event.keyCode)) {
+      setSelectedTeammate(shortcutMappings.get(event.keyCode));
+    } else if (event.keyCode == KeyCode.Escape) {
+      setSelectedTeammate(null);
+    } else {
+      console.log("Invalid teammate selection.");
+    }
+
+    // todo if we press the same shortcut twice, deactive selected user
   }
 
   function renderTeamMemberList() {
@@ -148,10 +191,11 @@ export default function TeamVoiceLine() {
     return teamUsers.map((tmember, i) => {
       return (
         <span
+          onClick={() => setSelectedTeammate(tmember.id)}
           key={i}
-          className={
-            "flex flex-row items-center py-2 px-2 justify-items-start ease-in-out duration-300"
-          }
+          className={`rounded flex flex-row items-center py-2 px-2 justify-items-start ease-in-out duration-300 hover:cursor-pointer ${
+            tmember.id == selectedTeammate ? "bg-white scale-150" : ""
+          }`}
         >
           <span className="relative flex mr-2">
             <span className="bg-gray-200 bg-opacity-30 rounded-full shadow-md absolute w-full h-full"></span>
@@ -166,18 +210,58 @@ export default function TeamVoiceLine() {
           </span>
 
           <span className="flex flex-col mr-10">
-            <span className="flex flex-row items-center space-x-2">
-              <span className="text-sm text-white font-bold">
-                {tmember.nickName}
-              </span>
-            </span>
+            {tmember.id == selectedTeammate ? (
+              <>
+                <span className="flex flex-row items-center space-x-2">
+                  <span className="text-sm text-black font-bold">
+                    {tmember.nickName}
+                  </span>
+                </span>
 
-            <span className={"text-xs span-sans text-gray-300"}>
-              {tmember.teamRole}
-            </span>
+                <span className={"text-xs span-sans text-gray-500"}>
+                  {tmember.teamRole}
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="flex flex-row items-center space-x-2">
+                  <span className="text-sm text-white font-bold">
+                    {tmember.nickName}
+                  </span>
+                </span>
+
+                <span className={"text-xs span-sans text-gray-300"}>
+                  {tmember.teamRole}
+                </span>
+              </>
+            )}
           </span>
 
-          {renderPulse(tmember.userStatus)}
+          {tmember.id == selectedTeammate ? (
+            <>
+              <Tooltip title="send link">
+                <button className="ml-auto bg-gray-400 bg-opacity-80 p-2 rounded hover:bg-opacity-100">
+                  <FaLink className="text-sm text-white" />
+                </button>
+              </Tooltip>
+
+              <Tooltip title="send video recording">
+                <button className="ml-2 bg-gray-400 bg-opacity-80 p-2 rounded hover:bg-opacity-100">
+                  <MdScreenShare className="text-sm text-white" />
+                </button>
+              </Tooltip>
+
+              <Tooltip title="press and hold R to send audio message">
+                <button className="ml-2 w-10 h-10 border-orange-400 border-2 bg-opacity-80 p-2 rounded hover:bg-opacity-100">
+                  <span className="text-sm text-orange-500 font-bold">R</span>
+                </button>
+              </Tooltip>
+
+              <BsThreeDots className="text-black ml-2 hover:cursor-pointer" />
+            </>
+          ) : (
+            <>{renderPulse(tmember.userStatus)}</>
+          )}
         </span>
       );
     });
