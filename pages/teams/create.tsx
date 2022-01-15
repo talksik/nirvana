@@ -112,7 +112,10 @@ export default function CreateTeam() {
 
       <span className="flex flex-row justify-end space-x-2">
         <button
-          onClick={() => router.push("/teams")}
+          onClick={(e) => {
+            e.preventDefault();
+            router.push("/teams");
+          }}
           className="bg-gray-100 py-2 px-5 rounded text-gray-400"
         >
           Cancel

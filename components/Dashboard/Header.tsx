@@ -9,6 +9,7 @@ import {
   FaBuilding,
   FaCalendarDay,
   FaClock,
+  FaPeopleCarry,
 } from "react-icons/fa";
 import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
 import router from "next/router";
@@ -19,12 +20,38 @@ import { Dropdown, Menu } from "antd";
 import { useRouter } from "next/router";
 import { TeamMemberRole, TeamMemberStatus } from "../../models/teamMember";
 import { toast } from "react-hot-toast";
+import SubMenu from "antd/lib/menu/SubMenu";
+import { useEffect, useState } from "react";
+import TeamService from "../../services/teamService";
+import { Team } from "../../models/team";
+import Loading from "../Loading";
+
+const teamService = new TeamService();
 
 export default function Header() {
-  const { logOut } = useAuth();
+  const { currUser, logOut } = useAuth();
   const { team, user, userTeamMember } = useTeamDashboardContext();
   const router = useRouter();
   const { teamid } = router.query;
+
+  const [usersTeams, setUserTeams] = useState<Team[]>(null);
+  console.log("rendering");
+  console.log(usersTeams);
+
+  useEffect(() => {
+    (async function () {
+      try {
+        // get all the teams that this user is part of
+        const newTeams: Team[] =
+          await teamService.getActiveOrInvitedTeamsbyUser(currUser.uid);
+        console.log(newTeams);
+        setUserTeams(newTeams);
+      } catch (error) {
+        console.log("problem getting teams of this user");
+        toast.error("problem on load");
+      }
+    })();
+  }, []);
 
   async function handleSignOut() {
     console.log("clicked log out button");
@@ -51,10 +78,41 @@ export default function Header() {
   const UserMenu = (
     <Menu>
       <Menu.Item key={1}>
-        <button onClick={handleAdminRoute}>manage team</button>
+        <button onClick={handleAdminRoute}>admin</button>
       </Menu.Item>
 
-      <Menu.Item danger key={2}>
+      <SubMenu key={2} title="teams">
+        {/* all current teams that this person is a part of */}
+        {usersTeams &&
+          usersTeams.map((team, i) => {
+            return (
+              <Menu.Item key={i + 5}>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    console.log("going to " + team.name);
+                    router.push("/teams/" + team.id);
+                  }}
+                >
+                  {team.name}
+                </button>
+              </Menu.Item>
+            );
+          })}
+
+        <Menu.Item key={"createteam"} icon={<FaPeopleCarry />}>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              router.push("/teams/create");
+            }}
+          >
+            create team
+          </button>
+        </Menu.Item>
+      </SubMenu>
+
+      <Menu.Item danger key={3}>
         <button onClick={handleSignOut}>sign out</button>
       </Menu.Item>
     </Menu>
@@ -87,6 +145,7 @@ export default function Header() {
   return (
     <section className="flex-1 flex flex-row items-center justify-between py-5">
       {/* welcome message */}
+      {usersTeams && usersTeams.length}
       <span className="flex flex-col items-baseline">
         <span className="font-bold text-xl text-white capitalize ">
           👋Hey {user.firstName}, {periodOfDay}!
@@ -121,7 +180,7 @@ export default function Header() {
         <FaTh className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
 
         {/* avatar */}
-        <Dropdown overlay={UserMenu}>
+        <Dropdown overlay={UserMenu} trigger={["click"]}>
           <span className="relative flex hover:cursor-pointer">
             <span className="bg-gray-200 bg-opacity-30 rounded-full shadow-md absolute w-full h-full"></span>
             <span className="absolute top-0 right-0 w-3 h-3 bg-green-400 rounded-full"></span>

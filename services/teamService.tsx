@@ -248,4 +248,20 @@ export default class TeamService implements IService {
       { merge: true }
     );
   }
+
+  async getActiveOrInvitedTeamsbyUser(userId: string): Promise<Team[]> {
+    // get all of the teammember entries for the user
+    const userTeamMembers = await this.getTeamMembersByUserId(userId);
+
+    // traverse through and get the teams for each
+    var teams: Team[] = [];
+    userTeamMembers.map(async (tm) => {
+      if (tm.status != TeamMemberStatus.deleted) {
+        let team = await this.getTeam(tm.teamId);
+        teams.push(team);
+      }
+    });
+
+    return teams;
+  }
 }
