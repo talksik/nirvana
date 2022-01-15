@@ -80,7 +80,9 @@ export default function TeamVoiceLine() {
       try {
         // listeners for all teammates' status
         if (teamMembers) {
+          console.log(teamMembers);
           teamMembers.map((tmember) => {
+            console.log(tmember);
             if (tmember.status == TeamMemberStatus.activated) {
               const docRef = doc(db, Collections.users, tmember.userId);
 

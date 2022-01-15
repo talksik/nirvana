@@ -57,7 +57,7 @@ function RouteHandler() {
         const returnedTeamMembers = await teamService.getTeamMembersByUserId(
           currUser.uid
         );
-        console.log(returnedTeamMembers);
+
         // if the user is deleted from a team, don't let them go there
         var teamId = "";
         returnedTeamMembers.map((tm) => {
@@ -73,6 +73,15 @@ function RouteHandler() {
         if (teamId) {
           router.push("/teams/" + teamId);
           return;
+        }
+
+        // last chance, if they are invited to a team, check for it
+        const invitedTeamMember = await teamService.getTeamMembersByEmailInvite(
+          currUser.email
+        );
+
+        if (invitedTeamMember.length > 0) {
+          router.push("/teams/" + invitedTeamMember[0].teamId);
         }
 
         setLoading(false);
