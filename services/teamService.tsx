@@ -283,14 +283,12 @@ export default class TeamService implements IService {
     }
 
     var invitedToTeams: Promise<Team>[] = [];
-    if (userTeamMembersByEmail) {
-      invitedToTeams = userTeamMembersByEmail.map(async (tm) => {
-        if (tm.status != TeamMemberStatus.deleted) {
-          let team = await this.getTeam(tm.teamId);
-          return team;
-        }
+    invitedToTeams = userTeamMembersByEmail
+      .filter((tm) => tm.status == TeamMemberStatus.invited)
+      .map(async (tm) => {
+        let team = await this.getTeam(tm.teamId);
+        return team;
       });
-    }
 
     return Promise.all([...teams, ...invitedToTeams]);
   }
