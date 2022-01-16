@@ -38,7 +38,12 @@ yesterday.setDate(yesterday.getDate() - 1);
 
 export default function TeamVoiceLine() {
   const { currUser } = useAuth();
-  const audioContext = useAudioContext();
+  const {
+    addTeamShortcutBinding,
+    selectTeamMember,
+    selectedTeammate,
+    isRecording,
+  } = useAudioContext();
   const router = useRouter();
   const { teamid } = router.query;
   const { team, user, userTeamMember, teamMembers } = useTeamDashboardContext();
@@ -126,19 +131,21 @@ export default function TeamVoiceLine() {
 
             // update map of teammate to relevant messages
             setMessagesByTeamMate((prevMap) => {
+              console.log("settting state");
               // if the map contains the teammate userid already, then cool, just unshift to that array
+              const newMap = { ...prevMap };
               if (newMessage.receiverUserId in prevMap) {
-                prevMap[newMessage.receiverUserId] = [
+                newMap[newMessage.receiverUserId] = [
                   newMessage,
                   ...prevMap[newMessage.receiverUserId],
                 ];
               } // if this is the first relevant message linked to this receiver,
               //then create a new array
               else {
-                prevMap[newMessage.receiverUserId] = [newMessage];
+                newMap[newMessage.receiverUserId] = [newMessage];
               }
 
-              return prevMap
+              return newMap;
             });
           }
           if (change.type === "modified") {
@@ -154,7 +161,7 @@ export default function TeamVoiceLine() {
     return () => unsubscribe();
   }, []);
 
-  console.log(allMessages);
+  console.log(messagesByTeamMate);
 
   // set up shortcuts for each teammate
   useEffect(() => {
@@ -162,7 +169,7 @@ export default function TeamVoiceLine() {
       // make sure we don't map a user if they are past the max allowed
       if (i < maxNumberOfKeyboardMappings) {
         let shortcut: number = i + 49; // 49 is what number 1 is on the keyboard
-        audioContext.addTeamShortcutBinding(shortcut, tmUser.id);
+        addTeamShortcutBinding(shortcut, tmUser.id);
       }
     });
   }, [teamUsers]);
@@ -202,12 +209,10 @@ export default function TeamVoiceLine() {
     return teamUsers.map((tmember, i) => {
       return (
         <span
-          onClick={() => audioContext.selectTeamMember(tmember.id)}
+          onClick={() => selectTeamMember(tmember.id)}
           key={i}
           className={`rounded flex flex-row items-center py-2 px-2 justify-items-start ease-in-out duration-300 hover:cursor-pointer ${
-            tmember.id == audioContext.selectedTeammate
-              ? "bg-white scale-150 z-20"
-              : ""
+            tmember.id == selectedTeammate ? "bg-white scale-150 z-20" : ""
           }`}
         >
           <span className="relative flex mr-2">
@@ -223,7 +228,7 @@ export default function TeamVoiceLine() {
           </span>
 
           <span className="flex flex-col">
-            {tmember.id == audioContext.selectedTeammate ? (
+            {tmember.id == selectedTeammate ? (
               <>
                 <span className="flex flex-row items-center space-x-2">
                   <span className="text-xs text-black font-bold">
@@ -255,10 +260,10 @@ export default function TeamVoiceLine() {
             )}
           </span>
 
-          {tmember.id == audioContext.selectedTeammate ? (
+          {tmember.id == selectedTeammate ? (
             <>
               <Tooltip title="press and hold R to send audio message">
-                {audioContext.isRecording ? (
+                {isRecording ? (
                   <button className="ml-auto shadow-lg w-10 h-10 border-orange-400 bg-orange-400 bg-opacity-80 p-2 rounded hover:bg-opacity-100">
                     <span className="text-sm text-white font-bold">R</span>
                   </button>

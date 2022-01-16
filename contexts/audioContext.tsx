@@ -153,22 +153,28 @@ export default function AudioContextProvider({ children }) {
   // first load just force check if permissions enabled
   // through fake stream
   useEffect(() => {
-    navigator.mediaDevices
-      .getUserMedia({ audio: { deviceId: audioInputDeviceId } })
-      .then((stream) => {
-        // stop playing anything
-        stopBothVideoAndAudio(stream);
+    try {
+      // won't work in https!!!
+      navigator.mediaDevices
+        .getUserMedia({ audio: { deviceId: audioInputDeviceId } })
+        .then((stream) => {
+          // stop playing anything
+          stopBothVideoAndAudio(stream);
 
-        console.log("Permission Granted");
-        setHasRecPermit(true);
-      })
-      .catch((e) => {
-        console.log("Permission Denied");
-        toast.error(
-          "Please make sure that you have connected a microphone and given permissions."
-        );
-        setHasRecPermit(false);
-      });
+          console.log("Permission Granted");
+          setHasRecPermit(true);
+        })
+        .catch((e) => {
+          console.log("Permission Denied");
+          toast.error(
+            "Please make sure that you have connected a microphone and given permissions."
+          );
+          setHasRecPermit(false);
+        });
+    } catch (error) {
+      console.log(error);
+      toast.error("something went wrong");
+    }
   }, []);
 
   // set recording device
