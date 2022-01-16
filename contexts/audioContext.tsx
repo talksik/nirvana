@@ -99,10 +99,12 @@ export default function AudioContextProvider({ children }) {
   }
 
   function selectAudioOutput(deviceId: string) {
+    toast.success("Changed output device");
     setAudioOutputDevice(deviceId);
   }
 
   function selectAudioInput(deviceId: string) {
+    toast.success("Changed input device");
     setAudioInputDevice(deviceId);
   }
 

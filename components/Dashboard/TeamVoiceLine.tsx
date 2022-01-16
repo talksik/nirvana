@@ -166,7 +166,7 @@ export default function TeamVoiceLine() {
     return teamUsers.map((tmember, i) => {
       return (
         <span
-          onClick={() => audioContext.setSelectedTeamMember(tmember.id)}
+          onClick={() => audioContext.selectTeamMember(tmember.id)}
           key={i}
           className={`rounded flex flex-row items-center py-2 px-2 justify-items-start ease-in-out duration-300 hover:cursor-pointer ${
             tmember.id == audioContext.selectedTeammate

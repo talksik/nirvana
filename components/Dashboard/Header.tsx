@@ -178,6 +178,7 @@ export default function Header() {
           <Menu.Item
             key={device.deviceId}
             icon={device.deviceId == audioInputDeviceId ? <FaCheck /> : <></>}
+            onClick={() => selectAudioInput(device.deviceId)}
           >
             <button>{device.label}</button>
           </Menu.Item>
@@ -193,6 +194,7 @@ export default function Header() {
           <Menu.Item
             key={device.deviceId}
             icon={device.deviceId == audioOutputDeviceId ? <FaCheck /> : <></>}
+            onClick={() => selectAudioOutput(device.deviceId)}
           >
             <button>{device.label}</button>
           </Menu.Item>
