@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import CloudStorageService from "../services/cloudStorageService";
+import PowerPlayer from "../components/PowerPlayer";
 
 interface AudioContextInterface {
   selectedTeammate: string; // can only have one selected
@@ -335,8 +336,11 @@ export default function AudioContextProvider({ children }) {
   return (
     <AudioContext.Provider value={value}>
       {children}
-      {/* player for audio messages */}
 
+      {/* mega power mode viewer */}
+      <PowerPlayer />
+
+      {/* player for audio messages */}
       {startPlaying ? (
         <AudioPlayer
           autoPlay

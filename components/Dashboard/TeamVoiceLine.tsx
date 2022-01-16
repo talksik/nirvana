@@ -217,10 +217,7 @@ export default function TeamVoiceLine() {
         </span>
 
         <Tooltip title="power playback mode">
-          <button
-            onClick={handleAdminRoute}
-            className="bg-gray-300 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40"
-          >
+          <button className="bg-gray-300 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40">
             <FaBackward className="text-lg text-white" />
           </button>
         </Tooltip>
