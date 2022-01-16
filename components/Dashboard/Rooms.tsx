@@ -1,11 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { FaAngleDown, FaBell, FaClock, FaPlus, FaLink } from "react-icons/fa";
 import { IoTimer } from "react-icons/io5";
 import { BsThreeDots } from "react-icons/bs";
 import Image from "next/image";
 
+enum RoomTypeFilter {
+  all = "all",
+  live = "live",
+  scheduled = "scheduled",
+  recurring = "recurring",
+  expired = "expired",
+}
+
+enum RoomTimeFilter {
+  today = "today",
+  week = "week",
+  month = "month",
+}
+
 export default function DashboardRoom() {
+  // get rooms data realtime
+  useEffect(() => {
+    /**
+     * QUERY:
+     * all rooms in the past week
+     *
+     */
+  });
+
+  // on CTRL + Q, new tab to google meet
+  // on CTRL + V, show modal to create meeting with the link
+
   return (
     <section className="p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md">
       {/* header */}
@@ -16,7 +42,7 @@ export default function DashboardRoom() {
             className="right-1 rounded-lg py-1 px-2 ml-1 
               shadow-md text-center text-white text-sm font-bold"
           >
-            CTRL + R
+            CTRL + Q
           </button>
         </span>
 
@@ -36,6 +62,10 @@ export default function DashboardRoom() {
 
           <span className="text-gray-300 hover:text-white hover:cursor-pointer">
             Recurring
+          </span>
+
+          <span className="text-gray-300 hover:text-white hover:cursor-pointer">
+            Expired
           </span>
         </span>
 

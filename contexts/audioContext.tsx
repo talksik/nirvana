@@ -41,6 +41,8 @@ interface AudioContextInterface {
 
   inputDevices: MediaDeviceInfo[];
   outputDevices: MediaDeviceInfo[];
+
+  ctrlDown: boolean;
 }
 
 const AudioContext = React.createContext<AudioContextInterface | null>(null);
@@ -65,6 +67,8 @@ export default function AudioContextProvider({ children }) {
   const [selectedTeammate, setSelectedTeamMember] = useState<string>(null); // id of selected teammate
   const [isRecording, setIsRecording] = useState<Boolean>(false);
   const [hasRecPermit, setHasRecPermit] = useState<Boolean>(false);
+
+  const [ctrlDown, setCtrlDown] = useState<boolean>(false);
 
   const [teamShortcutMappings, setTeamShortcutMappings] = useState<{}>({});
   const [audioInputDeviceId, setAudioInputDevice] = useState<string>(null); // device id
@@ -124,6 +128,8 @@ export default function AudioContextProvider({ children }) {
 
     inputDevices,
     outputDevices,
+
+    ctrlDown,
   };
 
   function muteOrUnmute() {
@@ -259,11 +265,10 @@ export default function AudioContextProvider({ children }) {
     // if there are still items in the player queue, then change the src and play the subsequent messages
   }
 
-  // todo usecallback hook
-
   const handleKeyUp = useCallback(
     (event) => {
       console.log("on key up");
+      console.log(event.keyCode);
 
       // if was recording and released R, then stop recording and send message
       if (event.keyCode == KeyCode.R && selectedTeammate && isRecording) {
@@ -300,6 +305,8 @@ export default function AudioContextProvider({ children }) {
         console.log("sending message to " + selectedTeammate);
 
         setSelectedTeamMember(null);
+      } else if (event.keyCode == KeyCode.Ctrl) {
+        setCtrlDown(false);
       }
     },
     [isRecording, selectedTeammate]
@@ -312,10 +319,9 @@ export default function AudioContextProvider({ children }) {
       }
 
       console.log(event.keyCode);
-      console.log(selectedTeammate);
 
       // recording
-      if (event.keyCode == KeyCode.R) {
+      if (event.keyCode == KeyCode.R && !ctrlDown) {
         if (!audioInputDeviceId) {
           toast.error("No microphone selected");
         } else if (!hasRecPermit) {
@@ -337,6 +343,7 @@ export default function AudioContextProvider({ children }) {
       } else if (event.keyCode == KeyCode.Escape) {
         setSelectedTeamMember(null);
       } else if (event.keyCode == KeyCode.Space) {
+        // listen to last message in convo
         if (isSilenceMode) {
           toast.error("you are in silence mode, please disable it first");
         } else if (!selectedTeammate) {
@@ -358,6 +365,13 @@ export default function AudioContextProvider({ children }) {
             toast("nothing to play");
           }
         }
+      } else if (event.keyCode == KeyCode.Ctrl) {
+        setCtrlDown(true);
+        toast("control down");
+      } else if (event.keyCode == KeyCode.Q && ctrlDown) {
+        toast("navigating to create google meet");
+
+        window.open(new URL("https://meet.google.com/"), "_blank");
       } else {
         toast("Invalid keyboard shortcut.");
       }
@@ -372,6 +386,7 @@ export default function AudioContextProvider({ children }) {
       hasRecPermit,
       isMuted,
       teamShortcutMappings,
+      ctrlDown,
     ]
   );
 
