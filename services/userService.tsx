@@ -11,7 +11,7 @@ import {
   Unsubscribe,
   DocumentSnapshot,
 } from "firebase/firestore";
-import { User } from "../models/user";
+import { User, UserStatus } from "../models/user";
 import { Collections } from "./collections";
 
 export default class UserService {
@@ -62,6 +62,15 @@ export default class UserService {
     await setDoc(
       docRef,
       { ...user, lastUpdatedDate: serverTimestamp() },
+      { merge: true }
+    );
+  }
+
+  async updateUserStatus(userId: string, newStatus: UserStatus) {
+    const docRef = doc(this.db, Collections.users, userId);
+    await setDoc(
+      docRef,
+      { userStatus: newStatus, lastUpdatedDate: serverTimestamp() },
       { merge: true }
     );
   }

@@ -13,7 +13,9 @@ import {
 } from "../../contexts/teamDashboardContext";
 import { Team } from "../../models/team";
 import { TeamMemberStatus } from "../../models/teamMember";
+import { UserStatus } from "../../models/user";
 import TeamService from "../../services/teamService";
+import UserService from "../../services/userService";
 
 // User has switched back to the tab
 const onFocus = () => {
@@ -25,30 +27,49 @@ const onBlur = () => {
   console.log("Tab is blurred");
 };
 
-const onClose = (ev) => {
+const alertUserAboutClosing = (ev) => {
   // change user status to offline
 
   ev.preventDefault();
   return (ev.returnValue = "are you sure?");
 };
 
+const userService = new UserService();
+
 function TeamDashboard() {
   const { currUser } = useAuth();
   const router = useRouter();
   const teamDashboardContext = useTeamDashboardContext();
+
+  // user goes offline
+  const handleTabClosing = () => {
+    // change status of user
+    userService.updateUserStatus(currUser.uid, UserStatus.offline);
+  };
+
+  // shows browser alert to warn user of exiting
+  const alertUserAboutClosing = (event: any) => {
+    event.preventDefault();
+    event.returnValue = "";
+  };
 
   useEffect(() => {
     window.addEventListener("focus", onFocus);
     window.addEventListener("blur", onBlur);
     // Calls onFocus when the window first loads
     onFocus();
-    // Specify how to clean up after this effect:
 
-    window.addEventListener("beforeunload", onClose);
+    // set user to online until he closes tab/window
+    userService.updateUserStatus(currUser.uid, UserStatus.online);
+
+    window.addEventListener("beforeunload", alertUserAboutClosing);
+    window.addEventListener("unload", handleTabClosing);
     return () => {
+      // Specify how to clean up after this effect:
       window.removeEventListener("focus", onFocus);
       window.removeEventListener("blur", onBlur);
-      window.removeEventListener("beforeunload", onClose);
+      window.removeEventListener("beforeunload", alertUserAboutClosing);
+      window.removeEventListener("unload", handleTabClosing);
     };
   }, []);
 

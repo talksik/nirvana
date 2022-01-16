@@ -36,6 +36,5 @@ export class User {
 export enum UserStatus {
   online = "online",
   offline = "offline",
-  inCall = "in call",
   busy = "busy",
 }

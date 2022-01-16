@@ -20,51 +20,10 @@ import { Collections } from "../../services/collections";
 import { KeyCode } from "../../globals/keycode";
 import { Tooltip } from "antd";
 import { useAudioContext } from "../../contexts/audioContext";
+import UserStatusBubble, { UserPulse } from "../UserStatusBubble";
 
 const userService = new UserService();
 const db = getFirestore();
-
-function statusBubble(status: UserStatus) {
-  switch (status) {
-    case UserStatus.online:
-      return (
-        <span className="absolute top-0 right-0 w-3 h-3 bg-green-400 rounded-full"></span>
-      );
-    case UserStatus.busy:
-      return (
-        <span className="absolute top-0 right-0 w-3 h-3 bg-orange-400 rounded-full"></span>
-      );
-    case UserStatus.offline:
-      return (
-        <span className="absolute top-0 right-0 w-3 h-3 bg-gray-400 rounded-full"></span>
-      );
-    default:
-      return (
-        <span className="absolute top-0 right-0 w-3 h-3 bg-gray-400 rounded-full"></span>
-      );
-  }
-}
-
-function renderPulse(status: UserStatus) {
-  switch (status) {
-    case UserStatus.online:
-      return (
-        <IoPulseOutline className="text-green-500 text-2xl animate-pulse mx-2 ml-auto" />
-      );
-    case UserStatus.busy:
-      return (
-        <IoPulseOutline className="text-orange-400 text-2xl animate-pulse mx-2 ml-auto" />
-      );
-    case UserStatus.offline:
-      return (
-        <IoRemoveOutline className="text-gray-400 text-2xl mx-2 ml-auto" />
-      );
-    default:
-      return (
-        <IoPulseOutline className="text-gray-400 text-2xl animate-pulse mx-2 ml-auto" />
-      );
-  }
-}
 
 const maxNumberOfKeyboardMappings: number = 9;
 
@@ -177,7 +136,7 @@ export default function TeamVoiceLine() {
           <span className="relative flex mr-2">
             <span className="bg-gray-200 bg-opacity-30 rounded-full shadow-md absolute w-full h-full"></span>
 
-            {statusBubble(tmember.userStatus)}
+            <UserStatusBubble status={tmember.userStatus} />
 
             <img
               src={tmember.avatarUrl}
@@ -256,7 +215,7 @@ export default function TeamVoiceLine() {
               <BsThreeDots className="text-black ml-2 hover:cursor-pointer" />
             </>
           ) : (
-            <>{renderPulse(tmember.userStatus)}</>
+            <UserPulse status={tmember.userStatus} />
           )}
         </span>
       );
