@@ -1,35 +1,14 @@
 import React, { useState } from "react";
-import { render } from "react-dom";
-import {
-  FaMicrophoneAlt,
-  FaHeadphonesAlt,
-  FaTh,
-  FaAngleDown,
-  FaPlusSquare,
-  FaBroom,
-  FaBell,
-  FaFilePdf,
-  FaCopy,
-  FaClock,
-  FaPlay,
-  FaPlus,
-  FaCheck,
-  FaCode,
-  FaLink,
-  FaExternalLinkAlt,
-  FaArchive,
-  FaAtlassian,
-  FaSearch,
-} from "react-icons/fa";
-import { IoPulseOutline, IoRemoveOutline, IoTimer } from "react-icons/io5";
+
+import { FaAngleDown, FaBell, FaClock, FaPlus, FaLink } from "react-icons/fa";
+import { IoTimer } from "react-icons/io5";
 import { BsThreeDots } from "react-icons/bs";
 import Image from "next/image";
 
 export default function DashboardRoom() {
-  const [count, setCount] = useState(0);
-
   return (
     <section className="p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md">
+      {/* header */}
       <span className="flex flex-row justify-end space-x-3 pb-5 items-center">
         <span className="text-white mr-auto">
           ROOMS
@@ -72,7 +51,7 @@ export default function DashboardRoom() {
       </span>
 
       {/* all rooms */}
-      <span className="flex flex-row flex-wrap">
+      <span className="flex flex-row flex-wrap max-h-96 overflow-auto">
         {/* spontaneous bugs room */}
         <span className="flex flex-col bg-white bg-opacity-80 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip">
           {/* header */}

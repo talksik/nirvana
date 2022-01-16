@@ -81,10 +81,10 @@ function TeamDashboard() {
   console.log(teamDashboardContext);
 
   return (
-    <div className="container mx-auto max-w-screen-xl py-10 px-10 flex flex-col space-y-5">
+    <div className="container mx-auto py-10 px-10 flex flex-col space-y-5">
       <Header />
 
-      <div className="flex flex-row items-baseline space-x-5 space-y-5 flex-wrap">
+      <div className="flex flex-row items-baseline space-x-5 space-y-5">
         <TeamVoiceLine />
 
         <Rooms />
