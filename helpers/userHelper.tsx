@@ -1,17 +1,18 @@
 import { User, UserStatus } from "../models/user";
 
+function getStatusValue(status: UserStatus) {
+  switch (status) {
+    case UserStatus.online:
+      return 10;
+    case UserStatus.busy:
+      return 5;
+    case UserStatus.offline:
+      return 0;
+    default:
+      return -5;
+  }
+}
+
 export function compareStatus(usera: User, userb: User) {
-  if (usera.userStatus == UserStatus.online) {
-    return -2;
-  }
-
-  if (usera.userStatus == UserStatus.busy) {
-    return -1;
-  }
-
-  if (usera.userStatus == UserStatus.offline) {
-    return 0;
-  }
-
-  return 2;
+  return getStatusValue(userb.userStatus) - getStatusValue(usera.userStatus);
 }
