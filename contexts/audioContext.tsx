@@ -11,6 +11,7 @@ import PowerPlayer from "../components/PowerPlayer";
 import { Message } from "../models/message";
 import { useAuth } from "./authContext";
 import { SendService } from "../services/sendService";
+import { useTeamDashboardContext } from "./teamDashboardContext";
 
 interface AudioContextInterface {
   selectedTeammate: string; // can only have one selected
@@ -78,6 +79,31 @@ export default function AudioContextProvider({ children }) {
   const [recorder, setRecorder] = useState<MicRecorder>(
     new MicRecorder({ bitRate: 128 })
   );
+
+  // playing incoming messages
+  const { allMessages, messagesByTeamMate } = useTeamDashboardContext();
+  console.log(allMessages);
+  console.log(messagesByTeamMate);
+
+  useEffect(() => {
+    if (!allMessages.length) {
+      toast("no message to play");
+      return;
+    }
+
+    // only play if it's incoming, as I listened to my message before sending it
+    if (allMessages[0].receiverUserId == currUser.uid) {
+      console.log("playing message");
+      console.log(allMessages[0]);
+
+      // play message
+      setPlayerSrc(allMessages[0].audioDataUrl);
+
+      // select the user
+
+      // start player on the bottom
+    }
+  }, [allMessages]);
 
   const value: AudioContextInterface = {
     selectedTeammate,
@@ -184,6 +210,11 @@ export default function AudioContextProvider({ children }) {
     );
   }, [audioInputDeviceId]); // change it everytime we change the input device
 
+  // auto play
+  useEffect(() => {
+    // todo play audio to selected output device
+  }, []);
+
   // SECTION: recording
   async function startRecording() {
     recorder
@@ -224,7 +255,11 @@ export default function AudioContextProvider({ children }) {
   function onEndedPlaying(e) {
     toast.success("finished playing");
 
-    setStartPlaying(false);
+    setPlayerSrc("");
+
+    // if there are still items in the player queue, then change the src and play the subsequent messages
+
+    // if no more messages, deselect user and hide the player
   }
 
   // todo usecallback hook
@@ -273,9 +308,6 @@ export default function AudioContextProvider({ children }) {
     [isRecording, selectedTeammate]
   );
 
-  const testAudioClip =
-    "https://firebasestorage.googleapis.com/v0/b/nirvana-ccf04.appspot.com/o/messages%2F0E248EA9-AABC-4921-A06B-F1330DFBEE4A.m4a?alt=media&token=9cc81944-96a8-449f-a08f-50925d776565";
-
   const handleKeyboardShortcut = useCallback(
     (event) => {
       if (event.repeat) {
@@ -311,8 +343,8 @@ export default function AudioContextProvider({ children }) {
         if (isSilenceMode) {
           toast.error("you are in silence mode, please disable it first");
         } else {
-          // alright now you are good to play messages
-          setStartPlaying(true);
+          // alright now you are good to play last message chunk in conversation with selected user
+          // todo create last chunk, and create a playlist
         }
       } else {
         toast("Invalid keyboard shortcut.");
@@ -351,7 +383,7 @@ export default function AudioContextProvider({ children }) {
     setSelectedTeamMember(userId);
   }
 
-  const [startPlaying, setStartPlaying] = useState<Boolean>(false);
+  const [playerSrc, setPlayerSrc] = useState<string>("");
 
   return (
     <AudioContext.Provider value={value}>
@@ -361,18 +393,14 @@ export default function AudioContextProvider({ children }) {
       {/* <PowerPlayer /> */}
 
       {/* player for audio messages */}
-      {startPlaying ? (
-        <AudioPlayer
-          autoPlay
-          src={testAudioClip}
-          onPlay={(e) => console.log("onPlay")}
-          showSkipControls={true}
-          onEnded={onEndedPlaying}
-          className="w-screen flex flex-row"
-        />
-      ) : (
-        <></>
-      )}
+      <AudioPlayer
+        autoPlay
+        src={playerSrc}
+        onPlay={(e) => console.log("onPlay")}
+        showSkipControls={true}
+        onEnded={onEndedPlaying}
+        className="w-screen flex flex-row"
+      />
     </AudioContext.Provider>
   );
 }

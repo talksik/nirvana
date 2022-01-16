@@ -176,8 +176,6 @@ export function TeamDashboardContextProvider({ children }) {
 
   // listener for all incoming messages
   useEffect(() => {
-    console.log("first only");
-
     // todo for new messages, change document.title
 
     /**
@@ -207,7 +205,6 @@ export function TeamDashboardContextProvider({ children }) {
 
           // update map of teammate to relevant messages
           setMessagesByTeamMate((prevMap) => {
-            console.log("settting state");
             // if the map contains the teammate userid already, then cool, just unshift to that array
             const newMap = { ...prevMap };
             if (newMessage.receiverUserId in prevMap) {
@@ -238,8 +235,14 @@ export function TeamDashboardContextProvider({ children }) {
     return <Loading />;
   }
 
+  const transformedValue = {
+    ...value,
+    allMessages,
+    messagesByTeamMate,
+  };
+
   return (
-    <TeamDashboardContext.Provider value={value}>
+    <TeamDashboardContext.Provider value={transformedValue}>
       {children}
     </TeamDashboardContext.Provider>
   );
