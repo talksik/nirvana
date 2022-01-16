@@ -153,6 +153,7 @@ export default function AudioContextProvider({ children }) {
 
   // IMPORTANT: shortcut handlers need to be updated as the function has to have the fresh state
   useEffect(() => {
+    console.log("updating event listeners");
     document.addEventListener("keydown", handleKeyboardShortcut);
     document.addEventListener("keyup", handleKeyUp);
 
@@ -208,9 +209,12 @@ export default function AudioContextProvider({ children }) {
     if (event.keyCode == KeyCode.R && selectedTeammate && isRecording) {
       console.log("stopped recording");
       setIsRecording(false);
-      setSelectedTeamMember(null);
 
       stopRecording();
+
+      console.log("sending message to " + selectedTeammate);
+
+      setSelectedTeamMember(null);
     }
   }
 
