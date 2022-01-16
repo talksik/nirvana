@@ -8,6 +8,9 @@ import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import CloudStorageService from "../services/cloudStorageService";
 import PowerPlayer from "../components/PowerPlayer";
+import { Message } from "../models/message";
+import { useAuth } from "./authContext";
+import { SendService } from "../services/sendService";
 
 interface AudioContextInterface {
   selectedTeammate: string; // can only have one selected
@@ -52,8 +55,11 @@ function stopBothVideoAndAudio(stream) {
 }
 
 const cloudStorageService = new CloudStorageService();
+const sendService = new SendService();
 
 export default function AudioContextProvider({ children }) {
+  const { currUser } = useAuth();
+
   // SECTION: set up for shortcuts and recording and such
   const [selectedTeammate, setSelectedTeamMember] = useState<string>(null); // id of selected teammate
   const [isRecording, setIsRecording] = useState<Boolean>(false);
@@ -221,10 +227,12 @@ export default function AudioContextProvider({ children }) {
     (event) => {
       console.log("on key up");
 
-      // if was recording and released R, then stop recording
+      // if was recording and released R, then stop recording and send message
       if (event.keyCode == KeyCode.R && selectedTeammate && isRecording) {
         console.log("stopped recording");
         setIsRecording(false);
+
+        const currReceiverUserId = selectedTeammate;
 
         stopRecording()
           .then((file) => {
@@ -237,10 +245,16 @@ export default function AudioContextProvider({ children }) {
             console.log("file is stored: " + downloadUrl);
 
             // send message to firestore
+            const message = new Message();
+            message.audioDataUrl = downloadUrl;
+            message.senderUserId = currUser.uid;
+            message.receiverUserId = currReceiverUserId;
 
-            return;
+            return sendService.sendMessage(message);
           })
-          .then(() => {})
+          .then(() => {
+            toast.success("clip sent");
+          })
           .catch((error) => {
             toast.error("Problem in sending clip");
           });

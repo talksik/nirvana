@@ -1,8 +1,7 @@
-
-
 export enum Collections {
   users = "users",
   teams = "teams",
   teamMembers = "teamMembers",
-  teamSubscriptions = "teamSubscriptions"
+  teamSubscriptions = "teamSubscriptions",
+  audioMessages = "audioMessages",
 }

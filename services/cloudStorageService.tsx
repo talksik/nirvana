@@ -11,7 +11,7 @@ export default class CloudStorageService {
   /**
    * return the
    */
-  async uploadMessageAudioFile(audioFile: File): Promise<string | Error> {
+  async uploadMessageAudioFile(audioFile: File): Promise<string> {
     // Create the file metadata
     /** @type {any} */
     const metadata = {
