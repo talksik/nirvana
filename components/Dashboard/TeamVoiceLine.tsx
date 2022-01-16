@@ -28,13 +28,9 @@ import UserStatusBubble, { UserPulse } from "../UserStatusBubble";
 import { useAuth } from "../../contexts/authContext";
 import { Message } from "../../models/message";
 
-const db = getFirestore();
-
 const maxNumberOfKeyboardMappings: number = 9;
 
-// date of yesterday to check if messages are after yesterday
-const yesterday = new Date();
-yesterday.setDate(yesterday.getDate() - 1);
+const db = getFirestore();
 
 export default function TeamVoiceLine() {
   const { currUser } = useAuth();
@@ -95,73 +91,6 @@ export default function TeamVoiceLine() {
       unsubs.map((listener) => listener());
     };
   }, []);
-
-  const [allMessages, setAllMessages] = useState<Message[]>([]);
-  const [messagesByTeamMate, setMessagesByTeamMate] = useState<{}>({});
-
-  // listener for all incoming messages
-  useEffect(() => {
-    var unsubscribe: Unsubscribe;
-
-    (async function () {
-      // todo for new messages, change document.title
-
-      /**
-       * QUERY:
-       * - last 24 hours only
-       * - any message that I have sent or received: relevant messages
-       * - order by: date desc
-       */
-      const q = query(
-        collection(db, Collections.audioMessages),
-        where("senderReceiver", "array-contains", currUser.uid),
-        where("createdDate", ">", yesterday),
-        orderBy("createdDate", "asc")
-      );
-      unsubscribe = onSnapshot(q, (snapshot) => {
-        snapshot.docChanges().forEach((change) => {
-          // no need to process results again, just append to arrays instead
-          // messages won't be deleted or updated really
-          if (change.type === "added") {
-            let newMessage = change.doc.data() as Message;
-            console.log("New message: ", newMessage);
-
-            // update all messages array
-            setAllMessages((prevMessages) => [newMessage, ...prevMessages]);
-
-            // update map of teammate to relevant messages
-            setMessagesByTeamMate((prevMap) => {
-              console.log("settting state");
-              // if the map contains the teammate userid already, then cool, just unshift to that array
-              const newMap = { ...prevMap };
-              if (newMessage.receiverUserId in prevMap) {
-                newMap[newMessage.receiverUserId] = [
-                  newMessage,
-                  ...prevMap[newMessage.receiverUserId],
-                ];
-              } // if this is the first relevant message linked to this receiver,
-              //then create a new array
-              else {
-                newMap[newMessage.receiverUserId] = [newMessage];
-              }
-
-              return newMap;
-            });
-          }
-          if (change.type === "modified") {
-            console.log("Modified message: ", change.doc.data());
-          }
-          if (change.type === "removed") {
-            console.log("Removed message: ", change.doc.data());
-          }
-        });
-      });
-    })();
-
-    return () => unsubscribe();
-  }, []);
-
-  console.log(messagesByTeamMate);
 
   // set up shortcuts for each teammate
   useEffect(() => {

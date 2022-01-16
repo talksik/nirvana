@@ -358,7 +358,7 @@ export default function AudioContextProvider({ children }) {
       {children}
 
       {/* mega power mode viewer */}
-      <PowerPlayer />
+      {/* <PowerPlayer /> */}
 
       {/* player for audio messages */}
       {startPlaying ? (

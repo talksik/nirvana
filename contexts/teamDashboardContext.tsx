@@ -1,7 +1,17 @@
-import { doc, getFirestore, onSnapshot, Unsubscribe } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getFirestore,
+  onSnapshot,
+  orderBy,
+  query,
+  Unsubscribe,
+  where,
+} from "firebase/firestore";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import Loading from "../components/Loading";
+import { Message } from "../models/message";
 import { Team } from "../models/team";
 import { TeamMember, TeamMemberStatus } from "../models/teamMember";
 import { User } from "../models/user";
@@ -15,10 +25,16 @@ interface TeamDashboardContextInterface {
   teamMembers: TeamMember[];
   userTeamMember: TeamMember;
   user: User;
+  messagesByTeamMate: {}; // string of teammate userid and array of messages
+  allMessages: Message[];
 }
 
 const TeamDashboardContext =
   React.createContext<TeamDashboardContextInterface | null>(null);
+
+// date of yesterday to check if messages are after yesterday
+const yesterday = new Date();
+yesterday.setDate(yesterday.getDate() - 1);
 
 const teamService = new TeamService();
 const userService = new UserService();
@@ -40,6 +56,7 @@ export function TeamDashboardContextProvider({ children }) {
     {} as TeamDashboardContextInterface
   );
 
+  // all data
   useEffect(() => {
     var userListener: Unsubscribe;
 
@@ -152,6 +169,69 @@ export function TeamDashboardContextProvider({ children }) {
     return () => {
       userListener();
     };
+  }, []);
+
+  const [allMessages, setAllMessages] = useState<Message[]>([]);
+  const [messagesByTeamMate, setMessagesByTeamMate] = useState<{}>({});
+
+  // listener for all incoming messages
+  useEffect(() => {
+    console.log("first only");
+
+    // todo for new messages, change document.title
+
+    /**
+     * QUERY:
+     * - last 24 hours only
+     * - any message that I have sent or received: relevant messages
+     * - order by: date desc
+     */
+    const q = query(
+      collection(db, Collections.audioMessages),
+      where("senderReceiver", "array-contains", currUser.uid),
+      where("createdDate", ">", yesterday),
+      orderBy("createdDate", "asc")
+    );
+
+    // return unsubscribe
+    return onSnapshot(q, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        // no need to process results again, just append to arrays instead
+        // messages won't be deleted or updated really
+        if (change.type === "added") {
+          let newMessage = change.doc.data() as Message;
+          console.log("New message: ", newMessage);
+
+          // update all messages array
+          setAllMessages((prevMessages) => [newMessage, ...prevMessages]);
+
+          // update map of teammate to relevant messages
+          setMessagesByTeamMate((prevMap) => {
+            console.log("settting state");
+            // if the map contains the teammate userid already, then cool, just unshift to that array
+            const newMap = { ...prevMap };
+            if (newMessage.receiverUserId in prevMap) {
+              newMap[newMessage.receiverUserId] = [
+                newMessage,
+                ...prevMap[newMessage.receiverUserId],
+              ];
+            } // if this is the first relevant message linked to this receiver,
+            //then create a new array
+            else {
+              newMap[newMessage.receiverUserId] = [newMessage];
+            }
+
+            return newMap;
+          });
+        }
+        if (change.type === "modified") {
+          console.log("Modified message: ", change.doc.data());
+        }
+        if (change.type === "removed") {
+          console.log("Removed message: ", change.doc.data());
+        }
+      });
+    });
   }, []);
 
   if (loading) {
