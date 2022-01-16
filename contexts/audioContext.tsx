@@ -93,7 +93,7 @@ export default function AudioContextProvider({ children }) {
   }
 
   function silenceOrLivenMode() {
-    toast.success(isSilenceMode ? "Unsilenced" : "Do Not Disturb Mode");
+    toast.success(isSilenceMode ? "Unsilenced" : "Auto listen mode disabled");
 
     setIseSilenceMode((prevVal) => !prevVal);
   }
@@ -127,13 +127,12 @@ export default function AudioContextProvider({ children }) {
 
         setAudioOutputDevice(outputDevices ? outputDevices[0].deviceId : null);
         setOutputDevices(outputDevices);
-        console.log(devices);
       } catch (e) {
         console.log(e);
         toast.error("Problem in setting up audio devices");
       }
     })();
-  }, []);
+  }, [hasRecPermit]);
 
   useEffect(() => {
     navigator.mediaDevices
@@ -152,7 +151,7 @@ export default function AudioContextProvider({ children }) {
       });
   }, [audioInputDeviceId]); // change it everytime we change the input device
 
-  // shortcut handlers need to be updated as the function has to have the fresh state
+  // IMPORTANT: shortcut handlers need to be updated as the function has to have the fresh state
   useEffect(() => {
     document.addEventListener("keydown", handleKeyboardShortcut);
     document.addEventListener("keyup", handleKeyUp);
@@ -161,21 +160,23 @@ export default function AudioContextProvider({ children }) {
       document.removeEventListener("keydown", handleKeyboardShortcut);
       document.removeEventListener("keyup", handleKeyUp);
     };
-  }, [teamShortcutMappings, selectedTeammate]);
+  }, [
+    teamShortcutMappings,
+    selectedTeammate,
+    isMuted,
+    audioInputDeviceId,
+    audioOutputDeviceId,
+  ]);
 
   // SECTION: recording
   async function startRecording() {
-    if (!hasRecPermit) {
-      toast.error("You did not allow recording permission!");
-    } else {
-      Mp3Recorder.start()
-        .then(() => {
-          toast.success("started recording");
-        })
-        .catch((e) =>
-          toast.error("there was a problem in starting your recording")
-        );
-    }
+    Mp3Recorder.start()
+      .then(() => {
+        toast.success("started recording");
+      })
+      .catch((e) =>
+        toast.error("there was a problem in starting your recording")
+      );
   }
 
   // everything to do with audio file
@@ -191,6 +192,9 @@ export default function AudioContextProvider({ children }) {
         });
 
         const player = new Audio(URL.createObjectURL(file));
+
+        player.onended = onEndedPlaying;
+
         player.play();
 
         toast.success("Audio Clip Sent");
@@ -198,13 +202,15 @@ export default function AudioContextProvider({ children }) {
       .catch((e) => toast.error("Problem in sending clip"));
   }
 
+  function onEndedPlaying(e) {
+    toast.success("finished playing");
+  }
+
   function handleKeyUp(event) {
     console.log("on key up");
 
-    console.log(selectedTeammate); // use this to send the message to the right person
-
     // if was recording and released R, then stop recording
-    if (event.keyCode == KeyCode.R && selectedTeammate) {
+    if (event.keyCode == KeyCode.R && selectedTeammate && isRecording) {
       console.log("stopped recording");
       setIsRecording(false);
       setSelectedTeamMember(null);
@@ -225,11 +231,15 @@ export default function AudioContextProvider({ children }) {
     if (event.keyCode == KeyCode.R && selectedTeammate) {
       if (!audioInputDeviceId) {
         toast.error("No microphone selected");
+      } else if (!hasRecPermit) {
+        toast.error("You did not allow recording permission!");
+      } else if (isMuted) {
+        toast.error("You are muted, sorry!");
+      } else {
+        console.log("started recording");
+        setIsRecording(true);
+        startRecording();
       }
-
-      console.log("started recording");
-      setIsRecording(true);
-      startRecording();
     }
     // if we have a valid user for such a shortcut, then go ahead...otherwise
     else if (teamShortcutMappings[event.keyCode]) {
