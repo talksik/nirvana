@@ -250,11 +250,12 @@ export default function AudioContextProvider({ children }) {
           toast.error("No microphone selected");
         } else if (!hasRecPermit) {
           toast.error("You did not allow recording permission!");
-        } else if (isMuted) {
-          toast.error("You are muted!");
         } else if (!selectedTeammate) {
           toast.error("Please select a team member or announcements first");
+        } else if (isMuted) {
+          toast.error("You are muted!");
         } else {
+          // alright now you are good to go
           console.log("started recording");
           setIsRecording(true);
           startRecording();
@@ -266,7 +267,12 @@ export default function AudioContextProvider({ children }) {
       } else if (event.keyCode == KeyCode.Escape) {
         setSelectedTeamMember(null);
       } else if (event.keyCode == KeyCode.Space) {
-        setStartPlaying(true);
+        if (isSilenceMode) {
+          toast.error("you are in silence mode, please disable it first");
+        } else {
+          // alright now you are good to play messages
+          setStartPlaying(true);
+        }
       } else {
         toast("Invalid keyboard shortcut.");
       }
