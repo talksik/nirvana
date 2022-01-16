@@ -4,7 +4,7 @@ export default class CreateRoom {
   meetLink?: string;
 
   constructor() {
-    this.showModal = true;
+    this.showModal = false;
 
     this.meetLink = "";
   }
