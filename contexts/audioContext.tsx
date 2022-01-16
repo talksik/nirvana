@@ -87,10 +87,14 @@ export default function AudioContextProvider({ children }) {
   };
 
   function muteOrUnmute() {
+    toast.success(isMuted ? "Unmuted" : "Muted");
+
     setIsMuted((prevVal) => !prevVal);
   }
 
   function silenceOrLivenMode() {
+    toast.success(isSilenceMode ? "Unsilenced" : "Do Not Disturb Mode");
+
     setIseSilenceMode((prevVal) => !prevVal);
   }
 
