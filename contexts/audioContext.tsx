@@ -176,6 +176,8 @@ export default function AudioContextProvider({ children }) {
 
         const player = new Audio(URL.createObjectURL(file));
 
+        console.log(URL.createObjectURL(file));
+
         player.onended = onEndedPlaying;
 
         player.play();
@@ -274,8 +276,6 @@ export default function AudioContextProvider({ children }) {
   function selectTeamMember(userId: string) {
     setSelectedTeamMember(userId);
   }
-
-  console.log(value);
 
   return (
     <AudioContext.Provider value={value}>{children}</AudioContext.Provider>
