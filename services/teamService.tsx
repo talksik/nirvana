@@ -282,30 +282,16 @@ export default class TeamService implements IService {
       });
     }
 
-    const teamsInvitedReduced = userTeamMembersByEmail.reduce(function (
-      result,
-      tm
-    ) {
-      if (tm.status == TeamMemberStatus.invited) {
-        this.getTeam(tm.teamId).then((team) => result.push(team));
-      }
+    var invitedToTeams: Promise<Team>[] = [];
+    if (userTeamMembersByEmail) {
+      invitedToTeams = userTeamMembersByEmail.map(async (tm) => {
+        if (tm.status != TeamMemberStatus.deleted) {
+          let team = await this.getTeam(tm.teamId);
+          return team;
+        }
+      });
+    }
 
-      return result;
-    },
-    []);
-
-    return Promise.all([...teams, ...teamsInvitedReduced]);
-
-    // const teamsInvitedTo = userTeamMembersByEmail.map(async (tm) => {
-    //   console.log("in map");
-    //   if (tm.status == TeamMemberStatus.invited) {
-    //     let team = await this.getTeam(tm.teamId);
-    //     console.log("valid team");
-    //     return team;
-    //   }
-    // });
-
-    // console.log(teams);
-    // console.log(teamsInvitedTo);
+    return Promise.all([...teams, ...invitedToTeams]);
   }
 }
