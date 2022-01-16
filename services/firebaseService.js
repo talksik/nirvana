@@ -1,4 +1,3 @@
-
 // const firebaseConfig = {
 //   apiKey: process.env.NEXT_PUBLIC_FIREBASE_APIKEY,
 //   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -9,12 +8,15 @@
 //   measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID
 // };
 
-
 // Import the functions you need from the SDKs you need
-import * as firebase from 'firebase/app';
+import * as firebase from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
-import { browserSessionPersistence, getAuth, setPersistence } from 'firebase/auth';
+import {
+  browserSessionPersistence,
+  getAuth,
+  setPersistence,
+} from "firebase/auth";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -28,17 +30,18 @@ const firebaseConfig = {
   storageBucket: "nirvana-for-business.appspot.com",
   messagingSenderId: "825654222284",
   appId: "1:825654222284:web:0778c8883de21917b51169",
-  measurementId: "G-MB5G7G09MR"
+  measurementId: "G-MB5G7G09MR",
 };
 
 // Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+if (typeof window !== "undefined") {
+  const app = firebase.initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
 
-console.log('initialized firebase')
+  console.log("initialized firebase");
 
-setPersistence(getAuth(), browserSessionPersistence)
-
+  setPersistence(getAuth(), browserSessionPersistence);
+}
 
 // import { credential } from 'firebase-admin';
 // import { initializeApp } from 'firebase-admin/app';

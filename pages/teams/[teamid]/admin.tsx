@@ -273,7 +273,7 @@ function TeamAdmin() {
             <span className="text-md text-gray-500 mr-20">
               Please email{" "}
               <button className="underline decoration-teal-500 text-brown-500">
-                arjunpatel@berkeley.edu
+                usenirvana@gmail.com
               </button>{" "}
               to open more spots for your team.
             </span>

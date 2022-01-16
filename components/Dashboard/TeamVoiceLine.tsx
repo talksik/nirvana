@@ -10,23 +10,34 @@ import { toast } from "react-hot-toast";
 import { TeamMemberRole, TeamMemberStatus } from "../../models/teamMember";
 import UserService from "../../services/userService";
 import {
+  collection,
   doc,
   DocumentSnapshot,
   getFirestore,
   onSnapshot,
+  orderBy,
+  query,
   Unsubscribe,
+  where,
 } from "firebase/firestore";
 import { Collections } from "../../services/collections";
 import { KeyCode } from "../../globals/keycode";
 import { Tooltip } from "antd";
 import { useAudioContext } from "../../contexts/audioContext";
 import UserStatusBubble, { UserPulse } from "../UserStatusBubble";
+import { useAuth } from "../../contexts/authContext";
+import { Message } from "../../models/message";
 
 const db = getFirestore();
 
 const maxNumberOfKeyboardMappings: number = 9;
 
+// date of yesterday to check if messages are after yesterday
+const yesterday = new Date();
+yesterday.setDate(yesterday.getDate() - 1);
+
 export default function TeamVoiceLine() {
+  const { currUser } = useAuth();
   const audioContext = useAudioContext();
   const router = useRouter();
   const { teamid } = router.query;
@@ -35,6 +46,7 @@ export default function TeamVoiceLine() {
 
   const [teamUsers, setTeamUsers] = useState<User[]>([]);
 
+  // setup listeners for each teammate or their status changes
   useEffect(() => {
     const unsubs: Unsubscribe[] = [];
 
@@ -79,6 +91,72 @@ export default function TeamVoiceLine() {
     };
   }, []);
 
+  const [allMessages, setAllMessages] = useState<Message[]>([]);
+  const [messagesByTeamMate, setMessagesByTeamMate] = useState<{}>({});
+
+  // listener for all incoming messages
+  useEffect(() => {
+    var unsubscribe: Unsubscribe;
+
+    (async function () {
+      // todo for new messages, change document.title
+
+      /**
+       * QUERY:
+       * - last 24 hours only
+       * - any message that I have sent or received: relevant messages
+       * - order by: date desc
+       */
+      const q = query(
+        collection(db, Collections.audioMessages),
+        where("senderReceiver", "array-contains", currUser.uid),
+        where("createdDate", ">", yesterday),
+        orderBy("createdDate", "asc")
+      );
+      unsubscribe = onSnapshot(q, (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+          // no need to process results again, just append to arrays instead
+          // messages won't be deleted or updated really
+          if (change.type === "added") {
+            let newMessage = change.doc.data() as Message;
+            console.log("New message: ", newMessage);
+
+            // update all messages array
+            setAllMessages((prevMessages) => [newMessage, ...prevMessages]);
+
+            // update map of teammate to relevant messages
+            setMessagesByTeamMate((prevMap) => {
+              // if the map contains the teammate userid already, then cool, just unshift to that array
+              if (newMessage.receiverUserId in prevMap) {
+                prevMap[newMessage.receiverUserId] = [
+                  newMessage,
+                  ...prevMap[newMessage.receiverUserId],
+                ];
+              } // if this is the first relevant message linked to this receiver,
+              //then create a new array
+              else {
+                prevMap[newMessage.receiverUserId] = [newMessage];
+              }
+
+              return prevMap
+            });
+          }
+          if (change.type === "modified") {
+            console.log("Modified message: ", change.doc.data());
+          }
+          if (change.type === "removed") {
+            console.log("Removed message: ", change.doc.data());
+          }
+        });
+      });
+    })();
+
+    return () => unsubscribe();
+  }, []);
+
+  console.log(allMessages);
+
+  // set up shortcuts for each teammate
   useEffect(() => {
     teamUsers.forEach((tmUser, i) => {
       // make sure we don't map a user if they are past the max allowed
