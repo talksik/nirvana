@@ -160,13 +160,7 @@ export default function AudioContextProvider({ children }) {
       document.removeEventListener("keydown", handleKeyboardShortcut);
       document.removeEventListener("keyup", handleKeyUp);
     };
-  }, [
-    teamShortcutMappings,
-    selectedTeammate,
-    isMuted,
-    audioInputDeviceId,
-    audioOutputDeviceId,
-  ]);
+  }, [handleKeyboardShortcut, handleKeyUp]);
 
   // SECTION: recording
   async function startRecording() {
@@ -206,6 +200,7 @@ export default function AudioContextProvider({ children }) {
     toast.success("finished playing");
   }
 
+  // todo usecallback hook
   function handleKeyUp(event) {
     console.log("on key up");
 
