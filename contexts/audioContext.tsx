@@ -54,7 +54,7 @@ export default function AudioContextProvider({ children }) {
   const [isRecording, setIsRecording] = useState<Boolean>(false);
   const [hasRecPermit, setHasRecPermit] = useState<Boolean>(false);
 
-  const [teamShortcutMappings, setTeamShortcutMappings] = useState<{}>(null);
+  const [teamShortcutMappings, setTeamShortcutMappings] = useState<{}>({});
   const [audioInputDeviceId, setAudioInputDevice] = useState<string>(null); // device id
   const [audioOutputDeviceId, setAudioOutputDevice] = useState<string>(null); // device id
 

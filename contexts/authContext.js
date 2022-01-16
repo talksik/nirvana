@@ -7,6 +7,7 @@ import {
   User,
 } from "firebase/auth";
 import React, { useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import firebase from "../services/firebaseService";
 
 const AuthContext = React.createContext(null);
@@ -44,6 +45,7 @@ export function AuthProvider({ children }) {
       .then((res) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(res);
+
         const token = credential.accessToken;
         // The signed-in user info.
         const user = res.user;
@@ -61,7 +63,7 @@ export function AuthProvider({ children }) {
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
         console.log(error);
-        throw error;
+        toast.error("something went wrong");
       });
   };
 
