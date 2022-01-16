@@ -106,8 +106,8 @@ export default function TeamVoiceLine() {
             return;
           });
 
-          document.addEventListener("keypress", handleKeyboardShortcut);
-          document.addEventListener("keydown", handleRecording);
+          document.addEventListener("keydown", handleKeyboardShortcut);
+          document.addEventListener("keyup", handleKeyUp);
         }
       } catch (error) {
         console.log(error);
@@ -121,8 +121,8 @@ export default function TeamVoiceLine() {
     return () => {
       unsubs.map((listener) => listener());
 
-      document.removeEventListener("keypress", handleKeyboardShortcut);
-      document.removeEventListener("keydown", handleRecording);
+      document.removeEventListener("keydown", handleKeyboardShortcut);
+      document.removeEventListener("keyup", handleKeyUp);
     };
   }, []);
 
@@ -137,6 +137,7 @@ export default function TeamVoiceLine() {
 
   // SECTION: set up for shortcuts and recording and such
   const [selectedTeammate, setSelectedTeammate] = useState<string>(); // id of selected teammate
+  const [isRecording, setIsRecording] = useState<Boolean>(false);
 
   const shortcutMappings = new Map(); // keycode number to the user id
   teamUsers.forEach((tmUser, i) => {
@@ -147,23 +148,35 @@ export default function TeamVoiceLine() {
     }
   });
 
-  function handleRecording(event) {
-    // recording
+  function handleKeyUp(event) {
+    console.log("on key up");
+
+    // if was recording and released R, then stop recording
     if (event.keyCode == KeyCode.R) {
-      console.log("recording");
+      console.log("stopped recording");
+      setIsRecording(false);
     }
   }
 
   function handleKeyboardShortcut(event) {
+    if (event.repeat) {
+      return;
+    }
+
     console.log(event.keyCode);
 
+    // recordingr
+    if (event.keyCode == KeyCode.R) {
+      console.log("started recording");
+      setIsRecording(true);
+    }
     // if we have a valid user for such a shortcut, then go ahead...otherwise
-    if (shortcutMappings.has(event.keyCode)) {
+    else if (shortcutMappings.has(event.keyCode)) {
       setSelectedTeammate(shortcutMappings.get(event.keyCode));
     } else if (event.keyCode == KeyCode.Escape) {
       setSelectedTeammate(null);
     } else {
-      console.log("Invalid teammate selection.");
+      toast("Invalid teammate selection.");
     }
 
     // todo if we press the same shortcut twice, deactive selected user
@@ -252,9 +265,15 @@ export default function TeamVoiceLine() {
               </Tooltip>
 
               <Tooltip title="press and hold R to send audio message">
-                <button className="ml-2 w-10 h-10 border-orange-400 border-2 bg-opacity-80 p-2 rounded hover:bg-opacity-100">
-                  <span className="text-sm text-orange-500 font-bold">R</span>
-                </button>
+                {isRecording ? (
+                  <button className="ml-2 w-10 h-10 border-orange-400 bg-orange-400 border-2 bg-opacity-80 p-2 rounded hover:bg-opacity-100">
+                    <span className="text-sm text-white font-bold">R</span>
+                  </button>
+                ) : (
+                  <button className="ml-2 w-10 h-10 border-orange-400 border-2 bg-opacity-80 p-2 rounded hover:bg-opacity-100">
+                    <span className="text-sm text-orange-500 font-bold">R</span>
+                  </button>
+                )}
               </Tooltip>
 
               <BsThreeDots className="text-black ml-2 hover:cursor-pointer" />
