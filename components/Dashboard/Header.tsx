@@ -195,9 +195,25 @@ export default function Header() {
     </Menu>
   );
 
+  const handleSilenceOrLivenMode = (event) => {
+    event.preventDefault();
+
+    silenceOrLivenMode();
+  };
+
+  const handleMuteUnmute = (event) => {
+    event.preventDefault();
+
+    muteOrUnmute();
+  };
+
   const audioOutputDropMenu = (
     <Menu title="audio ouput">
-      <Menu.Item danger key={"silence output"} onClick={silenceOrLivenMode}>
+      <Menu.Item
+        danger
+        key={"silence output"}
+        onClick={handleSilenceOrLivenMode}
+      >
         <button>{isSilenceMode ? "Unsilence" : "Silence"}</button>
       </Menu.Item>
 
@@ -231,7 +247,7 @@ export default function Header() {
 
     if (isMuted) {
       return (
-        <span onClick={muteOrUnmute}>
+        <span onClick={handleMuteUnmute}>
           <FaMicrophoneAltSlash className="text-xl text-orange-400 ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
         </span>
       );
@@ -239,7 +255,7 @@ export default function Header() {
 
     return (
       <Dropdown overlay={audioInputDropMenu}>
-        <span onClick={muteOrUnmute}>
+        <span onClick={handleMuteUnmute}>
           <FaMicrophoneAlt className="text-xl text-gray-200 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
         </span>
       </Dropdown>
@@ -249,7 +265,7 @@ export default function Header() {
   function renderAudioOutput() {
     if (isSilenceMode) {
       return (
-        <span onClick={silenceOrLivenMode}>
+        <span onClick={handleSilenceOrLivenMode}>
           <FaVolumeMute className="text-xl text-orange-400 ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
         </span>
       );
@@ -257,7 +273,7 @@ export default function Header() {
 
     return (
       <Dropdown overlay={audioOutputDropMenu}>
-        <span onClick={silenceOrLivenMode}>
+        <span onClick={handleSilenceOrLivenMode}>
           <FaHeadphonesAlt className="text-xl text-gray-200 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
         </span>
       </Dropdown>
@@ -266,6 +282,7 @@ export default function Header() {
 
   const today = new Date();
   const periodOfDay = generateGreetings();
+
   return (
     <section className="flex-1 flex flex-row items-center justify-between py-5">
       {/* welcome message */}
