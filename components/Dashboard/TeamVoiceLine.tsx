@@ -170,7 +170,7 @@ export default function TeamVoiceLine() {
           key={i}
           className={`rounded flex flex-row items-center py-2 px-2 justify-items-start ease-in-out duration-300 hover:cursor-pointer ${
             tmember.id == audioContext.selectedTeammate
-              ? "bg-white scale-150 z-20 translate-x-2/4"
+              ? "bg-white scale-150 z-20"
               : ""
           }`}
         >
@@ -186,11 +186,11 @@ export default function TeamVoiceLine() {
             />
           </span>
 
-          <span className="flex flex-col mr-10">
+          <span className="flex flex-col">
             {tmember.id == audioContext.selectedTeammate ? (
               <>
                 <span className="flex flex-row items-center space-x-2">
-                  <span className="text-sm text-black font-bold">
+                  <span className="text-xs text-black font-bold">
                     {tmember.nickName}
                   </span>
                 </span>
@@ -206,7 +206,7 @@ export default function TeamVoiceLine() {
                     {tmember.nickName}
                   </span>
 
-                  <span className="text-white shadow-xl font-bold  px-3 py-1 rounded">
+                  <span className="text-white shadow-xl font-bold px-3 py-1 rounded">
                     {/* keyboard shortcuts start from 1 */}
                     {i + 1}
                   </span>

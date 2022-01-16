@@ -4,6 +4,7 @@ import { KeyCode } from "../globals/keycode";
 import MicRecorder from "mic-recorder-to-mp3";
 
 import AudioPlayer from "react-h5-audio-player";
+import "react-h5-audio-player/lib/styles.css";
 
 interface AudioContextInterface {
   selectedTeammate: string; // can only have one selected
@@ -206,6 +207,8 @@ export default function AudioContextProvider({ children }) {
 
   function onEndedPlaying(e) {
     toast.success("finished playing");
+
+    setStartPlaying(false);
   }
 
   // todo usecallback hook
@@ -262,6 +265,8 @@ export default function AudioContextProvider({ children }) {
         setSelectedTeamMember(teamShortcutMappings[event.keyCode]);
       } else if (event.keyCode == KeyCode.Escape) {
         setSelectedTeamMember(null);
+      } else if (event.keyCode == KeyCode.Space) {
+        setStartPlaying(true);
       } else {
         toast("Invalid keyboard shortcut.");
       }
@@ -301,16 +306,6 @@ export default function AudioContextProvider({ children }) {
 
   const [startPlaying, setStartPlaying] = useState<Boolean>(false);
 
-  useEffect(() => {
-    setTimeout(
-      function () {
-        //Start the timer
-        setStartPlaying(true);
-      }.bind(this),
-      2000
-    );
-  });
-
   return (
     <AudioContext.Provider value={value}>
       {children}
@@ -321,6 +316,9 @@ export default function AudioContextProvider({ children }) {
           autoPlay
           src={testAudioClip}
           onPlay={(e) => console.log("onPlay")}
+          showSkipControls={true}
+          onEnded={onEndedPlaying}
+          className="w-screen flex flex-row"
         />
       ) : (
         <></>
