@@ -31,6 +31,7 @@ import TeamService from "../../services/teamService";
 import { Team } from "../../models/team";
 import Loading from "../Loading";
 import { useAudioContext } from "../../contexts/audioContext";
+import UserStatusBubble from "../UserStatusBubble";
 
 const teamService = new TeamService();
 
@@ -312,7 +313,7 @@ export default function Header() {
         <Dropdown overlay={UserMenu} trigger={["click"]}>
           <span className="relative flex hover:cursor-pointer">
             <span className="bg-gray-200 bg-opacity-30 rounded-full shadow-md absolute w-full h-full"></span>
-            <span className="absolute top-0 right-0 w-3 h-3 bg-green-400 rounded-full"></span>
+            <UserStatusBubble status={user.userStatus} />
             <img
               src={user.avatarUrl}
               alt="asdf"
