@@ -30,7 +30,7 @@ import { useEffect, useState } from "react";
 import TeamService from "../../services/teamService";
 import { Team } from "../../models/team";
 import Loading from "../Loading";
-import { useAudioContext } from "../../contexts/audioContext";
+import { useKeyboardContext } from "../../contexts/keyboardContext";
 import UserStatusBubble from "../UserStatusBubble";
 
 const teamService = new TeamService();
@@ -54,7 +54,7 @@ export default function Header() {
     isSilenceMode,
     muteOrUnmute,
     silenceOrLivenMode,
-  } = useAudioContext();
+  } = useKeyboardContext();
 
   const [usersTeams, setUserTeams] = useState<Team[]>(null);
 

@@ -23,7 +23,7 @@ import {
 import { Collections } from "../../services/collections";
 import { KeyCode } from "../../globals/keycode";
 import { Tooltip } from "antd";
-import { useAudioContext } from "../../contexts/audioContext";
+import { useKeyboardContext } from "../../contexts/keyboardContext";
 import UserStatusBubble, { UserPulse } from "../UserStatusBubble";
 import { useAuth } from "../../contexts/authContext";
 import { Message } from "../../models/message";
@@ -40,7 +40,7 @@ export default function TeamVoiceLine() {
     selectTeamMember,
     selectedTeammate,
     isRecording,
-  } = useAudioContext();
+  } = useKeyboardContext();
   const router = useRouter();
   const { teamid } = router.query;
   const { team, user, userTeamMember, teamMembers } = useTeamDashboardContext();

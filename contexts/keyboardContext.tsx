@@ -12,8 +12,9 @@ import { Message } from "../models/message";
 import { useAuth } from "./authContext";
 import { SendService } from "../services/sendService";
 import { useTeamDashboardContext } from "./teamDashboardContext";
+import CreateRoom from "../helpers/CreateRoom";
 
-interface AudioContextInterface {
+interface KeyboardContextInterface {
   selectedTeammate: string; // can only have one selected
   selectTeamMember: Function;
 
@@ -43,9 +44,13 @@ interface AudioContextInterface {
   outputDevices: MediaDeviceInfo[];
 
   ctrlDown: boolean;
+
+  createRoom: CreateRoom;
 }
 
-const AudioContext = React.createContext<AudioContextInterface | null>(null);
+const KeyboardContext = React.createContext<KeyboardContextInterface | null>(
+  null
+);
 
 function stopBothVideoAndAudio(stream) {
   stream.getTracks().forEach(function (track) {
@@ -60,7 +65,7 @@ function stopBothVideoAndAudio(stream) {
 const cloudStorageService = new CloudStorageService();
 const sendService = new SendService();
 
-export default function AudioContextProvider({ children }) {
+export default function KeyboardContextProvider({ children }) {
   const { currUser } = useAuth();
 
   // SECTION: set up for shortcuts and recording and such
@@ -79,6 +84,8 @@ export default function AudioContextProvider({ children }) {
 
   const [isMuted, setIsMuted] = useState<Boolean>(false);
   const [isSilenceMode, setIseSilenceMode] = useState<Boolean>(false);
+
+  const [createRoom, setCreateRoom] = useState<CreateRoom>(new CreateRoom());
 
   const [recorder, setRecorder] = useState<MicRecorder>(
     new MicRecorder({ bitRate: 128 })
@@ -107,7 +114,7 @@ export default function AudioContextProvider({ children }) {
     }
   }, [allMessages]);
 
-  const value: AudioContextInterface = {
+  const value: KeyboardContextInterface = {
     selectedTeammate,
     selectTeamMember,
     addTeamShortcutBinding,
@@ -130,6 +137,7 @@ export default function AudioContextProvider({ children }) {
     outputDevices,
 
     ctrlDown,
+    createRoom,
   };
 
   function muteOrUnmute() {
@@ -413,7 +421,7 @@ export default function AudioContextProvider({ children }) {
   const [playerSrc, setPlayerSrc] = useState<string>(null);
 
   return (
-    <AudioContext.Provider value={value}>
+    <KeyboardContext.Provider value={value}>
       {children}
 
       {/* mega power mode viewer */}
@@ -430,10 +438,10 @@ export default function AudioContextProvider({ children }) {
           className="w-screen flex flex-row"
         />
       )}
-    </AudioContext.Provider>
+    </KeyboardContext.Provider>
   );
 }
 
-export function useAudioContext() {
-  return useContext(AudioContext);
+export function useKeyboardContext() {
+  return useContext(KeyboardContext);
 }

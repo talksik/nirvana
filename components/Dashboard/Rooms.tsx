@@ -36,7 +36,7 @@ export default function DashboardRoom() {
   return (
     <section className="p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md">
       {/*  modal for creating room */}
-      <CreateRoom show={true} />
+      <CreateRoom />
 
       {/* header */}
       <span className="flex flex-row justify-end space-x-3 pb-5 items-center">

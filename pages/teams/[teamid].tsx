@@ -6,7 +6,7 @@ import Rooms from "../../components/Dashboard/Rooms";
 import TeamVoiceLine from "../../components/Dashboard/TeamVoiceLine";
 import BackgroundLayout from "../../components/Layouts/BackgroundLayout";
 import Loading from "../../components/Loading";
-import AudioContextProvider from "../../contexts/audioContext";
+import AudioContextProvider from "../../contexts/keyboardContext";
 import { useAuth } from "../../contexts/authContext";
 import {
   TeamDashboardContextProvider,
