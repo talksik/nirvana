@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { KeyCode } from "../globals/keycode";
 import MicRecorder from "mic-recorder-to-mp3";
@@ -151,18 +151,6 @@ export default function AudioContextProvider({ children }) {
       });
   }, [audioInputDeviceId]); // change it everytime we change the input device
 
-  // IMPORTANT: shortcut handlers need to be updated as the function has to have the fresh state
-  useEffect(() => {
-    console.log("updating event listeners");
-    document.addEventListener("keydown", handleKeyboardShortcut);
-    document.addEventListener("keyup", handleKeyUp);
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyboardShortcut);
-      document.removeEventListener("keyup", handleKeyUp);
-    };
-  }, [handleKeyboardShortcut, handleKeyUp]);
-
   // SECTION: recording
   async function startRecording() {
     Mp3Recorder.start()
@@ -202,57 +190,82 @@ export default function AudioContextProvider({ children }) {
   }
 
   // todo usecallback hook
-  function handleKeyUp(event) {
-    console.log("on key up");
 
-    // if was recording and released R, then stop recording
-    if (event.keyCode == KeyCode.R && selectedTeammate && isRecording) {
-      console.log("stopped recording");
-      setIsRecording(false);
+  const handleKeyUp = useCallback(
+    (event) => {
+      console.log("on key up");
 
-      stopRecording();
+      // if was recording and released R, then stop recording
+      if (event.keyCode == KeyCode.R && selectedTeammate && isRecording) {
+        console.log("stopped recording");
+        setIsRecording(false);
 
-      console.log("sending message to " + selectedTeammate);
+        stopRecording();
 
-      setSelectedTeamMember(null);
-    }
-  }
+        console.log("sending message to " + selectedTeammate);
 
-  function handleKeyboardShortcut(event) {
-    if (event.repeat) {
-      return;
-    }
-
-    console.log(event.keyCode);
-    console.log(selectedTeammate);
-
-    // recording
-    if (event.keyCode == KeyCode.R) {
-      if (!audioInputDeviceId) {
-        toast.error("No microphone selected");
-      } else if (!hasRecPermit) {
-        toast.error("You did not allow recording permission!");
-      } else if (isMuted) {
-        toast.error("You are muted!");
-      } else if (!selectedTeammate) {
-        toast.error("Please select a team member or announcements first");
-      } else {
-        console.log("started recording");
-        setIsRecording(true);
-        startRecording();
+        setSelectedTeamMember(null);
       }
-    }
-    // if we have a valid user for such a shortcut, then go ahead...otherwise
-    else if (teamShortcutMappings[event.keyCode]) {
-      setSelectedTeamMember(teamShortcutMappings[event.keyCode]);
-    } else if (event.keyCode == KeyCode.Escape) {
-      setSelectedTeamMember(null);
-    } else {
-      toast("Invalid keyboard shortcut.");
-    }
+    },
+    [isRecording, selectedTeammate]
+  );
 
-    // todo if we press the same shortcut twice, deactive selected user
-  }
+  const handleKeyboardShortcut = useCallback(
+    (event) => {
+      if (event.repeat) {
+        return;
+      }
+
+      console.log(event.keyCode);
+      console.log(selectedTeammate);
+
+      // recording
+      if (event.keyCode == KeyCode.R) {
+        if (!audioInputDeviceId) {
+          toast.error("No microphone selected");
+        } else if (!hasRecPermit) {
+          toast.error("You did not allow recording permission!");
+        } else if (isMuted) {
+          toast.error("You are muted!");
+        } else if (!selectedTeammate) {
+          toast.error("Please select a team member or announcements first");
+        } else {
+          console.log("started recording");
+          setIsRecording(true);
+          startRecording();
+        }
+      }
+      // if we have a valid user for such a shortcut, then go ahead...otherwise
+      else if (teamShortcutMappings[event.keyCode]) {
+        setSelectedTeamMember(teamShortcutMappings[event.keyCode]);
+      } else if (event.keyCode == KeyCode.Escape) {
+        setSelectedTeamMember(null);
+      } else {
+        toast("Invalid keyboard shortcut.");
+      }
+
+      // todo if we press the same shortcut twice, deactive selected user
+    },
+    [
+      selectedTeammate,
+      audioInputDeviceId,
+      hasRecPermit,
+      isMuted,
+      teamShortcutMappings,
+    ]
+  );
+
+  // IMPORTANT: shortcut handlers need to be updated as the function has to have the fresh state
+  useEffect(() => {
+    console.log("updating event listeners");
+    document.addEventListener("keydown", handleKeyboardShortcut);
+    document.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyboardShortcut);
+      document.removeEventListener("keyup", handleKeyUp);
+    };
+  }, [handleKeyboardShortcut, handleKeyUp]);
 
   function addTeamShortcutBinding(keyCode: number, userId: string) {
     setTeamShortcutMappings((prevMap) => ({ ...prevMap, [keyCode]: userId }));
