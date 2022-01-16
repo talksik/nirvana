@@ -350,6 +350,9 @@ export default function AudioContextProvider({ children }) {
             messagesByTeamMate[selectedTeammate] &&
             messagesByTeamMate[selectedTeammate].length > 0
           ) {
+            console.log("playing from this cache");
+
+            console.log(messagesByTeamMate);
             setPlayerSrc(messagesByTeamMate[selectedTeammate][0].audioDataUrl);
           } else {
             toast("nothing to play");

@@ -208,6 +208,7 @@ export function TeamDashboardContextProvider({ children }) {
             // if the map contains the teammate userid already, then cool, just unshift to that array
             const newMap = { ...prevMap };
             if (newMessage.receiverUserId in prevMap) {
+              // won't be in map if I am the receiver
               newMap[newMessage.receiverUserId] = [
                 newMessage,
                 ...prevMap[newMessage.receiverUserId],
@@ -216,6 +217,18 @@ export function TeamDashboardContextProvider({ children }) {
             //then create a new array
             else {
               newMap[newMessage.receiverUserId] = [newMessage];
+            }
+
+            // todo: if I am the receiver, still want to put it in the right conversation
+            if (newMessage.receiverUserId == currUser.uid) {
+              if (newMessage.senderUserId in prevMap) {
+                newMap[newMessage.senderUserId] = [
+                  newMessage,
+                  ...prevMap[newMessage.senderUserId],
+                ];
+              } else {
+                newMap[newMessage.senderUserId] = [newMessage];
+              }
             }
 
             return newMap;
