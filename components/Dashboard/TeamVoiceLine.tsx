@@ -19,6 +19,7 @@ import {
 import { Collections } from "../../services/collections";
 import { KeyCode } from "../../globals/keycode";
 import { Tooltip } from "antd";
+import { useAudioContext } from "../../contexts/audioContext";
 
 const userService = new UserService();
 const db = getFirestore();
@@ -67,16 +68,14 @@ function renderPulse(status: UserStatus) {
 
 const maxNumberOfKeyboardMappings: number = 9;
 
-const shortcutMappings = new Map(); // keycode number to the user id
-
 export default function TeamVoiceLine() {
+  const audioContext = useAudioContext();
   const router = useRouter();
   const { teamid } = router.query;
   const { team, user, userTeamMember, teamMembers } = useTeamDashboardContext();
   const [loading, setLoading] = useState<Boolean>(true);
 
   const [teamUsers, setTeamUsers] = useState<User[]>([]);
-  const [count, setCount] = useState<number>(0);
 
   useEffect(() => {
     const unsubs: Unsubscribe[] = [];
@@ -107,9 +106,6 @@ export default function TeamVoiceLine() {
 
             return;
           });
-
-          document.addEventListener("keydown", handleKeyboardShortcut);
-          document.addEventListener("keyup", handleKeyUp);
         }
       } catch (error) {
         console.log(error);
@@ -122,11 +118,18 @@ export default function TeamVoiceLine() {
 
     return () => {
       unsubs.map((listener) => listener());
-
-      document.removeEventListener("keydown", handleKeyboardShortcut);
-      document.removeEventListener("keyup", handleKeyUp);
     };
   }, []);
+
+  useEffect(() => {
+    teamUsers.forEach((tmUser, i) => {
+      // make sure we don't map a user if they are past the max allowed
+      if (i < maxNumberOfKeyboardMappings) {
+        let shortcut: number = i + 49; // 49 is what number 1 is on the keyboard
+        audioContext.addTeamShortcutBinding(shortcut, tmUser.id);
+      }
+    });
+  }, [teamUsers]);
 
   async function handleAdminRoute() {
     if (userTeamMember.role == TeamMemberRole.admin) {
@@ -137,56 +140,9 @@ export default function TeamVoiceLine() {
     toast.error("You are not a team admin!");
   }
 
-  // SECTION: set up for shortcuts and recording and such
-  const [selectedTeammate, setSelectedTeammate] = useState<string>(); // id of selected teammate
-  const [isRecording, setIsRecording] = useState<Boolean>(false);
-
-  teamUsers.forEach((tmUser, i) => {
-    // make sure we don't map a user if they are past the max allowed
-    if (i < maxNumberOfKeyboardMappings) {
-      let shortcut: number = i + 49; // 49 is what number 1 is on the keyboard
-      shortcutMappings.set(shortcut, tmUser.id);
-    }
-  });
-
   useEffect(() => {
     // todo move all variable stuff like shortcut mappings here
   }, [teamUsers]);
-
-  function handleKeyUp(event) {
-    console.log("on key up");
-
-    // if was recording and released R, then stop recording
-    if (event.keyCode == KeyCode.R) {
-      console.log("stopped recording");
-      setIsRecording(false);
-      setSelectedTeammate(null);
-    }
-  }
-
-  function handleKeyboardShortcut(event) {
-    if (event.repeat) {
-      return;
-    }
-
-    console.log(event.keyCode);
-
-    // recording
-    if (event.keyCode == KeyCode.R) {
-      console.log("started recording");
-      setIsRecording(true);
-    }
-    // if we have a valid user for such a shortcut, then go ahead...otherwise
-    else if (shortcutMappings.has(event.keyCode)) {
-      setSelectedTeammate(shortcutMappings.get(event.keyCode));
-    } else if (event.keyCode == KeyCode.Escape) {
-      setSelectedTeammate(null);
-    } else {
-      toast("Invalid teammate selection.");
-    }
-
-    // todo if we press the same shortcut twice, deactive selected user
-  }
 
   function renderTeamMemberList() {
     // show loading skeleton if not yet got friend info
@@ -210,10 +166,12 @@ export default function TeamVoiceLine() {
     return teamUsers.map((tmember, i) => {
       return (
         <span
-          onClick={() => setSelectedTeammate(tmember.id)}
+          onClick={() => audioContext.setSelectedTeamMember(tmember.id)}
           key={i}
           className={`rounded flex flex-row items-center py-2 px-2 justify-items-start ease-in-out duration-300 hover:cursor-pointer ${
-            tmember.id == selectedTeammate ? "bg-white scale-150 z-20" : ""
+            tmember.id == audioContext.selectedTeammate
+              ? "bg-white scale-150 z-20"
+              : ""
           }`}
         >
           <span className="relative flex mr-2">
@@ -229,7 +187,7 @@ export default function TeamVoiceLine() {
           </span>
 
           <span className="flex flex-col mr-10">
-            {tmember.id == selectedTeammate ? (
+            {tmember.id == audioContext.selectedTeammate ? (
               <>
                 <span className="flex flex-row items-center space-x-2">
                   <span className="text-sm text-black font-bold">
@@ -256,7 +214,7 @@ export default function TeamVoiceLine() {
             )}
           </span>
 
-          {tmember.id == selectedTeammate ? (
+          {tmember.id == audioContext.selectedTeammate ? (
             <>
               <Tooltip title="send link">
                 <button className="ml-auto bg-gray-400 bg-opacity-80 p-2 rounded hover:bg-opacity-100">
@@ -271,7 +229,7 @@ export default function TeamVoiceLine() {
               </Tooltip>
 
               <Tooltip title="press and hold R to send audio message">
-                {isRecording ? (
+                {audioContext.isRecording ? (
                   <button className="ml-2 w-10 h-10 border-orange-400 bg-orange-400 border-2 bg-opacity-80 p-2 rounded hover:bg-opacity-100">
                     <span className="text-sm text-white font-bold">R</span>
                   </button>

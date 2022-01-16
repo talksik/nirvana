@@ -268,9 +268,6 @@ export default class TeamService implements IService {
       email
     );
 
-    console.log(userTeamMembers);
-    console.log(userTeamMembersByEmail);
-
     // traverse through and get the teams for each
     var teams: Promise<Team>[];
     if (userTeamMembers) {

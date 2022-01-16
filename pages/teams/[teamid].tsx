@@ -5,6 +5,7 @@ import Header from "../../components/Dashboard/Header";
 import TeamVoiceLine from "../../components/Dashboard/TeamVoiceLine";
 import BackgroundLayout from "../../components/Layouts/BackgroundLayout";
 import Loading from "../../components/Loading";
+import AudioContextProvider from "../../contexts/audioContext";
 import { useAuth } from "../../contexts/authContext";
 import {
   TeamDashboardContextProvider,
@@ -67,9 +68,11 @@ function TeamDashboard() {
 export default function TeamDashboardWrapper() {
   return (
     <TeamDashboardContextProvider>
-      <BackgroundLayout>
-        <TeamDashboard />
-      </BackgroundLayout>
+      <AudioContextProvider>
+        <BackgroundLayout>
+          <TeamDashboard />
+        </BackgroundLayout>
+      </AudioContextProvider>
     </TeamDashboardContextProvider>
   );
 }

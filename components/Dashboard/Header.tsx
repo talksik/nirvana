@@ -49,8 +49,6 @@ export default function Header() {
             currUser.email
           );
 
-        console.log(newTeams);
-
         setUserTeams(newTeams);
       } catch (error) {
         console.log("problem getting teams of this user");
