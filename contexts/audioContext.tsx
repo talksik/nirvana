@@ -3,6 +3,8 @@ import toast from "react-hot-toast";
 import { KeyCode } from "../globals/keycode";
 import MicRecorder from "mic-recorder-to-mp3";
 
+import AudioPlayer from "react-h5-audio-player";
+
 interface AudioContextInterface {
   selectedTeammate: string; // can only have one selected
   selectTeamMember: Function;
@@ -227,6 +229,9 @@ export default function AudioContextProvider({ children }) {
     [isRecording, selectedTeammate]
   );
 
+  const testAudioClip =
+    "https://firebasestorage.googleapis.com/v0/b/nirvana-ccf04.appspot.com/o/messages%2F0E248EA9-AABC-4921-A06B-F1330DFBEE4A.m4a?alt=media&token=9cc81944-96a8-449f-a08f-50925d776565";
+
   const handleKeyboardShortcut = useCallback(
     (event) => {
       if (event.repeat) {
@@ -261,6 +266,8 @@ export default function AudioContextProvider({ children }) {
         toast("Invalid keyboard shortcut.");
       }
 
+      // todo play message if pressing space
+
       // todo if we press the same shortcut twice, deactive selected user
     },
     [
@@ -292,8 +299,33 @@ export default function AudioContextProvider({ children }) {
     setSelectedTeamMember(userId);
   }
 
+  const [startPlaying, setStartPlaying] = useState<Boolean>(false);
+
+  useEffect(() => {
+    setTimeout(
+      function () {
+        //Start the timer
+        setStartPlaying(true);
+      }.bind(this),
+      2000
+    );
+  });
+
   return (
-    <AudioContext.Provider value={value}>{children}</AudioContext.Provider>
+    <AudioContext.Provider value={value}>
+      {children}
+      {/* player for audio messages */}
+
+      {startPlaying ? (
+        <AudioPlayer
+          autoPlay
+          src={testAudioClip}
+          onPlay={(e) => console.log("onPlay")}
+        />
+      ) : (
+        <></>
+      )}
+    </AudioContext.Provider>
   );
 }
 

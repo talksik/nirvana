@@ -170,7 +170,7 @@ export default function TeamVoiceLine() {
           key={i}
           className={`rounded flex flex-row items-center py-2 px-2 justify-items-start ease-in-out duration-300 hover:cursor-pointer ${
             tmember.id == audioContext.selectedTeammate
-              ? "bg-white scale-150 z-20"
+              ? "bg-white scale-150 z-20 translate-x-2/4"
               : ""
           }`}
         >
@@ -243,6 +243,14 @@ export default function TeamVoiceLine() {
                     <span className="text-sm text-orange-500 font-bold">R</span>
                   </button>
                 )}
+              </Tooltip>
+
+              <Tooltip title="press space to play last convo">
+                <button className="ml-2 h-10 border-green-400 border-2 bg-opacity-80 p-2 rounded hover:bg-opacity-100">
+                  <span className="text-sm text-green-500 font-bold">
+                    SPACE
+                  </span>
+                </button>
               </Tooltip>
 
               <BsThreeDots className="text-black ml-2 hover:cursor-pointer" />
