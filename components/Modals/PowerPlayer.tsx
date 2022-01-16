@@ -1,5 +1,5 @@
 import { Modal, Tooltip } from "antd";
-import { Message } from "../models/message";
+import { Message } from "../../models/message";
 import { FaBackward } from "react-icons/fa";
 
 export default function PowerPlayer(props: { messages: Message[] }) {

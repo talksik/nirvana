@@ -4,6 +4,7 @@ import { FaAngleDown, FaBell, FaClock, FaPlus, FaLink } from "react-icons/fa";
 import { IoTimer } from "react-icons/io5";
 import { BsThreeDots } from "react-icons/bs";
 import Image from "next/image";
+import CreateRoom from "../Modals/CreateRoom";
 
 enum RoomTypeFilter {
   all = "all",
@@ -34,6 +35,9 @@ export default function DashboardRoom() {
 
   return (
     <section className="p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md">
+      {/*  modal for creating room */}
+      <CreateRoom show={true} />
+
       {/* header */}
       <span className="flex flex-row justify-end space-x-3 pb-5 items-center">
         <span className="text-white mr-auto">

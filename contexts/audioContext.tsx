@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import CloudStorageService from "../services/cloudStorageService";
-import PowerPlayer from "../components/PowerPlayer";
+import PowerPlayer from "../components/Modals/PowerPlayer";
 import { Message } from "../models/message";
 import { useAuth } from "./authContext";
 import { SendService } from "../services/sendService";
