@@ -34,6 +34,7 @@ function RouteHandler() {
             "not authenticated...routing from dashboard to teams home"
           );
           router.push("/teams/login");
+          return;
         }
 
         // get user
@@ -50,6 +51,7 @@ function RouteHandler() {
         ) {
           console.log("no profile for the user, routing him/her there");
           router.push("/teams/profile");
+          return;
         }
         setUser(returnedUser);
 
@@ -82,6 +84,7 @@ function RouteHandler() {
 
         if (invitedTeamMember.length > 0) {
           router.push("/teams/" + invitedTeamMember[0].teamId);
+          return;
         }
 
         setLoading(false);

@@ -46,6 +46,7 @@ export default function Profile() {
           returnedUser.firstName ?? currUser.displayName.split(" ")[0]
         );
         setLastName(returnedUser.lastName ?? "");
+        setTeamRole(returnedUser.teamRole ?? "");
       } catch (error) {
         console.log(error);
         router.push("/teams/login");
