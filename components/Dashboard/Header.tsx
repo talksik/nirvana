@@ -208,7 +208,7 @@ export default function Header() {
       return (
         <Tooltip title="enable mic permissions">
           <span>
-            <FaMicrophoneAltSlash className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
+            <FaMicrophoneAltSlash className="text-xl text-orange-400 ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
           </span>
         </Tooltip>
       );
@@ -217,7 +217,7 @@ export default function Header() {
     if (isMuted) {
       return (
         <span onClick={muteOrUnmute}>
-          <FaMicrophoneAltSlash className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
+          <FaMicrophoneAltSlash className="text-xl text-orange-400 ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
         </span>
       );
     }
@@ -225,7 +225,7 @@ export default function Header() {
     return (
       <Dropdown overlay={audioInputDropMenu}>
         <span onClick={muteOrUnmute}>
-          <FaMicrophoneAlt className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
+          <FaMicrophoneAlt className="text-xl text-gray-200 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
         </span>
       </Dropdown>
     );
@@ -235,7 +235,7 @@ export default function Header() {
     if (isSilenceMode) {
       return (
         <span onClick={silenceOrLivenMode}>
-          <FaVolumeMute className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
+          <FaVolumeMute className="text-xl text-orange-400 ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
         </span>
       );
     }
@@ -243,7 +243,7 @@ export default function Header() {
     return (
       <Dropdown overlay={audioOutputDropMenu}>
         <span onClick={silenceOrLivenMode}>
-          <FaHeadphonesAlt className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
+          <FaHeadphonesAlt className="text-xl text-gray-200 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
         </span>
       </Dropdown>
     );
