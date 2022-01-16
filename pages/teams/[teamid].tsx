@@ -54,6 +54,10 @@ function TeamDashboard() {
   };
 
   useEffect(() => {
+    // set the document title based on the team
+    // todo: update based on who sent you a message
+    document.title = teamDashboardContext.team.name;
+
     window.addEventListener("focus", onFocus);
     window.addEventListener("blur", onBlur);
     // Calls onFocus when the window first loads
