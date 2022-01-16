@@ -2,6 +2,7 @@ import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Header from "../../components/Dashboard/Header";
+import Rooms from "../../components/Dashboard/Rooms";
 import TeamVoiceLine from "../../components/Dashboard/TeamVoiceLine";
 import BackgroundLayout from "../../components/Layouts/BackgroundLayout";
 import Loading from "../../components/Loading";
@@ -85,6 +86,8 @@ function TeamDashboard() {
 
       <div className="flex flex-row items-baseline space-x-5 space-y-5 flex-wrap">
         <TeamVoiceLine />
+
+        <Rooms />
       </div>
     </div>
   );
