@@ -253,12 +253,10 @@ export default function AudioContextProvider({ children }) {
   function onEndedPlaying(e) {
     toast.success("finished playing");
 
+    // hide the player
     setPlayerSrc(null);
 
     // if there are still items in the player queue, then change the src and play the subsequent messages
-
-    // if no more messages, deselect user and hide the player
-    setSelectedTeamMember(null);
   }
 
   // todo usecallback hook
@@ -341,9 +339,21 @@ export default function AudioContextProvider({ children }) {
       } else if (event.keyCode == KeyCode.Space) {
         if (isSilenceMode) {
           toast.error("you are in silence mode, please disable it first");
+        } else if (!selectedTeammate) {
+          toast.error("select a team member first to play");
         } else {
           // alright now you are good to play last message chunk in conversation with selected user
           // todo create last chunk, and create a playlist
+
+          if (
+            selectedTeammate in messagesByTeamMate &&
+            messagesByTeamMate[selectedTeammate] &&
+            messagesByTeamMate[selectedTeammate].length > 0
+          ) {
+            setPlayerSrc(messagesByTeamMate[selectedTeammate][0].audioDataUrl);
+          } else {
+            toast("nothing to play");
+          }
         }
       } else {
         toast("Invalid keyboard shortcut.");
