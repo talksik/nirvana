@@ -27,6 +27,7 @@ import { useAudioContext } from "../../contexts/audioContext";
 import UserStatusBubble, { UserPulse } from "../UserStatusBubble";
 import { useAuth } from "../../contexts/authContext";
 import { Message } from "../../models/message";
+import { compareStatus } from "../../helpers/userHelper";
 
 const maxNumberOfKeyboardMappings: number = 9;
 
@@ -68,6 +69,9 @@ export default function TeamVoiceLine() {
                   );
                   newTeamUsers.push(updatedteamMateUser);
 
+                  // order users by status
+                  setTeamUsers(newTeamUsers.sort(compareStatus));
+
                   return newTeamUsers;
                 });
               });
@@ -94,6 +98,7 @@ export default function TeamVoiceLine() {
 
   // set up shortcuts for each teammate
   useEffect(() => {
+    // create shortcuts
     teamUsers.forEach((tmUser, i) => {
       // make sure we don't map a user if they are past the max allowed
       if (i < maxNumberOfKeyboardMappings) {
