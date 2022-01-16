@@ -213,7 +213,7 @@ export default function TeamVoiceLine() {
           onClick={() => setSelectedTeammate(tmember.id)}
           key={i}
           className={`rounded flex flex-row items-center py-2 px-2 justify-items-start ease-in-out duration-300 hover:cursor-pointer ${
-            tmember.id == selectedTeammate ? "bg-white scale-150" : ""
+            tmember.id == selectedTeammate ? "bg-white scale-150 z-20" : ""
           }`}
         >
           <span className="relative flex mr-2">
