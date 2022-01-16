@@ -22,7 +22,6 @@ import { Tooltip } from "antd";
 import { useAudioContext } from "../../contexts/audioContext";
 import UserStatusBubble, { UserPulse } from "../UserStatusBubble";
 
-const userService = new UserService();
 const db = getFirestore();
 
 const maxNumberOfKeyboardMappings: number = 9;

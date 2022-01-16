@@ -1,9 +1,11 @@
+import { doc, getFirestore, onSnapshot, Unsubscribe } from "firebase/firestore";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import Loading from "../components/Loading";
 import { Team } from "../models/team";
 import { TeamMember, TeamMemberStatus } from "../models/teamMember";
 import { User } from "../models/user";
+import { Collections } from "../services/collections";
 import TeamService from "../services/teamService";
 import UserService from "../services/userService";
 import { useAuth } from "./authContext";
@@ -20,6 +22,7 @@ const TeamDashboardContext =
 
 const teamService = new TeamService();
 const userService = new UserService();
+const db = getFirestore();
 
 export function TeamDashboardContextProvider({ children }) {
   const { currUser } = useAuth();
@@ -38,6 +41,8 @@ export function TeamDashboardContextProvider({ children }) {
   );
 
   useEffect(() => {
+    var userListener: Unsubscribe;
+
     (async function () {
       try {
         // SECTION: authentication
@@ -49,8 +54,17 @@ export function TeamDashboardContextProvider({ children }) {
           return;
         }
 
-        // SECTION: get user details
+        // SECTION: get user details : realtime
         const returnedUser = await userService.getUser(currUser.uid);
+
+        const docRef = doc(db, Collections.users, currUser.uid);
+
+        userListener = onSnapshot(docRef, (doc) => {
+          const updatedUser = doc.data() as User;
+
+          setValue((prevValue) => ({ ...prevValue, user: updatedUser }));
+        });
+
         setValue((prevValue) => ({ ...prevValue, user: returnedUser }));
 
         // SECTION: getting team data and team member information
@@ -134,6 +148,10 @@ export function TeamDashboardContextProvider({ children }) {
 
       setLoading(false);
     })();
+
+    return () => {
+      userListener();
+    };
   }, []);
 
   if (loading) {
