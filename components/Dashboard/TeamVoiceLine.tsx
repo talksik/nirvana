@@ -205,6 +205,11 @@ export default function TeamVoiceLine() {
                   <span className="text-sm text-white font-bold">
                     {tmember.nickName}
                   </span>
+
+                  <span className="text-white shadow-xl font-bold  px-3 py-1 rounded">
+                    {/* keyboard shortcuts start from 1 */}
+                    {i + 1}
+                  </span>
                 </span>
 
                 <span className={"text-xs span-sans text-gray-300"}>

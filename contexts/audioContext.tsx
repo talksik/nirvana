@@ -223,13 +223,15 @@ export default function AudioContextProvider({ children }) {
     console.log(selectedTeammate);
 
     // recording
-    if (event.keyCode == KeyCode.R && selectedTeammate) {
+    if (event.keyCode == KeyCode.R) {
       if (!audioInputDeviceId) {
         toast.error("No microphone selected");
       } else if (!hasRecPermit) {
         toast.error("You did not allow recording permission!");
       } else if (isMuted) {
-        toast.error("You are muted, sorry!");
+        toast.error("You are muted!");
+      } else if (!selectedTeammate) {
+        toast.error("Please select a team member or announcements first");
       } else {
         console.log("started recording");
         setIsRecording(true);
