@@ -44,7 +44,12 @@ export default function Header() {
       try {
         // get all the teams that this user is part of
         const newTeams: Team[] =
-          await teamService.getActiveOrInvitedTeamsbyUser(currUser.uid);
+          await teamService.getActiveOrInvitedTeamsbyUser(
+            currUser.uid,
+            currUser.email
+          );
+
+        console.log(newTeams);
 
         setUserTeams(newTeams);
       } catch (error) {

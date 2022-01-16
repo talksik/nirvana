@@ -258,20 +258,54 @@ export default class TeamService implements IService {
     );
   }
 
-  async getActiveOrInvitedTeamsbyUser(userId: string): Promise<Team[]> {
+  async getActiveOrInvitedTeamsbyUser(
+    userId: string,
+    email: string
+  ): Promise<Team[]> {
     // get all of the teammember entries for the user
     const userTeamMembers = await this.getTeamMembersByUserId(userId);
+    const userTeamMembersByEmail = await this.getTeamMembersByEmailInvite(
+      email
+    );
+
+    console.log(userTeamMembers);
+    console.log(userTeamMembersByEmail);
 
     // traverse through and get the teams for each
-    const teams = await Promise.all(
-      userTeamMembers.map(async (tm) => {
+    var teams: Promise<Team>[];
+    if (userTeamMembers) {
+      teams = userTeamMembers.map(async (tm) => {
         if (tm.status != TeamMemberStatus.deleted) {
           let team = await this.getTeam(tm.teamId);
           return team;
         }
-      })
-    );
+      });
+    }
 
-    return teams;
+    const teamsInvitedReduced = userTeamMembersByEmail.reduce(function (
+      result,
+      tm
+    ) {
+      if (tm.status == TeamMemberStatus.invited) {
+        this.getTeam(tm.teamId).then((team) => result.push(team));
+      }
+
+      return result;
+    },
+    []);
+
+    return Promise.all([...teams, ...teamsInvitedReduced]);
+
+    // const teamsInvitedTo = userTeamMembersByEmail.map(async (tm) => {
+    //   console.log("in map");
+    //   if (tm.status == TeamMemberStatus.invited) {
+    //     let team = await this.getTeam(tm.teamId);
+    //     console.log("valid team");
+    //     return team;
+    //   }
+    // });
+
+    // console.log(teams);
+    // console.log(teamsInvitedTo);
   }
 }
