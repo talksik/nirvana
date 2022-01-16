@@ -173,6 +173,13 @@ export default function Header() {
 
   const audioInputDropMenu = (
     <Menu title="audio input">
+      <Menu.Item danger key={"muting input"} onClick={muteOrUnmute}>
+        <button>{isMuted ? "Unmute" : "Mute"}</button>
+      </Menu.Item>
+
+      <Menu.Divider />
+
+      {/* device */}
       {inputDevices.map((device, i) => {
         return (
           <Menu.Item
@@ -189,6 +196,13 @@ export default function Header() {
 
   const audioOutputDropMenu = (
     <Menu title="audio ouput">
+      <Menu.Item danger key={"silence output"} onClick={silenceOrLivenMode}>
+        <button>{isSilenceMode ? "Unsilence" : "Silence"}</button>
+      </Menu.Item>
+
+      <Menu.Divider />
+
+      {/* devices */}
       {outputDevices.map((device, i) => {
         return (
           <Menu.Item
