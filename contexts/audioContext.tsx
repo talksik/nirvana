@@ -82,8 +82,6 @@ export default function AudioContextProvider({ children }) {
 
   // playing incoming messages
   const { allMessages, messagesByTeamMate } = useTeamDashboardContext();
-  console.log(allMessages);
-  console.log(messagesByTeamMate);
 
   useEffect(() => {
     if (!allMessages.length) {
@@ -96,12 +94,12 @@ export default function AudioContextProvider({ children }) {
       console.log("playing message");
       console.log(allMessages[0]);
 
-      // play message
-      setPlayerSrc(allMessages[0].audioDataUrl);
-
       // select the user
+      setSelectedTeamMember(allMessages[0].senderUserId);
 
       // start player on the bottom
+      // autoplay message
+      setPlayerSrc(allMessages[0].audioDataUrl);
     }
   }, [allMessages]);
 
@@ -255,11 +253,12 @@ export default function AudioContextProvider({ children }) {
   function onEndedPlaying(e) {
     toast.success("finished playing");
 
-    setPlayerSrc("");
+    setPlayerSrc(null);
 
     // if there are still items in the player queue, then change the src and play the subsequent messages
 
     // if no more messages, deselect user and hide the player
+    setSelectedTeamMember(null);
   }
 
   // todo usecallback hook
@@ -383,7 +382,7 @@ export default function AudioContextProvider({ children }) {
     setSelectedTeamMember(userId);
   }
 
-  const [playerSrc, setPlayerSrc] = useState<string>("");
+  const [playerSrc, setPlayerSrc] = useState<string>(null);
 
   return (
     <AudioContext.Provider value={value}>
@@ -393,14 +392,16 @@ export default function AudioContextProvider({ children }) {
       {/* <PowerPlayer /> */}
 
       {/* player for audio messages */}
-      <AudioPlayer
-        autoPlay
-        src={playerSrc}
-        onPlay={(e) => console.log("onPlay")}
-        showSkipControls={true}
-        onEnded={onEndedPlaying}
-        className="w-screen flex flex-row"
-      />
+      {playerSrc && (
+        <AudioPlayer
+          autoPlay
+          src={playerSrc}
+          onPlay={(e) => console.log("onPlay")}
+          showSkipControls={true}
+          onEnded={onEndedPlaying}
+          className="w-screen flex flex-row"
+        />
+      )}
     </AudioContext.Provider>
   );
 }
