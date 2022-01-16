@@ -67,6 +67,8 @@ function renderPulse(status: UserStatus) {
 
 const maxNumberOfKeyboardMappings: number = 9;
 
+const shortcutMappings = new Map(); // keycode number to the user id
+
 export default function TeamVoiceLine() {
   const router = useRouter();
   const { teamid } = router.query;
@@ -139,7 +141,6 @@ export default function TeamVoiceLine() {
   const [selectedTeammate, setSelectedTeammate] = useState<string>(); // id of selected teammate
   const [isRecording, setIsRecording] = useState<Boolean>(false);
 
-  const shortcutMappings = new Map(); // keycode number to the user id
   teamUsers.forEach((tmUser, i) => {
     // make sure we don't map a user if they are past the max allowed
     if (i < maxNumberOfKeyboardMappings) {
@@ -148,6 +149,10 @@ export default function TeamVoiceLine() {
     }
   });
 
+  useEffect(() => {
+    // todo move all variable stuff like shortcut mappings here
+  }, [teamUsers]);
+
   function handleKeyUp(event) {
     console.log("on key up");
 
@@ -155,6 +160,7 @@ export default function TeamVoiceLine() {
     if (event.keyCode == KeyCode.R) {
       console.log("stopped recording");
       setIsRecording(false);
+      setSelectedTeammate(null);
     }
   }
 
@@ -165,7 +171,7 @@ export default function TeamVoiceLine() {
 
     console.log(event.keyCode);
 
-    // recordingr
+    // recording
     if (event.keyCode == KeyCode.R) {
       console.log("started recording");
       setIsRecording(true);
