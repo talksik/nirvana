@@ -181,18 +181,18 @@ export default function TeamVoiceLine() {
             <>
               <Tooltip title="press and hold R to send audio message">
                 {audioContext.isRecording ? (
-                  <button className="ml-auto w-10 h-10 border-orange-400 bg-orange-400 border-2 bg-opacity-80 p-2 rounded hover:bg-opacity-100">
+                  <button className="ml-auto shadow-lg w-10 h-10 border-orange-400 bg-orange-400 bg-opacity-80 p-2 rounded hover:bg-opacity-100">
                     <span className="text-sm text-white font-bold">R</span>
                   </button>
                 ) : (
-                  <button className="ml-auto w-10 h-10 border-orange-400 border-2 bg-opacity-80 p-2 rounded hover:bg-opacity-100">
+                  <button className="ml-auto shadow-lg w-10 h-10 border-orange-400 bg-opacity-80 p-2 rounded hover:bg-opacity-100">
                     <span className="text-sm text-orange-500 font-bold">R</span>
                   </button>
                 )}
               </Tooltip>
 
               <Tooltip title="press space to play last convo">
-                <button className="ml-2 h-10 border-green-400 border-2 bg-opacity-80 p-2 rounded hover:bg-opacity-100">
+                <button className="ml-2 h-10 shadow-lg border-green-400 bg-opacity-80 p-2 rounded hover:bg-opacity-100">
                   <span className="text-sm text-green-500 font-bold">
                     SPACE
                   </span>
