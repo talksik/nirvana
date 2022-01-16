@@ -2,9 +2,11 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { KeyCode } from "../globals/keycode";
 import MicRecorder from "mic-recorder-to-mp3";
+import { v4 as uuidv4 } from "uuid";
 
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
+import CloudStorageService from "../services/cloudStorageService";
 
 interface AudioContextInterface {
   selectedTeammate: string; // can only have one selected
@@ -47,6 +49,8 @@ function stopBothVideoAndAudio(stream) {
     }
   });
 }
+
+const cloudStorageService = new CloudStorageService();
 
 export default function AudioContextProvider({ children }) {
   // SECTION: set up for shortcuts and recording and such
@@ -179,30 +183,29 @@ export default function AudioContextProvider({ children }) {
       );
   }
 
-  // everything to do with audio file
-  async function stopRecording() {
-    recorder
-      .stop()
-      .getMp3()
-      .then(([buffer, blob]) => {
-        const blobURL = URL.createObjectURL(blob);
+  async function stopRecording(): Promise<File> {
+    return new Promise((resolve, reject) => {
+      recorder
+        .stop()
+        .getMp3()
+        .then(([buffer, blob]) => {
+          const blobURL = URL.createObjectURL(blob);
 
-        const file = new File(buffer, "me-at-thevoice.mp3", {
-          type: blob.type,
-          lastModified: Date.now(),
+          const file = new File(buffer, uuidv4() + ".mp3", {
+            type: blob.type,
+            lastModified: Date.now(),
+          });
+
+          const player = new Audio(URL.createObjectURL(file));
+          player.onended = onEndedPlaying;
+          player.play();
+
+          resolve(file);
+        })
+        .catch((error) => {
+          reject(error.message);
         });
-
-        const player = new Audio(URL.createObjectURL(file));
-
-        console.log(URL.createObjectURL(file));
-
-        player.onended = onEndedPlaying;
-
-        player.play();
-
-        toast.success("Audio Clip Sent");
-      })
-      .catch((e) => toast.error("Problem in sending clip"));
+    });
   }
 
   function onEndedPlaying(e) {
@@ -222,7 +225,24 @@ export default function AudioContextProvider({ children }) {
         console.log("stopped recording");
         setIsRecording(false);
 
-        stopRecording();
+        stopRecording()
+          .then((file) => {
+            console.log(file);
+
+            // upload to cloud storage
+            return cloudStorageService.uploadMessageAudioFile(file);
+          })
+          .then((downloadUrl) => {
+            console.log("file is stored: " + downloadUrl);
+
+            // send message to firestore
+
+            return;
+          })
+          .then(() => {})
+          .catch((error) => {
+            toast.error("Problem in sending clip");
+          });
 
         console.log("sending message to " + selectedTeammate);
 
