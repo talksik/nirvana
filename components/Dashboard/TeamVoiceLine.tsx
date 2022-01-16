@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { FaPlus, FaExternalLinkAlt, FaLink } from "react-icons/fa";
+import { FaPlus, FaExternalLinkAlt, FaLink, FaBackward } from "react-icons/fa";
 import { IoPulseOutline, IoRemoveOutline, IoTimer } from "react-icons/io5";
 import { MdScreenShare } from "react-icons/md";
 import { BsThreeDots } from "react-icons/bs";
@@ -179,25 +179,13 @@ export default function TeamVoiceLine() {
 
           {tmember.id == audioContext.selectedTeammate ? (
             <>
-              <Tooltip title="send link">
-                <button className="ml-auto bg-gray-400 bg-opacity-80 p-2 rounded hover:bg-opacity-100">
-                  <FaLink className="text-sm text-white" />
-                </button>
-              </Tooltip>
-
-              <Tooltip title="send video recording">
-                <button className="ml-2 bg-gray-400 bg-opacity-80 p-2 rounded hover:bg-opacity-100">
-                  <MdScreenShare className="text-sm text-white" />
-                </button>
-              </Tooltip>
-
               <Tooltip title="press and hold R to send audio message">
                 {audioContext.isRecording ? (
-                  <button className="ml-2 w-10 h-10 border-orange-400 bg-orange-400 border-2 bg-opacity-80 p-2 rounded hover:bg-opacity-100">
+                  <button className="ml-auto w-10 h-10 border-orange-400 bg-orange-400 border-2 bg-opacity-80 p-2 rounded hover:bg-opacity-100">
                     <span className="text-sm text-white font-bold">R</span>
                   </button>
                 ) : (
-                  <button className="ml-2 w-10 h-10 border-orange-400 border-2 bg-opacity-80 p-2 rounded hover:bg-opacity-100">
+                  <button className="ml-auto w-10 h-10 border-orange-400 border-2 bg-opacity-80 p-2 rounded hover:bg-opacity-100">
                     <span className="text-sm text-orange-500 font-bold">R</span>
                   </button>
                 )}
@@ -228,12 +216,23 @@ export default function TeamVoiceLine() {
           <span className="text-white">TEAM</span>
         </span>
 
-        <button
-          onClick={handleAdminRoute}
-          className="bg-gray-300 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40"
-        >
-          <FaPlus className="text-lg text-white" />
-        </button>
+        <Tooltip title="power playback mode">
+          <button
+            onClick={handleAdminRoute}
+            className="bg-gray-300 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40"
+          >
+            <FaBackward className="text-lg text-white" />
+          </button>
+        </Tooltip>
+
+        <Tooltip title="add members">
+          <button
+            onClick={handleAdminRoute}
+            className="bg-gray-300 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40"
+          >
+            <FaPlus className="text-lg text-white" />
+          </button>
+        </Tooltip>
       </span>
       {/* list of team members */}
       {renderTeamMemberList()}
