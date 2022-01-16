@@ -83,8 +83,8 @@ export default function Header() {
 
   const TeamsMenu = (
     <Menu key={2} title="teams">
-      <Menu.Item key={1} icon={<FaDatabase />}>
-        <button onClick={handleAdminRoute}>Admin</button>
+      <Menu.Item onClick={handleAdminRoute} key={1} icon={<FaDatabase />}>
+        <button>Admin</button>
       </Menu.Item>
 
       <Menu.Divider />
@@ -96,16 +96,12 @@ export default function Header() {
             <Menu.Item
               key={i + 5}
               icon={team.id == uteam.id ? <FaCheck /> : <></>}
+              onClick={() => {
+                console.log("going to " + uteam.id);
+                window.location.href = "/teams/" + uteam.id;
+              }}
             >
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  console.log("going to " + uteam.id);
-                  window.location.href = "/teams/" + uteam.id;
-                }}
-              >
-                {uteam.name}
-              </button>
+              <button>{uteam.name}</button>
             </Menu.Item>
           );
         })}
@@ -113,35 +109,25 @@ export default function Header() {
       <Menu.Divider />
 
       {/* create TEAM */}
-      <Menu.Item key={"createteam"} icon={<FaPeopleCarry />}>
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            router.push("/teams/create");
-          }}
-        >
-          Create Team
-        </button>
+      <Menu.Item
+        key={"createteam"}
+        icon={<FaPeopleCarry />}
+        onClick={() => router.push("/teams/create")}
+      >
+        <button>Create Team</button>
       </Menu.Item>
     </Menu>
   );
   const UserMenu = (
     <Menu title="user menu">
-      <Menu.Item key={2}>
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            router.push("/teams/profile");
-          }}
-        >
-          Profile
-        </button>
+      <Menu.Item key={2} onClick={() => router.push("/teams/profile")}>
+        <button>Profile</button>
       </Menu.Item>
 
       <Menu.Divider />
 
-      <Menu.Item danger key={3}>
-        <button onClick={handleSignOut}>Sign Out</button>
+      <Menu.Item danger key={3} onClick={handleSignOut}>
+        <button>Sign Out</button>
       </Menu.Item>
     </Menu>
   );
