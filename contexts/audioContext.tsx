@@ -35,8 +35,6 @@ interface AudioContextInterface {
 
 const AudioContext = React.createContext<AudioContextInterface | null>(null);
 
-const Mp3Recorder = new MicRecorder({ bitRate: 128 });
-
 function stopBothVideoAndAudio(stream) {
   stream.getTracks().forEach(function (track) {
     if (track.readyState == "live") {
@@ -62,6 +60,10 @@ export default function AudioContextProvider({ children }) {
 
   const [isMuted, setIsMuted] = useState<Boolean>(false);
   const [isSilenceMode, setIseSilenceMode] = useState<Boolean>(false);
+
+  const [recorder, setRecorder] = useState<MicRecorder>(
+    new MicRecorder({ bitRate: 128 })
+  );
 
   const value: AudioContextInterface = {
     selectedTeammate,
@@ -134,6 +136,8 @@ export default function AudioContextProvider({ children }) {
     })();
   }, [hasRecPermit]);
 
+  // first load just force check if permissions enabled
+  // through fake stream
   useEffect(() => {
     navigator.mediaDevices
       .getUserMedia({ audio: { deviceId: audioInputDeviceId } })
@@ -146,14 +150,24 @@ export default function AudioContextProvider({ children }) {
       })
       .catch((e) => {
         console.log("Permission Denied");
-        toast.error("Please make sure that you have connected a microphone.");
+        toast.error(
+          "Please make sure that you have connected a microphone and given permissions."
+        );
         setHasRecPermit(false);
       });
+  }, []);
+
+  // set recording device
+  useEffect(() => {
+    setRecorder(
+      new MicRecorder({ bitRate: 128, deviceId: audioInputDeviceId })
+    );
   }, [audioInputDeviceId]); // change it everytime we change the input device
 
   // SECTION: recording
   async function startRecording() {
-    Mp3Recorder.start()
+    recorder
+      .start()
       .then(() => {
         toast.success("started recording");
       })
@@ -164,7 +178,8 @@ export default function AudioContextProvider({ children }) {
 
   // everything to do with audio file
   async function stopRecording() {
-    Mp3Recorder.stop()
+    recorder
+      .stop()
       .getMp3()
       .then(([buffer, blob]) => {
         const blobURL = URL.createObjectURL(blob);
