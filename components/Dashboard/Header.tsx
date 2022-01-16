@@ -13,13 +13,15 @@ import {
   FaAngleDown,
   FaCheck,
   FaDatabase,
+  FaMicrophoneAltSlash,
+  FaVolumeMute,
 } from "react-icons/fa";
 import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
 import router from "next/router";
 import Moment from "react-moment";
 import { User } from "../../models/user";
 import { generateGreetings } from "../../helpers/dateTime";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, Tooltip } from "antd";
 import { useRouter } from "next/router";
 import { TeamMemberRole, TeamMemberStatus } from "../../models/teamMember";
 import { toast } from "react-hot-toast";
@@ -28,6 +30,7 @@ import { useEffect, useState } from "react";
 import TeamService from "../../services/teamService";
 import { Team } from "../../models/team";
 import Loading from "../Loading";
+import { useAudioContext } from "../../contexts/audioContext";
 
 const teamService = new TeamService();
 
@@ -36,9 +39,25 @@ export default function Header() {
   const { team, user, userTeamMember } = useTeamDashboardContext();
   const router = useRouter();
   const { teamid } = router.query;
+  const {
+    hasRecPermit,
+
+    audioInputDeviceId,
+    audioOutputDeviceId,
+    selectAudioOutput,
+    selectAudioInput,
+    inputDevices,
+    outputDevices,
+
+    isMuted,
+    isSilenceMode,
+    muteOrUnmute,
+    silenceOrLivenMode,
+  } = useAudioContext();
 
   const [usersTeams, setUserTeams] = useState<Team[]>(null);
 
+  // get team data for the team dropdown
   useEffect(() => {
     (async function () {
       try {
@@ -78,6 +97,28 @@ export default function Header() {
 
     toast.error("You are not a team admin!");
   }
+
+  const searchBar = (
+    <div className="pt-2 flex flex-row relative items-center">
+      <button type="submit" className="absolute left-0 top-0 mt-5 ml-5">
+        <FaSearch className="text-white" />
+      </button>
+
+      <input
+        className=" bg-white bg-opacity-40 h-10 px-5 pl-10 pr-16 rounded-lg text-white text-sm focus:outline-none"
+        type="search"
+        name="search"
+        placeholder="Search"
+      />
+
+      <button
+        className="absolute right-1 rounded-lg py-1 px-2 ml-1 
+                                    shadow-md text-center text-white text-sm font-bold"
+      >
+        CTRL + K
+      </button>
+    </div>
+  );
 
   const TeamsMenu = (
     <Menu key={2} title="teams">
@@ -130,27 +171,81 @@ export default function Header() {
     </Menu>
   );
 
-  const searchBar = (
-    <div className="pt-2 flex flex-row relative items-center">
-      <button type="submit" className="absolute left-0 top-0 mt-5 ml-5">
-        <FaSearch className="text-white" />
-      </button>
-
-      <input
-        className=" bg-white bg-opacity-40 h-10 px-5 pl-10 pr-16 rounded-lg text-white text-sm focus:outline-none"
-        type="search"
-        name="search"
-        placeholder="Search"
-      />
-
-      <button
-        className="absolute right-1 rounded-lg py-1 px-2 ml-1 
-                                    shadow-md text-center text-white text-sm font-bold"
-      >
-        CTRL + K
-      </button>
-    </div>
+  const audioInputDropMenu = (
+    <Menu title="audio input">
+      {inputDevices.map((device, i) => {
+        return (
+          <Menu.Item
+            key={device.deviceId}
+            icon={device.deviceId == audioInputDeviceId ? <FaCheck /> : <></>}
+          >
+            <button>{device.label}</button>
+          </Menu.Item>
+        );
+      })}
+    </Menu>
   );
+
+  const audioOutputDropMenu = (
+    <Menu title="audio ouput">
+      {outputDevices.map((device, i) => {
+        return (
+          <Menu.Item
+            key={device.deviceId}
+            icon={device.deviceId == audioOutputDeviceId ? <FaCheck /> : <></>}
+          >
+            <button>{device.label}</button>
+          </Menu.Item>
+        );
+      })}
+    </Menu>
+  );
+
+  function renderAudioInput() {
+    if (!hasRecPermit) {
+      return (
+        <Tooltip title="enable mic permissions">
+          <span>
+            <FaMicrophoneAltSlash className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
+          </span>
+        </Tooltip>
+      );
+    }
+
+    if (isMuted) {
+      return (
+        <span onClick={muteOrUnmute}>
+          <FaMicrophoneAltSlash className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
+        </span>
+      );
+    }
+
+    return (
+      <Dropdown overlay={audioInputDropMenu}>
+        <span onClick={muteOrUnmute}>
+          <FaMicrophoneAlt className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
+        </span>
+      </Dropdown>
+    );
+  }
+
+  function renderAudioOutput() {
+    if (isSilenceMode) {
+      return (
+        <span onClick={silenceOrLivenMode}>
+          <FaVolumeMute className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
+        </span>
+      );
+    }
+
+    return (
+      <Dropdown overlay={audioOutputDropMenu}>
+        <span onClick={silenceOrLivenMode}>
+          <FaHeadphonesAlt className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
+        </span>
+      </Dropdown>
+    );
+  }
 
   const today = new Date();
   const periodOfDay = generateGreetings();
@@ -180,9 +275,11 @@ export default function Header() {
       <span className="flex flex-row items-center space-x-5">
         {/* search bar */}
 
-        <FaBell className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
-        <FaHeadphonesAlt className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
-        <FaMicrophoneAlt className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
+        {/* <FaBell className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" /> */}
+
+        {renderAudioOutput()}
+
+        {renderAudioInput()}
 
         {/* teams menu */}
 

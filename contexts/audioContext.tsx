@@ -5,7 +5,7 @@ import MicRecorder from "mic-recorder-to-mp3";
 
 interface AudioContextInterface {
   selectedTeammate: string; // can only have one selected
-  setSelectedTeamMember: Function;
+  selectTeamMember: Function;
 
   teamShortcutMappings: {};
   addTeamShortcutBinding: Function;
@@ -18,13 +18,34 @@ interface AudioContextInterface {
 
   isMuted: Boolean;
   isSilenceMode: Boolean; // won't automatically listen to notifications or sounds
+  muteOrUnmute: Function;
+  silenceOrLivenMode: Function;
 
   hasRecPermit: Boolean; // permission to record or not
+
+  audioInputDeviceId: string;
+  audioOutputDeviceId: string;
+
+  selectAudioOutput: Function;
+  selectAudioInput: Function;
+
+  inputDevices: MediaDeviceInfo[];
+  outputDevices: MediaDeviceInfo[];
 }
 
 const AudioContext = React.createContext<AudioContextInterface | null>(null);
 
 const Mp3Recorder = new MicRecorder({ bitRate: 128 });
+
+function stopBothVideoAndAudio(stream) {
+  stream.getTracks().forEach(function (track) {
+    if (track.readyState == "live") {
+      track.stop();
+
+      console.log("stopped playing anything");
+    }
+  });
+}
 
 export default function AudioContextProvider({ children }) {
   // SECTION: set up for shortcuts and recording and such
@@ -33,20 +54,99 @@ export default function AudioContextProvider({ children }) {
   const [hasRecPermit, setHasRecPermit] = useState<Boolean>(false);
 
   const [teamShortcutMappings, setTeamShortcutMappings] = useState<{}>(null);
+  const [audioInputDeviceId, setAudioInputDevice] = useState<string>(null); // device id
+  const [audioOutputDeviceId, setAudioOutputDevice] = useState<string>(null); // device id
+
+  const [inputDevices, setInputDevices] = useState<MediaDeviceInfo[]>([]);
+  const [outputDevices, setOutputDevices] = useState<MediaDeviceInfo[]>([]);
+
+  const [isMuted, setIsMuted] = useState<Boolean>(false);
+  const [isSilenceMode, setIseSilenceMode] = useState<Boolean>(false);
+
+  const value: AudioContextInterface = {
+    selectedTeammate,
+    selectTeamMember,
+    addTeamShortcutBinding,
+    isRecording,
+    teamShortcutMappings,
+
+    isMuted,
+    isSilenceMode,
+    muteOrUnmute,
+    silenceOrLivenMode,
+
+    hasRecPermit,
+
+    audioInputDeviceId,
+    audioOutputDeviceId,
+    selectAudioOutput,
+    selectAudioInput,
+
+    inputDevices,
+    outputDevices,
+  };
+
+  function muteOrUnmute() {
+    setIsMuted((prevVal) => !prevVal);
+  }
+
+  function silenceOrLivenMode() {
+    setIseSilenceMode((prevVal) => !prevVal);
+  }
+
+  function selectAudioOutput(deviceId: string) {
+    setAudioOutputDevice(deviceId);
+  }
+
+  function selectAudioInput(deviceId: string) {
+    setAudioInputDevice(deviceId);
+  }
+
+  // set up audio
+  useEffect(() => {
+    (async function () {
+      try {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+
+        const inputDevices: MediaDeviceInfo[] = devices.filter(
+          (d) => d.kind == "audioinput"
+        );
+
+        setAudioInputDevice(inputDevices ? inputDevices[0].deviceId : null);
+        setInputDevices(inputDevices);
+
+        const outputDevices: MediaDeviceInfo[] = devices.filter(
+          (d) => d.kind == "audiooutput"
+        );
+
+        setAudioOutputDevice(outputDevices ? outputDevices[0].deviceId : null);
+        setOutputDevices(outputDevices);
+        console.log(devices);
+      } catch (e) {
+        console.log(e);
+        toast.error("Problem in setting up audio devices");
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     navigator.mediaDevices
-      .getUserMedia({ audio: true })
-      .then(() => {
+      .getUserMedia({ audio: { deviceId: audioInputDeviceId } })
+      .then((stream) => {
+        // stop playing anything
+        stopBothVideoAndAudio(stream);
+
         console.log("Permission Granted");
         setHasRecPermit(true);
       })
-      .catch(() => {
+      .catch((e) => {
         console.log("Permission Denied");
+        toast.error("Please make sure that you have connected a microphone.");
         setHasRecPermit(false);
       });
-  }, []);
+  }, [audioInputDeviceId]); // change it everytime we change the input device
 
+  // shortcut handlers need to be updated as the function has to have the fresh state
   useEffect(() => {
     document.addEventListener("keydown", handleKeyboardShortcut);
     document.addEventListener("keyup", handleKeyUp);
@@ -55,10 +155,10 @@ export default function AudioContextProvider({ children }) {
       document.removeEventListener("keydown", handleKeyboardShortcut);
       document.removeEventListener("keyup", handleKeyUp);
     };
-  }, [teamShortcutMappings]);
+  }, [teamShortcutMappings, selectedTeammate]);
 
   // SECTION: recording
-  function startRecording() {
+  async function startRecording() {
     if (!hasRecPermit) {
       toast.error("You did not allow recording permission!");
     } else {
@@ -73,7 +173,7 @@ export default function AudioContextProvider({ children }) {
   }
 
   // everything to do with audio file
-  function stopRecording() {
+  async function stopRecording() {
     Mp3Recorder.stop()
       .getMp3()
       .then(([buffer, blob]) => {
@@ -95,13 +195,15 @@ export default function AudioContextProvider({ children }) {
   function handleKeyUp(event) {
     console.log("on key up");
 
+    console.log(selectedTeammate); // use this to send the message to the right person
+
     // if was recording and released R, then stop recording
     if (event.keyCode == KeyCode.R && selectedTeammate) {
       console.log("stopped recording");
       setIsRecording(false);
       setSelectedTeamMember(null);
 
-      // stopRecording();
+      stopRecording();
     }
   }
 
@@ -112,13 +214,16 @@ export default function AudioContextProvider({ children }) {
 
     console.log(event.keyCode);
     console.log(selectedTeammate);
-    console.log(teamShortcutMappings);
 
     // recording
     if (event.keyCode == KeyCode.R && selectedTeammate) {
+      if (!audioInputDeviceId) {
+        toast.error("No microphone selected");
+      }
+
       console.log("started recording");
       setIsRecording(true);
-      // startRecording();
+      startRecording();
     }
     // if we have a valid user for such a shortcut, then go ahead...otherwise
     else if (teamShortcutMappings[event.keyCode]) {
@@ -136,16 +241,9 @@ export default function AudioContextProvider({ children }) {
     setTeamShortcutMappings((prevMap) => ({ ...prevMap, [keyCode]: userId }));
   }
 
-  const value: AudioContextInterface = {
-    selectedTeammate,
-    setSelectedTeamMember,
-    addTeamShortcutBinding,
-    isRecording,
-    teamShortcutMappings,
-    isMuted: false,
-    isSilenceMode: false,
-    hasRecPermit,
-  };
+  function selectTeamMember(userId: string) {
+    setSelectedTeamMember(userId);
+  }
 
   console.log(value);
 
