@@ -21,7 +21,7 @@ import { Collections } from "../../services/collections";
 import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
 import Room, { RoomStatus, RoomType } from "../../models/room";
 import { useAuth } from "../../contexts/authContext";
-import { Dropdown, Menu, Radio } from "antd";
+import { Dropdown, Menu, Radio, Tooltip } from "antd";
 import RoomCard from "../RoomCard";
 
 enum RoomTypeFilter {
@@ -185,61 +185,63 @@ export default function DashboardRoom() {
       <CreateRoom />
 
       {/* header */}
-      <span className="flex flex-row justify-end space-x-3 pb-5 items-center">
-        <span className="flex flex-col mr-auto">
-          <span className="text-white ">
-            Rooms
-            <button
-              className="right-1 rounded-lg py-1 px-2 ml-1 
+      <Tooltip title={"  archive rooms to keep your team focused"}>
+        <span className="flex flex-row justify-end space-x-3 pb-5 items-center">
+          <span className="flex flex-col mr-auto">
+            <span className="text-white ">
+              Rooms
+              <button
+                className="right-1 rounded-lg py-1 px-2 ml-1 
                                         shadow-md text-center text-white text-sm font-bold"
-            >
-              CTRL + Q
-            </button>
-          </span>
-          <span className="text-gray-300 text-xs">
-            archive rooms to keep your team focused
-          </span>
-        </span>
-
-        <Radio.Group
-          value={selectedTabPane}
-          onChange={(e) => setSelectedTabPane(e.target.value)}
-        >
-          <Radio.Button value={RoomTypeFilter.all}>
-            {RoomTypeFilter.all}{" "}
-            <span className="text-xs text-orange-500">{allRooms.length}</span>
-          </Radio.Button>
-          <Radio.Button value={RoomTypeFilter.me}>
-            {RoomTypeFilter.me}{" "}
-            <span className="text-xs text-orange-500">{meRooms.length}</span>
-          </Radio.Button>
-          <Radio.Button value={RoomTypeFilter.live}>
-            {RoomTypeFilter.live}{" "}
-            <span className="text-xs text-orange-500">{liveRooms.length}</span>
-          </Radio.Button>
-          <Radio.Button value={RoomTypeFilter.archived}>
-            {RoomTypeFilter.archived}{" "}
-            <span className="text-xs text-orange-500">
-              {archivedRooms.length}
+              >
+                CTRL + Q
+              </button>
             </span>
-          </Radio.Button>
-        </Radio.Group>
-
-        <Dropdown overlay={TimePeriodFilterMenu}>
-          <span className="text-sm text-gray-300 flex flex-row items-center uppercase hover:cursor-pointer">
-            Week <FaAngleDown />
+            <span className="text-gray-300 text-xs"></span>
           </span>
-        </Dropdown>
 
-        <button
-          onClick={() => handleModalType(ShowModalType.createRoom)}
-          className="bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40"
-        >
-          <FaPlus className="text-lg text-white" />
-        </button>
+          <Radio.Group
+            value={selectedTabPane}
+            onChange={(e) => setSelectedTabPane(e.target.value)}
+          >
+            <Radio.Button value={RoomTypeFilter.all}>
+              {RoomTypeFilter.all}{" "}
+              <span className="text-xs text-orange-500">{allRooms.length}</span>
+            </Radio.Button>
+            <Radio.Button value={RoomTypeFilter.me}>
+              {RoomTypeFilter.me}{" "}
+              <span className="text-xs text-orange-500">{meRooms.length}</span>
+            </Radio.Button>
+            <Radio.Button value={RoomTypeFilter.live}>
+              {RoomTypeFilter.live}{" "}
+              <span className="text-xs text-orange-500">
+                {liveRooms.length}
+              </span>
+            </Radio.Button>
+            <Radio.Button value={RoomTypeFilter.archived}>
+              {RoomTypeFilter.archived}{" "}
+              <span className="text-xs text-orange-500">
+                {archivedRooms.length}
+              </span>
+            </Radio.Button>
+          </Radio.Group>
 
-        <BsThreeDots className="text-xl text-white" />
-      </span>
+          <Dropdown overlay={TimePeriodFilterMenu}>
+            <span className="text-sm text-gray-300 flex flex-row items-center uppercase hover:cursor-pointer">
+              Week <FaAngleDown />
+            </span>
+          </Dropdown>
+
+          <button
+            onClick={() => handleModalType(ShowModalType.createRoom)}
+            className="bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40"
+          >
+            <FaPlus className="text-lg text-white" />
+          </button>
+
+          <BsThreeDots className="text-xl text-white" />
+        </span>
+      </Tooltip>
 
       {/* all rooms */}
       <span className="flex flex-row flex-wrap max-h-96 overflow-auto">
