@@ -8,9 +8,9 @@ export default class Room {
 
   link: string; // google meet link for now
 
-  members: string[]; //userIds of "mandatory"/invited people including the person who created it
+  members: string[] = []; //userIds of "mandatory"/invited people including the person who created it
 
-  membersInRoom: string[];
+  membersInRoom: string[] = [];
 
   attachments: string[]; // the links themselves (NOT Ids)...there will be duplicate entries in the attachments table which will be created
 

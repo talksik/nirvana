@@ -28,6 +28,10 @@ export default function RoomCard(props: IRoomCardProps) {
 
   // show members who are in the invite list but not already in the room
   const membersInvited = () => {
+    if (!listOfValidUserIdsInRoom) {
+      return;
+    }
+
     const invitedMembersNotInRoom = props.room.members?.filter(
       (memberId) => !listOfValidUserIdsInRoom.includes(memberId)
     );
@@ -81,6 +85,10 @@ export default function RoomCard(props: IRoomCardProps) {
   };
 
   const membersInRoom = () => {
+    if (!listOfValidUserIdsInRoom) {
+      return;
+    }
+
     const listOfUsersInRoom: User[] = listOfValidUserIdsInRoom.map(
       (userId) => teamUsersMap[userId]
     );
