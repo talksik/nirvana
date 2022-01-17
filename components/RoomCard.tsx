@@ -22,54 +22,59 @@ export default function RoomCard(props: IRoomCardProps) {
     isUserInRoom = true;
   }
 
-  const listOfValidUserIdsInRoom: string[] = props.room.membersInRoom?.filter(
-    (userId) => userId in teamUsersMap
+  // first array of all members invited
+  var allMembersInvited = props.room.members?.reduce((results, userId) => {
+    if (userId in teamUsersMap) {
+      results.push(teamUsersMap[userId]);
+    }
+
+    if (userId == currUser.uid) {
+      results.push(user);
+    }
+
+    return results;
+  }, [] as User[]);
+
+  // second array of all members in room
+  var allMembersInRoom = props.room.membersInRoom?.reduce((results, userId) => {
+    if (userId in teamUsersMap) {
+      results.push(teamUsersMap[userId]);
+    }
+
+    if (userId == currUser.uid) {
+      results.push(user);
+    }
+
+    return results;
+  }, [] as User[]);
+
+  // third array all members invited and not in the array of users in room
+  const allMembersInvitedButNotInRoom = allMembersInvited.filter(
+    (invitedMember) => {
+      if (allMembersInRoom.some((user) => user.id === invitedMember.id)) {
+        /* vendors contains the element we're looking for */
+        return false;
+      }
+
+      return true;
+    }
   );
 
   // show members who are in the invite list but not already in the room
   const membersInvited = () => {
-    if (!listOfValidUserIdsInRoom) {
+    if (allMembersInvited?.length == 0) {
       return;
     }
 
-    const invitedMembersNotInRoom = props.room.members?.filter(
-      (memberId) => !listOfValidUserIdsInRoom.includes(memberId)
-    );
-
-    console.log(invitedMembersNotInRoom);
-
-    var listOfUsersInvited = invitedMembersNotInRoom.reduce(
-      (results, userId) => {
-        if (userId in teamUsersMap) {
-          results.push(teamUsersMap[userId]);
-        }
-
-        if (userId == currUser.uid) {
-          results.push(user);
-        }
-
-        return results;
-      },
-      [] as User[]
-    );
-
-    console.log(listOfUsersInvited);
-
-    if (!listOfUsersInvited || listOfUsersInvited.length == 0) {
-      console.log("no invited members to show");
-      return;
-    }
-
-    const listOfMembersString = listOfUsersInvited
-      .map((user) => user.nickName ?? user.firstName)
+    const listOfNames = allMembersInvited
+      .map((user) => user.nickName)
       .join(", ");
 
-    console.log(listOfMembersString);
     return (
-      <Tooltip title={listOfMembersString}>
+      <Tooltip title={listOfNames}>
         <span className="inline-flex flex-row-reverse items-center shrink-0 mr-1">
           <Avatar.Group>
-            {listOfUsersInvited.map((user, i) => {
+            {allMembersInvitedButNotInRoom.map((user, i) => {
               return (
                 <Avatar
                   key={user.id}
@@ -85,28 +90,19 @@ export default function RoomCard(props: IRoomCardProps) {
   };
 
   const membersInRoom = () => {
-    if (!listOfValidUserIdsInRoom) {
+    if (allMembersInRoom?.length == 0) {
       return;
     }
 
-    const listOfUsersInRoom: User[] = listOfValidUserIdsInRoom.map(
-      (userId) => teamUsersMap[userId]
-    );
-
-    const listOfMembersString = listOfUsersInRoom
+    const listOfNames = allMembersInRoom
       .map((user) => user.nickName)
       .join(", ");
 
-    // handle if I am in the room
-    if (isUserInRoom) {
-      listOfUsersInRoom.push(user);
-    }
-
     return (
-      <Tooltip title={listOfMembersString}>
+      <Tooltip title={listOfNames}>
         <span className="inline-flex flex-row-reverse items-center shrink-0 mr-1">
           <Avatar.Group>
-            {listOfUsersInRoom.map((user, i) => {
+            {allMembersInRoom.map((user, i) => {
               return (
                 <Avatar
                   key={user.id}
