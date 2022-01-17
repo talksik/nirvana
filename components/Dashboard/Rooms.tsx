@@ -21,7 +21,7 @@ import { Collections } from "../../services/collections";
 import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
 import Room, { RoomStatus, RoomType } from "../../models/room";
 import { useAuth } from "../../contexts/authContext";
-import { Radio } from "antd";
+import { Dropdown, Menu, Radio } from "antd";
 import RoomCard from "../RoomCard";
 
 enum RoomTypeFilter {
@@ -168,6 +168,15 @@ export default function DashboardRoom() {
     }
   }
 
+  const TimePeriodFilterMenu = (
+    <Menu>
+      <Menu.Item key={1} disabled>
+        Past 24 Hours (Coming Soon)
+      </Menu.Item>
+      <Menu.Item disabled>This Month(Coming Soon)</Menu.Item>
+    </Menu>
+  );
+
   return (
     <section className="p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md">
       {/*  modal for creating room */}
@@ -209,9 +218,11 @@ export default function DashboardRoom() {
           </Radio.Button>
         </Radio.Group>
 
-        <span className="text-sm text-gray-300 flex flex-row items-center uppercase">
-          Week <FaAngleDown />
-        </span>
+        <Dropdown overlay={TimePeriodFilterMenu}>
+          <span className="text-sm text-gray-300 flex flex-row items-center uppercase hover:cursor-pointer">
+            Week <FaAngleDown />
+          </span>
+        </Dropdown>
 
         <button
           onClick={() => handleModalType(ShowModalType.createRoom)}
