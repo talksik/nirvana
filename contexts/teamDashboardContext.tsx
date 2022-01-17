@@ -303,8 +303,8 @@ export function TeamDashboardContextProvider({ children }) {
     ...value,
     allMessages,
     messagesByTeamMate,
-    ...teamUsers,
-    ...teamUsersMap,
+    teamUsers,
+    teamUsersMap,
   };
 
   return (

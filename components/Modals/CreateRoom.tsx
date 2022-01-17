@@ -4,12 +4,14 @@ import {
   ShowModalType,
   useKeyboardContext,
 } from "../../contexts/keyboardContext";
+import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
 
 const { Option } = Select;
 
 const thisModalType = ShowModalType.createRoom;
 
 export default function CreateRoomModal() {
+  const { teamUsers } = useTeamDashboardContext();
   const { pastedLink, handleModalType, showModalType } = useKeyboardContext();
 
   useEffect(() => {
