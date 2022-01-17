@@ -34,7 +34,8 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-// const app = firebase.initializeApp(firebaseConfig);
+// if (typeof window !== "undefined") {
+const app = firebase.initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
 console.log("initialized firebase");
