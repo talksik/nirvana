@@ -172,9 +172,21 @@ export default function Header() {
     </Menu>
   );
 
+  const handleSilenceOrLivenMode = (event) => {
+    event.preventDefault();
+
+    silenceOrLivenMode();
+  };
+
+  const handleMuteUnmute = (event) => {
+    event.preventDefault();
+
+    muteOrUnmute();
+  };
+
   const audioInputDropMenu = (
     <Menu title="audio input">
-      <Menu.Item danger key={"muting input"} onClick={muteOrUnmute}>
+      <Menu.Item danger key={"muting input"} onClick={handleMuteUnmute}>
         <button>{isMuted ? "Unmute" : "Mute"}</button>
       </Menu.Item>
 
@@ -194,18 +206,6 @@ export default function Header() {
       })}
     </Menu>
   );
-
-  const handleSilenceOrLivenMode = (event) => {
-    event.preventDefault();
-
-    silenceOrLivenMode();
-  };
-
-  const handleMuteUnmute = (event) => {
-    event.preventDefault();
-
-    muteOrUnmute();
-  };
 
   const audioOutputDropMenu = (
     <Menu title="audio ouput">
