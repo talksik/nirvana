@@ -147,6 +147,19 @@ export default function DashboardRoom() {
   // }
 
   const allRooms = Array.from(roomsMap.values());
+  const meRooms = allRooms.filter((room) =>
+    room.members.includes(currUser.uid)
+  );
+  const nowRooms = allRooms.filter((room) => room.type == RoomType.now);
+  const scheduledRooms = allRooms.filter(
+    (room) => room.type == RoomType.scheduled
+  );
+  const recurringRooms = allRooms.filter(
+    (room) => room.type == RoomType.recurring
+  );
+  const archivedRooms = allRooms.filter(
+    (room) => room.type == RoomType.archived
+  );
 
   function getRoomContent() {
     // return data based on the selected filters
@@ -154,27 +167,14 @@ export default function DashboardRoom() {
       case RoomTypeFilter.all:
         return allRooms;
       case RoomTypeFilter.me:
-        const meRooms = allRooms.filter((room) =>
-          room.members.includes(currUser.uid)
-        );
         return meRooms;
       case RoomTypeFilter.now:
-        const nowRooms = allRooms.filter((room) => room.type == RoomType.now);
         return nowRooms;
       case RoomTypeFilter.scheduled:
-        const scheduledRooms = allRooms.filter(
-          (room) => room.type == RoomType.scheduled
-        );
         return scheduledRooms;
       case RoomTypeFilter.recurring:
-        const recurringRooms = allRooms.filter(
-          (room) => room.type == RoomType.recurring
-        );
         return recurringRooms;
       case RoomTypeFilter.archived:
-        const archivedRooms = allRooms.filter(
-          (room) => room.type == RoomType.archived
-        );
         return archivedRooms;
       default:
         return allRooms;
@@ -203,22 +203,34 @@ export default function DashboardRoom() {
           onChange={(e) => setSelectedTabPane(e.target.value)}
         >
           <Radio.Button value={RoomTypeFilter.all}>
-            {RoomTypeFilter.all}
+            {RoomTypeFilter.all}{" "}
+            <span className="text-xs text-orange-500">{allRooms.length}</span>
           </Radio.Button>
           <Radio.Button value={RoomTypeFilter.me}>
-            {RoomTypeFilter.me}
+            {RoomTypeFilter.me}{" "}
+            <span className="text-xs text-orange-500">{meRooms.length}</span>
           </Radio.Button>
           <Radio.Button value={RoomTypeFilter.now}>
-            {RoomTypeFilter.now}
+            {RoomTypeFilter.now}{" "}
+            <span className="text-xs text-orange-500">{nowRooms.length}</span>
           </Radio.Button>
           <Radio.Button value={RoomTypeFilter.scheduled}>
-            {RoomTypeFilter.scheduled}
+            {RoomTypeFilter.scheduled}{" "}
+            <span className="text-xs text-orange-500">
+              {scheduledRooms.length}
+            </span>
           </Radio.Button>
           <Radio.Button value={RoomTypeFilter.recurring}>
-            {RoomTypeFilter.recurring}
+            {RoomTypeFilter.recurring}{" "}
+            <span className="text-xs text-orange-500">
+              {recurringRooms.length}
+            </span>
           </Radio.Button>
           <Radio.Button value={RoomTypeFilter.archived}>
-            {RoomTypeFilter.archived}
+            {RoomTypeFilter.archived}{" "}
+            <span className="text-xs text-orange-500">
+              {archivedRooms.length}
+            </span>
           </Radio.Button>
         </Radio.Group>
 
