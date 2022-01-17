@@ -12,6 +12,7 @@ import { Message } from "../models/message";
 import { useAuth } from "./authContext";
 import { SendService } from "../services/sendService";
 import { useTeamDashboardContext } from "./teamDashboardContext";
+import isValidHttpUrl from "../helpers/urlHelper";
 
 interface KeyboardContextInterface {
   selectedTeammate: string; // can only have one selected
@@ -324,7 +325,7 @@ export default function KeyboardContextProvider({ children }) {
 
         console.log("sending message to " + selectedTeammate);
 
-        setSelectedTeamMember(null);
+        handleResetView();
       } else if (event.keyCode == KeyCode.Ctrl) {
         setCtrlDown(false);
       }
@@ -334,7 +335,13 @@ export default function KeyboardContextProvider({ children }) {
 
   const handleKeyboardShortcut = useCallback(
     (event) => {
+      // no need to monitor repeats
       if (event.repeat) {
+        return;
+      }
+
+      // handle for when in modals, don't want any of this crap
+      if (showModalType != ShowModalType.na || !showModalType) {
         return;
       }
 
@@ -361,7 +368,7 @@ export default function KeyboardContextProvider({ children }) {
       else if (teamShortcutMappings[event.keyCode]) {
         setSelectedTeamMember(teamShortcutMappings[event.keyCode]);
       } else if (event.keyCode == KeyCode.Escape) {
-        setSelectedTeamMember(null);
+        handleResetView();
       } else if (event.keyCode == KeyCode.Space) {
         // listen to last message in convo
         if (isSilenceMode) {
@@ -386,6 +393,8 @@ export default function KeyboardContextProvider({ children }) {
           }
         }
       } else if (event.keyCode == KeyCode.Ctrl) {
+        handleResetView();
+
         setCtrlDown(true);
         toast("control down");
       } else if (event.keyCode == KeyCode.Q && ctrlDown) {
@@ -395,9 +404,32 @@ export default function KeyboardContextProvider({ children }) {
       } else if (event.keyCode == KeyCode.V && ctrlDown) {
         toast("pasting link");
 
-        setSelectedTeamMember(null);
+        navigator.clipboard
+          .readText()
+          .then((text) => {
+            console.log("Pasted content: ", text);
 
-        setShowModalType(ShowModalType.createRoom);
+            // check that the link is valid
+            if (!isValidHttpUrl(text)) {
+              toast.error("Not a valid link");
+              return;
+            }
+
+            // set it as we should show modal regardless now
+            setPastedLink(text);
+
+            // see which modal to go to based on room vs. attachment
+            // https://meet.google.com/soc-ebwc-rkt
+            if (text.includes("meet.google.com")) {
+              setShowModalType(ShowModalType.createRoom);
+            } else {
+              setShowModalType(ShowModalType.createLink);
+            }
+          })
+          .catch((err) => {
+            console.error("Failed to read clipboard contents: ", err);
+            toast.error("Please enable permissions for clipboard");
+          });
       } else {
         toast("Invalid keyboard shortcut.");
       }
@@ -415,6 +447,12 @@ export default function KeyboardContextProvider({ children }) {
       ctrlDown,
     ]
   );
+
+  function handleResetView() {
+    setSelectedTeamMember(null);
+    setShowModalType(ShowModalType.na);
+    setPlayerSrc(null);
+  }
 
   // IMPORTANT: shortcut handlers need to be updated as the function has to have the fresh state
   useEffect(() => {
