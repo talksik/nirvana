@@ -5,51 +5,113 @@ import Room from "../models/room";
 import RoomTypeTag from "./RoomTypeTag";
 import Image from "next/image";
 import { useAuth } from "../contexts/authContext";
-import { Tooltip } from "antd";
+import { Avatar, Divider, Tooltip } from "antd";
+import { UserOutlined, AntDesignOutlined } from "@ant-design/icons";
+import { useTeamDashboardContext } from "../contexts/teamDashboardContext";
+import { User } from "../models/user";
 
 interface IRoomCardProps {
   room: Room;
 }
 export default function RoomCard(props: IRoomCardProps) {
   const { currUser } = useAuth();
-
-  // const x = {`${
-  //   props.room.membersInRoom?.includes(currUser.uid)
-  //     ? " bg-white bg-opacity-80"
-  //     : "bg-gray-300 bg-opacity-25"
-  // }`}
+  const { teamUsersMap, user } = useTeamDashboardContext();
 
   var isUserInRoom: boolean;
   if (props.room.membersInRoom?.includes(currUser.uid)) {
     isUserInRoom = true;
   }
 
-  const membersInRoom = (
-    <Tooltip title={"Arjun and Liam"}>
-      <span className="inline-flex flex-row-reverse items-center shrink-0 mr-1">
-        <span className="relative flex">
-          <span className="bg-gray-200 rounded-full shadow-md absolute w-full h-full"></span>
-          <Image
-            className=""
-            src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-20.svg"}
-            alt="profile"
-            width={30}
-            height={30}
-          />
-        </span>
-        <span className="-mr-4 relative flex">
-          <span className="bg-gray-200 rounded-full shadow-md absolute w-full h-full"></span>
-          <Image
-            className=""
-            src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-22.svg"}
-            alt="profile"
-            width={30}
-            height={30}
-          />
-        </span>
-      </span>
-    </Tooltip>
+  const listOfValidUserIdsInRoom: string[] = props.room.membersInRoom?.filter(
+    (userId) => userId in teamUsersMap
   );
+
+  // show members who are in the invite list but not already in the room
+  const membersInvited = () => {
+    const invitedMembersNotInRoom = props.room.members?.filter(
+      (memberId) => !listOfValidUserIdsInRoom.includes(memberId)
+    );
+
+    console.log(invitedMembersNotInRoom);
+
+    var listOfUsersInvited = invitedMembersNotInRoom.reduce(
+      (results, userId) => {
+        if (userId in teamUsersMap) {
+          results.push(teamUsersMap[userId]);
+        }
+
+        if (userId == currUser.uid) {
+          results.push(user);
+        }
+
+        return results;
+      },
+      [] as User[]
+    );
+
+    console.log(listOfUsersInvited);
+
+    if (!listOfUsersInvited || listOfUsersInvited.length == 0) {
+      console.log("no invited members to show");
+      return;
+    }
+
+    const listOfMembersString = listOfUsersInvited
+      .map((user) => user.nickName ?? user.firstName)
+      .join(", ");
+
+    console.log(listOfMembersString);
+    return (
+      <Tooltip title={listOfMembersString}>
+        <span className="inline-flex flex-row-reverse items-center shrink-0 mr-1">
+          <Avatar.Group>
+            {listOfUsersInvited.map((user, i) => {
+              return (
+                <Avatar
+                  key={user.id}
+                  src={user.avatarUrl}
+                  className="shadow-xl"
+                />
+              );
+            })}
+          </Avatar.Group>
+        </span>
+      </Tooltip>
+    );
+  };
+
+  const membersInRoom = () => {
+    const listOfUsersInRoom: User[] = listOfValidUserIdsInRoom.map(
+      (userId) => teamUsersMap[userId]
+    );
+
+    const listOfMembersString = listOfUsersInRoom
+      .map((user) => user.nickName)
+      .join(", ");
+
+    // handle if I am in the room
+    if (isUserInRoom) {
+      listOfUsersInRoom.push(user);
+    }
+
+    return (
+      <Tooltip title={listOfMembersString}>
+        <span className="inline-flex flex-row-reverse items-center shrink-0 mr-1">
+          <Avatar.Group>
+            {listOfUsersInRoom.map((user, i) => {
+              return (
+                <Avatar
+                  key={user.id}
+                  src={user.avatarUrl}
+                  className="shadow-xl"
+                />
+              );
+            })}
+          </Avatar.Group>
+        </span>
+      </Tooltip>
+    );
+  };
 
   return (
     <span
@@ -71,7 +133,7 @@ export default function RoomCard(props: IRoomCardProps) {
           <span
             className={`${
               isUserInRoom ? " text-gray-400" : "text-gray-200"
-            }   text-xs  overflow-wrap`}
+            }   text-xs  overflow-wrap  mb-4`}
           >
             {props.room.description}
           </span>
@@ -82,6 +144,9 @@ export default function RoomCard(props: IRoomCardProps) {
               <span>scrum</span>
             </span>
           </span> */}
+
+          {/* all invited members who are not in the room already */}
+          {membersInvited()}
         </span>
 
         {/* room status and link(s) */}
@@ -108,7 +173,7 @@ export default function RoomCard(props: IRoomCardProps) {
 
       {/* footer */}
       <span className="flex flex-row items-center bg-gray-400 bg-opacity-30 p-3">
-        {membersInRoom}
+        {membersInRoom()}
         <button className="ml-auto text-sm text-orange-500 font-semibold py-1 px-4 bg-gray-200 rounded">
           👋 Leave
         </button>
