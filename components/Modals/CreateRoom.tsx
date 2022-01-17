@@ -55,21 +55,36 @@ export default function CreateRoomModal() {
       newRoom.createdByUserId = currUser.uid;
 
       await roomService.createRoom(newRoom);
+
+      resetForm();
+
+      toast.success("created room");
+      handleModalType(ShowModalType.na);
     } catch (error) {
       toast.error("problem creating room");
       console.log(error);
     }
   };
 
+  function resetForm() {
+    setRoomLink("");
+    setRoomName("");
+    setRoomDescription("");
+    setMembersSelected([] as string[]);
+    setRoomAttachment("");
+    setRoomAppxDateTime("");
+    setRoomType(RoomType.now);
+  }
+
   const [roomLink, setRoomLink] = useState<string>(pastedLink);
   const [roomName, setRoomName] = useState<string>("");
-  const [roomDescription, setRoomDescription] = useState<string>(null);
+  const [roomDescription, setRoomDescription] = useState<string>("");
 
-  const [roomAttachment, setRoomAttachment] = useState<string>(null);
+  const [roomAttachment, setRoomAttachment] = useState<string>("");
   const [membersSelected, setMembersSelected] = useState<string[]>([]);
 
   const [roomType, setRoomType] = useState<RoomType>(RoomType.now);
-  const [roomAppxDateTime, setRoomAppxDateTime] = useState<string>(null); // for certain room types
+  const [roomAppxDateTime, setRoomAppxDateTime] = useState<string>(""); // for certain room types
 
   function handleSelectMember(value) {
     // passed in array of selections...userIds
@@ -77,13 +92,6 @@ export default function CreateRoomModal() {
     setMembersSelected(value);
 
     console.log(value);
-  }
-
-  const children = [];
-  for (let i = 10; i < 36; i++) {
-    children.push(
-      <Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>
-    );
   }
 
   const MemberSelection = () => {
@@ -94,6 +102,7 @@ export default function CreateRoomModal() {
         style={{ width: "100%" }}
         placeholder="Please select team members"
         onChange={handleSelectMember}
+        value={membersSelected}
       >
         {teamUsers.map((tu) => {
           return <Option key={tu.id}>{tu.nickName}</Option>;
@@ -197,10 +206,10 @@ export default function CreateRoomModal() {
         </span>
 
         <span className="flex flex-col items-start flex-1 mt-4">
-          <span className="text-md">Description</span>
+          <span className="text-md">Agenda</span>
           <span className="text-gray-300 text-xs mb-2 flex-1">Optional</span>
           <input
-            placeholder="ex. Looking for feedback if..."
+            placeholder="ex. Let's discuss ways to..."
             className="w-full rounded-lg bg-gray-50 p-3"
             value={roomDescription}
             onChange={(e) => setRoomDescription(e.target.value)}
@@ -210,7 +219,7 @@ export default function CreateRoomModal() {
         <span className="flex flex-col items-start flex-1 mt-4">
           <span className="text-md">Attachment</span>
           <span className="text-gray-300 text-xs mb-2">
-            Optional - add a ppt or meeting notes for people to follow along
+            Optional - ppt, meeting notes...
           </span>
           <input
             placeholder="https://"
