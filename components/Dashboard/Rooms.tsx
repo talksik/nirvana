@@ -27,9 +27,7 @@ import RoomCard from "../RoomCard";
 enum RoomTypeFilter {
   all = "all",
   me = "me",
-  now = "now",
-  scheduled = "scheduled",
-  recurring = "recurring",
+  live = "live",
   archived = "archived",
 }
 
@@ -150,13 +148,8 @@ export default function DashboardRoom() {
   const meRooms = allRooms.filter((room) =>
     room.members.includes(currUser.uid)
   );
-  const nowRooms = allRooms.filter((room) => room.type == RoomType.now);
-  const scheduledRooms = allRooms.filter(
-    (room) => room.type == RoomType.scheduled
-  );
-  const recurringRooms = allRooms.filter(
-    (room) => room.type == RoomType.recurring
-  );
+
+  const liveRooms = allRooms.filter((room) => room.status == RoomStatus.live);
   const archivedRooms = allRooms.filter(
     (room) => room.status == RoomStatus.archived
   );
@@ -168,14 +161,8 @@ export default function DashboardRoom() {
         return allRooms;
       case RoomTypeFilter.me:
         return meRooms;
-      case RoomTypeFilter.now:
-        return nowRooms;
-      case RoomTypeFilter.scheduled:
-        return scheduledRooms;
-      case RoomTypeFilter.recurring:
-        return recurringRooms;
-      case RoomTypeFilter.archived:
-        return archivedRooms;
+      case RoomTypeFilter.live:
+        return liveRooms;
       default:
         return allRooms;
     }
@@ -210,21 +197,9 @@ export default function DashboardRoom() {
             {RoomTypeFilter.me}{" "}
             <span className="text-xs text-orange-500">{meRooms.length}</span>
           </Radio.Button>
-          <Radio.Button value={RoomTypeFilter.now}>
-            {RoomTypeFilter.now}{" "}
-            <span className="text-xs text-orange-500">{nowRooms.length}</span>
-          </Radio.Button>
-          <Radio.Button value={RoomTypeFilter.scheduled}>
-            {RoomTypeFilter.scheduled}{" "}
-            <span className="text-xs text-orange-500">
-              {scheduledRooms.length}
-            </span>
-          </Radio.Button>
-          <Radio.Button value={RoomTypeFilter.recurring}>
-            {RoomTypeFilter.recurring}{" "}
-            <span className="text-xs text-orange-500">
-              {recurringRooms.length}
-            </span>
+          <Radio.Button value={RoomTypeFilter.live}>
+            {RoomTypeFilter.live}{" "}
+            <span className="text-xs text-orange-500">{liveRooms.length}</span>
           </Radio.Button>
           <Radio.Button value={RoomTypeFilter.archived}>
             {RoomTypeFilter.archived}{" "}
