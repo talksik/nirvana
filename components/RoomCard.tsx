@@ -208,7 +208,10 @@ export default function RoomCard(props: IRoomCardProps) {
 
         {/* room status and link(s) */}
         <span className="flex flex-col items-end justify-between h-full">
-          <RoomTypeTag roomType={props.room.type} />
+          <RoomTypeTag
+            roomType={props.room.type}
+            roomStatus={props.room.status}
+          />
           <span
             className={`${
               isUserInRoom ? "text-gray-400" : "text-gray-200"

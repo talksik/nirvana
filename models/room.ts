@@ -15,6 +15,7 @@ export default class Room {
   attachments: string[]; // the links themselves (NOT Ids)...there will be duplicate entries in the attachments table which will be created
 
   type: RoomType;
+  status: RoomStatus = RoomStatus.empty;
 
   approximateDateTime: string; // vaguely say when the meeting should be...give user pointers
 
@@ -30,5 +31,10 @@ export enum RoomType {
   now = "now",
   scheduled = "scheduled", // one time sort of standard meeting
   recurring = "recurring", //daily standup
-  archived = "archived", // this room is dead or over
+}
+
+export enum RoomStatus {
+  live = "live",
+  empty = "empty",
+  archived = "archived", // user marks it over
 }

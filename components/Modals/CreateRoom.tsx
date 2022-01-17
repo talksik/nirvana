@@ -7,7 +7,7 @@ import {
   useKeyboardContext,
 } from "../../contexts/keyboardContext";
 import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
-import Room, { RoomType } from "../../models/room";
+import Room, { RoomStatus, RoomType } from "../../models/room";
 import RoomService from "../../services/roomService";
 
 const { Option } = Select;
@@ -44,6 +44,10 @@ export default function CreateRoomModal() {
 
       if (roomAttachment) {
         newRoom.attachments = [roomAttachment];
+      }
+
+      if (roomType == RoomType.now) {
+        newRoom.status = RoomStatus.live;
       }
 
       newRoom.approximateDateTime = roomAppxDateTime;

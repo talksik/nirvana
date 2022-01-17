@@ -19,7 +19,7 @@ import {
 } from "firebase/firestore";
 import { Collections } from "../../services/collections";
 import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
-import Room, { RoomType } from "../../models/room";
+import Room, { RoomStatus, RoomType } from "../../models/room";
 import { useAuth } from "../../contexts/authContext";
 import { Radio } from "antd";
 import RoomCard from "../RoomCard";
@@ -158,7 +158,7 @@ export default function DashboardRoom() {
     (room) => room.type == RoomType.recurring
   );
   const archivedRooms = allRooms.filter(
-    (room) => room.type == RoomType.archived
+    (room) => room.status == RoomStatus.archived
   );
 
   function getRoomContent() {
