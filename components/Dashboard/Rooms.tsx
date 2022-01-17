@@ -5,6 +5,10 @@ import { IoTimer } from "react-icons/io5";
 import { BsThreeDots } from "react-icons/bs";
 import Image from "next/image";
 import CreateRoom from "../Modals/CreateRoom";
+import {
+  ShowModalType,
+  useKeyboardContext,
+} from "../../contexts/keyboardContext";
 
 enum RoomTypeFilter {
   all = "all",
@@ -21,6 +25,8 @@ enum RoomTimeFilter {
 }
 
 export default function DashboardRoom() {
+  const { handleModalType } = useKeyboardContext();
+
   // get rooms data realtime
   useEffect(() => {
     /**
@@ -57,7 +63,11 @@ export default function DashboardRoom() {
           </span>
 
           <span className="text-gray-300 hover:text-white hover:cursor-pointer">
-            Live
+            Me
+          </span>
+
+          <span className="text-gray-300 hover:text-white hover:cursor-pointer">
+            Now
           </span>
 
           <span className="text-gray-300 hover:text-white hover:cursor-pointer">
@@ -69,7 +79,7 @@ export default function DashboardRoom() {
           </span>
 
           <span className="text-gray-300 hover:text-white hover:cursor-pointer">
-            Expired
+            Archive
           </span>
         </span>
 
@@ -77,7 +87,10 @@ export default function DashboardRoom() {
           Week <FaAngleDown />
         </span>
 
-        <button className="bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40">
+        <button
+          onClick={() => handleModalType(ShowModalType.createRoom)}
+          className="bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40"
+        >
           <FaPlus className="text-lg text-white" />
         </button>
 

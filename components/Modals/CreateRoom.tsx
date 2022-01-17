@@ -66,9 +66,22 @@ export default function CreateRoomModal() {
       <div className="flex flex-col">
         <span className="flex flex-col items-start">
           <span className="text-md">Link</span>
-          <span className="text-gray-300 text-xs mb-2">
-            Please make sure this is valid so that your team can join properly.
-          </span>
+          {roomLink ? (
+            <span className="text-gray-300 text-xs mb-2">
+              Please make sure this is valid so that your team can join
+              properly.
+            </span>
+          ) : (
+            <a
+              href="https://meet.google.com"
+              target={"_blank"}
+              rel={"noreferrer"}
+              className="text-xs mb-2"
+            >
+              Click here to create one.
+            </a>
+          )}
+
           <input
             className="w-full rounded-lg bg-gray-50 p-3"
             value={roomLink}
