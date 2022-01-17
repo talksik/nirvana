@@ -10,7 +10,9 @@ import {
 } from "firebase/firestore";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import Loading from "../components/Loading";
+import { compareStatus } from "../helpers/userHelper";
 import { Message } from "../models/message";
 import { Team } from "../models/team";
 import { TeamMember, TeamMemberStatus } from "../models/teamMember";
@@ -24,9 +26,14 @@ interface TeamDashboardContextInterface {
   team: Team;
   teamMembers: TeamMember[];
   userTeamMember: TeamMember;
-  user: User;
-  messagesByTeamMate: {}; // string of teammate userid and array of messages
-  allMessages: Message[];
+
+  user: User; // REALTIME - 1
+
+  messagesByTeamMate: {}; // REALTIME: string of teammate userid and array of messages - 1
+  allMessages: Message[]; // REALTIME: 1
+
+  teamUsers: User[]; // REALTIME teammates - n team members => n listeners
+  teamUsersMap: {}; // map for easier getting teammate data
 }
 
 const TeamDashboardContext =
@@ -56,9 +63,10 @@ export function TeamDashboardContextProvider({ children }) {
     {} as TeamDashboardContextInterface
   );
 
-  // all data
+  // all main data
   useEffect(() => {
     var userListener: Unsubscribe;
+    var unsubs: Unsubscribe[] = [] as Unsubscribe[];
 
     (async function () {
       try {
@@ -157,6 +165,42 @@ export function TeamDashboardContextProvider({ children }) {
           (element) => element.userId != currUser.uid
         );
 
+        // listeners for all teammates' status
+        if (teamMembers) {
+          teamMembers.map((tmember) => {
+            if (tmember.status == TeamMemberStatus.activated) {
+              const docRef = doc(db, Collections.users, tmember.userId);
+
+              const unsub = onSnapshot(docRef, (doc) => {
+                const updatedteamMateUser = doc.data() as User;
+
+                // update map of team member users
+                setTeamUsersMap((prevMap) => ({
+                  ...prevMap,
+                  [updatedteamMateUser.id]: updatedteamMateUser,
+                }));
+
+                // update array of team member users
+                setTeamUsers((prevTeamUsers) => {
+                  const newTeamUsers = prevTeamUsers.filter(
+                    (tm) => tm.id != updatedteamMateUser.id
+                  );
+                  newTeamUsers.push(updatedteamMateUser);
+
+                  // order users by status
+                  setTeamUsers(newTeamUsers.sort(compareStatus));
+
+                  return newTeamUsers;
+                });
+              });
+
+              unsubs.push(unsub);
+            }
+
+            return;
+          });
+        }
+
         setValue((prevValue) => ({ ...prevValue, teamMembers }));
       } catch (error) {
         console.log(error);
@@ -168,8 +212,15 @@ export function TeamDashboardContextProvider({ children }) {
 
     return () => {
       userListener();
+
+      unsubs.forEach((unsub) => {
+        unsub();
+      });
     };
   }, []);
+
+  const [teamUsers, setTeamUsers] = useState<User[]>([]);
+  const [teamUsersMap, setTeamUsersMap] = useState<{}>({});
 
   const [allMessages, setAllMessages] = useState<Message[]>([]);
   const [messagesByTeamMate, setMessagesByTeamMate] = useState<{}>({});
@@ -252,6 +303,8 @@ export function TeamDashboardContextProvider({ children }) {
     ...value,
     allMessages,
     messagesByTeamMate,
+    ...teamUsers,
+    ...teamUsersMap,
   };
 
   return (

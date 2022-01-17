@@ -43,62 +43,20 @@ export default function TeamVoiceLine() {
   } = useKeyboardContext();
   const router = useRouter();
   const { teamid } = router.query;
-  const { team, user, userTeamMember, teamMembers } = useTeamDashboardContext();
-  const [loading, setLoading] = useState<Boolean>(true);
+  const { team, user, userTeamMember, teamMembers, teamUsers } =
+    useTeamDashboardContext();
 
-  const [teamUsers, setTeamUsers] = useState<User[]>([]);
-
-  // setup listeners for each teammate or their status changes
-  useEffect(() => {
-    const unsubs: Unsubscribe[] = [];
-
-    (async function () {
-      try {
-        // listeners for all teammates' status
-        if (teamMembers) {
-          teamMembers.map((tmember) => {
-            if (tmember.status == TeamMemberStatus.activated) {
-              const docRef = doc(db, Collections.users, tmember.userId);
-
-              const unsub = onSnapshot(docRef, (doc) => {
-                const updatedteamMateUser = doc.data() as User;
-
-                setTeamUsers((prevTeamUsers) => {
-                  const newTeamUsers = prevTeamUsers.filter(
-                    (tm) => tm.id != updatedteamMateUser.id
-                  );
-                  newTeamUsers.push(updatedteamMateUser);
-
-                  // order users by status
-                  setTeamUsers(newTeamUsers.sort(compareStatus));
-
-                  return newTeamUsers;
-                });
-              });
-
-              unsubs.push(unsub);
-            }
-
-            return;
-          });
-        }
-      } catch (error) {
-        console.log(error);
-        toast.error("Something went wrong");
-        router.push("/teams/landing");
-      }
-
-      setLoading(false);
-    })();
-
-    return () => {
-      unsubs.map((listener) => listener());
-    };
-  }, []);
+  // todo use a global is loading
+  const [loading, setLoading] = useState<Boolean>(false);
 
   // set up shortcuts for each teammate
   useEffect(() => {
     // create shortcuts
+    if (!teamUsers) {
+      console.log("no team members to map to shortcuts");
+      return;
+    }
+
     teamUsers.forEach((tmUser, i) => {
       // make sure we don't map a user if they are past the max allowed
       if (i < maxNumberOfKeyboardMappings) {
@@ -136,7 +94,7 @@ export default function TeamVoiceLine() {
     }
 
     // if not teammates, stale state message to tell admin to add people
-    if (!teamUsers.length) {
+    if (!teamUsers) {
       return <span className="text-gray-300">Please add team members.</span>;
     }
 
