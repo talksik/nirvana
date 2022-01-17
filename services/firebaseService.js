@@ -10,7 +10,7 @@
 
 // Import the functions you need from the SDKs you need
 import * as firebase from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+// import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 import {
   browserSessionPersistence,
@@ -36,7 +36,7 @@ const firebaseConfig = {
 // Initialize Firebase
 // if (typeof window !== "undefined") {
 const app = firebase.initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+// const analytics = getAnalytics(app);
 
 console.log("initialized firebase");
 
