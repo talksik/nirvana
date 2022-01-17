@@ -1,16 +1,23 @@
-import { Divider, Modal, Select } from "antd";
+import { Divider, Modal, Radio, Select } from "antd";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useAuth } from "../../contexts/authContext";
 import {
   ShowModalType,
   useKeyboardContext,
 } from "../../contexts/keyboardContext";
 import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
+import Room, { RoomType } from "../../models/room";
+import RoomService from "../../services/roomService";
 
 const { Option } = Select;
 
 const thisModalType = ShowModalType.createRoom;
 
+const roomService = new RoomService();
+
 export default function CreateRoomModal() {
+  const { currUser } = useAuth();
   const { teamUsers } = useTeamDashboardContext();
   const { pastedLink, handleModalType, showModalType } = useKeyboardContext();
 
@@ -23,13 +30,52 @@ export default function CreateRoomModal() {
     handleModalType(ShowModalType.na);
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // make sure link, room, and type are selected
+    if (!roomLink || !roomName) {
+      toast.error("Please fill in room link and name.");
+      return;
+    }
+
+    try {
+      const newRoom = new Room();
+
+      if (roomAttachment) {
+        newRoom.attachments = [roomAttachment];
+      }
+
+      newRoom.approximateDateTime = roomAppxDateTime;
+      newRoom.link = roomLink;
+      newRoom.members = [...membersSelected, currUser.uid]; // add currUser to the list of "people"
+      newRoom.type = roomType;
+      newRoom.description = roomDescription;
+      newRoom.name = roomName;
+      newRoom.createdByUserId = currUser.uid;
+
+      await roomService.createRoom(newRoom);
+    } catch (error) {
+      toast.error("problem creating room");
+      console.log(error);
+    }
+  };
 
   const [roomLink, setRoomLink] = useState<string>(pastedLink);
+  const [roomName, setRoomName] = useState<string>("");
+  const [roomDescription, setRoomDescription] = useState<string>(null);
+
+  const [roomAttachment, setRoomAttachment] = useState<string>(null);
   const [membersSelected, setMembersSelected] = useState<string[]>([]);
 
+  const [roomType, setRoomType] = useState<RoomType>(RoomType.now);
+  const [roomAppxDateTime, setRoomAppxDateTime] = useState<string>(null); // for certain room types
+
   function handleSelectMember(value) {
-    // setMemberSelection()
+    // passed in array of selections...userIds
+
+    setMembersSelected(value);
+
     console.log(value);
   }
 
@@ -46,18 +92,19 @@ export default function CreateRoomModal() {
         mode="multiple"
         allowClear
         style={{ width: "100%" }}
-        placeholder="Please select"
-        defaultValue={["a10", "c12"]}
+        placeholder="Please select team members"
         onChange={handleSelectMember}
       >
-        {children}
+        {teamUsers.map((tu) => {
+          return <Option key={tu.id}>{tu.nickName}</Option>;
+        })}
       </Select>
     );
   };
 
   return (
     <Modal
-      title="Create Room"
+      title="Room Details"
       centered
       visible={showModalType == thisModalType ? true : false}
       onOk={handleSubmit}
@@ -65,7 +112,7 @@ export default function CreateRoomModal() {
     >
       <div className="flex flex-col">
         <span className="flex flex-col items-start">
-          <span className="text-md">Link</span>
+          <span className="text-lg">1. Link</span>
           {roomLink ? (
             <span className="text-gray-300 text-xs mb-2">
               Please make sure this is valid so that your team can join
@@ -85,24 +132,59 @@ export default function CreateRoomModal() {
           <input
             className="w-full rounded-lg bg-gray-50 p-3"
             value={roomLink}
+            placeholder="https://meet.google.com/"
             onChange={(e) => setRoomLink(e.target.value)}
           />
         </span>
 
-        <div className="flex flex-row justify-between space-x-3 mt-4">
-          <span className="flex flex-col items-start flex-1 ">
-            <span className="text-md">Room Name</span>
-            <span className="text-gray-300 text-xs mb-2 flex-1">
-              Be specific enough, everyone down the hall will see this.
-            </span>
-            <input
-              placeholder="ex. Design - Ecommerce Figma"
-              className="w-full rounded-lg bg-gray-50 p-3"
-              value={""}
-              onChange={(e) => setRoomLink(e.target.value)}
-            />
+        <span className="flex flex-col items-start flex-1 mt-4 ">
+          <span className="text-lg">2. Room Name</span>
+          <span className="text-gray-300 text-xs mb-2 flex-1">
+            Be specific enough, everyone down the hall will see this.
           </span>
-        </div>
+          <input
+            placeholder="ex. Design - Ecommerce Figma"
+            className="w-full rounded-lg bg-gray-50 p-3"
+            value={roomName}
+            onChange={(e) => setRoomName(e.target.value)}
+          />
+        </span>
+
+        {/* room type selection */}
+
+        <span className="flex flex-col items-start flex-1 mt-4 ">
+          <span className="text-lg">3. Type</span>
+          <span className="text-gray-300 text-xs mb-2 flex-1"></span>
+          <Radio.Group
+            value={roomType}
+            onChange={(event) => setRoomType(event.target.value)}
+          >
+            <Radio.Button value={RoomType.now}>{RoomType.now}</Radio.Button>
+            <Radio.Button value={RoomType.scheduled}>
+              {RoomType.scheduled}
+            </Radio.Button>
+            <Radio.Button value={RoomType.recurring}>
+              {RoomType.recurring}
+            </Radio.Button>
+          </Radio.Group>
+
+          {roomType == RoomType.recurring || roomType == RoomType.scheduled ? (
+            <span className="flex flex-col items-start flex-1 mt-4">
+              <span className="text-md">Approximate day/time</span>
+              <span className="text-gray-300 text-xs mb-2 flex-1">
+                Put a rough day/time that makes sense to you.
+              </span>
+              <input
+                placeholder="ex. 2pm-ish...10am daily"
+                className="w-full rounded-lg bg-gray-50 p-3"
+                value={roomAppxDateTime}
+                onChange={(e) => setRoomAppxDateTime(e.target.value)}
+              />
+            </span>
+          ) : (
+            <></>
+          )}
+        </span>
 
         <Divider />
 
@@ -115,13 +197,13 @@ export default function CreateRoomModal() {
         </span>
 
         <span className="flex flex-col items-start flex-1 mt-4">
-          <span className="text-md">Subtitle</span>
+          <span className="text-md">Description</span>
           <span className="text-gray-300 text-xs mb-2 flex-1">Optional</span>
           <input
             placeholder="ex. Looking for feedback if..."
             className="w-full rounded-lg bg-gray-50 p-3"
-            value={""}
-            onChange={(e) => setRoomLink(e.target.value)}
+            value={roomDescription}
+            onChange={(e) => setRoomDescription(e.target.value)}
           />
         </span>
 
@@ -133,8 +215,8 @@ export default function CreateRoomModal() {
           <input
             placeholder="https://"
             className="w-full rounded-lg bg-gray-50 p-3"
-            value={""}
-            onChange={(e) => setRoomLink(e.target.value)}
+            value={roomAttachment}
+            onChange={(e) => setRoomAttachment(e.target.value)}
           />
         </span>
       </div>

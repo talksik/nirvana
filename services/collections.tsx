@@ -4,4 +4,8 @@ export enum Collections {
   teamMembers = "teamMembers",
   teamSubscriptions = "teamSubscriptions",
   audioMessages = "audioMessages",
+
+  rooms = "rooms",
+  announcements = "announcements",
+  attachments = "attachments",
 }
