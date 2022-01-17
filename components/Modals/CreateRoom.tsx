@@ -1,18 +1,32 @@
 import { Modal } from "antd";
-import { useKeyboardContext } from "../../contexts/keyboardContext";
+import { useEffect } from "react";
+import {
+  ShowModalType,
+  useKeyboardContext,
+} from "../../contexts/keyboardContext";
 
-export default function CreateRoom() {
-  const { createRoom } = useKeyboardContext();
+const thisModalType = ShowModalType.createRoom;
 
-  console.log(createRoom);
+export default function CreateRoomModal() {
+  const { pastedLink, handleModalType, showModalType } = useKeyboardContext();
+
+  useEffect(() => {
+    // check if link is valid google meet link
+  }, []);
+
+  const handleCloseModal = () => {
+    handleModalType(ShowModalType.na);
+  };
+
+  const handleSubmit = () => {};
 
   return (
     <Modal
       title="Create Room"
       centered
-      visible={createRoom.showModal}
-      // onOk={() => this.setModal2Visible(false)}
-      // onCancel={() => this.setModal2Visible(false)}
+      visible={showModalType == thisModalType ? true : false}
+      onOk={handleSubmit}
+      onCancel={handleCloseModal}
     >
       <p>some contents...</p>
       <p>some contents...</p>

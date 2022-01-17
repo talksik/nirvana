@@ -12,7 +12,6 @@ import { Message } from "../models/message";
 import { useAuth } from "./authContext";
 import { SendService } from "../services/sendService";
 import { useTeamDashboardContext } from "./teamDashboardContext";
-import CreateRoom from "../helpers/CreateRoom";
 
 interface KeyboardContextInterface {
   selectedTeammate: string; // can only have one selected
@@ -45,7 +44,15 @@ interface KeyboardContextInterface {
 
   ctrlDown: boolean;
 
-  createRoom: CreateRoom;
+  showModalType: ShowModalType;
+  handleModalType: Function;
+  pastedLink: string;
+}
+
+export enum ShowModalType {
+  createLink = "link",
+  createRoom = "room",
+  na = "none",
 }
 
 const KeyboardContext = React.createContext<KeyboardContextInterface | null>(
@@ -85,7 +92,14 @@ export default function KeyboardContextProvider({ children }) {
   const [isMuted, setIsMuted] = useState<Boolean>(false);
   const [isSilenceMode, setIseSilenceMode] = useState<Boolean>(false);
 
-  const [createRoom, setCreateRoom] = useState<CreateRoom>(new CreateRoom());
+  const [pastedLink, setPastedLink] = useState<string>(null);
+  const [showModalType, setShowModalType] = useState<ShowModalType>(
+    ShowModalType.na
+  );
+
+  const handleModalType = (modalType: ShowModalType) => {
+    setShowModalType(modalType);
+  };
 
   const [recorder, setRecorder] = useState<MicRecorder>(
     new MicRecorder({ bitRate: 128 })
@@ -137,7 +151,10 @@ export default function KeyboardContextProvider({ children }) {
     outputDevices,
 
     ctrlDown,
-    createRoom,
+
+    pastedLink,
+    handleModalType,
+    showModalType,
   };
 
   function muteOrUnmute() {
@@ -221,11 +238,6 @@ export default function KeyboardContextProvider({ children }) {
       new MicRecorder({ bitRate: 128, deviceId: audioInputDeviceId })
     );
   }, [audioInputDeviceId]); // change it everytime we change the input device
-
-  // auto play
-  useEffect(() => {
-    // todo play audio to selected output device
-  }, []);
 
   // SECTION: recording
   async function startRecording() {
@@ -358,7 +370,7 @@ export default function KeyboardContextProvider({ children }) {
           toast.error("select a team member first to play");
         } else {
           // alright now you are good to play last message chunk in conversation with selected user
-          // todo create last chunk, and create a playlist
+          // todo create last chunk by iterating until next person, and create a playlist
 
           if (
             selectedTeammate in messagesByTeamMate &&
@@ -380,6 +392,12 @@ export default function KeyboardContextProvider({ children }) {
         toast("navigating to create google meet");
 
         window.open(new URL("https://meet.google.com/"), "_blank");
+      } else if (event.keyCode == KeyCode.V && ctrlDown) {
+        toast("pasting link");
+
+        setSelectedTeamMember(null);
+
+        setShowModalType(ShowModalType.createRoom);
       } else {
         toast("Invalid keyboard shortcut.");
       }
