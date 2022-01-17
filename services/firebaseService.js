@@ -34,14 +34,12 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-if (typeof window !== "undefined") {
-  const app = firebase.initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+const app = firebase.initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
-  console.log("initialized firebase");
+console.log("initialized firebase");
 
-  setPersistence(getAuth(), browserSessionPersistence);
-}
+setPersistence(getAuth(), browserSessionPersistence);
 
 // import { credential } from 'firebase-admin';
 // import { initializeApp } from 'firebase-admin/app';
