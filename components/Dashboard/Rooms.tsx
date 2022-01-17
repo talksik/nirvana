@@ -173,25 +173,32 @@ export default function DashboardRoom() {
       <Menu.Item key={1} disabled>
         Past 24 Hours (Coming Soon)
       </Menu.Item>
-      <Menu.Item disabled>This Month(Coming Soon)</Menu.Item>
+      <Menu.Item key={2} disabled>
+        This Month(Coming Soon)
+      </Menu.Item>
     </Menu>
   );
 
   return (
-    <section className="p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md">
+    <section className="p-5 w-full flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md">
       {/*  modal for creating room */}
       <CreateRoom />
 
       {/* header */}
       <span className="flex flex-row justify-end space-x-3 pb-5 items-center">
-        <span className="text-white mr-auto">
-          ROOMS
-          <button
-            className="right-1 rounded-lg py-1 px-2 ml-1 
-              shadow-md text-center text-white text-sm font-bold"
-          >
-            CTRL + Q
-          </button>
+        <span className="flex flex-col mr-auto">
+          <span className="text-white ">
+            Rooms
+            <button
+              className="right-1 rounded-lg py-1 px-2 ml-1 
+                                        shadow-md text-center text-white text-sm font-bold"
+            >
+              CTRL + Q
+            </button>
+          </span>
+          <span className="text-gray-300 text-xs">
+            archive rooms to keep your team focused
+          </span>
         </span>
 
         <Radio.Group
