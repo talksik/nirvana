@@ -9,13 +9,21 @@ import { Avatar, Divider, Tooltip } from "antd";
 import { UserOutlined, AntDesignOutlined } from "@ant-design/icons";
 import { useTeamDashboardContext } from "../contexts/teamDashboardContext";
 import { User } from "../models/user";
+import RoomService from "../services/roomService";
+import toast from "react-hot-toast";
+import { useState } from "react";
+import SkeletonLoader from "./Loading/skeletonLoader";
 
 interface IRoomCardProps {
   room: Room;
 }
+
+const roomService = new RoomService();
+
 export default function RoomCard(props: IRoomCardProps) {
   const { currUser } = useAuth();
   const { teamUsersMap, user } = useTeamDashboardContext();
+  const [loading, setLoading] = useState<boolean>(false);
 
   var isUserInRoom: boolean;
   if (props.room.membersInRoom?.includes(currUser.uid)) {
@@ -117,6 +125,51 @@ export default function RoomCard(props: IRoomCardProps) {
     );
   };
 
+  async function handleLeavingRoom() {
+    setLoading(true);
+
+    try {
+      // filter current membersInRoom and return new array
+      const newMembersInRoom = props.room.membersInRoom.filter(
+        (memberId) => memberId != currUser.uid
+      );
+
+      // update the room with room id to have a new array of userIds
+      await roomService.updateMembersInRoom(props.room.id, newMembersInRoom);
+    } catch (error) {
+      console.error(error);
+
+      toast.error("unable to leave room...something went wrong");
+    }
+
+    setLoading(false);
+  }
+
+  async function handleJoiningRoom() {
+    setLoading(true);
+
+    try {
+      // update members in room
+      const newMembersInRoom = [...props.room.membersInRoom, currUser.uid];
+
+      // update the room with room id to have a new array of userIds
+      await roomService.updateMembersInRoom(props.room.id, newMembersInRoom);
+
+      // then window.open to room's link
+      window.open(props.room.link, "_blank");
+    } catch (error) {
+      console.error(error);
+
+      toast.error("unable to leave room...something went wrong");
+    }
+
+    setLoading(false);
+  }
+
+  if (loading) {
+    return <SkeletonLoader />;
+  }
+
   return (
     <span
       className={`flex flex-col ${
@@ -136,8 +189,8 @@ export default function RoomCard(props: IRoomCardProps) {
           </span>
           <span
             className={`${
-              isUserInRoom ? " text-gray-400" : "text-gray-200"
-            }   text-xs  overflow-wrap  mb-4`}
+              isUserInRoom ? "text-gray-400" : "text-gray-200"
+            } text-xs overflow-wrap  mb-4`}
           >
             {props.room.description}
           </span>
@@ -154,8 +207,15 @@ export default function RoomCard(props: IRoomCardProps) {
         </span>
 
         {/* room status and link(s) */}
-        <span className="flex flex-col items-end space-y-1 justify-between h-full">
+        <span className="flex flex-col items-end justify-between h-full">
           <RoomTypeTag roomType={props.room.type} />
+          <span
+            className={`${
+              isUserInRoom ? "text-gray-400" : "text-gray-200"
+            } text-xs text-right mb-auto`}
+          >
+            on and off all day
+          </span>
 
           {/* room attachments */}
           <span className="flex flex-row space-x-2">
@@ -178,9 +238,21 @@ export default function RoomCard(props: IRoomCardProps) {
       {/* footer */}
       <span className="flex flex-row items-center bg-gray-400 bg-opacity-30 p-3">
         {membersInRoom()}
-        <button className="ml-auto text-sm text-orange-500 font-semibold py-1 px-4 bg-gray-200 rounded">
-          👋 Leave
-        </button>
+        {isUserInRoom ? (
+          <button
+            onClick={handleLeavingRoom}
+            className="ml-auto text-sm text-orange-500 font-semibold py-1 px-4 bg-gray-200 rounded"
+          >
+            👋 Leave
+          </button>
+        ) : (
+          <button
+            onClick={handleJoiningRoom}
+            className="ml-auto text-sm font-semibold py-1 px-4 rounded bg-gray-300 text-green-500"
+          >
+            Join
+          </button>
+        )}
         <BsThreeDots className="text-white ml-2 hover:cursor-pointer" />{" "}
       </span>
     </span>

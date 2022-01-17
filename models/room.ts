@@ -22,6 +22,8 @@ export default class Room {
   createdByUserId: string;
 
   teamId: string;
+
+  lastUpdatedDate: Timestamp;
 }
 
 export enum RoomType {
