@@ -621,8 +621,9 @@ export default function Dashboard() {
                                         <FaBell className='text-sm text-orange-500' />
                                     </button>
 
-                                    <BsThreeDots className='text-white ml-2 hover:cursor-pointer' />                                        </span>
-                                </span>
+                                    <BsThreeDots className='text-white ml-2 hover:cursor-pointer' />                                        
+                                    </span>
+                            </span>
 
                             {/* recurring room - wine wednesdays */}
                             <span className='flex flex-col bg-gray-300 bg-opacity-25 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip'>

@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import Loading from "../components/Loading";
 import { compareStatus } from "../helpers/userHelper";
 import { Message } from "../models/message";
+import Room from "../models/room";
 import { Team } from "../models/team";
 import { TeamMember, TeamMemberStatus } from "../models/teamMember";
 import { User } from "../models/user";
@@ -225,7 +226,7 @@ export function TeamDashboardContextProvider({ children }) {
   const [allMessages, setAllMessages] = useState<Message[]>([]);
   const [messagesByTeamMate, setMessagesByTeamMate] = useState<{}>({});
 
-  // listener for all incoming messages
+  // SECTION: REALTIME listener for all incoming messages
   useEffect(() => {
     // todo for new messages, change document.title
 
@@ -249,7 +250,6 @@ export function TeamDashboardContextProvider({ children }) {
         // messages won't be deleted or updated really
         if (change.type === "added") {
           let newMessage = change.doc.data() as Message;
-          console.log("New message: ", newMessage);
 
           // update all messages array
           setAllMessages((prevMessages) => [newMessage, ...prevMessages]);

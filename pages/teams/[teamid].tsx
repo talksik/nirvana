@@ -78,8 +78,6 @@ function TeamDashboard() {
     };
   }, []);
 
-  console.log(teamDashboardContext);
-
   return (
     <div className="container mx-auto py-10 px-10 flex flex-col space-y-5">
       <Header />

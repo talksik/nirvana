@@ -9,13 +9,28 @@ import {
   ShowModalType,
   useKeyboardContext,
 } from "../../contexts/keyboardContext";
+import {
+  collection,
+  getFirestore,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
+import { Collections } from "../../services/collections";
+import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
+import Room, { RoomType } from "../../models/room";
+import { useAuth } from "../../contexts/authContext";
+import { Radio } from "antd";
+import RoomCard from "../RoomCard";
 
 enum RoomTypeFilter {
   all = "all",
-  live = "live",
+  me = "me",
+  now = "now",
   scheduled = "scheduled",
   recurring = "recurring",
-  expired = "expired",
+  archived = "archived",
 }
 
 enum RoomTimeFilter {
@@ -24,20 +39,147 @@ enum RoomTimeFilter {
   month = "month",
 }
 
+const db = getFirestore();
+
+const lastWeek = new Date();
+lastWeek.setDate(lastWeek.getDate() - 7);
+
 export default function DashboardRoom() {
+  const { currUser } = useAuth();
   const { handleModalType } = useKeyboardContext();
+  const { team } = useTeamDashboardContext();
+
+  const [roomsMap, setRoomsMap] = useState<Map<string, Room>>(
+    new Map<string, Room>()
+  );
 
   // get rooms data realtime
   useEffect(() => {
     /**
      * QUERY:
      * all rooms in the past week
+     * order createdDate desc
      *
      */
-  });
+    const q = query(
+      collection(db, Collections.rooms),
+      where("teamId", "==", team.id),
+      where("createdDate", ">", lastWeek),
+      orderBy("createdDate", "desc")
+    );
+
+    // return unsubscribe
+    return onSnapshot(q, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        let updatedRoom = change.doc.data() as Room;
+        updatedRoom.id = change.doc.id;
+
+        if (change.type === "added" || change.type === "modified") {
+          console.log("New or updated room: ", updatedRoom);
+          // update rooms map
+          setRoomsMap((prevMap) => {
+            return new Map(prevMap.set(updatedRoom.id, updatedRoom));
+          });
+        }
+        if (change.type === "removed") {
+          console.log("Removed room: ", updatedRoom);
+        }
+      });
+    });
+  }, []);
 
   // on CTRL + Q, new tab to google meet
   // on CTRL + V, show modal to create meeting with the link
+
+  const [selectedTabPane, setSelectedTabPane] = useState<string>(
+    RoomTypeFilter.all
+  );
+
+  // tab pane ui from scratch
+  // function renderTabPane() {
+  //   return (
+  //     <span className="flex flex-row space-x-5 uppercase mr-5">
+  //       <span
+  //         onClick={() => setSelectedTabPane(RoomTypeFilter.all)}
+  //         className={`${
+  //           selectedTabPane == RoomTypeFilter.all
+  //         } underline underline-offset-8 decoration-white text-white hover:text-white hover:cursor-pointer`}
+  //       >
+  //         All
+  //       </span>
+
+  //       <span
+  //         onClick={() => setSelectedTabPane(RoomTypeFilter.me)}
+  //         className="text-gray-300 hover:text-white hover:cursor-pointer"
+  //       >
+  //         Me
+  //       </span>
+
+  //       <span
+  //         onClick={() => setSelectedTabPane(RoomTypeFilter.now)}
+  //         className="text-gray-300 hover:text-white hover:cursor-pointer"
+  //       >
+  //         Now
+  //       </span>
+
+  //       <span
+  //         onClick={() => setSelectedTabPane(RoomTypeFilter.scheduled)}
+  //         className="text-gray-300 hover:text-white hover:cursor-pointer"
+  //       >
+  //         Scheduled
+  //       </span>
+
+  //       <span
+  //         onClick={() => setSelectedTabPane(RoomTypeFilter.recurring)}
+  //         className="text-gray-300 hover:text-white hover:cursor-pointer"
+  //       >
+  //         Recurring
+  //       </span>
+
+  //       <span
+  //         onClick={() => setSelectedTabPane(RoomTypeFilter.archived)}
+  //         className="text-gray-300 hover:text-white hover:cursor-pointer"
+  //       >
+  //         Archive
+  //       </span>
+  //     </span>
+  //   );
+  // }
+
+  const allRooms = Array.from(roomsMap.values());
+
+  function getRoomContent() {
+    // return data based on the selected filters
+    switch (selectedTabPane) {
+      case RoomTypeFilter.all:
+        return allRooms;
+      case RoomTypeFilter.me:
+        const meRooms = allRooms.filter((room) =>
+          room.members.includes(currUser.uid)
+        );
+        return meRooms;
+      case RoomTypeFilter.now:
+        const nowRooms = allRooms.filter((room) => room.type == RoomType.now);
+        return nowRooms;
+      case RoomTypeFilter.scheduled:
+        const scheduledRooms = allRooms.filter(
+          (room) => room.type == RoomType.scheduled
+        );
+        return scheduledRooms;
+      case RoomTypeFilter.recurring:
+        const recurringRooms = allRooms.filter(
+          (room) => room.type == RoomType.recurring
+        );
+        return recurringRooms;
+      case RoomTypeFilter.archived:
+        const archivedRooms = allRooms.filter(
+          (room) => room.type == RoomType.archived
+        );
+        return archivedRooms;
+      default:
+        return allRooms;
+    }
+  }
 
   return (
     <section className="p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md">
@@ -56,32 +198,29 @@ export default function DashboardRoom() {
           </button>
         </span>
 
-        {/* tab pane */}
-        <span className="flex flex-row space-x-5 uppercase mr-5">
-          <span className="underline underline-offset-8 decoration-white text-white hover:text-white hover:cursor-pointer">
-            All
-          </span>
-
-          <span className="text-gray-300 hover:text-white hover:cursor-pointer">
-            Me
-          </span>
-
-          <span className="text-gray-300 hover:text-white hover:cursor-pointer">
-            Now
-          </span>
-
-          <span className="text-gray-300 hover:text-white hover:cursor-pointer">
-            Scheduled
-          </span>
-
-          <span className="text-gray-300 hover:text-white hover:cursor-pointer">
-            Recurring
-          </span>
-
-          <span className="text-gray-300 hover:text-white hover:cursor-pointer">
-            Archive
-          </span>
-        </span>
+        <Radio.Group
+          value={selectedTabPane}
+          onChange={(e) => setSelectedTabPane(e.target.value)}
+        >
+          <Radio.Button value={RoomTypeFilter.all}>
+            {RoomTypeFilter.all}
+          </Radio.Button>
+          <Radio.Button value={RoomTypeFilter.me}>
+            {RoomTypeFilter.me}
+          </Radio.Button>
+          <Radio.Button value={RoomTypeFilter.now}>
+            {RoomTypeFilter.now}
+          </Radio.Button>
+          <Radio.Button value={RoomTypeFilter.scheduled}>
+            {RoomTypeFilter.scheduled}
+          </Radio.Button>
+          <Radio.Button value={RoomTypeFilter.recurring}>
+            {RoomTypeFilter.recurring}
+          </Radio.Button>
+          <Radio.Button value={RoomTypeFilter.archived}>
+            {RoomTypeFilter.archived}
+          </Radio.Button>
+        </Radio.Group>
 
         <span className="text-sm text-gray-300 flex flex-row items-center uppercase">
           Week <FaAngleDown />
@@ -99,347 +238,9 @@ export default function DashboardRoom() {
 
       {/* all rooms */}
       <span className="flex flex-row flex-wrap max-h-96 overflow-auto">
-        {/* spontaneous bugs room */}
-        <span className="flex flex-col bg-white bg-opacity-80 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip">
-          {/* header */}
-          <span className="flex flex-1 flex-row justify-between items-baseline space-x-1 p-5">
-            {/* meeting details */}
-            <span className="flex flex-col items-baseline max-w-xs pr-10">
-              <span className="text-gray-500 font-semibold mr-auto">
-                bug fixing
-              </span>
-              <span className="text-xs text-gray-400 overflow-wrap">
-                were just fixing that jsx bug thats a paiiinnnn
-              </span>
-
-              {/* badges and tags */}
-              <span className="flex flex-row flex-wrap">
-                <span className="text-xs m-1 text-white bg-red-400 p-1 rounded-md font-bold flex flex-row items-center">
-                  <span>blockers</span>
-                </span>
-
-                <span className="text-xs m-1 text-white bg-indigo-400 p-1 rounded-md font-bold flex flex-row items-center">
-                  <span>engineering</span>
-                </span>
-              </span>
-            </span>
-
-            {/* room status */}
-            <span className="flex flex-col items-end space-y-1 justify-between h-full">
-              <span
-                className="text-xs bg-red-500
-                  text-white font-bold p-1 rounded-md flex flex-row space-x-2 items-center"
-              >
-                <FaClock />
-                <span>live</span>
-              </span>
-
-              {/* room attachments */}
-              <span className="flex flex-row space-x-2">
-                <button className="bg-gray-400 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40">
-                  <FaLink className="text-sm text-gray-400" />
-                </button>
-
-                <button className="bg-gray-400 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40">
-                  <FaLink className="text-sm text-gray-400" />
-                </button>
-              </span>
-            </span>
-          </span>
-
-          {/* footer */}
-          <span className="flex flex-row items-center bg-gray-400 bg-opacity-30 p-3">
-            <span className="inline-flex flex-row-reverse items-center shrink-0 mr-1">
-              <span className="relative flex">
-                <span className="bg-gray-200 rounded-full shadow-md absolute w-full h-full"></span>
-                <Image
-                  className=""
-                  src={
-                    "/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-20.svg"
-                  }
-                  alt="profile"
-                  width={30}
-                  height={30}
-                />
-              </span>
-              <span className="-mr-4 relative flex">
-                <span className="bg-gray-200 rounded-full shadow-md absolute w-full h-full"></span>
-                <Image
-                  className=""
-                  src={
-                    "/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-22.svg"
-                  }
-                  alt="profile"
-                  width={30}
-                  height={30}
-                />
-              </span>
-            </span>
-            <span className="text-xs text-gray-400">Arjun and Liam</span>
-            <button className="ml-auto text-sm text-orange-500 font-semibold py-1 px-4 bg-gray-200 rounded">
-              👋 Leave
-            </button>
-            <BsThreeDots className="text-white ml-2 hover:cursor-pointer" />{" "}
-          </span>
-        </span>
-
-        {/* live room - design meeting */}
-        <span className="flex flex-col bg-gray-300 bg-opacity-25 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip">
-          {/* header */}
-          <span className="flex flex-row justify-between items-baseline space-x-1 p-5">
-            {/* meeting details */}
-            <span className="flex flex-col items-baseline max-w-xs pr-20">
-              <span className="text-white font-semibold mr-auto">
-                Shopping Cart Experience
-              </span>
-              <span className="text-xs text-gray-200 overflow-wrap">
-                lets finish the mockups @josh, @mark, and @arjun please step in
-                for feedback
-              </span>
-
-              {/* badges and tags */}
-              <span className="flex flex-row flex-wrap space-x-2">
-                <span className="text-xs my-3 text-white bg-purple-400 p-1 rounded-md font-bold flex flex-row space-x-2 items-center">
-                  <span>design</span>
-                </span>
-              </span>
-            </span>
-
-            {/* room status */}
-            <span className="flex flex-col items-end justify-between h-full">
-              <span
-                className="text-xs bg-red-500
-                  text-white font-bold p-1 rounded-md flex flex-row space-x-2 items-center"
-              >
-                <FaClock />
-                <span>live</span>
-              </span>
-              <span className="text-gray-200 text-xs text-right mb-auto">
-                on and off all day
-              </span>
-
-              {/* room attachments */}
-              <span className="flex flex-row space-x-2">
-                <button className="bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40">
-                  <FaLink className="text-sm text-white" />
-                </button>
-
-                <button className="bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40">
-                  <FaLink className="text-sm text-white" />
-                </button>
-              </span>
-            </span>
-          </span>
-
-          {/* footer */}
-          <span className="flex flex-row items-center bg-gray-400 bg-opacity-30 p-3">
-            <span className="inline-flex flex-row-reverse items-center shrink-0 mr-1">
-              <span className="relative flex">
-                <span className="bg-gray-200 rounded-full shadow-md absolute w-full h-full"></span>
-                <Image
-                  className=""
-                  src={
-                    "/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-06.svg"
-                  }
-                  alt="profile"
-                  width={30}
-                  height={30}
-                />
-              </span>
-            </span>
-
-            <span className="text-xs text-white">Adriana</span>
-
-            <button className="ml-auto text-sm font-semibold py-1 px-4 rounded bg-gray-300 text-green-500">
-              Join
-            </button>
-
-            <BsThreeDots className="text-white ml-2 hover:cursor-pointer" />
-          </span>
-        </span>
-
-        {/* scheduled room - one on one */}
-        <span className="flex flex-col bg-gray-300 bg-opacity-25 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip">
-          {/* header */}
-          <span className="flex flex-row justify-between items-baseline space-x-1 p-5">
-            {/* meeting details */}
-            <span className="flex flex-col items-baseline max-w-xs pr-20">
-              <span className="text-white font-semibold mr-auto">
-                Arjun and Paul - One on one
-              </span>
-              <span className="text-xs text-gray-200 overflow-wrap">
-                performance review
-              </span>
-
-              {/* badges and tags */}
-              <span className="flex flex-row flex-wrap space-x-2">
-                <span className="text-xs my-3 text-white bg-gray-400 p-1 rounded-md font-bold flex flex-row space-x-2 items-center">
-                  <span>private</span>
-                </span>
-              </span>
-            </span>
-
-            {/* room status */}
-            <span className="flex flex-col items-end">
-              <span className="text-blue-700 bg-blue-200 p-1 rounded-md text-xs font-bold flex flex-row items-center space-x-1">
-                <FaClock />
-                <span>scheduled</span>
-              </span>
-
-              <span className="text-gray-200 text-xs text-center">
-                3ish? Ill ping you Arjun
-              </span>
-            </span>
-          </span>
-
-          {/* footer */}
-          <span className="flex flex-row items-center bg-gray-400 bg-opacity-30 p-3">
-            <button className="ml-auto text-sm font-semibold py-1 px-4 rounded bg-gray-300 text-green-500">
-              Join
-            </button>
-            <BsThreeDots className="text-white ml-2 hover:cursor-pointer" />{" "}
-          </span>
-        </span>
-
-        {/* recurring room - dsu */}
-        <span className="flex flex-col bg-gray-300 bg-opacity-25 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip">
-          {/* header */}
-          <span className="flex flex-row justify-between items-baseline space-x-1 p-5">
-            {/* meeting details */}
-            <span className="flex flex-col items-baseline max-w-xs pr-20">
-              <span className="text-white font-semibold mr-auto">
-                Daily Standup
-              </span>
-              <span className="text-xs text-gray-200 overflow-wrap"></span>
-
-              {/* badges and tags */}
-              <span className="flex flex-row flex-wrap space-x-2">
-                <span className="text-xs my-3 text-white bg-cyan-400 p-1 rounded-md font-bold flex flex-row space-x-2 items-center">
-                  <span>scrum</span>
-                </span>
-
-                <span className="text-xs my-3 text-white bg-indigo-400 p-1 rounded-md font-bold flex flex-row space-x-2 items-center">
-                  <span>engineering</span>
-                </span>
-              </span>
-            </span>
-
-            {/* room status */}
-            <span className="flex flex-col items-center justify-start">
-              <span className="text-yellow-700 bg-yellow-200 p-1 rounded-md text-xs font-bold flex flex-row items-center space-x-1">
-                <IoTimer />
-                <span>recurring</span>
-              </span>
-
-              <span className="text-gray-200 text-xs">10am daily</span>
-            </span>
-          </span>
-
-          {/* footer */}
-          <span className="flex flex-row items-center bg-gray-400 bg-opacity-30 p-3">
-            <button className="ml-auto text-sm font-semibold py-1 px-4 rounded bg-gray-300 text-green-500">
-              Join
-            </button>
-            <button className="bg-orange-300 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40">
-              <FaBell className="text-sm text-orange-500" />
-            </button>
-            <BsThreeDots className="text-white ml-2 hover:cursor-pointer" />{" "}
-          </span>
-        </span>
-
-        {/* recurring  room - demo */}
-        <span className="flex flex-col bg-gray-300 bg-opacity-25 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip">
-          {/* header */}
-          <span className="flex flex-row justify-between items-baseline space-x-1 p-5">
-            {/* meeting details */}
-            <span className="flex flex-col items-baseline max-w-xs pr-20">
-              <span className="text-white font-semibold mr-auto">
-                Sprint Demo
-              </span>
-              <span className="text-xs text-gray-200 overflow-wrap">
-                all hands on deck...lets have fun :)
-              </span>
-
-              {/* badges and tags */}
-              <span className="flex flex-row flex-wrap space-x-2">
-                <span className="text-xs my-3 text-white bg-cyan-400 p-1 rounded-md font-bold flex flex-row space-x-2 items-center">
-                  <span>scrum</span>
-                </span>
-              </span>
-            </span>
-
-            {/* room status */}
-            <span className="flex flex-col items-center justify-start">
-              <span className="text-yellow-700 bg-yellow-200 p-1 rounded-md text-xs font-bold flex flex-row items-center space-x-1">
-                <IoTimer />
-                <span>recurring</span>
-              </span>
-
-              <span className="text-gray-200 text-xs text-center">
-                biweekly fridays!
-              </span>
-            </span>
-          </span>
-
-          {/* footer */}
-          <span className="flex flex-row items-center bg-gray-400 bg-opacity-30 p-3">
-            <button className="ml-auto text-sm font-semibold py-1 px-4 rounded bg-gray-300 text-green-500">
-              Join
-            </button>
-            <button className="bg-orange-300 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40">
-              <FaBell className="text-sm text-orange-500" />
-            </button>
-            <BsThreeDots className="text-white ml-2 hover:cursor-pointer" />{" "}
-          </span>
-        </span>
-
-        {/* recurring room - wine wednesdays */}
-        <span className="flex flex-col bg-gray-300 bg-opacity-25 rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip">
-          {/* header */}
-          <span className="flex flex-row justify-between items-baseline space-x-1 p-5">
-            {/* meeting details */}
-            <span className="flex flex-col items-baseline max-w-xs pr-20">
-              <span className="text-white font-semibold mr-auto">
-                Wine Wednesdays
-              </span>
-              <span className="text-xs text-gray-200 overflow-wrap">
-                @JOSH YOU BETTER COME
-              </span>
-
-              {/* badges and tags */}
-              <span className="flex flex-row flex-wrap space-x-2">
-                <span className="text-xs my-3 text-white bg-lime-400 p-1 rounded-md font-bold flex flex-row space-x-2 items-center">
-                  <span>party 🎉</span>
-                </span>
-              </span>
-            </span>
-
-            {/* room status */}
-            <span className="flex flex-col items-end">
-              <span className="text-yellow-700 bg-yellow-200 p-1 rounded-md text-xs font-bold flex flex-row items-center space-x-1">
-                <IoTimer />
-                <span>recurring</span>
-              </span>
-
-              <span className="text-gray-200 text-xs text-right">
-                wednesdays 7-9pm
-              </span>
-            </span>
-          </span>
-
-          {/* footer */}
-          <span className="flex flex-row items-center bg-gray-400 bg-opacity-30 p-3">
-            <button className="ml-auto text-sm font-semibold py-1 px-4 rounded bg-gray-300 text-green-500">
-              Join
-            </button>
-
-            <button className="bg-orange-300 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40">
-              <FaBell className="text-sm text-orange-500" />
-            </button>
-
-            <BsThreeDots className="text-white ml-2 hover:cursor-pointer" />
-          </span>
-        </span>
+        {getRoomContent().map((room) => {
+          return <RoomCard key={room.id} room={room} />;
+        })}
       </span>
     </section>
   );

@@ -18,7 +18,7 @@ const roomService = new RoomService();
 
 export default function CreateRoomModal() {
   const { currUser } = useAuth();
-  const { teamUsers } = useTeamDashboardContext();
+  const { teamUsers, team } = useTeamDashboardContext();
   const { pastedLink, handleModalType, showModalType } = useKeyboardContext();
 
   useEffect(() => {
@@ -53,6 +53,7 @@ export default function CreateRoomModal() {
       newRoom.description = roomDescription;
       newRoom.name = roomName;
       newRoom.createdByUserId = currUser.uid;
+      newRoom.teamId = team.id;
 
       await roomService.createRoom(newRoom);
 
