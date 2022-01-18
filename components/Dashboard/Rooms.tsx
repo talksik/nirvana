@@ -25,7 +25,7 @@ import { Dropdown, Menu, Radio, Tooltip } from "antd";
 import RoomCard from "../RoomCard";
 
 enum RoomTypeFilter {
-  all = "all",
+  team = "team",
   me = "me",
   live = "live",
   archived = "archived",
@@ -90,7 +90,7 @@ export default function DashboardRoom() {
   // on CTRL + V, show modal to create meeting with the link
 
   const [selectedTabPane, setSelectedTabPane] = useState<string>(
-    RoomTypeFilter.all
+    RoomTypeFilter.me
   );
 
   // tab pane ui from scratch
@@ -145,8 +145,12 @@ export default function DashboardRoom() {
   // }
 
   const allRooms = Array.from(roomsMap.values());
-  const meRooms = allRooms.filter((room) =>
-    room.members.includes(currUser.uid)
+  const teamRooms = allRooms.filter(
+    (room) => room.status != RoomStatus.archived
+  );
+  const meRooms = allRooms.filter(
+    (room) =>
+      room.members.includes(currUser.uid) && room.status != RoomStatus.archived
   );
 
   const liveRooms = allRooms.filter((room) => room.status == RoomStatus.live);
@@ -157,8 +161,8 @@ export default function DashboardRoom() {
   function getRoomContent() {
     // return data based on the selected filters
     switch (selectedTabPane) {
-      case RoomTypeFilter.all:
-        return allRooms;
+      case RoomTypeFilter.team:
+        return teamRooms;
       case RoomTypeFilter.me:
         return meRooms;
       case RoomTypeFilter.live:
@@ -204,9 +208,11 @@ export default function DashboardRoom() {
             value={selectedTabPane}
             onChange={(e) => setSelectedTabPane(e.target.value)}
           >
-            <Radio.Button value={RoomTypeFilter.all}>
-              {RoomTypeFilter.all}{" "}
-              <span className="text-xs text-orange-500">{allRooms.length}</span>
+            <Radio.Button value={RoomTypeFilter.team}>
+              {RoomTypeFilter.team}{" "}
+              <span className="text-xs text-orange-500">
+                {teamRooms.length}
+              </span>
             </Radio.Button>
             <Radio.Button value={RoomTypeFilter.me}>
               {RoomTypeFilter.me}{" "}
