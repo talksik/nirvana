@@ -7,7 +7,6 @@ import { v4 as uuidv4 } from "uuid";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import CloudStorageService from "../services/cloudStorageService";
-import PowerPlayer from "../components/Modals/PowerPlayer";
 import { Message } from "../models/message";
 import { useAuth } from "./authContext";
 import { SendService } from "../services/sendService";
@@ -49,6 +48,8 @@ interface KeyboardContextInterface {
   showModalType: ShowModalType;
   handleModalType: Function;
   pastedLink: string;
+
+  handleAddAudioToQueue: Function;
 }
 
 export enum ShowModalType {
@@ -130,7 +131,7 @@ export default function KeyboardContextProvider({ children }) {
       // start player on the bottom
       // autoplay message
       // add to the queue
-      setAudioQueue((prevQueue) => [...prevQueue, allMessages[0].audioDataUrl]);
+      handleAddAudioToQueue([allMessages[0].audioDataUrl]);
     }
   }, [allMessages]);
 
@@ -171,6 +172,8 @@ export default function KeyboardContextProvider({ children }) {
     pastedLink,
     handleModalType,
     showModalType,
+
+    handleAddAudioToQueue,
   };
 
   function muteOrUnmute() {
@@ -430,7 +433,7 @@ export default function KeyboardContextProvider({ children }) {
             convoChunk.reverse();
 
             // add convo chunk to the queue player
-            setAudioQueue((prevQueue) => [...prevQueue, ...convoChunk]);
+            handleAddAudioToQueue(convoChunk);
           } else {
             toast("nothing to play");
           }
@@ -520,12 +523,13 @@ export default function KeyboardContextProvider({ children }) {
 
   const [playerSrc, setPlayerSrc] = useState<string>(null);
 
+  function handleAddAudioToQueue(urls: string[]) {
+    setAudioQueue((prevQueue) => [...prevQueue, ...urls]);
+  }
+
   return (
     <KeyboardContext.Provider value={value}>
       {children}
-
-      {/* mega power mode viewer */}
-      {/* <PowerPlayer /> */}
 
       {/* player for audio messages */}
       {playerSrc && (

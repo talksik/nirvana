@@ -2,7 +2,7 @@ import { Modal, Tooltip } from "antd";
 import { Message } from "../../models/message";
 import { FaBackward } from "react-icons/fa";
 
-export default function PowerPlayer(props: { messages: Message[] }) {
+export default function PowerPlayer(props: { show: boolean }) {
   // two arrays:
   // 1. all of my messages in order date desc => top
   // 2. all of incoming messages in order date desc => bottom
