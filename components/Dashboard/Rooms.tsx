@@ -238,18 +238,20 @@ export default function DashboardRoom() {
             </Radio.Button>
             <Radio.Button value={RoomTypeFilter.me}>
               {RoomTypeFilter.me}{" "}
-              <span className="text-xs text-orange-500">{meRooms.length}</span>
+              <span className="text-xs text-orange-500">
+                {meRooms.length > 0 ? meRooms.length : ""}
+              </span>
             </Radio.Button>
             <Radio.Button value={RoomTypeFilter.live}>
               {RoomTypeFilter.live}{" "}
               <span className="text-xs text-orange-500">
-                {liveRooms.length}
+                {liveRooms.length > 0 ? liveRooms.length : ""}
               </span>
             </Radio.Button>
             <Radio.Button value={RoomTypeFilter.archived}>
               {RoomTypeFilter.archived}{" "}
               <span className="text-xs text-orange-500">
-                {archivedRooms.length}
+                {archivedRooms.length > 0 ? liveRooms.length : ""}
               </span>
             </Radio.Button>
           </Radio.Group>
