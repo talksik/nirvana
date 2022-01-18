@@ -397,7 +397,6 @@ export default function KeyboardContextProvider({ children }) {
         handleResetView();
 
         setCtrlDown(true);
-        toast("control down");
       } else if (event.keyCode == KeyCode.Q && ctrlDown) {
         toast("navigating to create google meet");
 
@@ -432,7 +431,8 @@ export default function KeyboardContextProvider({ children }) {
             toast.error("Please enable permissions for clipboard");
           });
       } else {
-        toast("Invalid keyboard shortcut.");
+        // toast("Invalid keyboard shortcut.");
+        console.log("no shortcut logged");
       }
 
       // todo play message if pressing space

@@ -1,5 +1,11 @@
 import { useRouter } from "next/router";
-import { FaPlus, FaExternalLinkAlt, FaLink, FaBackward } from "react-icons/fa";
+import {
+  FaPlus,
+  FaExternalLinkAlt,
+  FaLink,
+  FaBackward,
+  FaArrowCircleDown,
+} from "react-icons/fa";
 import { IoPulseOutline, IoRemoveOutline, IoTimer } from "react-icons/io5";
 import { MdScreenShare } from "react-icons/md";
 import { BsThreeDots } from "react-icons/bs";
@@ -43,7 +49,7 @@ export default function TeamVoiceLine() {
   } = useKeyboardContext();
   const router = useRouter();
   const { teamid } = router.query;
-  const { team, user, userTeamMember, teamMembers, teamUsers } =
+  const { userTeamMember, teamUsers, messagesByTeamMate } =
     useTeamDashboardContext();
 
   // todo use a global is loading
@@ -99,13 +105,26 @@ export default function TeamVoiceLine() {
     }
 
     return teamUsers.map((tmember, i) => {
+      var isMessageIncoming: boolean = false;
+      if (tmember.id in messagesByTeamMate) {
+        console.log(messagesByTeamMate[tmember.id][0]);
+        if (messagesByTeamMate[tmember.id][0].receiverUserId == currUser.uid) {
+          isMessageIncoming = true;
+        }
+      }
+
+      var customSelectClasses: string = "";
+      if (tmember.id == selectedTeammate) {
+        customSelectClasses = "bg-white scale-150 z-20";
+      } else if (isMessageIncoming) {
+        customSelectClasses = "bg-orange-500 bg-opacity-20";
+      }
+
       return (
         <span
           onClick={() => selectTeamMember(tmember.id)}
           key={i}
-          className={`rounded flex flex-row items-center py-2 px-2 justify-items-start ease-in-out duration-300 hover:cursor-pointer ${
-            tmember.id == selectedTeammate ? "bg-white scale-150 z-20" : ""
-          }`}
+          className={`rounded flex flex-row items-center py-2 px-2 justify-items-start ease-in-out duration-300 hover:cursor-pointer ${customSelectClasses}`}
         >
           <span className="relative flex mr-2">
             <span className="bg-gray-200 bg-opacity-30 rounded-full shadow-md absolute w-full h-full"></span>
@@ -126,10 +145,16 @@ export default function TeamVoiceLine() {
                   <span className="text-xs text-black font-bold">
                     {tmember.nickName}
                   </span>
+
+                  {isMessageIncoming ? (
+                    <FaArrowCircleDown className="text-orange-500" />
+                  ) : (
+                    ""
+                  )}
                 </span>
 
                 <span className={"text-xs span-sans text-gray-500"}>
-                  {tmember.teamRole}
+                  {tmember.teamRole}{" "}
                 </span>
               </>
             ) : (
@@ -138,6 +163,12 @@ export default function TeamVoiceLine() {
                   <span className="text-sm text-white font-bold">
                     {tmember.nickName}
                   </span>
+
+                  {isMessageIncoming ? (
+                    <FaArrowCircleDown className="text-orange-500" />
+                  ) : (
+                    ""
+                  )}
 
                   <span className="text-white shadow-xl font-bold px-3 py-1 rounded">
                     {/* keyboard shortcuts start from 1 */}
