@@ -230,7 +230,7 @@ export default function RoomCard(props: IRoomCardProps) {
       {/* header */}
       <span className="flex flex-row justify-between items-baseline space-x-1 p-5 h-full">
         {/* meeting details */}
-        <span className="flex flex-col items-baseline justify-between max-w-xs pr-20 h-full">
+        <span className="flex flex-col items-baseline justify-start max-w-xs pr-20 h-full">
           <span
             className={`${
               isUserInRoom ? " text-gray-500" : "text-white"
@@ -242,7 +242,7 @@ export default function RoomCard(props: IRoomCardProps) {
             <span
               className={`${
                 isUserInRoom ? "text-gray-400" : "text-gray-200"
-              } text-xs mb-2 text-ellipsis whitespace-pre-line max-h-10 overflow-hidden`}
+              } text-xs mb-auto text-ellipsis whitespace-pre-line max-h-10 overflow-hidden`}
             >
               {props.room.description}
             </span>
