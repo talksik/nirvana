@@ -94,57 +94,6 @@ export default function DashboardRoom() {
     RoomTypeFilter.me
   );
 
-  // tab pane ui from scratch
-  // function renderTabPane() {
-  //   return (
-  //     <span className="flex flex-row space-x-5 uppercase mr-5">
-  //       <span
-  //         onClick={() => setSelectedTabPane(RoomTypeFilter.all)}
-  //         className={`${
-  //           selectedTabPane == RoomTypeFilter.all
-  //         } underline underline-offset-8 decoration-white text-white hover:text-white hover:cursor-pointer`}
-  //       >
-  //         All
-  //       </span>
-
-  //       <span
-  //         onClick={() => setSelectedTabPane(RoomTypeFilter.me)}
-  //         className="text-gray-300 hover:text-white hover:cursor-pointer"
-  //       >
-  //         Me
-  //       </span>
-
-  //       <span
-  //         onClick={() => setSelectedTabPane(RoomTypeFilter.now)}
-  //         className="text-gray-300 hover:text-white hover:cursor-pointer"
-  //       >
-  //         Now
-  //       </span>
-
-  //       <span
-  //         onClick={() => setSelectedTabPane(RoomTypeFilter.scheduled)}
-  //         className="text-gray-300 hover:text-white hover:cursor-pointer"
-  //       >
-  //         Scheduled
-  //       </span>
-
-  //       <span
-  //         onClick={() => setSelectedTabPane(RoomTypeFilter.recurring)}
-  //         className="text-gray-300 hover:text-white hover:cursor-pointer"
-  //       >
-  //         Recurring
-  //       </span>
-
-  //       <span
-  //         onClick={() => setSelectedTabPane(RoomTypeFilter.archived)}
-  //         className="text-gray-300 hover:text-white hover:cursor-pointer"
-  //       >
-  //         Archive
-  //       </span>
-  //     </span>
-  //   );
-  // }
-
   const allRooms = Array.from(roomsMap.values());
   const teamRooms = allRooms.filter(
     (room) => room.status != RoomStatus.archived
@@ -205,7 +154,7 @@ export default function DashboardRoom() {
   }
 
   return (
-    <section className="p-5 w-full flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md">
+    <section className="p-5 flex-1 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md">
       {/*  modal for creating room */}
       <CreateOrUpdateRoom
         show={showModalType == ShowModalType.createRoom}
@@ -280,7 +229,7 @@ export default function DashboardRoom() {
       </Tooltip>
 
       {/* all rooms */}
-      <span className="flex flex-row flex-wrap max-h-96 overflow-auto">
+      <span className="flex flex-row flex-wrap overflow-auto">
         {getRoomContent().map((room) => {
           return (
             <RoomCard
