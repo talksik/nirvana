@@ -1,4 +1,4 @@
-import { Modal, Tooltip } from "antd";
+import { Avatar, Modal, Tooltip } from "antd";
 import { Message } from "../../models/message";
 import { FaBackward } from "react-icons/fa";
 import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
@@ -22,21 +22,20 @@ export default function PowerPlayer(props: {
   const messageRangeHalfToPlay = 2;
   function handlePlayAudio(url: string) {
     // todo play like 2 indexes lower to 2 indexes higher instead of
-    const indexOfMessage = 5;
+    // const indexOfMessage = 5;
 
-    var startPlay = indexOfMessage - messageRangeHalfToPlay;
-    if (startPlay < 0) {
-      startPlay = 0;
-    }
+    // var startPlay = indexOfMessage - messageRangeHalfToPlay;
+    // if (startPlay < 0) {
+    //   startPlay = 0;
+    // }
 
-    var endPlay = indexOfMessage + messageRangeHalfToPlay;
-    if (endPlay > allMessages.length) {
-      endPlay = allMessages.length;
-    }
+    // var endPlay = indexOfMessage + messageRangeHalfToPlay;
+    // if (endPlay > allMessages.length) {
+    //   endPlay = allMessages.length;
+    // }
 
-    // loop through start to end and add to queue
-
-    console.log(url);
+    // // loop through start to end and add to queue
+    // var convoChunk: string[] = []
 
     handleAddAudioToQueue([url]);
   }
@@ -57,16 +56,28 @@ export default function PowerPlayer(props: {
         <div className="flex flex-row">
           {allMessages.map((msg, i) => {
             if (msg.senderUserId == currUser.uid) {
+              // if I am the sender
+              const receiverUser = teamUsersMap[msg.receiverUserId];
+              console.log(receiverUser);
+
+              if (!receiverUser) {
+                return;
+              }
+
               return (
-                <span
-                  key={i}
-                  onClick={() => handlePlayAudio(msg.audioDataUrl)}
-                  className="border-r-2 border-r-sky-400 translate-y-10 min-w-max hover:cursor-pointer"
-                >
-                  <Tooltip title={"you: 22 minutes ago"}>
-                    <div className="rounded-full w-5 h-5 translate-x-2/4 translate-y-full bg-teal-500"></div>
-                  </Tooltip>
-                </span>
+                <Tooltip title={"you: " + receiverUser.nickName}>
+                  <span
+                    key={i}
+                    onClick={() => handlePlayAudio(msg.audioDataUrl)}
+                    className="border-r-2 border-r-sky-400 translate-y-10 min-w-max hover:cursor-pointer border-t-2 border-t-black"
+                  >
+                    <Avatar.Group className="translate-x-8 pl-2 translate-y-10">
+                      <Avatar src={receiverUser.avatarUrl} />
+                      {/* <Avatar src={currUser.photoURL} /> */}
+                      <div className="rounded-full w-8 h-8 -translate-x-2 bg-teal-500"></div>
+                    </Avatar.Group>
+                  </span>
+                </Tooltip>
               );
             }
 
@@ -77,11 +88,11 @@ export default function PowerPlayer(props: {
               <span
                 key={i}
                 onClick={() => handlePlayAudio(msg.audioDataUrl)}
-                className="border-r-2 border-r-orange-400 min-w-max hover:cursor-pointer"
+                className="border-r-2 border-r-orange-400 min-w-max hover:cursor-pointer border-b-2 border-b-black"
               >
-                <Tooltip title={sender.firstName + ": " + "2 minutes ago"}>
+                <Tooltip title={sender?.firstName + ": " + "2 minutes ago"}>
                   <img
-                    src={sender ? sender.avatarUrl : "K"}
+                    src={sender ? sender?.avatarUrl : "K"}
                     alt="K"
                     className="rounded-full w-10 h-10 translate-x-2/4 -translate-y-2/4"
                   />
@@ -92,7 +103,7 @@ export default function PowerPlayer(props: {
         </div>
 
         {/* middle line */}
-        <div className="border border-b-2 border-b-black flex-1 w-full"></div>
+        {/* <div className="border border-b-2 border-b-black flex-1 w-full"></div> */}
       </div>
     </Modal>
   );
