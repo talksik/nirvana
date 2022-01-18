@@ -8,6 +8,7 @@ import {
 } from "../../contexts/keyboardContext";
 import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
 import Room, { RoomStatus, RoomType } from "../../models/room";
+import { User } from "../../models/user";
 import RoomService from "../../services/roomService";
 
 const { Option } = Select;
@@ -21,7 +22,7 @@ interface IModalProps {
 
 export default function CreateOrUpdateRoomModal(props: IModalProps) {
   const { currUser } = useAuth();
-  const { teamUsers, team } = useTeamDashboardContext();
+  const { teamUsers, team, user } = useTeamDashboardContext();
   const { pastedLink, handleModalType, showModalType } = useKeyboardContext();
 
   // handle when we want to update a room and props changes
@@ -74,7 +75,7 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
 
       newRoom.approximateDateTime = roomAppxDateTime;
       newRoom.link = roomLink;
-      newRoom.members = [...membersSelected, currUser.uid]; // add currUser to the list of "people"
+      newRoom.members = [...membersSelected]; // add currUser to the list of "people"
       newRoom.type = roomType;
       newRoom.description = roomDescription;
       newRoom.name = roomName;
@@ -89,7 +90,8 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
 
       resetForm();
 
-      toast.success("created room");
+      toast.success("done");
+
       handleModalType(ShowModalType.na);
     } catch (error) {
       toast.error("problem creating room");
@@ -101,7 +103,7 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
     setRoomLink("");
     setRoomName("");
     setRoomDescription("");
-    setMembersSelected([] as string[]);
+    setMembersSelected([currUser.uid] as string[]);
     setRoomAttachment("");
     setRoomAppxDateTime("");
     setRoomType(RoomType.now);
@@ -112,7 +114,9 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
   const [roomDescription, setRoomDescription] = useState<string>("");
 
   const [roomAttachment, setRoomAttachment] = useState<string>("");
-  const [membersSelected, setMembersSelected] = useState<string[]>([]);
+  const [membersSelected, setMembersSelected] = useState<string[]>([
+    currUser.uid,
+  ]);
 
   const [roomType, setRoomType] = useState<RoomType>(RoomType.now);
   const [roomAppxDateTime, setRoomAppxDateTime] = useState<string>(""); // for certain room types
@@ -125,6 +129,8 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
     console.log(value);
   }
 
+  const allUsersForSelection: User[] = [...teamUsers, user];
+
   const MemberSelection = () => {
     return (
       <Select
@@ -135,7 +141,7 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
         onChange={handleSelectMember}
         value={membersSelected}
       >
-        {teamUsers.map((tu) => {
+        {allUsersForSelection.map((tu) => {
           return <Option key={tu.id}>{tu.nickName}</Option>;
         })}
       </Select>
@@ -172,7 +178,7 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
           <input
             className="w-full rounded-lg bg-gray-50 p-3"
             value={roomLink}
-            placeholder="https://meet.google.com/"
+            placeholder="https://meet.google.com/xxx-xxxx"
             onChange={(e) => setRoomLink(e.target.value)}
           />
         </span>
