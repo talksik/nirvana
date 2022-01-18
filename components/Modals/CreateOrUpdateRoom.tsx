@@ -40,6 +40,8 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
       setMembersSelected(props.updateRoom.members);
       setRoomType(props.updateRoom.type);
       setRoomAppxDateTime(props.updateRoom.approximateDateTime);
+    } else {
+      resetForm();
     }
   }, [props.updateRoom]);
 

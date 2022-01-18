@@ -261,7 +261,10 @@ export default function DashboardRoom() {
           </Dropdown>
 
           <button
-            onClick={() => handleModalType(ShowModalType.createRoom)}
+            onClick={() => {
+              setSelectedUpdateRoom(null);
+              handleModalType(ShowModalType.createRoom);
+            }}
             className="bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40"
           >
             <FaPlus className="text-lg text-white" />
