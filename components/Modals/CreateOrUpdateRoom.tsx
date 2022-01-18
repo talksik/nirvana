@@ -258,7 +258,9 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
 
           {/* team or personal */}
           <Tooltip
-            title={"Private mode coming soon, but we don't think it's needed"}
+            title={
+              "Private mode coming soon, but keep it collaborative for now."
+            }
             className="flex flex-col"
           >
             <Switch disabled={true} defaultChecked />
