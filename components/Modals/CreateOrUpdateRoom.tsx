@@ -89,6 +89,7 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
 
       if (props.updateRoom) {
         newRoom.id = props.updateRoom.id;
+        newRoom.membersInRoom = props.updateRoom.membersInRoom;
       }
 
       await roomService.createOrUpdateRoom(newRoom);
