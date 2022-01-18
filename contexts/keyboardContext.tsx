@@ -12,7 +12,6 @@ import { useAuth } from "./authContext";
 import { SendService } from "../services/sendService";
 import { useTeamDashboardContext } from "./teamDashboardContext";
 import isValidHttpUrl from "../helpers/urlHelper";
-import ReactPlayer from "react-player/lazy";
 
 interface KeyboardContextInterface {
   selectedTeammate: string; // can only have one selected
