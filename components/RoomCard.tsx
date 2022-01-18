@@ -1,11 +1,11 @@
 import { BsThreeDots } from "react-icons/bs";
 import { FaBell, FaClock, FaLink } from "react-icons/fa";
 import { IoTimer } from "react-icons/io5";
-import Room from "../models/room";
+import Room, { RoomStatus } from "../models/room";
 import RoomTypeTag from "./RoomTypeTag";
 import Image from "next/image";
 import { useAuth } from "../contexts/authContext";
-import { Avatar, Divider, Tooltip } from "antd";
+import { Avatar, Divider, Dropdown, Menu, Tooltip } from "antd";
 import { UserOutlined, AntDesignOutlined } from "@ant-design/icons";
 import { useTeamDashboardContext } from "../contexts/teamDashboardContext";
 import { User } from "../models/user";
@@ -166,9 +166,44 @@ export default function RoomCard(props: IRoomCardProps) {
     setLoading(false);
   }
 
+  async function handleArchivingRoom() {
+    if (
+      confirm(
+        "Are you sure you want to archive room? It will be added to the archived tab."
+      )
+    ) {
+      console.log("archiving room");
+
+      try {
+        const newRoom: Room = { ...props.room };
+
+        newRoom.status = RoomStatus.archived;
+        newRoom.membersInRoom = [];
+        await roomService.updateRoom(newRoom);
+      } catch (error) {}
+    }
+  }
+
   if (loading) {
     return <SkeletonLoader />;
   }
+
+  const RoomOptionsMenu = (
+    <Menu>
+      <Menu.Item>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.antgroup.com"
+        >
+          1st menu item
+        </a>
+      </Menu.Item>
+      <Menu.Item danger onClick={handleArchivingRoom}>
+        Archive Room
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
     <span
@@ -256,7 +291,10 @@ export default function RoomCard(props: IRoomCardProps) {
             Join
           </button>
         )}
-        <BsThreeDots className="text-white ml-2 hover:cursor-pointer" />{" "}
+
+        <Dropdown overlay={RoomOptionsMenu} trigger={["click"]}>
+          <BsThreeDots className="text-white ml-2 hover:cursor-pointer" />
+        </Dropdown>
       </span>
     </span>
   );

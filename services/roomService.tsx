@@ -38,4 +38,13 @@ export default class RoomService {
       { merge: true }
     );
   }
+
+  async updateRoom(room: Room) {
+    const docRef = doc(this.db, Collections.rooms, room.id);
+    await setDoc(
+      docRef,
+      { ...room, lastUpdatedDate: serverTimestamp() },
+      { merge: true }
+    );
+  }
 }
