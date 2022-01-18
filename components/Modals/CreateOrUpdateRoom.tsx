@@ -41,16 +41,14 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
       setRoomType(props.updateRoom.type);
       setRoomAppxDateTime(props.updateRoom.approximateDateTime);
     } else {
+      // update state when user does ctrl + v
       resetForm();
+
+      setRoomLink(pastedLink);
     }
-  }, [props.updateRoom]);
+  }, [showModalType]);
 
   // update state when user does ctrl + v
-  useEffect(() => {
-    // todo: check if link is valid google meet link? again?
-    console.log(pastedLink);
-    setRoomLink(pastedLink);
-  }, [pastedLink]);
 
   const handleCloseModal = () => {
     resetForm();
