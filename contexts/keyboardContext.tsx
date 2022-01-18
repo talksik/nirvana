@@ -13,6 +13,7 @@ import { useAuth } from "./authContext";
 import { SendService } from "../services/sendService";
 import { useTeamDashboardContext } from "./teamDashboardContext";
 import isValidHttpUrl from "../helpers/urlHelper";
+import ReactPlayer from "react-player/lazy";
 
 interface KeyboardContextInterface {
   selectedTeammate: string; // can only have one selected
@@ -107,6 +108,8 @@ export default function KeyboardContextProvider({ children }) {
     new MicRecorder({ bitRate: 128 })
   );
 
+  const [audioQueue, setAudioQueue] = useState<string[]>([]); // queue for the player to keep playing
+
   // playing incoming messages
   const { allMessages, messagesByTeamMate } = useTeamDashboardContext();
 
@@ -126,9 +129,20 @@ export default function KeyboardContextProvider({ children }) {
 
       // start player on the bottom
       // autoplay message
-      setPlayerSrc(allMessages[0].audioDataUrl);
+      // add to the queue
+      setAudioQueue((prevQueue) => [...prevQueue, allMessages[0].audioDataUrl]);
     }
   }, [allMessages]);
+
+  // manage audio queue
+  useEffect(() => {
+    // every time queue changes,
+    // setPlayerSrc as the next item if there is any
+
+    if (audioQueue && audioQueue.length > 0) {
+      setPlayerSrc(audioQueue[0]);
+    }
+  }, [audioQueue]);
 
   const value: KeyboardContextInterface = {
     selectedTeammate,
@@ -281,10 +295,12 @@ export default function KeyboardContextProvider({ children }) {
   function onEndedPlaying(e) {
     toast.success("finished playing");
 
-    // hide the player
-    setPlayerSrc(null);
-
-    // if there are still items in the player queue, then change the src and play the subsequent messages
+    // remove from queue and the queue manager will handle the rest
+    setAudioQueue((prevQueue) => {
+      let newQueue: string[] = [...prevQueue];
+      newQueue.shift();
+      return newQueue;
+    });
   }
 
   const handleKeyUp = useCallback(
@@ -353,7 +369,9 @@ export default function KeyboardContextProvider({ children }) {
         if (!audioInputDeviceId) {
           toast.error("No microphone selected");
         } else if (!hasRecPermit) {
-          toast.error("You did not allow recording permission!");
+          toast.error(
+            "You did not allow microphone permissions in your browser!"
+          );
         } else if (!selectedTeammate) {
           toast.error("Please select a team member or announcements first");
         } else if (isMuted) {
@@ -378,17 +396,41 @@ export default function KeyboardContextProvider({ children }) {
           toast.error("select a team member first to play");
         } else {
           // alright now you are good to play last message chunk in conversation with selected user
-          // todo create last chunk by iterating until next person, and create a playlist
 
+          const arrayMessagesforUser: Message[] =
+            messagesByTeamMate.get(selectedTeammate);
           if (
-            selectedTeammate in messagesByTeamMate &&
-            messagesByTeamMate[selectedTeammate] &&
-            messagesByTeamMate[selectedTeammate].length > 0
+            messagesByTeamMate.has(selectedTeammate) &&
+            arrayMessagesforUser &&
+            arrayMessagesforUser.length > 0
           ) {
+            var convoChunk: string[] = [];
             console.log("playing from this cache");
 
-            console.log(messagesByTeamMate);
-            setPlayerSrc(messagesByTeamMate[selectedTeammate][0].audioDataUrl);
+            // wait for x changes, and then break adding to the queue...I want to hear the past loop of conversation maybe
+            const maxConvoChanges: number = 2;
+            var convoChangeCount: number = 0;
+
+            var currTalkerId = arrayMessagesforUser[0].senderUserId;
+            for (const audioMessage of arrayMessagesforUser) {
+              if (audioMessage.senderUserId != currTalkerId) {
+                convoChangeCount += 1;
+              }
+
+              // heard enough of this convo
+              if (convoChangeCount == maxConvoChanges) {
+                break;
+              }
+
+              convoChunk.push(audioMessage.audioDataUrl);
+              currTalkerId = audioMessage.senderUserId;
+            }
+
+            // reverse the chunk so that I listen to the messages in order
+            convoChunk.reverse();
+
+            // add convo chunk to the queue player
+            setAudioQueue((prevQueue) => [...prevQueue, ...convoChunk]);
           } else {
             toast("nothing to play");
           }

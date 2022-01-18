@@ -15,17 +15,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { TeamMemberRole, TeamMemberStatus } from "../../models/teamMember";
 import UserService from "../../services/userService";
-import {
-  collection,
-  doc,
-  DocumentSnapshot,
-  getFirestore,
-  onSnapshot,
-  orderBy,
-  query,
-  Unsubscribe,
-  where,
-} from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 import { Collections } from "../../services/collections";
 import { KeyCode } from "../../globals/keycode";
 import { Tooltip } from "antd";
@@ -107,8 +97,8 @@ export default function TeamVoiceLine() {
     return teamUsers.map((tmember, i) => {
       var isMessageIncoming: boolean = false;
       if (
-        tmember.id in messagesByTeamMate &&
-        messagesByTeamMate[tmember.id][0]?.receiverUserId == currUser.uid
+        messagesByTeamMate.has(tmember.id) &&
+        messagesByTeamMate.get(tmember.id)[0]?.receiverUserId == currUser.uid
       ) {
         isMessageIncoming = true;
       }

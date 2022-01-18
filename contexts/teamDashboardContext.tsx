@@ -30,7 +30,7 @@ interface TeamDashboardContextInterface {
 
   user: User; // REALTIME - 1
 
-  messagesByTeamMate: {}; // REALTIME: string of teammate userid and array of messages - 1
+  messagesByTeamMate: Map<string, Message[]>; // REALTIME: string of teammate userid and array of messages - 1
   allMessages: Message[]; // REALTIME: 1
 
   teamUsers: User[]; // REALTIME teammates - n team members => n listeners
@@ -115,7 +115,7 @@ export function TeamDashboardContextProvider({ children }) {
         );
 
         //  if you are not a member of this team, then get out of here
-        //   but have to check through email invite and userid
+        //  but have to check through email invite and userid
         if (
           returnedTeamMember &&
           returnedTeamMember.status == TeamMemberStatus.deleted
@@ -224,7 +224,9 @@ export function TeamDashboardContextProvider({ children }) {
   const [teamUsersMap, setTeamUsersMap] = useState<{}>({});
 
   const [allMessages, setAllMessages] = useState<Message[]>([]);
-  const [messagesByTeamMate, setMessagesByTeamMate] = useState<{}>({});
+  const [messagesByTeamMate, setMessagesByTeamMate] = useState<
+    Map<string, Message[]>
+  >(new Map());
 
   // SECTION: REALTIME listener for all incoming messages
   useEffect(() => {
@@ -257,28 +259,29 @@ export function TeamDashboardContextProvider({ children }) {
           // update map of teammate to relevant messages
           setMessagesByTeamMate((prevMap) => {
             // if the map contains the teammate userid already, then cool, just unshift to that array
-            const newMap = { ...prevMap };
-            if (newMessage.receiverUserId in prevMap) {
-              // won't be in map if I am the receiver
-              newMap[newMessage.receiverUserId] = [
+            var newMap: Map<string, Message[]> = new Map(
+              prevMap.set("dummy", [] as Message[])
+            );
+            if (prevMap.has(newMessage.receiverUserId)) {
+              newMap.set(newMessage.receiverUserId, [
                 newMessage,
-                ...prevMap[newMessage.receiverUserId],
-              ];
+                ...prevMap.get(newMessage.receiverUserId),
+              ]);
             } // if this is the first relevant message linked to this receiver,
             //then create a new array
             else {
-              newMap[newMessage.receiverUserId] = [newMessage];
+              newMap.set(newMessage.receiverUserId, [newMessage]);
             }
 
             // todo: if I am the receiver, still want to put it in the right conversation
             if (newMessage.receiverUserId == currUser.uid) {
-              if (newMessage.senderUserId in prevMap) {
-                newMap[newMessage.senderUserId] = [
+              if (prevMap.has(newMessage.senderUserId)) {
+                newMap.set(newMessage.senderUserId, [
                   newMessage,
-                  ...prevMap[newMessage.senderUserId],
-                ];
+                  ...prevMap.get(newMessage.senderUserId),
+                ]);
               } else {
-                newMap[newMessage.senderUserId] = [newMessage];
+                newMap.set(newMessage.senderUserId, [newMessage]);
               }
             }
 
