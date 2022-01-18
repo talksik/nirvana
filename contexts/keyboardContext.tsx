@@ -341,7 +341,7 @@ export default function KeyboardContextProvider({ children }) {
       }
 
       // handle for when in modals, don't want any of this crap
-      if (showModalType != ShowModalType.na || !showModalType) {
+      if (showModalType == ShowModalType.createRoom) {
         return;
       }
 
@@ -445,6 +445,7 @@ export default function KeyboardContextProvider({ children }) {
       isMuted,
       teamShortcutMappings,
       ctrlDown,
+      showModalType,
     ]
   );
 
