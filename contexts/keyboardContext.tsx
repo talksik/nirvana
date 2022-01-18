@@ -142,7 +142,7 @@ export default function KeyboardContextProvider({ children }) {
     // setPlayerSrc as the next item if there is any
 
     if (audioQueue && audioQueue.length > 0) {
-      toast("Playing Clip");
+      toast("Adding Message to Queue");
       setPlayerSrc(audioQueue[0]);
     }
   }, [audioQueue]);
