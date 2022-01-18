@@ -79,7 +79,6 @@ export default function PowerPlayer(props: {
             if (msg.senderUserId == currUser.uid) {
               // if I am the sender
               const receiverUser = teamUsersMap[msg.receiverUserId];
-              console.log(receiverUser);
 
               if (!receiverUser) {
                 return;
