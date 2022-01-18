@@ -5,7 +5,7 @@ import Room, { RoomStatus } from "../models/room";
 import RoomTypeTag from "./RoomTypeTag";
 import Image from "next/image";
 import { useAuth } from "../contexts/authContext";
-import { Avatar, Divider, Dropdown, Menu, Tooltip } from "antd";
+import { Avatar, Divider, Dropdown, Menu, Popover, Tooltip } from "antd";
 import { UserOutlined, AntDesignOutlined } from "@ant-design/icons";
 import { useTeamDashboardContext } from "../contexts/teamDashboardContext";
 import { User, UserStatus } from "../models/user";
@@ -213,6 +213,14 @@ export default function RoomCard(props: IRoomCardProps) {
     </Menu>
   );
 
+  const AgendaContent = (
+    <div>
+      <span className="text-sm whitespace-pre-line">
+        {props.room.description}
+      </span>
+    </div>
+  );
+
   return (
     <span
       className={`flex flex-col ${
@@ -230,13 +238,15 @@ export default function RoomCard(props: IRoomCardProps) {
           >
             {props.room.name}
           </span>
-          <span
-            className={`${
-              isUserInRoom ? "text-gray-400" : "text-gray-200"
-            } text-xs overflow-wrap mb-2 text-ellipsis whitespace-pre-line `}
-          >
-            {props.room.description}
-          </span>
+          <Popover content={AgendaContent} title="Agenda">
+            <span
+              className={`${
+                isUserInRoom ? "text-gray-400" : "text-gray-200"
+              } text-xs mb-2 text-ellipsis whitespace-pre-line max-h-10 overflow-hidden`}
+            >
+              {props.room.description}
+            </span>
+          </Popover>
 
           {/* badges and tags */}
           {/* <span className="flex flex-row flex-wrap space-x-2">
