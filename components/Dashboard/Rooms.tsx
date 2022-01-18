@@ -232,18 +232,19 @@ export default function DashboardRoom() {
             value={selectedTabPane}
             onChange={(e) => setSelectedTabPane(e.target.value)}
           >
-            <Radio.Button value={RoomTypeFilter.team}>
-              {RoomTypeFilter.team}{" "}
-              <span className="text-xs text-orange-500">
-                {teamRooms.length}
-              </span>
-            </Radio.Button>
             <Radio.Button value={RoomTypeFilter.me}>
               {RoomTypeFilter.me}{" "}
               <span className="text-xs text-orange-500">
                 {meRooms.length > 0 ? meRooms.length : ""}
               </span>
             </Radio.Button>
+            <Radio.Button value={RoomTypeFilter.team}>
+              {RoomTypeFilter.team}{" "}
+              <span className="text-xs text-orange-500">
+                {teamRooms.length}
+              </span>
+            </Radio.Button>
+
             <Radio.Button value={RoomTypeFilter.live}>
               {RoomTypeFilter.live}{" "}
               <span className="text-xs text-orange-500">
