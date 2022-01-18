@@ -106,11 +106,11 @@ export default function TeamVoiceLine() {
 
     return teamUsers.map((tmember, i) => {
       var isMessageIncoming: boolean = false;
-      if (tmember.id in messagesByTeamMate) {
-        console.log(messagesByTeamMate[tmember.id][0]);
-        if (messagesByTeamMate[tmember.id][0].receiverUserId == currUser.uid) {
-          isMessageIncoming = true;
-        }
+      if (
+        tmember.id in messagesByTeamMate &&
+        messagesByTeamMate[tmember.id][0]?.receiverUserId == currUser.uid
+      ) {
+        isMessageIncoming = true;
       }
 
       var customSelectClasses: string = "";
