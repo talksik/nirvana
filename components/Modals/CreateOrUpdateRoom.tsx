@@ -1,4 +1,4 @@
-import { Divider, Modal, Radio, Select, Tooltip } from "antd";
+import { Divider, Modal, Radio, Select, Switch, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useAuth } from "../../contexts/authContext";
@@ -255,8 +255,21 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
 
         <span className="flex flex-col items-start flex-1 mt-4">
           <span className="text-md">People</span>
+
+          {/* team or personal */}
+          <Tooltip
+            title={"Private mode coming soon, but we don't think it's needed"}
+            className="flex flex-col"
+          >
+            <Switch disabled={true} defaultChecked />
+          </Tooltip>
           <span className="text-gray-300 text-xs mb-2 flex-1">
-            Optional - Add anyone you want or just tell them later.
+            Whole team sees this room.
+          </span>
+
+          <span className="text-gray-300 text-xs mb-2 flex-1">
+            Optional - Add any mandatory attendees you want or just tell them
+            later and they will see it in the team section.
           </span>
           {MemberSelection()}
         </span>
