@@ -24,6 +24,25 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
   const { teamUsers, team } = useTeamDashboardContext();
   const { pastedLink, handleModalType, showModalType } = useKeyboardContext();
 
+  // handle when we want to update a room and props changes
+  // prefill with existing stuff
+  useEffect(() => {
+    console.log("change in props");
+
+    if (props.updateRoom) {
+      setRoomLink(props.updateRoom.link);
+      setRoomName(props.updateRoom.name);
+      setRoomDescription(props.updateRoom.description);
+      if (props.updateRoom.attachments && props.updateRoom.attachments[0]) {
+        setRoomAttachment(props.updateRoom.attachments[0]);
+      }
+      setMembersSelected(props.updateRoom.members);
+      setRoomType(props.updateRoom.type);
+      setRoomAppxDateTime(props.updateRoom.approximateDateTime);
+    }
+  }, [props.updateRoom]);
+
+  // update state when user does ctrl + v
   useEffect(() => {
     // todo: check if link is valid google meet link? again?
     setRoomLink(pastedLink);
@@ -62,7 +81,11 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
       newRoom.createdByUserId = currUser.uid;
       newRoom.teamId = team.id;
 
-      await roomService.createRoom(newRoom);
+      if (props.updateRoom) {
+        newRoom.id = props.updateRoom.id;
+      }
+
+      await roomService.createOrUpdateRoom(newRoom);
 
       resetForm();
 

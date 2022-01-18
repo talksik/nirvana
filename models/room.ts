@@ -12,7 +12,7 @@ export default class Room {
 
   membersInRoom: string[] = [];
 
-  attachments: string[]; // the links themselves (NOT Ids)...there will be duplicate entries in the attachments table which will be created
+  attachments: string[] = []; // the links themselves (NOT Ids)...there will be duplicate entries in the attachments table which will be created
 
   type: RoomType;
   status: RoomStatus = RoomStatus.empty;

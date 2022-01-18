@@ -13,11 +13,17 @@ import { Collections } from "./collections";
 export default class RoomService {
   private db: Firestore = getFirestore();
 
-  async createRoom(room: Room) {
-    const roomDocRef = await addDoc(collection(this.db, Collections.rooms), {
-      ...room,
-      createdDate: serverTimestamp(),
-    });
+  async createOrUpdateRoom(room: Room) {
+    if (room.id) {
+      //update
+      await this.updateRoom(room);
+    } else {
+      //create
+      const roomDocRef = await addDoc(collection(this.db, Collections.rooms), {
+        ...room,
+        createdDate: serverTimestamp(),
+      });
+    }
   }
 
   async updateMembersInRoom(roomId: string, newMembersInRoom: string[]) {

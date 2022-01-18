@@ -196,7 +196,7 @@ export default function DashboardRoom() {
     }
 
     // pass this to the modal for use
-    setSelectedUpdateRoom(roomsMap[roomId]);
+    setSelectedUpdateRoom(roomsMap.get(roomId));
 
     // call the keyboard context to show the modal
     handleModalType(ShowModalType.createRoom);

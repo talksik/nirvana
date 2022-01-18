@@ -252,7 +252,7 @@ export default function RoomCard(props: IRoomCardProps) {
               isUserInRoom ? "text-gray-400" : "text-gray-200"
             } text-xs text-right mb-auto`}
           >
-            on and off all day
+            {props.room.approximateDateTime}
           </span>
 
           {/* room attachments */}
