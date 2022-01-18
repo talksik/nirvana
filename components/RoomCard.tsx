@@ -8,12 +8,13 @@ import { useAuth } from "../contexts/authContext";
 import { Avatar, Divider, Dropdown, Menu, Tooltip } from "antd";
 import { UserOutlined, AntDesignOutlined } from "@ant-design/icons";
 import { useTeamDashboardContext } from "../contexts/teamDashboardContext";
-import { User } from "../models/user";
+import { User, UserStatus } from "../models/user";
 import RoomService from "../services/roomService";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import SkeletonLoader from "./Loading/skeletonLoader";
 import { useKeyboardContext } from "../contexts/keyboardContext";
+import UserService from "../services/userService";
 
 interface IRoomCardProps {
   room: Room;
@@ -21,6 +22,7 @@ interface IRoomCardProps {
 }
 
 const roomService = new RoomService();
+const userService = new UserService();
 
 export default function RoomCard(props: IRoomCardProps) {
   const { currUser } = useAuth();
@@ -138,6 +140,9 @@ export default function RoomCard(props: IRoomCardProps) {
 
       // update the room with room id to have a new array of userIds
       await roomService.updateMembersInRoom(props.room.id, newMembersInRoom);
+
+      // change curr user status to free now
+      await userService.updateUserStatus(currUser.uid, UserStatus.online);
     } catch (error) {
       console.error(error);
 
@@ -156,6 +161,9 @@ export default function RoomCard(props: IRoomCardProps) {
 
       // update the room with room id to have a new array of userIds
       await roomService.updateMembersInRoom(props.room.id, newMembersInRoom);
+
+      // change curr user status to free now
+      await userService.updateUserStatus(currUser.uid, UserStatus.busy);
 
       // then window.open to room's link
       window.open(props.room.link, "_blank");

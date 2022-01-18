@@ -66,9 +66,9 @@ export default class UserService {
     );
   }
 
-  updateUserStatus(userId: string, newStatus: UserStatus) {
+  async updateUserStatus(userId: string, newStatus: UserStatus) {
     const docRef = doc(this.db, Collections.users, userId);
-    setDoc(
+    await setDoc(
       docRef,
       { userStatus: newStatus, lastUpdatedDate: serverTimestamp() },
       { merge: true }
