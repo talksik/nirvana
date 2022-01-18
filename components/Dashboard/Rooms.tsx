@@ -239,7 +239,7 @@ export default function DashboardRoom() {
             <FaPlus className="text-lg text-white" />
           </button>
 
-          <BsThreeDots className="text-xl text-white" />
+          {/* <BsThreeDots className="text-xl text-white" /> */}
         </span>
       </Tooltip>
 

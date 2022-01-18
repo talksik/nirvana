@@ -81,7 +81,7 @@ export default function CreateRoomModal() {
     setRoomType(RoomType.now);
   }
 
-  const [roomLink, setRoomLink] = useState<string>(pastedLink);
+  const [roomLink, setRoomLink] = useState<string>(pastedLink ?? "");
   const [roomName, setRoomName] = useState<string>("");
   const [roomDescription, setRoomDescription] = useState<string>("");
 
