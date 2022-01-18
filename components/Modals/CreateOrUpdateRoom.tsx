@@ -48,10 +48,12 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
   // update state when user does ctrl + v
   useEffect(() => {
     // todo: check if link is valid google meet link? again?
+    console.log(pastedLink);
     setRoomLink(pastedLink);
   }, [pastedLink]);
 
   const handleCloseModal = () => {
+    resetForm();
     handleModalType(ShowModalType.na);
   };
 
