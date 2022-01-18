@@ -263,6 +263,9 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
           <span className="text-gray-300 text-xs mb-2">
             Optional - ppt, meeting notes...
           </span>
+          <span className="text-gray-300 text-xs mb-2">
+            have multiple? just post it in the team attachments
+          </span>
           <input
             placeholder="https://"
             className="w-full rounded-lg bg-gray-50 p-3"

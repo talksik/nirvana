@@ -168,6 +168,8 @@ export default function DashboardRoom() {
         return meRooms;
       case RoomTypeFilter.live:
         return liveRooms;
+      case RoomTypeFilter.archived:
+        return archivedRooms;
       default:
         return allRooms;
     }
@@ -251,7 +253,7 @@ export default function DashboardRoom() {
             <Radio.Button value={RoomTypeFilter.archived}>
               {RoomTypeFilter.archived}{" "}
               <span className="text-xs text-orange-500">
-                {archivedRooms.length > 0 ? liveRooms.length : ""}
+                {archivedRooms.length > 0 ? archivedRooms.length : ""}
               </span>
             </Radio.Button>
           </Radio.Group>
