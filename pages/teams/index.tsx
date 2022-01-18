@@ -79,7 +79,7 @@ function RouteHandler() {
 
         // last chance, if they are invited to a team, check for it
         const invitedTeamMember = await teamService.getTeamMembersByEmailInvite(
-          currUser.email
+          currUser.email?.toLocaleLowerCase()
         );
 
         if (invitedTeamMember.length > 0) {
