@@ -99,6 +99,7 @@ export default function KeyboardContextProvider({ children }) {
   );
 
   const handleModalType = (modalType: ShowModalType) => {
+    handleResetView();
     setShowModalType(modalType);
   };
 
