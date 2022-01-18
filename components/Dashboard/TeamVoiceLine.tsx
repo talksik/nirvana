@@ -7,9 +7,13 @@ import { toast } from "react-hot-toast";
 import { TeamMemberRole, TeamMemberStatus } from "../../models/teamMember";
 import { getFirestore } from "firebase/firestore";
 import { Tooltip } from "antd";
-import { useKeyboardContext } from "../../contexts/keyboardContext";
+import {
+  ShowModalType,
+  useKeyboardContext,
+} from "../../contexts/keyboardContext";
 import UserStatusBubble, { UserPulse } from "../UserStatusBubble";
 import { useAuth } from "../../contexts/authContext";
+import PowerPlayer from "../Modals/PowerPlayer";
 
 const maxNumberOfKeyboardMappings: number = 9;
 
@@ -20,6 +24,7 @@ export default function TeamVoiceLine() {
     selectTeamMember,
     selectedTeammate,
     isRecording,
+    handleModalType,
   } = useKeyboardContext();
   const router = useRouter();
   const { teamid } = router.query;
@@ -189,6 +194,19 @@ export default function TeamVoiceLine() {
     });
   }
 
+  const [showPowerPlayer, setShowPowerPlayer] = useState<boolean>(false);
+
+  function handleCloseModal() {
+    handleModalType(ShowModalType.na);
+    setShowPowerPlayer(false);
+  }
+
+  function handleShowModal() {
+    handleModalType(ShowModalType.powerPlayer); // disables controls
+
+    setShowPowerPlayer(true);
+  }
+
   return (
     <section className="p-5 flex flex-col w-full max-w-sm bg-gray-100 bg-opacity-25 rounded-lg shadow-md">
       <span className="flex flex-row justify-start items-center pb-5">
@@ -197,7 +215,10 @@ export default function TeamVoiceLine() {
         </span>
 
         <Tooltip title="power playback mode">
-          <button className="bg-gray-300 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40">
+          <button
+            onClick={handleShowModal}
+            className="bg-gray-300 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40"
+          >
             <FaBackward className="text-lg text-white" />
           </button>
         </Tooltip>
@@ -211,6 +232,9 @@ export default function TeamVoiceLine() {
           </button>
         </Tooltip>
       </span>
+
+      <PowerPlayer show={showPowerPlayer} handleCloseModal={handleCloseModal} />
+
       {/* list of team members */}
       {renderTeamMemberList()}
     </section>

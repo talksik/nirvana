@@ -55,6 +55,7 @@ interface KeyboardContextInterface {
 export enum ShowModalType {
   createLink = "link",
   createRoom = "room",
+  powerPlayer = "powerPlayer",
   na = "none",
 }
 
@@ -361,7 +362,7 @@ export default function KeyboardContextProvider({ children }) {
       }
 
       // handle for when in modals, don't want any of this crap
-      if (showModalType == ShowModalType.createRoom) {
+      if (showModalType != ShowModalType.na) {
         return;
       }
 
