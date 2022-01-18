@@ -1,33 +1,17 @@
 import { useRouter } from "next/router";
-import {
-  FaPlus,
-  FaExternalLinkAlt,
-  FaLink,
-  FaBackward,
-  FaArrowCircleDown,
-} from "react-icons/fa";
-import { IoPulseOutline, IoRemoveOutline, IoTimer } from "react-icons/io5";
-import { MdScreenShare } from "react-icons/md";
+import { FaPlus, FaBackward, FaArrowCircleDown } from "react-icons/fa";
 import { BsThreeDots } from "react-icons/bs";
 import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
-import { User, UserStatus } from "../../models/user";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { TeamMemberRole, TeamMemberStatus } from "../../models/teamMember";
-import UserService from "../../services/userService";
 import { getFirestore } from "firebase/firestore";
-import { Collections } from "../../services/collections";
-import { KeyCode } from "../../globals/keycode";
 import { Tooltip } from "antd";
 import { useKeyboardContext } from "../../contexts/keyboardContext";
 import UserStatusBubble, { UserPulse } from "../UserStatusBubble";
 import { useAuth } from "../../contexts/authContext";
-import { Message } from "../../models/message";
-import { compareStatus } from "../../helpers/userHelper";
 
 const maxNumberOfKeyboardMappings: number = 9;
-
-const db = getFirestore();
 
 export default function TeamVoiceLine() {
   const { currUser } = useAuth();
