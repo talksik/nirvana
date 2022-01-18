@@ -146,9 +146,17 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
         placeholder="Please select team members"
         onChange={handleSelectMember}
         value={membersSelected}
+        optionLabelProp="label"
+        filterOption={(input, option) =>
+          option.props.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
       >
         {allUsersForSelection.map((tu) => {
-          return <Option key={tu.id}>{tu.nickName}</Option>;
+          return (
+            <Option key={tu.id} label={tu.firstName}>
+              {tu.firstName} {tu.lastName}
+            </Option>
+          );
         })}
       </Select>
     );
@@ -251,7 +259,7 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
         <span className="flex flex-col items-start flex-1 mt-4">
           <span className="text-md">Agenda</span>
           <span className="text-gray-300 text-xs mb-2 flex-1">Optional</span>
-          <input
+          <textarea
             placeholder="ex. Let's discuss ways to..."
             className="w-full rounded-lg bg-gray-50 p-3"
             value={roomDescription}
