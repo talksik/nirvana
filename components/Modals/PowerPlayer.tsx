@@ -41,8 +41,24 @@ export default function PowerPlayer(props: {
     handleAddAudioToQueue([url]);
   }
 
+  function handleClose(e) {
+    props.handleCloseModal();
+  }
+
   return (
-    <Modal title="Power Playback " visible={props.show}>
+    <Modal
+      title="Power Playback "
+      visible={props.show}
+      onCancel={handleClose}
+      footer={
+        <button
+          onClick={handleClose}
+          className="ml-auto text-sm text-orange-500 font-semibold py-1 px-4 bg-gray-200 rounded"
+        >
+          👋 Close
+        </button>
+      }
+    >
       <span className="flex flex-col items-start">
         <span>One timeline to listen to the past 24 hours.</span>
 

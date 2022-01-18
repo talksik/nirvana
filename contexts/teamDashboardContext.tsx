@@ -50,8 +50,11 @@ const db = getFirestore();
 
 export function TeamDashboardContextProvider({ children }) {
   const { currUser } = useAuth();
-  const [loading, setLoading] = useState<Boolean>(true);
+
   const router = useRouter();
+
+  const [loading, setLoading] = useState<Boolean>(true);
+
   const { teamid } = router.query;
 
   // this context can only be used if it's a specific route: '/teams'
@@ -212,7 +215,9 @@ export function TeamDashboardContextProvider({ children }) {
     })();
 
     return () => {
-      userListener();
+      if (userListener) {
+        userListener();
+      }
 
       unsubs.forEach((unsub) => {
         unsub();
@@ -231,6 +236,12 @@ export function TeamDashboardContextProvider({ children }) {
   // SECTION: REALTIME listener for all incoming messages
   useEffect(() => {
     // todo for new messages, change document.title
+
+    if (!currUser) {
+      console.log("not authenticated...routing from dashboard to teams home");
+      router.push("/teams/login");
+      return;
+    }
 
     /**
      * QUERY:

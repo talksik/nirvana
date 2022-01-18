@@ -6,8 +6,10 @@ import {
   signOut,
   User,
 } from "firebase/auth";
+import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import Loading from "../components/Loading";
 import firebase from "../services/firebaseService";
 
 const AuthContext = React.createContext(null);
@@ -19,8 +21,12 @@ export function AuthProvider({ children }) {
   const [currUser, setCurrUser] = useState();
   const [loading, setLoading] = useState(true);
 
+  const router = useRouter();
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      setLoading(true);
+
       console.log("change in auth");
       if (user) {
         setCurrUser(user);
@@ -67,10 +73,14 @@ export function AuthProvider({ children }) {
       });
   };
 
-  const logOut = () => {
+  const logOut = async () => {
+    setLoading(true);
+
     console.log("logging user out");
 
-    return signOut(auth);
+    Promise.resolve(await signOut(auth));
+
+    router.push("/teams/landing");
   };
 
   const value = {
