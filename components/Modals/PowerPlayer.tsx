@@ -4,6 +4,7 @@ import { FaBackward } from "react-icons/fa";
 import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
 import { useAuth } from "../../contexts/authContext";
 import { useKeyboardContext } from "../../contexts/keyboardContext";
+import moment from "moment";
 
 export default function PowerPlayer(props: {
   show: boolean;
@@ -55,6 +56,10 @@ export default function PowerPlayer(props: {
         {/* top incoming messages */}
         <div className="flex flex-row">
           {allMessages.map((msg, i) => {
+            const relativeDateTime: string = moment(
+              msg.createdDate.toDate()
+            ).fromNow();
+
             if (msg.senderUserId == currUser.uid) {
               // if I am the sender
               const receiverUser = teamUsersMap[msg.receiverUserId];
@@ -65,7 +70,11 @@ export default function PowerPlayer(props: {
               }
 
               return (
-                <Tooltip title={"you: " + receiverUser.nickName}>
+                <Tooltip
+                  title={
+                    "you -> " + receiverUser.nickName + ": " + relativeDateTime
+                  }
+                >
                   <span
                     key={i}
                     onClick={() => handlePlayAudio(msg.audioDataUrl)}
@@ -90,7 +99,7 @@ export default function PowerPlayer(props: {
                 onClick={() => handlePlayAudio(msg.audioDataUrl)}
                 className="border-r-2 border-r-orange-400 min-w-max hover:cursor-pointer border-b-2 border-b-black"
               >
-                <Tooltip title={sender?.firstName + ": " + "2 minutes ago"}>
+                <Tooltip title={sender?.firstName + ": " + relativeDateTime}>
                   <img
                     src={sender ? sender?.avatarUrl : "K"}
                     alt="K"

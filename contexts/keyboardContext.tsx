@@ -142,6 +142,7 @@ export default function KeyboardContextProvider({ children }) {
     // setPlayerSrc as the next item if there is any
 
     if (audioQueue && audioQueue.length > 0) {
+      toast("Playing Clip");
       setPlayerSrc(audioQueue[0]);
     }
   }, [audioQueue]);
@@ -297,7 +298,7 @@ export default function KeyboardContextProvider({ children }) {
   }
 
   function onEndedPlaying(e) {
-    toast.success("finished playing");
+    // toast.success("finished playing");
 
     // remove from queue and the queue manager will handle the rest
     setAudioQueue((prevQueue) => {
