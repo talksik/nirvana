@@ -1,5 +1,5 @@
 import { BsThreeDots } from "react-icons/bs";
-import { FaBell, FaClock, FaLink } from "react-icons/fa";
+import { FaBell, FaClock, FaLink, FaPlus } from "react-icons/fa";
 import { IoTimer } from "react-icons/io5";
 import Room, { RoomStatus } from "../models/room";
 import RoomTypeTag from "./RoomTypeTag";
@@ -188,18 +188,18 @@ export default function RoomCard(props: IRoomCardProps) {
     return <SkeletonLoader />;
   }
 
+  async function handleUpdateRoom(e) {
+    e.preventDefault();
+
+    console.log("going to update room");
+  }
+
   const RoomOptionsMenu = (
     <Menu>
-      <Menu.Item>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.antgroup.com"
-        >
-          1st menu item
-        </a>
+      <Menu.Item key={1}>
+        <button onClick={handleUpdateRoom}>Edit Room Details</button>
       </Menu.Item>
-      <Menu.Item danger onClick={handleArchivingRoom}>
+      <Menu.Item key={2} danger onClick={handleArchivingRoom}>
         Archive Room
       </Menu.Item>
     </Menu>
@@ -257,7 +257,7 @@ export default function RoomCard(props: IRoomCardProps) {
 
           {/* room attachments */}
           <span className="flex flex-row space-x-2">
-            {props.room.attachments && props.room.attachments.length > 0 && (
+            {props.room.attachments && props.room.attachments.length > 0 ? (
               <button
                 onClick={() => window.open(props.room.attachments[0], "_blank")}
                 className={`${
@@ -267,6 +267,17 @@ export default function RoomCard(props: IRoomCardProps) {
                 }   bg-gray-400 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40`}
               >
                 <FaLink className="text-sm" />
+              </button>
+            ) : (
+              <button
+                onClick={handleUpdateRoom}
+                className={`${
+                  isUserInRoom
+                    ? " bg-gray-400 bg-opacity-25 text-gray-400"
+                    : "bg-gray-300 bg-opacity-25 text-white"
+                }   bg-gray-400 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40`}
+              >
+                <FaPlus className="text-sm" />
               </button>
             )}
           </span>
