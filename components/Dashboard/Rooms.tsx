@@ -4,7 +4,7 @@ import { FaAngleDown, FaBell, FaClock, FaPlus, FaLink } from "react-icons/fa";
 import { IoTimer } from "react-icons/io5";
 import { BsThreeDots } from "react-icons/bs";
 import Image from "next/image";
-import CreateRoom from "../Modals/CreateRoom";
+import CreateOrUpdateRoom from "../Modals/CreateOrUpdateRoom";
 import {
   ShowModalType,
   useKeyboardContext,
@@ -23,6 +23,7 @@ import Room, { RoomStatus, RoomType } from "../../models/room";
 import { useAuth } from "../../contexts/authContext";
 import { Dropdown, Menu, Radio, Tooltip } from "antd";
 import RoomCard from "../RoomCard";
+import toast from "react-hot-toast";
 
 enum RoomTypeFilter {
   team = "team",
@@ -44,7 +45,7 @@ lastWeek.setDate(lastWeek.getDate() - 7);
 
 export default function DashboardRoom() {
   const { currUser } = useAuth();
-  const { handleModalType } = useKeyboardContext();
+  const { handleModalType, showModalType } = useKeyboardContext();
   const { team } = useTeamDashboardContext();
 
   const [roomsMap, setRoomsMap] = useState<Map<string, Room>>(
@@ -183,10 +184,31 @@ export default function DashboardRoom() {
     </Menu>
   );
 
+  const [selectedUpdateRoom, setSelectedUpdateRoom] = useState<Room>(null);
+
+  async function handleUpdateRoom(roomId: string) {
+    console.log("going to update room");
+
+    // get the room details and pass it into the modal
+    if (!roomsMap.has(roomId)) {
+      toast.error("not a valid room to edit");
+      return;
+    }
+
+    // pass this to the modal for use
+    setSelectedUpdateRoom(roomsMap[roomId]);
+
+    // call the keyboard context to show the modal
+    handleModalType(ShowModalType.createRoom);
+  }
+
   return (
     <section className="p-5 w-full flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md">
       {/*  modal for creating room */}
-      <CreateRoom />
+      <CreateOrUpdateRoom
+        show={showModalType == ShowModalType.createRoom}
+        updateRoom={selectedUpdateRoom}
+      />
 
       {/* header */}
       <Tooltip title={"  archive rooms to keep your team focused"}>
@@ -252,7 +274,13 @@ export default function DashboardRoom() {
       {/* all rooms */}
       <span className="flex flex-row flex-wrap max-h-96 overflow-auto">
         {getRoomContent().map((room) => {
-          return <RoomCard key={room.id} room={room} />;
+          return (
+            <RoomCard
+              key={room.id}
+              room={room}
+              updateRoomHandler={handleUpdateRoom}
+            />
+          );
         })}
       </span>
     </section>

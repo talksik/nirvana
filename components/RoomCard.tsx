@@ -13,9 +13,11 @@ import RoomService from "../services/roomService";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import SkeletonLoader from "./Loading/skeletonLoader";
+import { useKeyboardContext } from "../contexts/keyboardContext";
 
 interface IRoomCardProps {
   room: Room;
+  updateRoomHandler: Function;
 }
 
 const roomService = new RoomService();
@@ -188,10 +190,8 @@ export default function RoomCard(props: IRoomCardProps) {
     return <SkeletonLoader />;
   }
 
-  async function handleUpdateRoom(e) {
-    e.preventDefault();
-
-    console.log("going to update room");
+  async function handleUpdateRoom() {
+    props.updateRoomHandler(props.room.id);
   }
 
   const RoomOptionsMenu = (

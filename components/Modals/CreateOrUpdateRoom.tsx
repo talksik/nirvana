@@ -12,11 +12,14 @@ import RoomService from "../../services/roomService";
 
 const { Option } = Select;
 
-const thisModalType = ShowModalType.createRoom;
-
 const roomService = new RoomService();
 
-export default function CreateRoomModal() {
+interface IModalProps {
+  show: boolean;
+  updateRoom: Room;
+}
+
+export default function CreateOrUpdateRoomModal(props: IModalProps) {
   const { currUser } = useAuth();
   const { teamUsers, team } = useTeamDashboardContext();
   const { pastedLink, handleModalType, showModalType } = useKeyboardContext();
@@ -120,7 +123,7 @@ export default function CreateRoomModal() {
     <Modal
       title="Room Details"
       centered
-      visible={showModalType == thisModalType ? true : false}
+      visible={props.show}
       onOk={handleSubmit}
       onCancel={handleCloseModal}
     >
