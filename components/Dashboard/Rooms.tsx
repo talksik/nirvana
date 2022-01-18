@@ -217,7 +217,7 @@ export default function DashboardRoom() {
         <span className="flex flex-row justify-end space-x-3 pb-5 items-center">
           <span className="flex flex-col mr-auto">
             <span className="text-white ">
-              Rooms
+              ROOMS
               <button
                 className="right-1 rounded-lg py-1 px-2 ml-1 
                                         shadow-md text-center text-white text-sm font-bold"
