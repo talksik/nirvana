@@ -1,4 +1,4 @@
-import { Divider, Modal, Radio, Select } from "antd";
+import { Divider, Modal, Radio, Select, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useAuth } from "../../contexts/authContext";
@@ -229,18 +229,23 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
           </Radio.Group>
 
           {roomType == RoomType.recurring || roomType == RoomType.scheduled ? (
-            <span className="flex flex-col items-start flex-1 mt-4">
-              <span className="text-md">Approximate day/time</span>
-              <span className="text-gray-300 text-xs mb-2 flex-1">
-                Put a rough day/time that makes sense to you.
+            <Tooltip
+              title={`Put things like "ping me when ready" or "sometime this afternoon"`}
+            >
+              <span className="flex flex-col items-start flex-1 mt-4">
+                <span className="text-md">Approximate Slot</span>
+                <span className="text-gray-300 text-xs mb-2 flex-1">
+                  The calendar way of doing things is overwhelming. Put a rough
+                  day/time that makes sense to you.
+                </span>
+                <input
+                  placeholder="ex. 2pm-ish...after lunch...late evening"
+                  className="w-full rounded-lg bg-gray-50 p-3"
+                  value={roomAppxDateTime}
+                  onChange={(e) => setRoomAppxDateTime(e.target.value)}
+                />
               </span>
-              <input
-                placeholder="ex. 2pm-ish...10am daily"
-                className="w-full rounded-lg bg-gray-50 p-3"
-                value={roomAppxDateTime}
-                onChange={(e) => setRoomAppxDateTime(e.target.value)}
-              />
-            </span>
+            </Tooltip>
           ) : (
             <></>
           )}
