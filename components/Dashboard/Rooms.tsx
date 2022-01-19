@@ -153,12 +153,23 @@ export default function DashboardRoom() {
     handleModalType(ShowModalType.createRoom);
   }
 
+  async function handleCloseModal() {
+    console.log("closing modal");
+
+    // to make sure that the next time the props changes, the modal has the updated room object
+    setSelectedUpdateRoom(null);
+
+    // close the modal
+    handleModalType(ShowModalType.na);
+  }
+
   return (
     <section className="p-5 flex-1 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md flex-shrink-0">
       {/*  modal for creating room */}
       <CreateOrUpdateRoom
         show={showModalType == ShowModalType.createRoom}
         updateRoom={selectedUpdateRoom}
+        handleClose={handleCloseModal}
       />
 
       {/* header */}

@@ -18,6 +18,7 @@ const roomService = new RoomService();
 interface IModalProps {
   show: boolean;
   updateRoom: Room;
+  handleClose: Function;
 }
 
 export default function CreateOrUpdateRoomModal(props: IModalProps) {
@@ -55,7 +56,8 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
 
   const handleCloseModal = () => {
     resetForm();
-    handleModalType(ShowModalType.na);
+
+    props.handleClose();
   };
 
   const handleSubmit = async (e) => {

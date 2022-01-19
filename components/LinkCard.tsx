@@ -118,8 +118,6 @@ export default function LinkCard(props: ILinkCardProps) {
     receiversNames = receivers.map((receiver) => receiver.firstName).join(", ");
   }
 
-  console.log(receiversNames);
-
   return (
     <span className="flex flex-col rounded-lg w-72 max-h-60 overflow-clip shrink-0">
       {/* attmnt header */}
