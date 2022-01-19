@@ -144,10 +144,7 @@ export default function LinkCard(props: ILinkCardProps) {
           </span>
 
           {/* attachment actions */}
-          <button
-            onClick={() => window.open(props.link.link, "_blank")}
-            className="bg-gray-300 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40"
-          >
+          <button className="bg-gray-300 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40">
             <FaExternalLinkAlt className="text-sm text-white" />
           </button>
         </span>

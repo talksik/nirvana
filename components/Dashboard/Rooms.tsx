@@ -179,6 +179,7 @@ export default function DashboardRoom() {
             <span className="text-white ">
               ROOMS
               <button
+                onClick={() => window.open("https://meet.google.com", "_blank")}
                 className="right-1 rounded-lg py-1 px-2 ml-1 
                                         shadow-md text-center text-white text-sm font-bold"
               >
