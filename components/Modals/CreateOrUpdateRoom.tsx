@@ -113,6 +113,8 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
     setRoomAttachment("");
     setRoomAppxDateTime("");
     setRoomType(RoomType.now);
+
+    setShowMoreDetails(false);
   }
 
   const [roomLink, setRoomLink] = useState<string>(pastedLink ?? "");
@@ -126,6 +128,8 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
 
   const [roomType, setRoomType] = useState<RoomType>(RoomType.now);
   const [roomAppxDateTime, setRoomAppxDateTime] = useState<string>(""); // for certain room types
+
+  const [showMoreDetails, setShowMoreDetails] = useState<boolean>(false);
 
   function handleSelectMember(value) {
     // passed in array of selections...userIds
@@ -172,7 +176,7 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
     >
       <div className="flex flex-col">
         <span className="flex flex-col items-start">
-          <span className="text-lg">1. Link</span>
+          <span className="text-lg">Link</span>
           {roomLink ? (
             <span className="text-gray-300 text-xs mb-2">
               Please make sure this is valid so that your team can join
@@ -199,7 +203,7 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
         </span>
 
         <span className="flex flex-col items-start flex-1 mt-4 ">
-          <span className="text-lg">2. Room Name</span>
+          <span className="text-lg">Room Name</span>
           <span className="text-gray-300 text-xs mb-2 flex-1">
             Be specific enough, everyone down the hall will see this.
           </span>
@@ -212,9 +216,8 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
         </span>
 
         {/* room type selection */}
-
         <span className="flex flex-col items-start flex-1 mt-4 ">
-          <span className="text-lg">3. Type</span>
+          <span className="text-lg">Type</span>
           <span className="text-gray-300 text-xs mb-2 flex-1"></span>
           <Radio.Group
             value={roomType}
@@ -252,57 +255,77 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
           )}
         </span>
 
-        <Divider />
+        {showMoreDetails ? (
+          <>
+            <Divider />
 
-        <span className="flex flex-col items-start flex-1 mt-4">
-          <span className="text-md">People</span>
+            <button
+              className="text-sm text-gray-300 text-left underline decoration-gray-300"
+              onClick={() => setShowMoreDetails(false)}
+            >
+              Hide details...
+            </button>
 
-          {/* team or personal */}
-          <Tooltip
-            title={
-              "Private mode coming soon, but keep it collaborative for now."
-            }
-            className="flex flex-col"
+            <span className="flex flex-col items-start flex-1 mt-4">
+              <span className="text-md">People</span>
+
+              {/* team or personal */}
+              <Tooltip
+                title={
+                  "Private mode coming soon, but keep it collaborative for now."
+                }
+                className="flex flex-col"
+              >
+                <Switch disabled={true} defaultChecked />
+              </Tooltip>
+              <span className="text-gray-300 text-xs mb-2 flex-1">
+                Whole team sees this room.
+              </span>
+
+              <span className="text-gray-300 text-xs mb-2 flex-1">
+                Optional - Add any mandatory attendees you want or just tell
+                them later and they will see it in the team section.
+              </span>
+              {MemberSelection()}
+            </span>
+
+            <span className="flex flex-col items-start flex-1 mt-4">
+              <span className="text-md">Agenda</span>
+              <span className="text-gray-300 text-xs mb-2 flex-1">
+                Optional
+              </span>
+              <textarea
+                placeholder="ex. Let's discuss ways to..."
+                className="w-full rounded-lg bg-gray-50 p-3"
+                value={roomDescription}
+                onChange={(e) => setRoomDescription(e.target.value)}
+              />
+            </span>
+
+            <span className="flex flex-col items-start flex-1 mt-4">
+              <span className="text-md">Attachment</span>
+              <span className="text-gray-300 text-xs mb-2">
+                Optional - ppt, meeting notes...
+              </span>
+              <span className="text-gray-300 text-xs mb-2">
+                have multiple? just post it in the team attachments
+              </span>
+              <input
+                placeholder="https://"
+                className="w-full rounded-lg bg-gray-50 p-3"
+                value={roomAttachment}
+                onChange={(e) => setRoomAttachment(e.target.value)}
+              />
+            </span>
+          </>
+        ) : (
+          <button
+            className="text-sm text-gray-300 text-left underline decoration-gray-300 mt-5"
+            onClick={() => setShowMoreDetails(true)}
           >
-            <Switch disabled={true} defaultChecked />
-          </Tooltip>
-          <span className="text-gray-300 text-xs mb-2 flex-1">
-            Whole team sees this room.
-          </span>
-
-          <span className="text-gray-300 text-xs mb-2 flex-1">
-            Optional - Add any mandatory attendees you want or just tell them
-            later and they will see it in the team section.
-          </span>
-          {MemberSelection()}
-        </span>
-
-        <span className="flex flex-col items-start flex-1 mt-4">
-          <span className="text-md">Agenda</span>
-          <span className="text-gray-300 text-xs mb-2 flex-1">Optional</span>
-          <textarea
-            placeholder="ex. Let's discuss ways to..."
-            className="w-full rounded-lg bg-gray-50 p-3"
-            value={roomDescription}
-            onChange={(e) => setRoomDescription(e.target.value)}
-          />
-        </span>
-
-        <span className="flex flex-col items-start flex-1 mt-4">
-          <span className="text-md">Attachment</span>
-          <span className="text-gray-300 text-xs mb-2">
-            Optional - ppt, meeting notes...
-          </span>
-          <span className="text-gray-300 text-xs mb-2">
-            have multiple? just post it in the team attachments
-          </span>
-          <input
-            placeholder="https://"
-            className="w-full rounded-lg bg-gray-50 p-3"
-            value={roomAttachment}
-            onChange={(e) => setRoomAttachment(e.target.value)}
-          />
-        </span>
+            Click to show more details...
+          </button>
+        )}
       </div>
     </Modal>
   );

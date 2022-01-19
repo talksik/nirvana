@@ -186,11 +186,6 @@ export default function CreateOrUpdateLink() {
           )}
         </span>
 
-        <Tooltip
-          title={"Private mode coming soon, but keep it collaborative for now."}
-          className="flex flex-col"
-        ></Tooltip>
-
         {showMoreDetails ? (
           <>
             <Divider />
@@ -208,7 +203,7 @@ export default function CreateOrUpdateLink() {
                 Optional - Add any pointers about this file.
               </span>
 
-              <textarea
+              <input
                 className="w-full rounded-lg bg-gray-50 p-3"
                 value={description}
                 placeholder="ex. Please review this and add feedback asap"
