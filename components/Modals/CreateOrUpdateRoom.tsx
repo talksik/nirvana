@@ -190,6 +190,7 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
           )}
 
           <input
+            autoFocus
             className="w-full rounded-lg bg-gray-50 p-3"
             value={roomLink}
             placeholder="https://meet.google.com/xxx-xxxx"

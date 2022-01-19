@@ -84,8 +84,15 @@ export default function Links() {
             </span>
           </Dropdown>
 
-          <Tooltip title={"code blocks: coming soon"}>
-            <button className="bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40 ml-2">
+          <Tooltip
+            title={
+              "code blocks: copy the link and paste it in here when you are done"
+            }
+          >
+            <button
+              onClick={() => window.open("https://www.codepile.net/", "_blank")}
+              className="bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40 ml-2"
+            >
               <FaCode className="text-lg text-white" />
             </button>
           </Tooltip>
