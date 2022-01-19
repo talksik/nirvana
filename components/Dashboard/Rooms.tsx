@@ -228,7 +228,7 @@ export default function DashboardRoom() {
       </Tooltip>
 
       {/* all rooms */}
-      <span className="flex flex-row flex-wrap overflow-auto">
+      <span className="flex flex-row flex-wrap overflow-auto h-[32rem]">
         {getRoomContent().map((room) => {
           return (
             <RoomCard
