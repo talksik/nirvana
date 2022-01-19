@@ -40,7 +40,7 @@ export default function LinkIcon(props: {
       return <FaFileCode {...rest} className={`${className} text-blue-500 `} />;
     case LinkType.github:
       return (
-        <FaGithubSquare {...rest} className={`${className} text-gray-500 `} />
+        <FaGithubSquare {...rest} className={`${className} text-gray-200 `} />
       );
     case LinkType.googleDrive:
       return (
