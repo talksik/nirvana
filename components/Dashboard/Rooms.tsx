@@ -130,7 +130,7 @@ export default function DashboardRoom() {
         Past 24 Hours (Coming Soon)
       </Menu.Item>
       <Menu.Item key={2} disabled>
-        This Month(Coming Soon)
+        This Month (Coming Soon)
       </Menu.Item>
     </Menu>
   );

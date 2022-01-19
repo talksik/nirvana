@@ -17,6 +17,8 @@ import { TeamMemberStatus } from "../../models/teamMember";
 import { UserStatus } from "../../models/user";
 import TeamService from "../../services/teamService";
 import UserService from "../../services/userService";
+import Announcements from "../../components/Dashboard/Announcements";
+import Links from "../../components/Dashboard/Links";
 
 // User has switched back to the tab
 const onFocus = () => {
@@ -83,9 +85,16 @@ function TeamDashboard() {
       <Header />
 
       <div className="flex flex-row items-baseline space-x-5 space-y-5">
-        <TeamVoiceLine />
+        <div className="flex flex-col max-w-sm space-y-5">
+          <TeamVoiceLine />
+          <Links />
+        </div>
 
-        <Rooms />
+        <div className="flex flex-col space-y-5">
+          <Announcements />
+
+          <Rooms />
+        </div>
       </div>
     </div>
   );
