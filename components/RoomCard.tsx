@@ -282,7 +282,7 @@ export default function RoomCard(props: IRoomCardProps) {
                   isUserInRoom
                     ? " bg-gray-400 bg-opacity-25 text-gray-400"
                     : "bg-gray-300 bg-opacity-25 text-white"
-                }   bg-gray-400 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40`}
+                }  bg-gray-400 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40`}
               >
                 <FaLink className="text-sm" />
               </button>

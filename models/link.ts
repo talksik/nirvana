@@ -45,7 +45,10 @@ export default class Link {
       return LinkType.github;
     } else if (url.includes(LinkType.atlassian)) {
       return LinkType.atlassian;
-    } else if (url.includes(LinkType.googleDrive)) {
+    } else if (
+      url.includes(LinkType.googleDrive) ||
+      url.includes("docs.google")
+    ) {
       return LinkType.googleDrive;
     } else if (
       url.includes(".png") ||
