@@ -4,33 +4,38 @@ import Image from "next/image";
 import { BsThreeDots } from "react-icons/bs";
 import LinkIcon from "./LinkIcon";
 
-export default function LinkCard(props: { link?: Link }) {
+interface ILinkCardProps {
+  link: Link;
+}
+
+export default function LinkCard(props: ILinkCardProps) {
   return (
-    <span className="flex flex-col rounded-lg">
+    <span
+      onClick={() => window.open(props.link.link, "_blank")}
+      className="flex flex-col rounded-lg hover:cursor-pointer"
+    >
       {/* attmnt header */}
       <span className="flex flex-row bg-gray-300 bg-opacity-25 py-5 px-3 items-center justify-start">
-        <LinkIcon
-          className="text-4xl text-orange-300 mr-2"
-          linkType={LinkType.googleDrive}
-        />
+        <LinkIcon className="text-4xl mr-2" linkType={props.link.type} />
 
         <span className="flex flex-col items-baseline mr-10 space-y-1">
-          <span className="text-md font-bold text-white">report.pdf</span>
+          <span className="text-md font-bold text-white">
+            {props.link.name}
+          </span>
 
           <span
             className={`text-gray-200 text-xs mb-auto text-ellipsis whitespace-pre-line max-h-10 overflow-hidden`}
           >
-            {"asdfaSdfasdfsadfsdf"}
+            {props.link.description}
           </span>
         </span>
 
         {/* attachment actions */}
-        <button className="bg-gray-300 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40">
+        <button
+          onClick={() => window.open(props.link.link, "_blank")}
+          className="bg-gray-300 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40"
+        >
           <FaExternalLinkAlt className="text-sm text-white" />
-        </button>
-
-        <button className="bg-orange-300 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40">
-          <FaArchive className="text-sm text-orange-500 " />
         </button>
       </span>
 

@@ -1,15 +1,5 @@
 import { BsThreeDots } from "react-icons/bs";
-import {
-  FaAngleDown,
-  FaArchive,
-  FaAtlassian,
-  FaCode,
-  FaCopy,
-  FaExternalLinkAlt,
-  FaFilePdf,
-  FaLink,
-  FaPlus,
-} from "react-icons/fa";
+import { FaAngleDown, FaCode, FaPlus } from "react-icons/fa";
 
 import Image from "next/image";
 import { Dropdown, Menu, Radio, Tooltip } from "antd";
@@ -18,11 +8,72 @@ import {
   useKeyboardContext,
 } from "../../contexts/keyboardContext";
 import CreateOrUpdateLink from "../Modals/CreateOrUpdateLink";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LinkCard from "../LinkCard";
+import { Collections } from "../../services/collections";
+import {
+  collection,
+  getFirestore,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
+import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
+import Link, { LinkState } from "../../models/link";
+import { useAuth } from "../../contexts/authContext";
+
+const lastWeek = new Date();
+lastWeek.setDate(lastWeek.getDate() - 7);
+
+const db = getFirestore();
 
 export default function Links() {
+  const { currUser } = useAuth();
   const { handleModalType } = useKeyboardContext();
+
+  const { team } = useTeamDashboardContext();
+
+  const [linksMap, setLinksMap] = useState<Map<string, Link>>(
+    new Map<string, Link>()
+  );
+
+  // SECTION: LISTENER for LINKS
+  useEffect(() => {
+    /**
+     * QUERY:
+     * all links for the team in the past 7 days
+     * order createdDate desc
+     *
+     */
+    const q = query(
+      collection(db, Collections.links),
+      where("teamId", "==", team.id),
+      where("createdDate", ">", lastWeek),
+      orderBy("createdDate", "desc")
+    );
+
+    // return unsubscribe
+    return onSnapshot(q, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        let updatedOrNewLink = change.doc.data() as Link;
+        updatedOrNewLink.id = change.doc.id;
+
+        if (change.type === "added" || change.type === "modified") {
+          console.log("New or updated link: ", updatedOrNewLink);
+
+          // update rooms map
+          setLinksMap((prevMap) => {
+            return new Map(prevMap.set(updatedOrNewLink.id, updatedOrNewLink));
+          });
+        }
+        if (change.type === "removed") {
+          // not really going to happen, more so will be archived
+          console.log("Removed link: ", updatedOrNewLink);
+        }
+      });
+    });
+  }, []);
 
   const TimePeriodFilterMenu = (
     <Menu>
@@ -38,6 +89,50 @@ export default function Links() {
   const [selectedTabPane, setSelectedTabPane] = useState<string>(
     LinkTypeFilter.me
   );
+
+  const allLinks = Array.from(linksMap.values());
+
+  const meLinks = allLinks.filter((link) => {
+    // if archived, don't show
+    if (link.state == LinkState.archived) {
+      return false;
+    }
+
+    // if I am the sender, then also show
+    if (link.createdByUserId == currUser.uid) {
+      return true;
+    }
+
+    // if I am a receiver
+    if (link.recipients.includes(currUser.uid)) {
+      return true;
+    }
+
+    return false;
+  });
+  const teamLinks = allLinks.filter((link) => {
+    // not archived and does not have a recipients list
+    if (link.state != LinkState.archived && !link.recipients) {
+      return true;
+    }
+    return false;
+  });
+  const archivedLinks = allLinks.filter(
+    (link) => link.state == LinkState.archived
+  );
+
+  function getFilteredContent() {
+    switch (selectedTabPane) {
+      case LinkTypeFilter.me:
+        return meLinks;
+      case LinkTypeFilter.team:
+        return teamLinks;
+      case LinkTypeFilter.archived:
+        return archivedLinks;
+      default:
+        return allLinks;
+    }
+  }
 
   return (
     <section className="p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md">
@@ -140,8 +235,9 @@ export default function Links() {
 
       {/* table of links */}
       <div className="flex flex-col space-y-2">
-        {/* pdf example */}
-        <LinkCard />
+        {getFilteredContent().map((link) => (
+          <LinkCard key={link.id} link={link} />
+        ))}
       </div>
     </section>
   );
