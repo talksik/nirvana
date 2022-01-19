@@ -128,7 +128,10 @@ export default function LinkCard(props: ILinkCardProps) {
           onClick={() => window.open(props.link.link, "_blank")}
           className="flex flex-row bg-gray-300 bg-opacity-25 py-5 px-3 items-center justify-start hover:cursor-pointer h-full"
         >
-          <LinkIcon className="text-4xl mr-2" linkType={props.link.type} />
+          <LinkIcon
+            className="text-4xl mr-2 shrink-0"
+            linkType={props.link.type}
+          />
 
           <span className="flex flex-col items-baseline mr-10 space-y-1">
             <span className="text-md font-bold text-white text-ellipsis overflow-hidden">

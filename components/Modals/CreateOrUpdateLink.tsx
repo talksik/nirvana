@@ -2,7 +2,7 @@ import { Divider, Select, Switch, Tooltip } from "antd";
 const { Option } = Select;
 
 import Modal from "antd/lib/modal/Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useAuth } from "../../contexts/authContext";
 import {
@@ -18,8 +18,14 @@ const sendService = new SendService();
 
 export default function CreateOrUpdateLink() {
   const { currUser } = useAuth();
-  const { handleModalType, showModalType } = useKeyboardContext();
+  const { pastedLink, handleModalType, showModalType } = useKeyboardContext();
   const { teamUsers, team } = useTeamDashboardContext();
+
+  useEffect(() => {
+    if (pastedLink) {
+      setLink(pastedLink ?? "");
+    }
+  }, [pastedLink]);
 
   function closeModal() {
     handleModalType(ShowModalType.na);

@@ -5,6 +5,7 @@ import {
   FaFileImage,
   FaFilePdf,
   FaGithubSquare,
+  FaGlobe,
   FaGoogleDrive,
 } from "react-icons/fa";
 import Link, { LinkType } from "../models/link";
@@ -33,11 +34,11 @@ export default function LinkIcon(props: {
 
   switch (linkType) {
     case LinkType.default:
-      return <FaFileAlt {...rest} className={`${className} text-slate-300 `} />;
+      return <FaGlobe {...rest} className={`${className} text-slate-300 `} />;
     case LinkType.atlassian:
       return <FaAtlassian {...rest} className={`${className} text-sky-500 `} />;
     case LinkType.codePile:
-      return <FaFileCode {...rest} className={`${className} text-blue-500 `} />;
+      return <FaFileCode {...rest} className={`${className} text-pink-200 `} />;
     case LinkType.github:
       return (
         <FaGithubSquare {...rest} className={`${className} text-gray-200 `} />
