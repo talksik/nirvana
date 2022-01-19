@@ -104,7 +104,7 @@ export default function Links() {
     }
 
     // if I am a receiver
-    if (link.recipients.includes(currUser.uid)) {
+    if (link.recipients?.includes(currUser.uid)) {
       return true;
     }
 

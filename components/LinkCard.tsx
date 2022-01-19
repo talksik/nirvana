@@ -34,6 +34,7 @@ export default function LinkCard(props: ILinkCardProps) {
   if (props.link.createdByUserId == currUser.uid) {
     sender = user;
   } else {
+    sender = teamUsersMap[props.link.createdByUserId];
   }
 
   var receivers: User[] = props.link.recipients?.reduce((results, userId) => {
