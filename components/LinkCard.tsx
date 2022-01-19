@@ -121,17 +121,17 @@ export default function LinkCard(props: ILinkCardProps) {
   console.log(receiversNames);
 
   return (
-    <span className="flex flex-col rounded-lg ">
+    <span className="flex flex-col rounded-lg w-72 max-h-60 overflow-clip shrink-0">
       {/* attmnt header */}
       <Tooltip title={props.link.link}>
         <span
           onClick={() => window.open(props.link.link, "_blank")}
-          className="flex flex-row bg-gray-300 bg-opacity-25 py-5 px-3 items-center justify-start hover:cursor-pointer"
+          className="flex flex-row bg-gray-300 bg-opacity-25 py-5 px-3 items-center justify-start hover:cursor-pointer h-full"
         >
           <LinkIcon className="text-4xl mr-2" linkType={props.link.type} />
 
           <span className="flex flex-col items-baseline mr-10 space-y-1">
-            <span className="text-md font-bold text-white">
+            <span className="text-md font-bold text-white text-ellipsis overflow-hidden">
               {props.link.name}
             </span>
 
@@ -175,7 +175,7 @@ export default function LinkCard(props: ILinkCardProps) {
                 );
               })
             ) : (
-              <span className="text-xs my-3 text-white bg-emerald-400 p-1 rounded-md font-bold flex flex-row space-x-2 items-center">
+              <span className="text-xs text-white bg-emerald-400 p-1 rounded-md font-bold flex flex-row space-x-2 items-center">
                 <span>team</span>
               </span>
             )}

@@ -154,7 +154,7 @@ export default function DashboardRoom() {
   }
 
   return (
-    <section className="p-5 flex-1 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md">
+    <section className="p-5 flex-1 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md flex-shrink-0">
       {/*  modal for creating room */}
       <CreateOrUpdateRoom
         show={showModalType == ShowModalType.createRoom}

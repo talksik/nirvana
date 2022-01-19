@@ -87,15 +87,16 @@ function TeamDashboard() {
       <div className="flex flex-row items-baseline space-x-5 space-y-5">
         <div className="flex flex-col max-w-sm space-y-5">
           <TeamVoiceLine />
-          <Links />
         </div>
 
-        <div className="flex flex-col space-y-5">
+        <div className="flex flex-col space-y-5 flex-1">
           <Announcements />
 
           <Rooms />
         </div>
       </div>
+
+      <Links />
     </div>
   );
 }

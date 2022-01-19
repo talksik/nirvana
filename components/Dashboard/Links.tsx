@@ -145,12 +145,13 @@ export default function Links() {
           <span className="flex flex-col mr-20">
             <span className="text-white mr-auto">
               LINKS
-              {/* <button
+              <button
+                onClick={() => handleModalType(ShowModalType.createLink)}
                 className="right-1 rounded-lg py-1 px-2 ml-1 
                             shadow-md text-center text-white text-sm font-bold"
               >
                 CTRL + V
-              </button> */}
+              </button>
             </span>
 
             <span className="text-gray-300 text-xs">
@@ -158,8 +159,42 @@ export default function Links() {
             </span>
           </span>
 
+          <div className="ml-auto">
+            <Radio.Group
+              value={selectedTabPane}
+              onChange={(e) => setSelectedTabPane(e.target.value)}
+            >
+              <Radio.Button value={LinkTypeFilter.me}>
+                {LinkTypeFilter.me}{" "}
+                <span className="text-xs text-orange-500">
+                  {meLinks.length > 0 ? meLinks.length : ""}
+                </span>
+              </Radio.Button>
+              <Radio.Button value={LinkTypeFilter.team}>
+                {LinkTypeFilter.team}{" "}
+                <span className="text-xs text-orange-500">
+                  {teamLinks.length}
+                </span>
+              </Radio.Button>
+              <Tooltip title={"coming soon"}>
+                <Radio.Button disabled value={LinkTypeFilter.favorites}>
+                  {LinkTypeFilter.favorites}{" "}
+                  {/* <span className="text-xs text-orange-500">
+                {liveRooms.length > 0 ? fa.length : ""}
+              </span> */}
+                </Radio.Button>
+              </Tooltip>
+              <Radio.Button value={LinkTypeFilter.archived}>
+                {LinkTypeFilter.archived}{" "}
+                <span className="text-xs text-orange-500">
+                  {archivedLinks.length > 0 ? archivedLinks.length : ""}
+                </span>
+              </Radio.Button>
+            </Radio.Group>
+          </div>
+
           <Dropdown overlay={TimePeriodFilterMenu}>
-            <span className="text-sm text-gray-300 flex flex-row items-center uppercase hover:cursor-pointer">
+            <span className="ml-2 text-sm text-gray-300 flex flex-row items-center uppercase hover:cursor-pointer">
               Week <FaAngleDown />
             </span>
           </Dropdown>
@@ -186,40 +221,8 @@ export default function Links() {
         </span>
       </Tooltip>
 
-      <div className="mb-5">
-        <Radio.Group
-          value={selectedTabPane}
-          onChange={(e) => setSelectedTabPane(e.target.value)}
-        >
-          <Radio.Button value={LinkTypeFilter.me}>
-            {LinkTypeFilter.me}{" "}
-            <span className="text-xs text-orange-500">
-              {meLinks.length > 0 ? meLinks.length : ""}
-            </span>
-          </Radio.Button>
-          <Radio.Button value={LinkTypeFilter.team}>
-            {LinkTypeFilter.team}{" "}
-            <span className="text-xs text-orange-500">{teamLinks.length}</span>
-          </Radio.Button>
-          <Tooltip title={"coming soon"}>
-            <Radio.Button disabled value={LinkTypeFilter.favorites}>
-              {LinkTypeFilter.favorites}{" "}
-              {/* <span className="text-xs text-orange-500">
-                {liveRooms.length > 0 ? fa.length : ""}
-              </span> */}
-            </Radio.Button>
-          </Tooltip>
-          <Radio.Button value={LinkTypeFilter.archived}>
-            {LinkTypeFilter.archived}{" "}
-            <span className="text-xs text-orange-500">
-              {archivedLinks.length > 0 ? archivedLinks.length : ""}
-            </span>
-          </Radio.Button>
-        </Radio.Group>
-      </div>
-
       {/* table of links */}
-      <div className="flex flex-col space-y-2">
+      <div className="flex flex-row space-x-2 overflow-x-scroll py-2">
         {getFilteredContent().map((link) => (
           <LinkCard key={link.id} link={link} />
         ))}
