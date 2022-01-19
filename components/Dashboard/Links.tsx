@@ -93,8 +93,8 @@ export default function Links() {
   const allLinks = Array.from(linksMap.values());
 
   const meLinks = allLinks.filter((link) => {
-    // if archived, don't show
-    if (link.state == LinkState.archived) {
+    // if archived or deleted, don't show
+    if (link.state != LinkState.active) {
       return false;
     }
 
@@ -112,7 +112,7 @@ export default function Links() {
   });
   const teamLinks = allLinks.filter((link) => {
     // not archived and does not have a recipients list
-    if (link.state != LinkState.archived && !link.recipients) {
+    if (link.state == LinkState.active && !link.recipients) {
       return true;
     }
     return false;
@@ -158,21 +158,6 @@ export default function Links() {
             </span>
           </span>
 
-          {/* tab pane */}
-          {/* <span className="ml-auto flex flex-row space-x-5 uppercase mr-5">
-            <span className="underline underline-offset-8 decoration-white text-white hover:text-white hover:cursor-pointer">
-              Team
-            </span>
-
-            <span className="text-gray-300 hover:text-white hover:cursor-pointer">
-              Personal
-            </span>
-
-            <span className="text-gray-300 hover:text-white hover:cursor-pointer">
-              Favorites
-            </span>
-          </span> */}
-
           <Dropdown overlay={TimePeriodFilterMenu}>
             <span className="text-sm text-gray-300 flex flex-row items-center uppercase hover:cursor-pointer">
               Week <FaAngleDown />
@@ -208,27 +193,27 @@ export default function Links() {
         >
           <Radio.Button value={LinkTypeFilter.me}>
             {LinkTypeFilter.me}{" "}
-            {/* <span className="text-xs text-orange-500">
-            {meRooms.length > 0 ? meRooms.length : ""}
-          </span> */}
+            <span className="text-xs text-orange-500">
+              {meLinks.length > 0 ? meLinks.length : ""}
+            </span>
           </Radio.Button>
           <Radio.Button value={LinkTypeFilter.team}>
             {LinkTypeFilter.team}{" "}
-            {/* <span className="text-xs text-orange-500">{teamRooms.length}</span> */}
+            <span className="text-xs text-orange-500">{teamLinks.length}</span>
           </Radio.Button>
           <Tooltip title={"coming soon"}>
             <Radio.Button disabled value={LinkTypeFilter.favorites}>
               {LinkTypeFilter.favorites}{" "}
               {/* <span className="text-xs text-orange-500">
-            {liveRooms.length > 0 ? liveRooms.length : ""}
-          </span> */}
+                {liveRooms.length > 0 ? fa.length : ""}
+              </span> */}
             </Radio.Button>
           </Tooltip>
           <Radio.Button value={LinkTypeFilter.archived}>
             {LinkTypeFilter.archived}{" "}
-            {/* <span className="text-xs text-orange-500">
-            {archivedRooms.length > 0 ? archivedRooms.length : ""}
-          </span> */}
+            <span className="text-xs text-orange-500">
+              {archivedLinks.length > 0 ? archivedLinks.length : ""}
+            </span>
           </Radio.Button>
         </Radio.Group>
       </div>

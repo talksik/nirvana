@@ -5,7 +5,7 @@ import {
   FaFilePdf,
   FaTrash,
 } from "react-icons/fa";
-import Link, { LinkType } from "../models/link";
+import Link, { LinkState, LinkType } from "../models/link";
 import Image from "next/image";
 import { BsThreeDots } from "react-icons/bs";
 import LinkIcon from "./LinkIcon";
@@ -16,10 +16,13 @@ import { Avatar, Dropdown, Menu, Tooltip } from "antd";
 import { useState } from "react";
 import SkeletonLoader from "./Loading/skeletonLoader";
 import moment from "moment";
+import { LinkService } from "../services/linkService";
 
 interface ILinkCardProps {
   link: Link;
 }
+
+const linkService = new LinkService();
 
 export default function LinkCard(props: ILinkCardProps) {
   const { currUser } = useAuth();
@@ -46,28 +49,38 @@ export default function LinkCard(props: ILinkCardProps) {
     return results;
   }, [] as User[]);
 
-  function handleDeleteLink() {
+  async function handleDeleteLink() {
+    setLoading(true);
     if (
       confirm(
         "Are you sure you want to delete link? It will disappear for all recipients."
       )
     ) {
       console.log("deleting link");
+
+      await linkService.updateLinkState(props.link.id, LinkState.deleted);
+
       try {
       } catch (error) {}
     }
+
+    setLoading(false);
   }
 
-  function handleArchivingLink() {
+  async function handleArchivingLink() {
+    setLoading(true);
+
     if (
       confirm(
         "Are you sure you want to archive link? It will  be in the archive tab."
       )
     ) {
-      console.log("archiving link");
+      await linkService.updateLinkState(props.link.id, LinkState.archived);
       try {
       } catch (error) {}
     }
+
+    setLoading(false);
   }
 
   if (loading) {
@@ -76,11 +89,16 @@ export default function LinkCard(props: ILinkCardProps) {
 
   const LinkOptionsMenu = (
     <Menu>
-      <Menu.Item key={1} danger onClick={handleDeleteLink} icon={<FaArchive />}>
+      <Menu.Item
+        key={2}
+        danger
+        onClick={handleArchivingLink}
+        icon={<FaArchive />}
+      >
         <button>Archive Link</button>
       </Menu.Item>
       <Menu.Item
-        key={2}
+        key={3}
         danger
         onClick={handleArchivingLink}
         icon={<FaTrash />}
@@ -94,7 +112,7 @@ export default function LinkCard(props: ILinkCardProps) {
     props.link.createdDate.toDate()
   ).fromNow();
 
-  var receiversNames = "";
+  var receiversNames = "team";
   if (receivers) {
     receiversNames = receivers.map((receiver) => receiver.firstName).join(", ");
   }
@@ -104,32 +122,34 @@ export default function LinkCard(props: ILinkCardProps) {
   return (
     <span className="flex flex-col rounded-lg ">
       {/* attmnt header */}
-      <span
-        onClick={() => window.open(props.link.link, "_blank")}
-        className="flex flex-row bg-gray-300 bg-opacity-25 py-5 px-3 items-center justify-start hover:cursor-pointer"
-      >
-        <LinkIcon className="text-4xl mr-2" linkType={props.link.type} />
-
-        <span className="flex flex-col items-baseline mr-10 space-y-1">
-          <span className="text-md font-bold text-white">
-            {props.link.name}
-          </span>
-
-          <span
-            className={`text-gray-200 text-xs mb-auto text-ellipsis whitespace-pre-line max-h-10 overflow-hidden`}
-          >
-            {props.link.description}
-          </span>
-        </span>
-
-        {/* attachment actions */}
-        <button
+      <Tooltip title={props.link.link}>
+        <span
           onClick={() => window.open(props.link.link, "_blank")}
-          className="bg-gray-300 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40"
+          className="flex flex-row bg-gray-300 bg-opacity-25 py-5 px-3 items-center justify-start hover:cursor-pointer"
         >
-          <FaExternalLinkAlt className="text-sm text-white" />
-        </button>
-      </span>
+          <LinkIcon className="text-4xl mr-2" linkType={props.link.type} />
+
+          <span className="flex flex-col items-baseline mr-10 space-y-1">
+            <span className="text-md font-bold text-white">
+              {props.link.name}
+            </span>
+
+            <span
+              className={`text-gray-200 text-xs mb-auto text-ellipsis whitespace-pre-line max-h-10 overflow-hidden`}
+            >
+              {props.link.description}
+            </span>
+          </span>
+
+          {/* attachment actions */}
+          <button
+            onClick={() => window.open(props.link.link, "_blank")}
+            className="bg-gray-300 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40"
+          >
+            <FaExternalLinkAlt className="text-sm text-white" />
+          </button>
+        </span>
+      </Tooltip>
 
       {/* attmnt footer */}
       <Tooltip

@@ -70,6 +70,7 @@ export default class Link {
 export enum LinkState {
   active = "active",
   archived = "archived",
+  deleted = "deleted",
 }
 
 export enum LinkType {
