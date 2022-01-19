@@ -1,5 +1,5 @@
 import { FaArchive, FaExternalLinkAlt, FaFilePdf } from "react-icons/fa";
-import Link from "../models/link";
+import Link, { LinkType } from "../models/link";
 import Image from "next/image";
 import { BsThreeDots } from "react-icons/bs";
 import LinkIcon from "./LinkIcon";
@@ -9,7 +9,10 @@ export default function LinkCard(props: { link?: Link }) {
     <span className="flex flex-col rounded-lg">
       {/* attmnt header */}
       <span className="flex flex-row bg-gray-300 bg-opacity-25 py-5 px-3 items-center justify-start">
-        <LinkIcon className="text-4xl text-orange-300 mr-2" />
+        <LinkIcon
+          className="text-4xl text-orange-300 mr-2"
+          linkType={LinkType.googleDrive}
+        />
 
         <span className="flex flex-col items-baseline mr-10 space-y-1">
           <span className="text-md font-bold text-white">report.pdf</span>

@@ -7,5 +7,5 @@ export enum Collections {
 
   rooms = "rooms",
   announcements = "announcements",
-  attachments = "attachments",
+  links = "links",
 }

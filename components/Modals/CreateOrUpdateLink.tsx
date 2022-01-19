@@ -11,7 +11,10 @@ import {
 } from "../../contexts/keyboardContext";
 import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
 import Link, { LinkType } from "../../models/link";
+import { SendService } from "../../services/sendService";
 import LinkIcon from "../LinkIcon";
+
+const sendService = new SendService();
 
 export default function CreateOrUpdateLink() {
   const { currUser } = useAuth();
@@ -41,9 +44,19 @@ export default function CreateOrUpdateLink() {
     }
   }
 
-  function handleSubmitLink() {
+  async function handleSubmitLink() {
     if (!link || !name) {
       toast.error("Please add a valid link and name");
+      return;
+    }
+
+    if (
+      !isTeamLink &&
+      (!recipientsSelected || recipientsSelected.length == 0)
+    ) {
+      toast.error(
+        "Please select members or send it to the team with the toggle"
+      );
       return;
     }
 
@@ -59,13 +72,27 @@ export default function CreateOrUpdateLink() {
         currUser.uid
       );
 
-      console.log(newLink);
+      handleModalType(ShowModalType.na);
 
       // send to database
+      await sendService.sendLink(newLink);
+
+      resetForm();
+
+      toast.success("link sent");
     } catch (error) {
       toast.error("Something went wrong in sending the link.");
       console.log(error);
     }
+  }
+
+  function resetForm() {
+    setLink("");
+    setName("");
+    setDescription("");
+    setShowMoreDetails(false);
+    setIsTeamLink(true);
+    setRecipientsSelected([]);
   }
 
   const [link, setLink] = useState<string>("");

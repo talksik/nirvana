@@ -11,7 +11,7 @@ export default class Link {
 
   teamId: string;
   // if it's not a teamAttachment, then have a list of members who it's for
-  private _recipients: string[]; // userIds
+  recipients: string[]; // userIds
 
   createdByUserId: string;
   createdDate: Timestamp;
@@ -31,19 +31,13 @@ export default class Link {
     this.recipients = recipientsArr;
     this.createdByUserId = _createdByUserId;
 
-    this.type = Link.getLinkType(_link);
-  }
-
-  public get recipients(): string[] {
-    return this._recipients;
-  }
-
-  public set recipients(arrUserIds: string[]) {
-    if (!this._recipients || this._recipients?.length == 0) {
-      this._recipients = null;
+    if (!recipientsArr || recipientsArr?.length == 0) {
+      this.recipients = null;
     } else {
-      this._recipients = arrUserIds;
+      this.recipients = recipientsArr;
     }
+
+    this.type = Link.getLinkType(_link);
   }
 
   static getLinkType(url: string): LinkType {
