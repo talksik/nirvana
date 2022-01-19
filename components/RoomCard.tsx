@@ -242,7 +242,7 @@ export default function RoomCard(props: IRoomCardProps) {
             <span
               className={`${
                 isUserInRoom ? "text-gray-400" : "text-gray-200"
-              } text-xs mb-auto text-ellipsis whitespace-pre-line max-h-10 overflow-hidden`}
+              } text-xs mb-auto text-ellipsis whitespace-pre-line max-h-12 overflow-hidden`}
             >
               {props.room.description}
             </span>
