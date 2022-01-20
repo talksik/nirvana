@@ -338,6 +338,38 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
           )}
         </span>
 
+        {/* people selection */}
+        <span className="flex flex-col items-start flex-1 mt-4">
+          <span className="flex flex-row w-full items-center">
+            <span className="text-lg flex-1">People</span>
+            {/* team or personal */}
+
+            <span className="flex flex-col items-end">
+              <Tooltip
+                title={
+                  "Private mode coming soon, but keep it collaborative for now."
+                }
+              >
+                <Switch
+                  disabled={true}
+                  defaultChecked
+                  checkedChildren={<span>Visible</span>}
+                  unCheckedChildren={<span>Private</span>}
+                />
+              </Tooltip>
+              <span className="text-gray-300 text-xs mb-2 flex-1">
+                Team sees this room.
+              </span>
+            </span>
+          </span>
+
+          <span className="text-gray-300 text-xs mb-2 flex-1">
+            Optional - Add any mandatory attendees you want or just tell them
+            later.
+          </span>
+          {MemberSelection()}
+        </span>
+
         {showMoreDetails ? (
           <>
             <Divider />
@@ -348,29 +380,6 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
             >
               Hide details...
             </button>
-
-            <span className="flex flex-col items-start flex-1 mt-4">
-              <span className="text-md">People</span>
-
-              {/* team or personal */}
-              <Tooltip
-                title={
-                  "Private mode coming soon, but keep it collaborative for now."
-                }
-                className="flex flex-col"
-              >
-                <Switch disabled={true} defaultChecked />
-              </Tooltip>
-              <span className="text-gray-300 text-xs mb-2 flex-1">
-                Whole team sees this room.
-              </span>
-
-              <span className="text-gray-300 text-xs mb-2 flex-1">
-                Optional - Add any mandatory attendees you want or just tell
-                them later and they will see it in the team rooms.
-              </span>
-              {MemberSelection()}
-            </span>
 
             <span className="flex flex-col items-start flex-1 mt-4">
               <span className="text-md">Agenda</span>
