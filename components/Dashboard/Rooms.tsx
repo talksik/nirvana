@@ -31,7 +31,6 @@ import { getTime } from "../../helpers/dateTime";
 enum RoomTypeFilter {
   team = "team",
   me = "me",
-  live = "live",
   archived = "archived",
 }
 
@@ -154,7 +153,6 @@ export default function DashboardRoom() {
       room.members.includes(currUser.uid) && room.status != RoomStatus.archived
   );
 
-  const liveRooms = allRooms.filter((room) => room.status == RoomStatus.live);
   const archivedRooms = allRooms.filter(
     (room) => room.status == RoomStatus.archived
   );
@@ -367,18 +365,6 @@ export default function DashboardRoom() {
             </div>
           </>
         );
-
-      case RoomTypeFilter.live:
-        return liveRooms.map((room) => {
-          // if the room is
-          return (
-            <RoomCard
-              key={room.id}
-              room={room}
-              updateRoomHandler={handleUpdateRoom}
-            />
-          );
-        });
       case RoomTypeFilter.archived:
         return archivedRooms.map((room) => {
           // if the room is
@@ -483,12 +469,6 @@ export default function DashboardRoom() {
               {RoomTypeFilter.team}{" "}
               <span className="text-xs text-orange-500">
                 {teamRooms.length}
-              </span>
-            </Radio.Button>
-            <Radio.Button value={RoomTypeFilter.live}>
-              {RoomTypeFilter.live}{" "}
-              <span className="text-xs text-orange-500">
-                {liveRooms.length > 0 ? liveRooms.length : ""}
               </span>
             </Radio.Button>
             <Radio.Button value={RoomTypeFilter.archived}>
