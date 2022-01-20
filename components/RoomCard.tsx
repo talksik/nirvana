@@ -1,7 +1,7 @@
 import { BsThreeDots } from "react-icons/bs";
-import { FaBell, FaClock, FaLink, FaPlus } from "react-icons/fa";
+import { FaBell, FaCalendarDay, FaClock, FaLink, FaPlus } from "react-icons/fa";
 import { IoTimer } from "react-icons/io5";
-import Room, { RoomStatus } from "../models/room";
+import Room, { RoomStatus, RoomType } from "../models/room";
 import RoomTypeTag from "./RoomTypeTag";
 import Image from "next/image";
 import { useAuth } from "../contexts/authContext";
@@ -15,6 +15,8 @@ import { useState } from "react";
 import SkeletonLoader from "./Loading/skeletonLoader";
 import { useKeyboardContext } from "../contexts/keyboardContext";
 import UserService from "../services/userService";
+import Moment from "react-moment";
+import moment from "moment";
 
 interface IRoomCardProps {
   room: Room;
@@ -221,20 +223,43 @@ export default function RoomCard(props: IRoomCardProps) {
     </div>
   );
 
+  var dateTimeScheduled = null;
+  if (props.room.type == RoomType.scheduled) {
+    dateTimeScheduled = props.room.scheduledDateTime.toDate();
+  }
+
+  function renderTopRightCardInfo() {
+    if (props.room.type == RoomType.scheduled && props.room.scheduledDateTime) {
+      return (
+        <>
+          <span className="text-sky-700 bg-sky-200 p-1 rounded-md text-xs font-bold flex flex-row items-center space-x-1">
+            <FaCalendarDay />
+            <Moment date={dateTimeScheduled} format="ddd" />
+          </span>
+
+          <span className="text-emerald-700 bg-emerald-200 p-1 rounded-md text-xs font-bold mt-2 flex flex-row items-center space-x-1">
+            <FaClock />
+            <Moment date={dateTimeScheduled} format="h:mm a" />
+          </span>
+        </>
+      );
+    }
+  }
+
   return (
     <span
       className={`flex flex-col ${
         isUserInRoom ? " bg-white bg-opacity-80" : "bg-gray-300 bg-opacity-25"
-      }  rounded-lg justify-between w-96 max-w-screen-sm m-2 shrink-0 h-[12rem]`}
+      }  rounded-lg justify-between w-96 m-2 shrink-0 h-[12rem]`}
     >
       {/* header */}
-      <span className="flex flex-row justify-between items-baseline space-x-1 p-5 h-full">
+      <span className="flex flex-row justify-between items-start space-x-1 p-5 h-full">
         {/* meeting details */}
-        <span className="flex flex-col items-baseline justify-start max-w-xs pr-20 h-full">
+        <span className="flex flex-col items-baseline justify-start max-w-xs h-full">
           <span
             className={`${
               isUserInRoom ? " text-gray-500" : "text-white"
-            } font-semibold mr-auto`}
+            } font-semibold`}
           >
             {props.room.name}
           </span>
@@ -260,11 +285,9 @@ export default function RoomCard(props: IRoomCardProps) {
         </span>
 
         {/* room status and link(s) */}
-        <span className="flex flex-col items-end justify-between h-full">
-          <RoomTypeTag
-            roomType={props.room.type}
-            roomStatus={props.room.status}
-          />
+        <span className="flex flex-col items-end justify-between h-full w-fit">
+          {renderTopRightCardInfo()}
+
           <span
             className={`${
               isUserInRoom ? "text-gray-400" : "text-gray-200"

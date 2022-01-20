@@ -25,6 +25,7 @@ import { Divider, Dropdown, Menu, Radio, Tooltip } from "antd";
 import RoomCard from "../RoomCard";
 import toast from "react-hot-toast";
 import RoomTypeTag from "../RoomTypeTag";
+import moment from "moment";
 
 enum RoomTypeFilter {
   team = "team",
@@ -41,6 +42,7 @@ enum RoomTimeFilter {
 
 const db = getFirestore();
 
+const today = new Date();
 const lastWeek = new Date();
 lastWeek.setDate(lastWeek.getDate() - 7);
 const nextWeek = new Date();
@@ -74,7 +76,7 @@ export default function DashboardRoom() {
     });
   }, []);
 
-  // get scheduled rooms data realtime
+  // get scheduled rooms data realtime: the ones with the date range
   useEffect(() => {
     /**
      * QUERY:
@@ -208,10 +210,6 @@ export default function DashboardRoom() {
                 roomStatus={RoomStatus.empty}
                 roomType={RoomType.scheduled}
               />
-            </span>
-            <span className="text-gray-200">
-              Your next room is in{" "}
-              <span className="text-orange-500">20 minutes</span>
             </span>
             <div className="flex flex-row overflow-x-auto">
               {scheduled.map((room) => (

@@ -100,26 +100,20 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
         newRoom.status = RoomStatus.live;
       } else if (roomType == RoomType.scheduled) {
         // make sure that either appx or time picker is selected, not both
-        if (roomAppxDateTime && dateTimePicker) {
-          toast.error(
-            "Please only select an approximate slot or specific time, not both!"
-          );
+        if (!dateTimePicker) {
+          toast.error("Please select a date and time!");
           return;
-        } else if (roomAppxDateTime) {
-          newRoom.approximateDateTime = roomAppxDateTime;
-        } else {
-          newRoom.scheduledDateTime = Timestamp.fromDate(
-            dateTimePicker.toDate()
-          );
         }
+
+        newRoom.approximateDateTime = null;
+
+        newRoom.scheduledDateTime = Timestamp.fromDate(dateTimePicker.toDate());
       } else if (roomType == RoomType.recurring) {
         // clear the field for the time picker if they ever selected that
         newRoom.scheduledDateTime = null;
 
         newRoom.approximateDateTime = roomAppxDateTime;
       }
-
-      // newRoom.approximateDateTime = roomAppxDateTime;
 
       newRoom.link = roomLink;
       newRoom.members = [...membersSelected]; // add currUser to the list of "people"
@@ -287,31 +281,32 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
             </Radio.Button>
           </Radio.Group>
 
-          {roomType == RoomType.recurring || roomType == RoomType.scheduled ? (
-            <div className="flex flex-row items-center">
-              <Tooltip
-                title={`Put things like "ping me when ready" or "sometime this afternoon"`}
-              >
-                <span className="flex flex-col items-stretch flex-1 mt-4">
-                  <span className="text-md">Approximate Slot</span>
-                  <span className="text-gray-300 text-xs mb-2 flex-1">
-                    Sometimes you don&#39;t have a specific time or want to
-                    propose a rough period.
-                  </span>
-                  <input
-                    placeholder="ex. 2pm-ish...after lunch...every evening"
-                    className="w-full rounded-lg bg-gray-50 p-3"
-                    value={roomAppxDateTime}
-                    onChange={(e) => setRoomAppxDateTime(e.target.value)}
-                  />
+          {roomType == RoomType.recurring ? (
+            <Tooltip
+              title={`Put things like "ping me when ready" or "sometime this afternoon"`}
+            >
+              <span className="flex flex-col items-stretch flex-1 mt-4">
+                <span className="text-md">Approximate Slot</span>
+                <span className="text-gray-300 text-xs mb-2 flex-1">
+                  Sometimes you don&#39;t have a specific time or want to
+                  propose a rough period.
                 </span>
-              </Tooltip>
-              {roomType == RoomType.scheduled ? (
-                <>
-                  <span className="text-orange-500 mx-5 font-bold">OR</span>
-                  <span className="flex flex-col items-start flex-1 mt-4">
-                    <span className="text-md">Specific Time</span>
-                    {/* <TimePicker
+                <input
+                  placeholder="ex. 2pm-ish...after lunch...every evening"
+                  className="w-full rounded-lg bg-gray-50 p-3"
+                  value={roomAppxDateTime}
+                  onChange={(e) => setRoomAppxDateTime(e.target.value)}
+                />
+              </span>
+            </Tooltip>
+          ) : (
+            <></>
+          )}
+
+          {roomType == RoomType.scheduled ? (
+            <span className="flex flex-col items-start flex-1 mt-4">
+              <span className="text-md">Specific Time</span>
+              {/* <TimePicker
                       minuteStep={15}
                       use12Hours
                       format="h:mm a"
@@ -320,22 +315,17 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
                       onChange={handleTimePickerChange}
                     /> */}
 
-                    <DatePicker
-                      minuteStep={15}
-                      use12Hours
-                      format="YYYY-MM-DD h:mm a"
-                      showTime={{
-                        defaultValue: moment("10:00:00", "h:mm a"),
-                      }}
-                      value={dateTimePicker}
-                      onChange={handleDateTimePickerChange}
-                    />
-                  </span>
-                </>
-              ) : (
-                <></>
-              )}
-            </div>
+              <DatePicker
+                minuteStep={15}
+                use12Hours
+                format="YYYY-MM-DD h:mm a"
+                showTime={{
+                  defaultValue: moment("10:00:00", "h:mm a"),
+                }}
+                value={dateTimePicker}
+                onChange={handleDateTimePickerChange}
+              />
+            </span>
           ) : (
             <></>
           )}

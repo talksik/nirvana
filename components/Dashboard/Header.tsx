@@ -35,6 +35,8 @@ import UserStatusBubble from "../UserStatusBubble";
 
 const teamService = new TeamService();
 
+const today = new Date();
+
 export default function Header() {
   const { currUser, logOut } = useAuth();
   const { team, user, userTeamMember } = useTeamDashboardContext();
@@ -278,7 +280,6 @@ export default function Header() {
     );
   }
 
-  const today = new Date();
   const periodOfDay = generateGreetings();
 
   return (
