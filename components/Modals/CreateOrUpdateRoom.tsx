@@ -319,9 +319,6 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
                 minuteStep={15}
                 use12Hours
                 format="YYYY-MM-DD h:mm a"
-                showTime={{
-                  defaultValue: moment("10:00:00", "h:mm a"),
-                }}
                 value={dateTimePicker}
                 onChange={handleDateTimePickerChange}
               />
