@@ -100,8 +100,8 @@ export default function Home() {
           </span>
 
           <span className="text-left text-lg mb-5 text-gray-700">
-            In today's distracted world, we mistake using 10 software and tools
-            for productivity.
+            In today&apos;s distracted world, we mistake using 10 software and
+            tools for productivity.
           </span>
 
           <span className="text-left text-lg text-gray-700">
