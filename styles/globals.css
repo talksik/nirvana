@@ -137,8 +137,40 @@ p {
 
 .landing-page-bg {
   background-image: url("/wallpapers/glassmorphic.jpg");
+  background-size: 150% 150%;
+  background-repeat: no-repeat;
 }
 
-/* body {
-  background-image: url("/wallpapers/glassmorphic.jpg");
-} */
+.flippingWords {
+  animation: spin_words 6s infinite;
+}
+.flippingWordsSecond {
+  /* animation: spin_words 6s infinite; */
+}
+
+@keyframes spin_words {
+  10% {
+    transform: translateY(-95%);
+  }
+  25% {
+    transform: translateY(-85%);
+  }
+  35% {
+    transform: translateY(-195%);
+  }
+  50% {
+    transform: translateY(-185%);
+  }
+  60% {
+    transform: translateY(-295%);
+  }
+  75% {
+    transform: translateY(-285%);
+  }
+  85% {
+    transform: translateY(-395%);
+  }
+  100% {
+    transform: translateY(-385%);
+  }
+}

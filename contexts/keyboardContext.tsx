@@ -227,6 +227,7 @@ export default function KeyboardContextProvider({ children }) {
 
   // first load just force check if permissions enabled
   // through fake stream
+  // todo: only call this when starting to record and do it with a usecallback
   useEffect(() => {
     try {
       // won't work in https!!!
