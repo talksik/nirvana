@@ -13,3 +13,7 @@ export function generateGreetings(): string {
 
   return "Good morning";
 }
+
+export function getTime(date?: Date) {
+  return date != null ? date.getTime() : 0;
+}

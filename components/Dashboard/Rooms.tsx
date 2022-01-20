@@ -26,6 +26,7 @@ import RoomCard from "../RoomCard";
 import toast from "react-hot-toast";
 import RoomTypeTag from "../RoomTypeTag";
 import moment from "moment";
+import { getTime } from "../../helpers/dateTime";
 
 enum RoomTypeFilter {
   team = "team",
@@ -184,6 +185,20 @@ export default function DashboardRoom() {
           (room) =>
             room.type == RoomType.scheduled && room.status == RoomStatus.empty
         );
+
+        // sorting array of scheduled rooms
+        scheduled.sort(function (a, b) {
+          // Turn your strings into dates, and then subtract them
+          // to get a value that is either negative, positive, or zero.
+          if (!b.scheduledDateTime) {
+            return -1;
+          }
+
+          return (
+            getTime(a.scheduledDateTime.toDate()) -
+            getTime(b.scheduledDateTime.toDate())
+          );
+        });
 
         return (
           <>

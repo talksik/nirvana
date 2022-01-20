@@ -1,5 +1,12 @@
 import { BsThreeDots } from "react-icons/bs";
-import { FaBell, FaCalendarDay, FaClock, FaLink, FaPlus } from "react-icons/fa";
+import {
+  FaArchive,
+  FaBell,
+  FaCalendarDay,
+  FaClock,
+  FaLink,
+  FaPlus,
+} from "react-icons/fa";
 import { IoTimer } from "react-icons/io5";
 import Room, { RoomStatus, RoomType } from "../models/room";
 import RoomTypeTag from "./RoomTypeTag";
@@ -25,6 +32,8 @@ interface IRoomCardProps {
 
 const roomService = new RoomService();
 const userService = new UserService();
+
+const today = new Date();
 
 export default function RoomCard(props: IRoomCardProps) {
   const { currUser } = useAuth();
@@ -114,7 +123,7 @@ export default function RoomCard(props: IRoomCardProps) {
 
     return (
       <Tooltip title={listOfNames}>
-        <span className="inline-flex flex-row-reverse items-center shrink-0 mr-1">
+        <span className="inline-flex flex-row-reverse items-center shrink-0 mr-auto">
           <Avatar.Group>
             {allMembersInRoom.map((user, i) => {
               return (
@@ -223,9 +232,17 @@ export default function RoomCard(props: IRoomCardProps) {
     </div>
   );
 
+  // handle specifics for a scheduled room
   var dateTimeScheduled = null;
+  var isPastRoom = false; // signal user to archive this room if it's past
   if (props.room.type == RoomType.scheduled) {
     dateTimeScheduled = props.room.scheduledDateTime.toDate();
+
+    // check if the moment date scheduled is future or past
+
+    if (moment(today).diff(moment(dateTimeScheduled)) > 0) {
+      isPastRoom = true;
+    }
   }
 
   function renderTopRightCardInfo() {
@@ -234,7 +251,7 @@ export default function RoomCard(props: IRoomCardProps) {
         <>
           <span className="text-sky-700 bg-sky-200 p-1 rounded-md text-xs font-bold flex flex-row items-center space-x-1">
             <FaCalendarDay />
-            <Moment date={dateTimeScheduled} format="ddd" />
+            <Moment date={dateTimeScheduled} format="ddd Do" />
           </span>
 
           <span className="text-emerald-700 bg-emerald-200 p-1 rounded-md text-xs font-bold mt-2 flex flex-row items-center space-x-1">
@@ -326,19 +343,34 @@ export default function RoomCard(props: IRoomCardProps) {
       </span>
 
       {/* footer */}
-      <span className="flex flex-row items-center bg-gray-400 bg-opacity-30 p-3">
+      <span className="flex flex-row justify-end items-center bg-gray-400 bg-opacity-30 p-3">
         {membersInRoom()}
+
+        {/* tell them to archive if it's past */}
+        {isPastRoom ? (
+          <Tooltip title={"please archive this meeting, it is over"}>
+            <button
+              onClick={handleArchivingRoom}
+              className="flex flex-row items-center space-x-2 text-sm mx-2 text-orange-500 font-semibold py-1 px-4 bg-gray-200 rounded"
+            >
+              <FaArchive /> <span>Archive</span>
+            </button>
+          </Tooltip>
+        ) : (
+          <></>
+        )}
+
         {isUserInRoom ? (
           <button
             onClick={handleLeavingRoom}
-            className="ml-auto text-sm text-orange-500 font-semibold py-1 px-4 bg-gray-200 rounded"
+            className="text-sm text-orange-500 font-semibold py-1 px-4 bg-gray-200 rounded"
           >
             👋 Leave
           </button>
         ) : (
           <button
             onClick={handleJoiningRoom}
-            className="ml-auto text-sm font-semibold py-1 px-4 rounded bg-gray-300 text-green-500"
+            className="text-sm font-semibold py-1 px-4 rounded bg-gray-200 text-green-500"
           >
             Join
           </button>
