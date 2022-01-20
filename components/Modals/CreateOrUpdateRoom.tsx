@@ -98,6 +98,12 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
         // make sure approximate time isn't selected
         newRoom.approximateDateTime = null;
         newRoom.status = RoomStatus.live;
+
+        // automatically add me to the room
+        newRoom.membersInRoom = [currUser.uid];
+
+        // navigate to the new room automatically
+        window.open(roomLink, "_blank");
       } else if (roomType == RoomType.scheduled) {
         // make sure that either appx or time picker is selected, not both
         if (!dateTimePicker) {
