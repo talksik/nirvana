@@ -117,7 +117,7 @@ export default function Home() {
         </div>
 
         {/*  voice line concept */}
-        <div className="mx-auto flex flex-row md:flex-wrap overflow-x-scroll items-start justify-between md:mt-[15rem] mt-[5rem] pb-20">
+        <div className="mx-auto flex flex-row md:overflow-visible overflow-x-scroll items-start justify-between md:mt-[15rem] mt-[5rem] pb-20">
           <span className="flex flex-col grow max-w-sm rounded-lg bg-gray-200 bg-opacity-25 backdrop-blur-xl p-10">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
               Voice Line
