@@ -42,6 +42,8 @@ const db = getFirestore();
 
 const lastWeek = new Date();
 lastWeek.setDate(lastWeek.getDate() - 7);
+const nextWeek = new Date();
+nextWeek.setDate(nextWeek.getDate() + 7);
 
 export default function DashboardRoom() {
   const { currUser } = useAuth();
@@ -52,40 +54,83 @@ export default function DashboardRoom() {
     new Map<string, Room>()
   );
 
-  // get rooms data realtime
+  // get recurring rooms data realtime: ALL of them
   useEffect(() => {
     /**
      * QUERY:
-     * all rooms in the past week
-     * order createdDate desc
+     * all recurring rooms, as the created date can be a year ago
      *
      */
     const q = query(
       collection(db, Collections.rooms),
       where("teamId", "==", team.id),
-      where("createdDate", ">", lastWeek),
-      orderBy("createdDate", "desc")
+      where("type", "==", RoomType.recurring)
     );
 
     // return unsubscribe
     return onSnapshot(q, (snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        let updatedRoom = change.doc.data() as Room;
-        updatedRoom.id = change.doc.id;
-
-        if (change.type === "added" || change.type === "modified") {
-          console.log("New or updated room: ", updatedRoom);
-          // update rooms map
-          setRoomsMap((prevMap) => {
-            return new Map(prevMap.set(updatedRoom.id, updatedRoom));
-          });
-        }
-        if (change.type === "removed") {
-          console.log("Removed room: ", updatedRoom);
-        }
-      });
+      snapshot.docChanges().forEach(handleDocChange);
     });
   }, []);
+
+  // get scheduled rooms data realtime
+  useEffect(() => {
+    /**
+     * QUERY:
+     * all scheduled rooms in the past 7 days or the next 7 days
+     *
+     */
+    const q = query(
+      collection(db, Collections.rooms),
+      where("teamId", "==", team.id),
+      where("type", "==", RoomType.scheduled),
+      where("scheduledDateTime", ">", lastWeek),
+      where("scheduledDateTime", "<", nextWeek),
+      orderBy("scheduledDateTime", "asc")
+    );
+
+    // return unsubscribe
+    return onSnapshot(q, (snapshot) => {
+      snapshot.docChanges().forEach(handleDocChange);
+    });
+  }, []);
+
+  // get now rooms data realtime
+  useEffect(() => {
+    /**
+     * QUERY:
+     * all live/now rooms going on right now
+     *
+     */
+    const q = query(
+      collection(db, Collections.rooms),
+      where("teamId", "==", team.id),
+      where("type", "==", RoomType.now),
+      where("createdDate", ">", lastWeek),
+      orderBy("createdDate", "asc")
+    );
+
+    // return unsubscribe
+    return onSnapshot(q, (snapshot) => {
+      snapshot.docChanges().forEach(handleDocChange);
+    });
+  }, []);
+
+  function handleDocChange(change) {
+    let updatedRoom = change.doc.data() as Room;
+    updatedRoom.id = change.doc.id;
+
+    if (change.type === "added" || change.type === "modified") {
+      console.log("New or updated room: ", updatedRoom);
+      // update rooms map
+      setRoomsMap((prevMap) => {
+        return new Map(prevMap.set(updatedRoom.id, updatedRoom));
+      });
+    }
+    if (change.type === "removed") {
+      console.log("Removed room: ", updatedRoom);
+    }
+  }
 
   // on CTRL + Q, new tab to google meet
   // on CTRL + V, show modal to create meeting with the link
@@ -94,7 +139,9 @@ export default function DashboardRoom() {
     RoomTypeFilter.me
   );
 
+  // sort this mega array
   const allRooms = Array.from(roomsMap.values());
+
   const teamRooms = allRooms.filter(
     (room) => room.status != RoomStatus.archived
   );
@@ -112,15 +159,106 @@ export default function DashboardRoom() {
     // return data based on the selected filters
     switch (selectedTabPane) {
       case RoomTypeFilter.team:
-        return teamRooms;
+        return teamRooms.map((room) => {
+          // if the room is
+          return (
+            <RoomCard
+              key={room.id}
+              room={room}
+              updateRoomHandler={handleUpdateRoom}
+            />
+          );
+        });
       case RoomTypeFilter.me:
-        return meRooms;
+        // render sections for different types
+
+        const recurring = meRooms.filter(
+          (room) => room.type == RoomType.recurring
+        );
+        const now = meRooms.filter((room) => room.status == RoomStatus.live);
+        const scheduled = meRooms.filter(
+          (room) => room.type == RoomType.scheduled
+        );
+
+        return (
+          <>
+            <span>Live</span>
+            <div className="flex flex-row overflow-x-auto">
+              {now.map((room) => (
+                <RoomCard
+                  key={room.id}
+                  room={room}
+                  updateRoomHandler={handleUpdateRoom}
+                />
+              ))}
+            </div>
+
+            <span>Scheduled</span>
+            <div className="flex flex-row overflow-x-auto">
+              {scheduled.map((room) => (
+                <RoomCard
+                  key={room.id}
+                  room={room}
+                  updateRoomHandler={handleUpdateRoom}
+                />
+              ))}
+            </div>
+
+            <span>Recurring</span>
+            <div className="flex flex-row overflow-x-auto">
+              {recurring.map((room) => (
+                <RoomCard
+                  key={room.id}
+                  room={room}
+                  updateRoomHandler={handleUpdateRoom}
+                />
+              ))}
+            </div>
+          </>
+        );
+
+      // return meRooms.map((room) => {
+      //   return (
+      //     <RoomCard
+      //       key={room.id}
+      //       room={room}
+      //       updateRoomHandler={handleUpdateRoom}
+      //     />
+      //   );
+      // });
       case RoomTypeFilter.live:
-        return liveRooms;
+        return liveRooms.map((room) => {
+          // if the room is
+          return (
+            <RoomCard
+              key={room.id}
+              room={room}
+              updateRoomHandler={handleUpdateRoom}
+            />
+          );
+        });
       case RoomTypeFilter.archived:
-        return archivedRooms;
+        return archivedRooms.map((room) => {
+          // if the room is
+          return (
+            <RoomCard
+              key={room.id}
+              room={room}
+              updateRoomHandler={handleUpdateRoom}
+            />
+          );
+        });
       default:
-        return allRooms;
+        return allRooms.map((room) => {
+          // if the room is
+          return (
+            <RoomCard
+              key={room.id}
+              room={room}
+              updateRoomHandler={handleUpdateRoom}
+            />
+          );
+        });
     }
   }
 
@@ -164,7 +302,7 @@ export default function DashboardRoom() {
   }
 
   return (
-    <section className="p-5 flex-1 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md flex-shrink-0">
+    <section className="p-5 grow shrink-0 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md">
       {/*  modal for creating room */}
       <CreateOrUpdateRoom
         show={showModalType == ShowModalType.createRoom}
@@ -240,17 +378,7 @@ export default function DashboardRoom() {
       </Tooltip>
 
       {/* all rooms */}
-      <span className="flex flex-row flex-wrap overflow-auto h-[32rem]">
-        {getRoomContent().map((room) => {
-          return (
-            <RoomCard
-              key={room.id}
-              room={room}
-              updateRoomHandler={handleUpdateRoom}
-            />
-          );
-        })}
-      </span>
+      <span className="h-[32rem] overflow-auto">{getRoomContent()}</span>
     </section>
   );
 }

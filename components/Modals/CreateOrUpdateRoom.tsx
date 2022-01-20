@@ -1,4 +1,15 @@
-import { Divider, Modal, Radio, Select, Switch, Tooltip } from "antd";
+import {
+  DatePicker,
+  Divider,
+  Modal,
+  Radio,
+  Select,
+  Switch,
+  TimePicker,
+  Tooltip,
+} from "antd";
+import { Timestamp } from "firebase/firestore";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useAuth } from "../../contexts/authContext";
@@ -41,6 +52,13 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
       setMembersSelected(props.updateRoom.members);
       setRoomType(props.updateRoom.type);
       setRoomAppxDateTime(props.updateRoom.approximateDateTime);
+
+      if (props.updateRoom.scheduledDateTime) {
+        const convertedToMoment = moment(
+          props.updateRoom.scheduledDateTime.toDate()
+        );
+        setDateTimePicker(convertedToMoment);
+      }
     } else {
       // update state when user does ctrl + v
       resetForm();
@@ -77,10 +95,32 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
       }
 
       if (roomType == RoomType.now) {
+        // make sure approximate time isn't selected
+        newRoom.approximateDateTime = null;
         newRoom.status = RoomStatus.live;
+      } else if (roomType == RoomType.scheduled) {
+        // make sure that either appx or time picker is selected, not both
+        if (roomAppxDateTime && dateTimePicker) {
+          toast.error(
+            "Please only select an approximate slot or specific time, not both!"
+          );
+          return;
+        } else if (roomAppxDateTime) {
+          newRoom.approximateDateTime = roomAppxDateTime;
+        } else {
+          newRoom.scheduledDateTime = Timestamp.fromDate(
+            dateTimePicker.toDate()
+          );
+        }
+      } else if (roomType == RoomType.recurring) {
+        // clear the field for the time picker if they ever selected that
+        newRoom.scheduledDateTime = null;
+
+        newRoom.approximateDateTime = roomAppxDateTime;
       }
 
-      newRoom.approximateDateTime = roomAppxDateTime;
+      // newRoom.approximateDateTime = roomAppxDateTime;
+
       newRoom.link = roomLink;
       newRoom.members = [...membersSelected]; // add currUser to the list of "people"
       newRoom.type = roomType;
@@ -94,13 +134,15 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
         newRoom.membersInRoom = props.updateRoom.membersInRoom;
       }
 
+      console.log(newRoom);
+
+      handleModalType(ShowModalType.na);
+
       await roomService.createOrUpdateRoom(newRoom);
 
       resetForm();
 
       toast.success("done");
-
-      handleModalType(ShowModalType.na);
     } catch (error) {
       toast.error("problem creating room");
       console.log(error);
@@ -116,6 +158,8 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
     setRoomAppxDateTime("");
     setRoomType(RoomType.now);
 
+    setDateTimePicker(null);
+
     setShowMoreDetails(false);
   }
 
@@ -130,6 +174,7 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
 
   const [roomType, setRoomType] = useState<RoomType>(RoomType.now);
   const [roomAppxDateTime, setRoomAppxDateTime] = useState<string>(""); // for certain room types
+  const [dateTimePicker, setDateTimePicker] = useState(null);
 
   const [showMoreDetails, setShowMoreDetails] = useState<boolean>(false);
 
@@ -139,6 +184,14 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
     setMembersSelected(value);
 
     console.log(value);
+  }
+
+  function handleDateTimePickerChange(time) {
+    console.log(time);
+
+    setRoomAppxDateTime("");
+
+    setDateTimePicker(time);
   }
 
   const allUsersForSelection: User[] = [...teamUsers, user];
@@ -235,23 +288,54 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
           </Radio.Group>
 
           {roomType == RoomType.recurring || roomType == RoomType.scheduled ? (
-            <Tooltip
-              title={`Put things like "ping me when ready" or "sometime this afternoon"`}
-            >
-              <span className="flex flex-col items-start flex-1 mt-4">
-                <span className="text-md">Approximate Slot</span>
-                <span className="text-gray-300 text-xs mb-2 flex-1">
-                  The calendar way of doing things is overwhelming. Put a rough
-                  day/time that makes sense to you.
+            <div className="flex flex-row items-center">
+              <Tooltip
+                title={`Put things like "ping me when ready" or "sometime this afternoon"`}
+              >
+                <span className="flex flex-col items-stretch flex-1 mt-4">
+                  <span className="text-md">Approximate Slot</span>
+                  <span className="text-gray-300 text-xs mb-2 flex-1">
+                    Sometimes you don&#39;t have a specific time or want to
+                    propose a rough period.
+                  </span>
+                  <input
+                    placeholder="ex. 2pm-ish...after lunch...every evening"
+                    className="w-full rounded-lg bg-gray-50 p-3"
+                    value={roomAppxDateTime}
+                    onChange={(e) => setRoomAppxDateTime(e.target.value)}
+                  />
                 </span>
-                <input
-                  placeholder="ex. 2pm-ish...after lunch...late evening"
-                  className="w-full rounded-lg bg-gray-50 p-3"
-                  value={roomAppxDateTime}
-                  onChange={(e) => setRoomAppxDateTime(e.target.value)}
-                />
-              </span>
-            </Tooltip>
+              </Tooltip>
+              {roomType == RoomType.scheduled ? (
+                <>
+                  <span className="text-orange-500 mx-5 font-bold">OR</span>
+                  <span className="flex flex-col items-start flex-1 mt-4">
+                    <span className="text-md">Specific Time</span>
+                    {/* <TimePicker
+                      minuteStep={15}
+                      use12Hours
+                      format="h:mm a"
+                      value={timePicker}
+                      defaultValue={moment(new Date())}
+                      onChange={handleTimePickerChange}
+                    /> */}
+
+                    <DatePicker
+                      minuteStep={15}
+                      use12Hours
+                      format="YYYY-MM-DD h:mm a"
+                      showTime={{
+                        defaultValue: moment("10:00:00", "h:mm a"),
+                      }}
+                      value={dateTimePicker}
+                      onChange={handleDateTimePickerChange}
+                    />
+                  </span>
+                </>
+              ) : (
+                <></>
+              )}
+            </div>
           ) : (
             <></>
           )}
@@ -286,7 +370,7 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
 
               <span className="text-gray-300 text-xs mb-2 flex-1">
                 Optional - Add any mandatory attendees you want or just tell
-                them later and they will see it in the team section.
+                them later and they will see it in the team rooms.
               </span>
               {MemberSelection()}
             </span>

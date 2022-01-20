@@ -18,8 +18,18 @@ export default class Room {
   status: RoomStatus = RoomStatus.empty;
 
   approximateDateTime: string; // vaguely say when the meeting should be...give user pointers
+  scheduledDateTime: Timestamp;
+
+  // scheduledJsDateTime(): Date {
+  //   return this.scheduledDateTime.toDate();
+  // }
 
   createdDate: Timestamp;
+
+  // createdJsDate(): Date {
+  //   return this.createdDate.toDate();
+  // }
+
   createdByUserId: string;
 
   teamId: string;

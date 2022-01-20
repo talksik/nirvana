@@ -225,7 +225,7 @@ export default function RoomCard(props: IRoomCardProps) {
     <span
       className={`flex flex-col ${
         isUserInRoom ? " bg-white bg-opacity-80" : "bg-gray-300 bg-opacity-25"
-      }  rounded-lg justify-between w-96 max-w-screen-sm m-2 overflow-clip h-56`}
+      }  rounded-lg justify-between w-96 max-w-screen-sm m-2 shink-0 h-56`}
     >
       {/* header */}
       <span className="flex flex-row justify-between items-baseline space-x-1 p-5 h-full">

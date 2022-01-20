@@ -98,8 +98,8 @@ export default function Links() {
       return false;
     }
 
-    // if I am the sender, then also show
-    if (link.createdByUserId == currUser.uid) {
+    // if I am the sender, then also show, but only if it's me sending to a specific person
+    if (link.createdByUserId == currUser.uid && link.recipients?.length > 0) {
       return true;
     }
 
@@ -222,7 +222,7 @@ export default function Links() {
       </Tooltip>
 
       {/* table of links */}
-      <div className="flex flex-row space-x-2 overflow-x-scroll py-2">
+      <div className="flex flex-row space-x-2 overflow-x-auto py-2">
         {getFilteredContent().map((link) => (
           <LinkCard key={link.id} link={link} />
         ))}
