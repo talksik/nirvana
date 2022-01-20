@@ -1,53 +1,33 @@
-import Head from 'next/head';
-import Image from 'next/image';
+import Head from "next/head";
+import Image from "next/image";
+
+import MainLogo from "../components/MainLogo";
 
 export default function Home() {
   return (
-    <div className='container m-20'>
-      <main className="space-y-10">
-        <p id="main-title">nirvana</p>
+    <>
+      <MainLogo className="fixed top-5 left-1/2 text-4xl" />
+      <div className="container mx-auto">
+        {/* header */}
+        <div className="flex flex-row py-5 px-5 items-center justify-start mx-auto">
+          <span className="flex flex-row space-x-5">
+            <span className="font-bold underline decoration-slate-400 underline-offset-4">
+              Home
+            </span>
+            <span className="text-gray-300">Features</span>
+            <span className="text-gray-300">Pricing</span>
+          </span>
 
-        <p>🍃your minimalist social media</p>
+          <span className="ml-auto text-gray-300 mr-5">Log In</span>
+          <button className="rounded bg-teal-600 p-2 text-white shadow-lg">
+            Get Demo
+          </button>
+        </div>
 
-        <p>
-          tired of the rat race on{' '}
-          <font className='text-gray-500'>insta, tiktok, snap, &quot;meta&quot;...</font>?
-        </p>
-
-        <p>
-          start your detox with us and:
-          <br />
-          - live in the present
-          <br />
-          - build a more intimate inner circle
-          <br />
-          - cut out the noise
-          <br />
-          - focus on your personal goals
-          <br />
-        </p>
-
-        <p>
-          wanna test the beta? text us @ <font className='text-gray-300'>949.237.2715</font>
-        </p>
-
-        {/* <marquee
-          direction="left"
-          width="100%"
-          height="100%"
-          behavior="scroll"
-          scrollamount="12"
-          offset="0%"
-        >
-          <p id="marquee-text">waitlist currently sitting at 2,324 people...</p>
-        </marquee> */}
-
-        <p id="side-note">
-          p.s. we don&apos;t sell your data or hire phd&apos;s to drug you...
-          <br />
-          <Image src="/zuck.jpg" alt="mark zuckerberg" width={60} height={60} />
-        </p>
-      </main>
-    </div>
+        <div className="flex flex-col justify-center items-center">
+          <span></span>
+        </div>
+      </div>
+    </>
   );
 }
