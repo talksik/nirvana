@@ -55,7 +55,7 @@ export default function Home() {
             <span className="md:hidden flex flex-row space-x-2 py-4 text-red-600">
               <FaSlackHash /> <span>slacking</span>
             </span>
-            <span className="md:flippingWords hidden md:flex flex-col space-y-5 text-red-600 ">
+            <span className="hidden flippingWords md:visible md:flex flex-col space-y-5 text-red-600 ">
               <span className="flex flex-row space-x-2">
                 <FaRocketchat /> <span>threads</span>
               </span>
