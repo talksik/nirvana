@@ -331,6 +331,7 @@ export default function DashboardRoom() {
                 {"You have your next one "}{" "}
                 <span className="text-orange-500">
                   {relativeTimeNextMeeting}
+                  {"."}
                 </span>
               </span>
             ) : (
