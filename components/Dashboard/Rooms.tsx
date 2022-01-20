@@ -21,9 +21,10 @@ import { Collections } from "../../services/collections";
 import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
 import Room, { RoomStatus, RoomType } from "../../models/room";
 import { useAuth } from "../../contexts/authContext";
-import { Dropdown, Menu, Radio, Tooltip } from "antd";
+import { Divider, Dropdown, Menu, Radio, Tooltip } from "antd";
 import RoomCard from "../RoomCard";
 import toast from "react-hot-toast";
+import RoomTypeTag from "../RoomTypeTag";
 
 enum RoomTypeFilter {
   team = "team",
@@ -177,12 +178,18 @@ export default function DashboardRoom() {
         );
         const now = meRooms.filter((room) => room.status == RoomStatus.live);
         const scheduled = meRooms.filter(
-          (room) => room.type == RoomType.scheduled
+          (room) =>
+            room.type == RoomType.scheduled && room.status == RoomStatus.empty
         );
 
         return (
           <>
-            <span>Live</span>
+            <span className="flex flex-row justify-start">
+              <RoomTypeTag
+                roomStatus={RoomStatus.live}
+                roomType={RoomType.now}
+              />
+            </span>
             <div className="flex flex-row overflow-x-auto">
               {now.map((room) => (
                 <RoomCard
@@ -193,7 +200,18 @@ export default function DashboardRoom() {
               ))}
             </div>
 
-            <span>Scheduled</span>
+            <Divider className="bg-gray-400" />
+
+            <span className="flex flex-row justify-start">
+              <RoomTypeTag
+                roomStatus={RoomStatus.empty}
+                roomType={RoomType.scheduled}
+              />
+            </span>
+            <span className="text-gray-200">
+              Your next room is in{" "}
+              <span className="text-orange-500">20 minutes</span>
+            </span>
             <div className="flex flex-row overflow-x-auto">
               {scheduled.map((room) => (
                 <RoomCard
@@ -204,7 +222,14 @@ export default function DashboardRoom() {
               ))}
             </div>
 
-            <span>Recurring</span>
+            <Divider className="bg-gray-400" />
+
+            <span className="flex flex-row justify-start">
+              <RoomTypeTag
+                roomStatus={RoomStatus.empty}
+                roomType={RoomType.recurring}
+              />
+            </span>
             <div className="flex flex-row overflow-x-auto">
               {recurring.map((room) => (
                 <RoomCard
