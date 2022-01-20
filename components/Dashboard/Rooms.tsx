@@ -157,20 +157,65 @@ export default function DashboardRoom() {
     (room) => room.status == RoomStatus.archived
   );
 
+  // data for different meRooms
+  const recurring = meRooms.filter(
+    (room) => room.type == RoomType.recurring && room.status == RoomStatus.empty
+  );
+  const now = meRooms.filter(
+    (room) =>
+      (room.type == RoomType.now && room.status != RoomStatus.archived) ||
+      room.status == RoomStatus.live
+  );
+  const scheduled = meRooms.filter(
+    (room) => room.type == RoomType.scheduled && room.status == RoomStatus.empty
+  );
+
+  // sorting array of scheduled rooms
+  scheduled.sort(function (a, b) {
+    // Turn your strings into dates, and then subtract them
+    // to get a value that is either negative, positive, or zero.
+    if (!b.scheduledDateTime) {
+      return -1;
+    }
+
+    return (
+      getTime(a.scheduledDateTime.toDate()) -
+      getTime(b.scheduledDateTime.toDate())
+    );
+  });
+
+  var relativeTimeNextMeeting = "";
+
+  // go through scheduled and find the first one coming up
+  if (scheduled && scheduled.length > 0) {
+    const firstOneInFuture = scheduled.find(
+      (room) => moment(room.scheduledDateTime.toDate()).diff(today) > 0
+    );
+
+    if (firstOneInFuture) {
+      const meetingDatetime: Date = firstOneInFuture.scheduledDateTime.toDate();
+      relativeTimeNextMeeting = moment(meetingDatetime).fromNow();
+    }
+  }
+
   function getRoomContent() {
     // return data based on the selected filters
     switch (selectedTabPane) {
       case RoomTypeFilter.team:
         // render sections for different types
 
-        const recurringTeam = meRooms.filter(
+        const recurringTeam = teamRooms.filter(
           (room) =>
             room.type == RoomType.recurring && room.status == RoomStatus.empty
         );
-        const nowTeam = meRooms.filter(
-          (room) => room.status == RoomStatus.live
+
+        const nowTeam = teamRooms.filter(
+          (room) =>
+            (room.type == RoomType.now && room.status != RoomStatus.archived) ||
+            room.status == RoomStatus.live
         );
-        const scheduledTeam = meRooms.filter(
+
+        const scheduledTeam = teamRooms.filter(
           (room) =>
             room.type == RoomType.scheduled && room.status == RoomStatus.empty
         );
@@ -191,13 +236,7 @@ export default function DashboardRoom() {
 
         return (
           <>
-            <span className="flex flex-row justify-start">
-              <RoomTypeTag
-                roomStatus={RoomStatus.live}
-                roomType={RoomType.now}
-              />
-            </span>
-            <div className="flex flex-row overflow-x-auto">
+            <div className="flex flex-row flex-wrap">
               {nowTeam.map((room) => (
                 <RoomCard
                   key={room.id}
@@ -205,28 +244,7 @@ export default function DashboardRoom() {
                   updateRoomHandler={handleUpdateRoom}
                 />
               ))}
-            </div>
 
-            <Divider className="bg-gray-400" />
-
-            <span className="flex flex-row justify-start">
-              <RoomTypeTag
-                roomStatus={RoomStatus.empty}
-                roomType={RoomType.scheduled}
-              />
-            </span>
-            {relativeTimeNextMeeting ? (
-              <span>
-                {"You have your next one "}{" "}
-                <span className="text-orange-500">
-                  {relativeTimeNextMeeting}
-                </span>
-              </span>
-            ) : (
-              <></>
-            )}
-
-            <div className="flex flex-row overflow-x-auto">
               {scheduledTeam.map((room) => (
                 <RoomCard
                   key={room.id}
@@ -234,17 +252,7 @@ export default function DashboardRoom() {
                   updateRoomHandler={handleUpdateRoom}
                 />
               ))}
-            </div>
 
-            <Divider className="bg-gray-400" />
-
-            <span className="flex flex-row justify-start">
-              <RoomTypeTag
-                roomStatus={RoomStatus.empty}
-                roomType={RoomType.recurring}
-              />
-            </span>
-            <div className="flex flex-row overflow-x-auto">
               {recurringTeam.map((room) => (
                 <RoomCard
                   key={room.id}
@@ -257,56 +265,9 @@ export default function DashboardRoom() {
         );
 
       case RoomTypeFilter.me:
-        // render sections for different types
-
-        const recurring = meRooms.filter(
-          (room) =>
-            room.type == RoomType.recurring && room.status == RoomStatus.empty
-        );
-        const now = meRooms.filter((room) => room.status == RoomStatus.live);
-        const scheduled = meRooms.filter(
-          (room) =>
-            room.type == RoomType.scheduled && room.status == RoomStatus.empty
-        );
-
-        // sorting array of scheduled rooms
-        scheduled.sort(function (a, b) {
-          // Turn your strings into dates, and then subtract them
-          // to get a value that is either negative, positive, or zero.
-          if (!b.scheduledDateTime) {
-            return -1;
-          }
-
-          return (
-            getTime(a.scheduledDateTime.toDate()) -
-            getTime(b.scheduledDateTime.toDate())
-          );
-        });
-
-        var relativeTimeNextMeeting = "";
-
-        // go through scheduled and find the first one coming up
-        if (scheduled && scheduled.length > 0) {
-          const firstOneInFuture = scheduled.find(
-            (room) => moment(room.scheduledDateTime.toDate()).diff(today) > 0
-          );
-
-          if (firstOneInFuture) {
-            const meetingDatetime: Date =
-              firstOneInFuture.scheduledDateTime.toDate();
-            relativeTimeNextMeeting = moment(meetingDatetime).fromNow();
-          }
-        }
-
         return (
           <>
-            <span className="flex flex-row justify-start">
-              <RoomTypeTag
-                roomStatus={RoomStatus.live}
-                roomType={RoomType.now}
-              />
-            </span>
-            <div className="flex flex-row overflow-x-auto">
+            <div className="flex flex-row flex-wrap">
               {now.map((room) => (
                 <RoomCard
                   key={room.id}
@@ -314,29 +275,7 @@ export default function DashboardRoom() {
                   updateRoomHandler={handleUpdateRoom}
                 />
               ))}
-            </div>
 
-            <Divider className="bg-gray-400" />
-
-            <span className="flex flex-row justify-start">
-              <RoomTypeTag
-                roomStatus={RoomStatus.empty}
-                roomType={RoomType.scheduled}
-              />
-            </span>
-            {relativeTimeNextMeeting ? (
-              <span>
-                {"You have your next one "}{" "}
-                <span className="text-orange-500">
-                  {relativeTimeNextMeeting}
-                  {"."}
-                </span>
-              </span>
-            ) : (
-              <></>
-            )}
-
-            <div className="flex flex-row overflow-x-auto">
               {scheduled.map((room) => (
                 <RoomCard
                   key={room.id}
@@ -344,17 +283,7 @@ export default function DashboardRoom() {
                   updateRoomHandler={handleUpdateRoom}
                 />
               ))}
-            </div>
 
-            <Divider className="bg-gray-400" />
-
-            <span className="flex flex-row justify-start">
-              <RoomTypeTag
-                roomStatus={RoomStatus.empty}
-                roomType={RoomType.recurring}
-              />
-            </span>
-            <div className="flex flex-row overflow-x-auto">
               {recurring.map((room) => (
                 <RoomCard
                   key={room.id}
@@ -430,7 +359,7 @@ export default function DashboardRoom() {
   }
 
   return (
-    <section className="p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md">
+    <section className="p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md h-[46rem] ">
       {/*  modal for creating room */}
       <CreateOrUpdateRoom
         show={showModalType == ShowModalType.createRoom}
@@ -452,7 +381,17 @@ export default function DashboardRoom() {
                 CTRL + Q
               </button>
             </span>
-            <span className="text-gray-300 text-xs"></span>
+            {relativeTimeNextMeeting ? (
+              <span className="text-gray-300 text-xs">
+                {"You have your next one "}{" "}
+                <span className="text-orange-500">
+                  {relativeTimeNextMeeting}
+                  {"."}
+                </span>
+              </span>
+            ) : (
+              <></>
+            )}
           </span>
 
           <Radio.Group
@@ -500,7 +439,7 @@ export default function DashboardRoom() {
       </Tooltip>
 
       {/* all rooms */}
-      <span className="h-[32rem] overflow-auto">{getRoomContent()}</span>
+      <span className="overflow-auto">{getRoomContent()}</span>
     </section>
   );
 }

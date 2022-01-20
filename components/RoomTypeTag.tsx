@@ -39,10 +39,11 @@ export default function RoomTypeTag(props: RoomTypeTagProps) {
 
     case RoomType.scheduled:
       return (
-        <span className={"text-blue-700 bg-blue-200 " + universalClassNames}>
-          <FaClock />
-          <span>scheduled</span>
-        </span>
+        <></>
+        // <span className={"text-blue-700 bg-blue-200 " + universalClassNames}>
+        //   <FaClock />
+        //   <span>scheduled</span>
+        // </span>
       );
 
     case RoomType.recurring:

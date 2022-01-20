@@ -303,6 +303,11 @@ export default function RoomCard(props: IRoomCardProps) {
 
         {/* room status and link(s) */}
         <span className="flex flex-col items-end justify-between h-full w-fit">
+          <RoomTypeTag
+            roomStatus={props.room.status}
+            roomType={props.room.type}
+          />
+
           {renderTopRightCardInfo()}
 
           <span
