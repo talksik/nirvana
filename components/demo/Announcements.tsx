@@ -12,7 +12,7 @@ export default function Announcements() {
             ANNOUNCEMENTS
             <button
               className="right-1 rounded-lg py-1 px-2 ml-1 
-                            shadow-md text-center text-gray-200 text-sm font-bold"
+                            shadow-md text-center text-gray-400 text-sm font-bold"
             >
               CTRL + A
             </button>
@@ -21,24 +21,24 @@ export default function Announcements() {
 
         {/* tab pane */}
         <span className="ml-auto flex flex-row space-x-5 uppercase mr-5">
-          <span className="underline underline-offset-8 decoration-white text-gray-200 hover:text-white hover:cursor-pointer">
+          <span className="underline underline-offset-8 decoration-gray-500 text-gray-500 hover:text-white hover:cursor-pointer">
             Active
           </span>
 
-          <span className="text-gray-300 hover:text-white hover:cursor-pointer">
+          <span className="text-gray-400 hover:text-white hover:cursor-pointer">
             Resolved
           </span>
         </span>
 
-        <span className="text-sm text-gray-300 flex flex-row items-center">
+        <span className="text-sm text-gray-400 flex flex-row items-center">
           TODAY <FaAngleDown />
         </span>
 
-        <button className="bg-gray-300 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40">
-          <FaMicrophoneAlt className="text-lg text-white" />
+        <button className="bg-gray-400 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40">
+          <FaMicrophoneAlt className="text-lg text-gray-500" />
         </button>
-        <button className="bg-gray-300 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40">
-          <FaPlay className="text-lg text-white" />
+        <button className="bg-gray-400 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40">
+          <FaPlay className="text-lg text-gray-500" />
         </button>
       </span>
 
@@ -57,8 +57,8 @@ export default function Announcements() {
           </span>
 
           <span className="flex flex-col items-baseline">
-            <span className="text-md font-bold text-white">Adriana</span>
-            <span className="text-xs text-gray-200">5 minutes ago</span>
+            <span className="text-md font-semibold text-gray-600">Adriana</span>
+            <span className="text-xs text-gray-400">5 minutes ago</span>
             <span className="text-xs text-white bg-red-400 p-1 rounded-md font-semibold flex flex-row items-center">
               <span>blockers</span>
             </span>
@@ -86,8 +86,8 @@ export default function Announcements() {
             </span>
           </span>
 
-          <button className="bg-gray-300 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40">
-            <FaCheck className="text-lg text-white" />
+          <button className="bg-gray-500 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40">
+            <FaCheck className="text-lg text-gray-500" />
           </button>
         </span>
       </div>
