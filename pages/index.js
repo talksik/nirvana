@@ -5,29 +5,30 @@ import MainLogo from "../components/MainLogo";
 
 export default function Home() {
   return (
-    <>
-      <MainLogo className="fixed top-5 left-1/2 text-4xl" />
-      <div className="container mx-auto">
+    <div className="landing-page-bg h-screen w-screen bg-left bg-cover">
+      <div className="container mx-auto ">
         {/* header */}
         <div className="flex flex-row py-5 px-5 items-center justify-start mx-auto">
-          <span className="flex flex-row space-x-5">
+          <MainLogo className="mr-auto text-3xl" />
+          <span className="flex flex-row space-x-5 items-center">
             <span className="font-bold underline decoration-slate-400 underline-offset-4">
               Home
             </span>
             <span className="text-gray-300">Features</span>
-            <span className="text-gray-300">Pricing</span>
+            <span className="text-gray-300 border-r-2 pr-5">Pricing</span>
+            <span className="ml-auto text-gray-300 mr-5">Log In</span>
+            <button className="rounded bg-teal-600 p-2 text-white shadow-lg">
+              Get Demo
+            </button>
           </span>
-
-          <span className="ml-auto text-gray-300 mr-5">Log In</span>
-          <button className="rounded bg-teal-600 p-2 text-white shadow-lg">
-            Get Demo
-          </button>
         </div>
 
-        <div className="flex flex-col justify-center items-center">
-          <span></span>
+        <div className="flex flex-col justify-start p-10">
+          <span className="text-5xl text-slate-600 font-semibold">
+            No more slacking
+          </span>
         </div>
       </div>
-    </>
+    </div>
   );
 }

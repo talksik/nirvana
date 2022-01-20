@@ -134,3 +134,11 @@ p {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.landing-page-bg {
+  background-image: url("/wallpapers/glassmorphic.jpg");
+}
+
+/* body {
+  background-image: url("/wallpapers/glassmorphic.jpg");
+} */
