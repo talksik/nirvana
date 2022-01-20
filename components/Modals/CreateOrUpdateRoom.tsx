@@ -238,14 +238,17 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
               properly.
             </span>
           ) : (
-            <a
-              href="https://meet.google.com"
-              target={"_blank"}
-              rel={"noreferrer"}
-              className="text-xs mb-2"
-            >
-              Click here to create one.
-            </a>
+            <span className="text-xs mb-2">
+              <a
+                href="https://meet.google.com"
+                target={"_blank"}
+                rel={"noreferrer"}
+                className=""
+              >
+                Click here to create one
+              </a>{" "}
+              and then come back and paste the link for your team.
+            </span>
           )}
 
           <input
