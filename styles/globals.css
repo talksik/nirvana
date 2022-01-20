@@ -137,15 +137,12 @@ p {
 
 .landing-page-bg {
   background-image: url("/wallpapers/glassmorphic.jpg");
-  background-size: 150% 150%;
-  background-repeat: no-repeat;
+  /* background-size: 150% 150%;
+  background-repeat: no-repeat; */
 }
 
 .flippingWords {
   animation: spin_words 6s infinite;
-}
-.flippingWordsSecond {
-  /* animation: spin_words 6s infinite; */
 }
 
 @keyframes spin_words {
