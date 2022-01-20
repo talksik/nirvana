@@ -108,7 +108,7 @@ export default function Home() {
           </span>
 
           <span className="text-left text-lg text-gray-700">
-            At Nirvana, are bringing remote work back to the basics. Voice first
+            At Nirvana, we are bringing work back to the basics. Voice first
             communication because voice makes us human and less is more. An
             experience as if your team was right next to you.
           </span>
