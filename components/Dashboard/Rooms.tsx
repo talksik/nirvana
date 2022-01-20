@@ -174,7 +174,8 @@ export default function DashboardRoom() {
         // render sections for different types
 
         const recurring = meRooms.filter(
-          (room) => room.type == RoomType.recurring
+          (room) =>
+            room.type == RoomType.recurring && room.status == RoomStatus.empty
         );
         const now = meRooms.filter((room) => room.status == RoomStatus.live);
         const scheduled = meRooms.filter(
