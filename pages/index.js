@@ -103,7 +103,7 @@ export default function Home() {
           </span>
 
           <span className="text-left text-lg mb-5 text-gray-700">
-            In today&apos;s distracted world, we mistake using 10 software and
+            In today&apos;s distracted world, we mistake adding software and
             tools for productivity.
           </span>
 
@@ -134,8 +134,8 @@ export default function Home() {
             </span>
 
             <span className="text-left text-md text-gray-600 mt-5">
-              Listen to your engineer voice their problem realtime or have an
-              asynchronous conversation.
+              Listen to your engineer voice their problem realtime, have an
+              asynchronous conversation, or jump into a room. See below.
             </span>
           </span>
 
