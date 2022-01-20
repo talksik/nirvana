@@ -163,16 +163,101 @@ export default function DashboardRoom() {
     // return data based on the selected filters
     switch (selectedTabPane) {
       case RoomTypeFilter.team:
-        return teamRooms.map((room) => {
-          // if the room is
+        // render sections for different types
+
+        const recurringTeam = meRooms.filter(
+          (room) =>
+            room.type == RoomType.recurring && room.status == RoomStatus.empty
+        );
+        const nowTeam = meRooms.filter(
+          (room) => room.status == RoomStatus.live
+        );
+        const scheduledTeam = meRooms.filter(
+          (room) =>
+            room.type == RoomType.scheduled && room.status == RoomStatus.empty
+        );
+
+        // sorting array of scheduled rooms
+        scheduledTeam.sort(function (a, b) {
+          // Turn your strings into dates, and then subtract them
+          // to get a value that is either negative, positive, or zero.
+          if (!b.scheduledDateTime) {
+            return -1;
+          }
+
           return (
-            <RoomCard
-              key={room.id}
-              room={room}
-              updateRoomHandler={handleUpdateRoom}
-            />
+            getTime(a.scheduledDateTime.toDate()) -
+            getTime(b.scheduledDateTime.toDate())
           );
         });
+
+        return (
+          <>
+            <span className="flex flex-row justify-start">
+              <RoomTypeTag
+                roomStatus={RoomStatus.live}
+                roomType={RoomType.now}
+              />
+            </span>
+            <div className="flex flex-row overflow-x-auto">
+              {nowTeam.map((room) => (
+                <RoomCard
+                  key={room.id}
+                  room={room}
+                  updateRoomHandler={handleUpdateRoom}
+                />
+              ))}
+            </div>
+
+            <Divider className="bg-gray-400" />
+
+            <span className="flex flex-row justify-start">
+              <RoomTypeTag
+                roomStatus={RoomStatus.empty}
+                roomType={RoomType.scheduled}
+              />
+            </span>
+            {relativeTimeNextMeeting ? (
+              <span>
+                {"You have your next one "}{" "}
+                <span className="text-orange-500">
+                  {relativeTimeNextMeeting}
+                </span>
+              </span>
+            ) : (
+              <></>
+            )}
+
+            <div className="flex flex-row overflow-x-auto">
+              {scheduledTeam.map((room) => (
+                <RoomCard
+                  key={room.id}
+                  room={room}
+                  updateRoomHandler={handleUpdateRoom}
+                />
+              ))}
+            </div>
+
+            <Divider className="bg-gray-400" />
+
+            <span className="flex flex-row justify-start">
+              <RoomTypeTag
+                roomStatus={RoomStatus.empty}
+                roomType={RoomType.recurring}
+              />
+            </span>
+            <div className="flex flex-row overflow-x-auto">
+              {recurringTeam.map((room) => (
+                <RoomCard
+                  key={room.id}
+                  room={room}
+                  updateRoomHandler={handleUpdateRoom}
+                />
+              ))}
+            </div>
+          </>
+        );
+
       case RoomTypeFilter.me:
         // render sections for different types
 
@@ -282,15 +367,6 @@ export default function DashboardRoom() {
           </>
         );
 
-      // return meRooms.map((room) => {
-      //   return (
-      //     <RoomCard
-      //       key={room.id}
-      //       room={room}
-      //       updateRoomHandler={handleUpdateRoom}
-      //     />
-      //   );
-      // });
       case RoomTypeFilter.live:
         return liveRooms.map((room) => {
           // if the room is
