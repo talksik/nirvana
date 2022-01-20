@@ -179,7 +179,7 @@ export default function Home() {
 
         {/* action section */}
         <div className="flex flex-col items-center mx-auto max-w-screen-sm backdrop-blur-xl rounded-lg p-10">
-          <span className="text-xl mb-10 font-semibold">
+          <span className="text-xl mb-10 font-semibold text-gray-500">
             Ready to start working?
           </span>
           {getStartedButton}
