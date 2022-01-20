@@ -8,20 +8,20 @@ interface RoomTypeTagProps {
 }
 
 export default function RoomTypeTag(props: RoomTypeTagProps) {
+  const universalClassNames =
+    "text-xs font-bold p-1 rounded-md flex flex-row space-x-2 items-center shadow-lg";
+
   // show live even if it's some other type because people are in it
   if (props.roomStatus == RoomStatus.live) {
     return (
-      <span
-        className="text-xs bg-red-500
-    text-white font-bold p-1 rounded-md flex flex-row space-x-2 items-center"
-      >
+      <span className={"bg-red-500 text-white " + universalClassNames}>
         <FaClock />
         <span>live</span>
       </span>
     );
   } else if (props.roomStatus == RoomStatus.archived) {
     return (
-      <span className="text-gray-700 bg-gray-200 p-1 rounded-md text-xs font-bold flex flex-row items-center space-x-1">
+      <span className={"text-gray-700 bg-gray-200 " + universalClassNames}>
         <span>archived</span>
       </span>
     );
@@ -31,10 +31,7 @@ export default function RoomTypeTag(props: RoomTypeTagProps) {
   switch (props.roomType) {
     case RoomType.now:
       return (
-        <span
-          className="text-xs bg-red-500
-      text-white font-bold p-1 rounded-md flex flex-row space-x-2 items-center"
-        >
+        <span className={"bg-red-500 text-white " + universalClassNames}>
           <FaClock />
           <span>live</span>
         </span>
@@ -42,7 +39,7 @@ export default function RoomTypeTag(props: RoomTypeTagProps) {
 
     case RoomType.scheduled:
       return (
-        <span className="text-blue-700 bg-blue-200 p-1 rounded-md text-xs font-bold flex flex-row items-center space-x-1">
+        <span className={"text-blue-700 bg-blue-200 " + universalClassNames}>
           <FaClock />
           <span>scheduled</span>
         </span>
@@ -50,7 +47,9 @@ export default function RoomTypeTag(props: RoomTypeTagProps) {
 
     case RoomType.recurring:
       return (
-        <span className="text-yellow-700 bg-yellow-200 p-1 rounded-md text-xs font-bold flex flex-row items-center space-x-1">
+        <span
+          className={"text-yellow-700 bg-yellow-200 " + universalClassNames}
+        >
           <IoTimer />
           <span>recurring</span>
         </span>
