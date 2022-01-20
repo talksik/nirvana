@@ -13,11 +13,14 @@ import Rooms from "../components/demo/Rooms";
 
 import MainLogo from "../components/MainLogo";
 import { Divider } from "antd";
+import { useRouter } from "next/router";
 
 export default function Home() {
   const handleGetDemo = () => {
     window.open("https://calendly.com/usenirvana/30min", "_blank");
   };
+
+  const router = useRouter();
 
   const getStartedButton = (
     <button
@@ -36,12 +39,12 @@ export default function Home() {
         <div className="flex flex-row py-5 px-5 items-center justify-start mx-auto">
           <MainLogo className="mr-auto text-3xl" />
           <span className="flex flex-row space-x-5 items-center">
-            <span className="font-bold underline decoration-slate-400 underline-offset-4">
-              Home
-            </span>
-            <span className="text-gray-500">Features</span>
-            <span className="text-gray-500 border-r-2 pr-5">Pricing</span>
-            <span className="ml-auto text-gray-500 mr-5">Log In</span>
+            <button
+              onClick={() => router.push("/teams")}
+              className="ml-auto text-gray-500 mr-2"
+            >
+              Log In
+            </button>
             {getStartedButton}
           </span>
         </div>
@@ -80,9 +83,12 @@ export default function Home() {
           </span>
 
           <span className="flex flex-row space-x-2">
-            <button className="rounded text-teal-600 p-2 shadow-l flex flex-row items-center space-x-2">
-              <span>Features</span>
-            </button>
+            <a
+              href="mailto:usenirvana@gmail.com?subject=Interested in Nirvana for Startups"
+              className="rounded text-teal-600 p-2 shadow-l flex flex-row items-center space-x-2"
+            >
+              Email Us
+            </a>
             {getStartedButton}
           </span>
         </div>
