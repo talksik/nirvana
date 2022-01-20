@@ -200,6 +200,21 @@ export default function DashboardRoom() {
           );
         });
 
+        var relativeTimeNextMeeting = "";
+
+        // go through scheduled and find the first one coming up
+        if (scheduled && scheduled.length > 0) {
+          const firstOneInFuture = scheduled.find(
+            (room) => moment(room.scheduledDateTime.toDate()).diff(today) > 0
+          );
+
+          if (firstOneInFuture) {
+            const meetingDatetime: Date =
+              firstOneInFuture.scheduledDateTime.toDate();
+            relativeTimeNextMeeting = moment(meetingDatetime).fromNow();
+          }
+        }
+
         return (
           <>
             <span className="flex flex-row justify-start">
@@ -226,6 +241,17 @@ export default function DashboardRoom() {
                 roomType={RoomType.scheduled}
               />
             </span>
+            {relativeTimeNextMeeting ? (
+              <span>
+                {"You have your next one "}{" "}
+                <span className="text-orange-500">
+                  {relativeTimeNextMeeting}
+                </span>
+              </span>
+            ) : (
+              <></>
+            )}
+
             <div className="flex flex-row overflow-x-auto">
               {scheduled.map((room) => (
                 <RoomCard
