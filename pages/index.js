@@ -160,8 +160,8 @@ export default function Home() {
             <Divider />
 
             <span className="text-left text-md text-gray-600">
-              Join Ben and Cathy's conversation to review design mockups or jump
-              into another room for wine Wednesdays!
+              Join Ben and Cathy&apos;s conversation to review design mockups or
+              jump into another room for wine Wednesdays!
             </span>
 
             <Divider />
