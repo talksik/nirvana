@@ -34,7 +34,7 @@ export default function Home() {
 
   return (
     <div className="landing-page-bg bg-left-bottom bg-fixed bg-cover bg-no-repeat">
-      <div className="container mx-auto pb-10">
+      <div className="container mx-auto md:pb-10 px-5">
         {/* header */}
         <div className="flex flex-row py-5 px-5 items-center justify-start mx-auto">
           <MainLogo className="mr-auto text-3xl" />
@@ -50,9 +50,12 @@ export default function Home() {
         </div>
 
         <div className="flex flex-col justify-start items-baseline max-w-screen-sm md:mt-20 backdrop-blur-xl rounded-lg">
-          <span className="flex flex-row text-left text-6xl space-x-5 h-[5rem] overflow-hidden">
+          <span className="flex flex-row text-left md:text-6xl text-3xl space-x-5 h-[5rem] overflow-hidden">
             <span className="font-semibold text-black py-4">Less</span>
-            <span className="flippingWords flex flex-col space-y-5 text-red-600 ">
+            <span className="md:hidden flex flex-row space-x-2 py-4 text-red-600">
+              <FaSlackHash /> <span>slacking</span>
+            </span>
+            <span className="md:flippingWords hidden md:flex flex-col space-y-5 text-red-600 ">
               <span className="flex flex-row space-x-2">
                 <FaRocketchat /> <span>threads</span>
               </span>
@@ -71,12 +74,12 @@ export default function Home() {
             </span>
           </span>
 
-          <span className="flex flex-row text-left text-6xl space-x-5">
+          <span className="flex flex-row text-left md:text-6xl text-3xl space-x-5">
             <span className="font-semibold text-black">More</span>
             <span className="text-sky-600 font-bold">work.</span>
           </span>
 
-          <span className="my-10 text-xl max-w-xl text-gray-600">
+          <span className="my-10 text-md  md:text-xl max-w-xl text-gray-600">
             Minimal collaboration tool for scrum/agile teams. Wasting 80% of
             your work day on slack, teams, gmail, calendars, chats, emojis,
             notifications?
@@ -94,7 +97,7 @@ export default function Home() {
         </div>
 
         {/* main mission */}
-        <div className="mx-auto flex flex-col items-start max-w-screen-sm rounded-lg bg-gray-200 bg-opacity-25 backdrop-blur-xl md:mt-[15rem] p-10">
+        <div className="mx-auto flex flex-col items-start max-w-screen-sm rounded-lg bg-gray-200 bg-opacity-25 backdrop-blur-xl md:mt-[15rem] mt-[5rem] p-10">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
             Philosophy
           </span>
@@ -114,7 +117,7 @@ export default function Home() {
         </div>
 
         {/*  voice line concept */}
-        <div className="mx-auto flex flex-row items-start justify-between mt-[15rem] pb-20">
+        <div className="mx-auto flex flex-row md:flex-wrap overflow-x-scroll items-start justify-between md:mt-[15rem] mt-[5rem] pb-20">
           <span className="flex flex-col grow max-w-sm rounded-lg bg-gray-200 bg-opacity-25 backdrop-blur-xl p-10">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
               Voice Line
@@ -141,8 +144,8 @@ export default function Home() {
           <Announcements />
         </div>
 
-        {/* explaining rooms */}
-        <div className="mx-auto flex flex-row flex-wrap items-start justify-between mt-[15rem]">
+        {/* rooms concept */}
+        <div className="mx-auto flex flex-row flex-wrap items-start justify-between md:mt-[15rem] mt-[5rem]">
           <Rooms />
 
           <span className="flex flex-col grow max-w-sm rounded-lg bg-gray-200 bg-opacity-25 backdrop-blur-xl p-10">
