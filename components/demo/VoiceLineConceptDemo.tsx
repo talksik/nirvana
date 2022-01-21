@@ -10,7 +10,7 @@ export enum DemoStep {
   sendReply = "send reply",
   hearReply = "hear reply",
   playAnnouncement = "play announcement",
-  resolveAnnouncement = "resolve announcement",
+  doneDemo = "done with demo",
 }
 
 export interface IVoiceDemoProps {

@@ -84,7 +84,8 @@ function TeamVoiceLine(props: IVoiceDemoProps) {
   const isVoiceLineTurn =
     props.demoStep == DemoStep.playIncomingMessage ||
     props.demoStep == DemoStep.hearReply ||
-    props.demoStep == DemoStep.sendReply;
+    props.demoStep == DemoStep.sendReply ||
+    props.demoStep == DemoStep.doneDemo;
 
   useEffect(() => {
     if (props.demoStep == DemoStep.playIncomingMessage) {
@@ -100,7 +101,14 @@ function TeamVoiceLine(props: IVoiceDemoProps) {
       }, 10000);
     } else if (props.demoStep == DemoStep.sendReply) {
     } else if (props.demoStep == DemoStep.hearReply) {
-      toast.success("Paul heard it live!");
+      var audio = new Audio(
+        "https://firebasestorage.googleapis.com/v0/b/nirvana-for-business.appspot.com/o/deep%20fakes%2Fvocodes_728915c1-eb1f-4f16-8f70-c7b0c2235b3e.wav?alt=media&token=76afd74c-7499-4bd8-9c10-dd6ff4f81c48"
+      );
+      audio.play();
+
+      setTimeout(function () {
+        props.handleChangeDemoStep(DemoStep.playAnnouncement);
+      }, 6000);
     }
   }, [props.demoStep]);
 
@@ -116,6 +124,12 @@ function TeamVoiceLine(props: IVoiceDemoProps) {
     toast.success("Paul heard it live!");
 
     setIsRecording(false);
+
+    setTimeout(function () {
+      toast.success("Mark is talking...");
+
+      props.handleChangeDemoStep(DemoStep.hearReply);
+    }, 3000);
   }
 
   const keyMap: KeyMap = {
@@ -132,7 +146,7 @@ function TeamVoiceLine(props: IVoiceDemoProps) {
     <section
       className={`p-5 flex w-80 flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-2xl translate-x-32 translate-y-20 z-10 backdrop-blur-xl transition-all duration-300 ${
         !isVoiceLineTurn ? "blur-sm" : ""
-      }`}
+      } ${props.demoStep == DemoStep.doneDemo ? "z-30" : ""}`}
     >
       {/* keyboard shortcut handler */}
       <GlobalHotKeys keyMap={keyMap} handlers={handlers} />
@@ -157,13 +171,18 @@ function TeamVoiceLine(props: IVoiceDemoProps) {
           <span
             key={i}
             className={`flex flex-row items-center py-2 px-2 justify-items-start ease-in-out duration-300 rounded-lg ${
-              friend.name == "Paul" ? "bg-orange-500 bg-opacity-20" : ""
+              (friend.name == "Paul" &&
+                props.demoStep == DemoStep.playIncomingMessage) ||
+              (friend.name == "Mark" && props.demoStep == DemoStep.hearReply)
+                ? "bg-orange-500 bg-opacity-20"
+                : ""
             }`}
           >
             <span
               className={`relative flex mr-2 shrink-0 ${
-                friend.name == "Paul" &&
-                props.demoStep == DemoStep.playIncomingMessage
+                (friend.name == "Paul" &&
+                  props.demoStep == DemoStep.playIncomingMessage) ||
+                (friend.name == "Mark" && props.demoStep == DemoStep.hearReply)
                   ? "animate-pulse"
                   : ""
               }`}
@@ -190,8 +209,10 @@ function TeamVoiceLine(props: IVoiceDemoProps) {
                   {friend.name}{" "}
                 </span>
 
-                {friend.name == "Paul" &&
-                props.demoStep == DemoStep.playIncomingMessage ? (
+                {(friend.name == "Paul" &&
+                  props.demoStep == DemoStep.playIncomingMessage) ||
+                (friend.name == "Mark" &&
+                  props.demoStep == DemoStep.hearReply) ? (
                   <FaArrowCircleDown className="text-orange-500 text-xl animate-bounce" />
                 ) : (
                   <></>
