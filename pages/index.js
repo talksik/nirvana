@@ -40,12 +40,12 @@ export default function Home() {
         <div className="flex flex-row py-5 px-5 items-center justify-start mx-auto">
           <MainLogo className="mr-auto text-3xl" />
           <span className="flex flex-row space-x-5 items-center">
-            <span className="text-gray-700 underline underline-offset-4">
+            {/* <span className="text-gray-700 underline underline-offset-4">
               Home
             </span>
             <span className="text-gray-500  border-r-gray-400 border-r-2 pr-5">
               Philosophy
-            </span>
+            </span> */}
             <button
               onClick={() => router.push("/teams")}
               className="ml-auto text-gray-500 mr-2"
@@ -57,7 +57,8 @@ export default function Home() {
           </span>
         </div>
 
-        <div className="flex flex-row md:mt-20">
+        {/* above fold main */}
+        <div className="flex flex-row flex-wrap md:flex-nowrap md:mt-20">
           <span className="flex flex-col max-w-screen-sm justify-start items-baseline backdrop-blur-xl rounded-lg">
             <span className="flex flex-row text-left md:text-6xl text-3xl space-x-5 h-[5rem] overflow-hidden">
               <span className="font-semibold text-black py-4">No</span>
@@ -128,67 +129,6 @@ export default function Home() {
           </span>
 
           <></>
-        </div>
-
-        {/*  voice line concept */}
-        <div className="mx-auto flex flex-row md:overflow-visible overflow-x-scroll items-start justify-between md:mt-[15rem] mt-[5rem] pb-20">
-          <span className="flex flex-col grow max-w-sm rounded-lg bg-gray-200 bg-opacity-25 backdrop-blur-xl p-10">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
-              Voice Line
-            </span>
-
-            <span className="text-left text-lg text-gray-700">
-              More clear and efficient communication.
-            </span>
-
-            <Divider />
-
-            <span className="text-left text-md text-gray-600 mt-5">
-              No more notifications, clicking, scrolling.
-            </span>
-
-            <span className="text-left text-md text-gray-600 mt-5">
-              Listen to your engineer voice their problem realtime, have an
-              asynchronous conversation, or jump into a room. See below.
-            </span>
-          </span>
-
-          <TeamVoiceLine />
-
-          <Announcements />
-        </div>
-
-        {/* rooms concept */}
-        <div className="mx-auto flex flex-row flex-wrap items-start justify-between md:mt-[15rem] mt-[5rem]">
-          <Rooms />
-
-          <span className="flex flex-col grow max-w-sm rounded-lg bg-gray-200 bg-opacity-25 backdrop-blur-xl p-10">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
-              Rooms
-            </span>
-
-            <span className="text-left text-lg text-gray-700">
-              See what&apos;s going on across the hall at a glance.
-            </span>
-
-            <Divider />
-
-            <span className="text-left text-md text-gray-600">
-              Join Ben and Cathy&apos;s conversation to review design mockups or
-              jump into another room for wine Wednesdays!
-            </span>
-
-            <Divider />
-
-            <span className="text-left text-md text-gray-600 mt-5">
-              Why go back and forth through chat 100 times or schedule a meeting
-              tomorrow at 2pm?
-            </span>
-
-            <span className="text-left text-md text-gray-600 mt-5">
-              Jump into rooms and resolve issues quicker.
-            </span>
-          </span>
         </div>
 
         {/* action section */}
