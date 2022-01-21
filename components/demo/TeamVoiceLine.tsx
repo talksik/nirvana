@@ -13,7 +13,7 @@ import { GlobalHotKeys, HotKeys, KeySequence, KeyMap } from "react-hotkeys";
 
 let testFriends = [
   {
-    name: "Liam",
+    name: "Harold",
     role: "engineer",
     systemAvatar: "29",
     status: UserStatus.online,
@@ -224,7 +224,7 @@ function TeamVoiceLine(props: IVoiceDemoProps) {
                     title={
                       "PRESS AND HOLD R (on your keyboard) to record a message and send"
                     }
-                    defaultVisible={true}
+                    visible={!isRecording}
                   >
                     <button
                       className={`rounded-lg py-1 px-2 shadow-lg 

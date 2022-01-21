@@ -20,18 +20,18 @@ export default function Announcements(props: IVoiceDemoProps) {
         setShowAnnouncement(true);
 
         var audio = new Audio(
-          "https://firebasestorage.googleapis.com/v0/b/nirvana-for-business.appspot.com/o/messages%2Fbb649032-64cc-46f7-b0b1-bcb57704a0a7.mp3?alt=media&token=919c596b-c829-4c70-85ce-134d5c348730"
+          "https://firebasestorage.googleapis.com/v0/b/nirvana-for-business.appspot.com/o/messages%2Fb2858200-4a15-478a-b863-bdf88b26b2e4.mp3?alt=media&token=3ffc8955-50fa-4418-a146-1c73f56409d1"
         );
         audio.play();
 
-        toast.success("Live Announcement from Arjun");
+        toast.success("Harold's saying his update!");
       }, 2000);
 
       setTimeout(function () {
         props.handleChangeDemoStep(DemoStep.doneDemo);
 
         toast.success("done with the demo!");
-      }, 9000);
+      }, 11000);
     }
   }, [props.demoStep]);
 
@@ -89,7 +89,7 @@ export default function Announcements(props: IVoiceDemoProps) {
             <span className="bg-gray-200 bg-opacity-20 rounded-full shadow-md absolute w-full h-full"></span>
 
             <Image
-              src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-22.svg"}
+              src={"/avatars/svg/Artboards_Diversity_Avatars_by_Netguru-29.svg"}
               alt="profile"
               width={50}
               height={50}
@@ -97,7 +97,7 @@ export default function Announcements(props: IVoiceDemoProps) {
           </span>
 
           <span className="flex flex-col items-baseline mr-5">
-            <span className="text-md font-semibold text-gray-600">Arjun</span>
+            <span className="text-md font-semibold text-gray-600">Harold</span>
             <span className="text-xs text-gray-400">2 seconds ago</span>
             <span className="text-xs text-white bg-indigo-400 p-1 rounded-md font-semibold flex flex-row items-center">
               <span>engineering</span>

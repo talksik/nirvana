@@ -53,7 +53,7 @@ export default function VoiceLineConceptDemo() {
         <button
           onClick={() => setDemoStep(DemoStep.playDemo)}
           className="absolute right-0 bottom-0
-      bg-gray-200 bg-opacity-30 py-2 px-2 rounded font-semibold inline-flex items-center text-teal-600
+      bg-gray-200 bg-opacity-30 py-2 px-2 rounded inline-flex items-center text-teal-600
       space-x-2"
         >
           <span>Reset Demo</span>
