@@ -1,8 +1,13 @@
-import { FaPlus } from "react-icons/fa";
+import { FaArrowCircleDown, FaPlus } from "react-icons/fa";
 import { UserStatus } from "../../models/user";
 
 import Image from "next/image";
 import { IoPulseOutline, IoRemoveOutline } from "react-icons/io5";
+import { DemoStep, IVoiceDemoProps } from "./VoiceLineConceptDemo";
+import { Popover, Tooltip } from "antd";
+import { useCallback, useEffect, useState } from "react";
+import { KeyCode } from "../../globals/keycode";
+import toast from "react-hot-toast";
 
 let testFriends = [
   {
@@ -25,15 +30,13 @@ let testFriends = [
   },
   {
     name: "Mark",
-    role: "engineer",
+    role: "designer",
     systemAvatar: "04",
     status: UserStatus.busy,
   },
 ];
 
 function statusBubble(status: UserStatus) {
-  console.log(status);
-
   switch (status) {
     case UserStatus.online:
       return (
@@ -75,9 +78,79 @@ function renderPulse(status: UserStatus) {
   }
 }
 
-export default function TeamVoiceLine() {
+export default function TeamVoiceLine(props: IVoiceDemoProps) {
+  const isVoiceLineTurn =
+    props.demoStep == DemoStep.playIncomingMessage ||
+    props.demoStep == DemoStep.hearReply ||
+    props.demoStep == DemoStep.sendReply;
+
+  useEffect(() => {
+    if (props.demoStep == DemoStep.playIncomingMessage) {
+      // play audio of paul talking
+
+      var audio = new Audio(
+        "https://firebasestorage.googleapis.com/v0/b/nirvana-for-business.appspot.com/o/messages%2F62ca7369-7c0c-4b3e-a382-12d4a237d1af.mp3?alt=media&token=b6d4acb0-afc9-4a9f-8c58-cf60a6079003"
+      );
+      audio.play();
+
+      setTimeout(function () {
+        props.handleChangeDemoStep(DemoStep.sendReply);
+      }, 10000);
+    } else if (props.demoStep == DemoStep.sendReply) {
+    } else if (props.demoStep == DemoStep.hearReply) {
+      toast.success("Paul heard it live!");
+    }
+  }, [props.demoStep]);
+
+  const [isRecording, setIsRecording] = useState<boolean>(false);
+
+  const handleKeyUp = useCallback(
+    (event) => {
+      if (event.repeat) {
+        return;
+      }
+      console.log("on key up");
+      console.log(event.keyCode);
+
+      if (isRecording && event.keyCode == KeyCode.R) {
+        setIsRecording(false);
+      }
+    },
+    [isRecording]
+  );
+
+  const handleKeyDown = useCallback(
+    (event) => {
+      if (event.repeat) {
+        return;
+      }
+      console.log(event.keyCode);
+
+      if (event.keyCode == KeyCode.R) {
+        setIsRecording(true);
+      }
+    },
+    [isRecording]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keyup", handleKeyUp);
+    };
+  }, [handleKeyDown, handleKeyUp]);
+
   return (
-    <section className="p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-2xl translate-x-32 translate-y-20 z-10 backdrop-blur-xl">
+    <section
+      className={`p-5 flex w-80 flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-2xl translate-x-32 translate-y-20 z-10 backdrop-blur-xl ${
+        !isVoiceLineTurn ? "blur-sm" : ""
+      }`}
+      tabIndex={10}
+      onKeyDown={(e) => console.log("yayayayay")}
+    >
       <span className="flex flex-row justify-start items-center pb-5">
         <span className="flex flex-col">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
@@ -85,9 +158,11 @@ export default function TeamVoiceLine() {
           </span>
         </span>
 
-        <button className="bg-gray-400 bg-opacity-50 p-2 ml-auto rounded hover:bg-opacity-40">
-          <FaPlus className="text-lg text-gray-500" />
-        </button>
+        <Tooltip title="You will be able to add team members to your voice line.">
+          <button className="bg-gray-400 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40">
+            <FaPlus className="text-lg text-gray-500" />
+          </button>
+        </Tooltip>
       </span>
 
       {/* list of team members */}
@@ -95,11 +170,18 @@ export default function TeamVoiceLine() {
         return (
           <span
             key={i}
-            className={
-              "flex w-52 flex-row items-center py-2 px-2 justify-items-start ease-in-out duration-300"
-            }
+            className={`flex flex-row items-center py-2 px-2 justify-items-start ease-in-out duration-300 rounded-lg ${
+              friend.name == "Paul" ? "bg-orange-500 bg-opacity-20" : ""
+            }`}
           >
-            <span className="relative flex mr-2 shrink-0">
+            <span
+              className={`relative flex mr-2 shrink-0 ${
+                friend.name == "Paul" &&
+                props.demoStep == DemoStep.playIncomingMessage
+                  ? "animate-pulse"
+                  : ""
+              }`}
+            >
               <span className="bg-gray-200 bg-opacity-30 rounded-full shadow-md absolute w-full h-full"></span>
 
               {statusBubble(friend.status)}
@@ -121,12 +203,45 @@ export default function TeamVoiceLine() {
                 <span className="text-sm text-gray-600 font-semibold">
                   {friend.name}{" "}
                 </span>
-                <button
-                  className="rounded-lg py-1 px-2 shadow-lg 
-                                text-center text-gray-200 text-sm font-bold"
-                >
-                  {i}
-                </button>
+
+                {friend.name == "Paul" &&
+                props.demoStep == DemoStep.playIncomingMessage ? (
+                  <FaArrowCircleDown className="text-orange-500 text-xl animate-bounce" />
+                ) : (
+                  <></>
+                )}
+
+                {friend.name == "Paul" &&
+                props.demoStep == DemoStep.sendReply ? (
+                  <Tooltip
+                    title={
+                      "PRESS AND HOLD R (on your keyboard) to record a message and send"
+                    }
+                    defaultVisible={true}
+                  >
+                    <button
+                      className={`rounded-lg py-1 px-2 shadow-lg 
+                                text-center text-sm font-bold ranimate-bounce ${
+                                  isRecording
+                                    ? "bg-orange-500 text-white"
+                                    : "text-orange-500"
+                                }`}
+                    >
+                      R
+                    </button>
+                  </Tooltip>
+                ) : (
+                  <button
+                    className={`rounded-lg py-1 px-2 shadow-lg 
+                                text-center text-sm font-bold ${
+                                  friend.name == "Paul"
+                                    ? "text-orange-500"
+                                    : "text-gray-200 "
+                                }`}
+                  >
+                    {i}
+                  </button>
+                )}
               </span>
 
               <span className={"text-xs span-sans text-gray-400"}>

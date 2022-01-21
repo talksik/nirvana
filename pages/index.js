@@ -10,6 +10,7 @@ import {
 import TeamVoiceLine from "../components/demo/TeamVoiceLine";
 import Announcements from "../components/demo/Announcements";
 import Rooms from "../components/demo/Rooms";
+import VoiceLineConceptDemo from "../components/demo/VoiceLineConceptDemo";
 
 import MainLogo from "../components/MainLogo";
 import { Divider } from "antd";
@@ -56,55 +57,61 @@ export default function Home() {
           </span>
         </div>
 
-        <div className="flex flex-col justify-start items-baseline max-w-screen-sm md:mt-20 backdrop-blur-xl rounded-lg">
-          <span className="flex flex-row text-left md:text-6xl text-3xl space-x-5 h-[5rem] overflow-hidden">
-            <span className="font-semibold text-black py-4">No</span>
-            <span className="md:hidden flex flex-row space-x-2 py-4 text-red-600">
-              <FaSlackHash /> <span>slacking</span>
-            </span>
-            <span className="hidden flippingWords md:visible md:flex flex-col space-y-5 text-red-600 ">
-              <span className="flex flex-row space-x-2">
-                <FaRocketchat /> <span>threads</span>
-              </span>
-              <span className="flex flex-row space-x-2">
+        <div className="flex flex-row md:mt-20">
+          <span className="flex flex-col max-w-screen-sm justify-start items-baseline backdrop-blur-xl rounded-lg">
+            <span className="flex flex-row text-left md:text-6xl text-3xl space-x-5 h-[5rem] overflow-hidden">
+              <span className="font-semibold text-black py-4">No</span>
+              <span className="md:hidden flex flex-row space-x-2 py-4 text-red-600">
                 <FaSlackHash /> <span>slacking</span>
               </span>
-              <span className="flex flex-row space-x-2">
-                <FaCalendarAlt /> <span>calendars</span>
+              <span className="hidden flippingWords md:visible md:flex flex-col space-y-5 text-red-600 ">
+                <span className="flex flex-row space-x-2">
+                  <FaRocketchat /> <span>threads</span>
+                </span>
+                <span className="flex flex-row space-x-2">
+                  <FaSlackHash /> <span>slacking</span>
+                </span>
+                <span className="flex flex-row space-x-2">
+                  <FaCalendarAlt /> <span>calendars</span>
+                </span>
+                <span className="flex flex-row space-x-2">
+                  <FaNewspaper /> <span>files</span>
+                </span>
+                <span className="flex flex-row space-x-2">
+                  <FaRocketchat /> <span>threads</span>
+                </span>
               </span>
-              <span className="flex flex-row space-x-2">
-                <FaNewspaper /> <span>files</span>
-              </span>
-              <span className="flex flex-row space-x-2">
-                <FaRocketchat /> <span>threads</span>
-              </span>
+            </span>
+
+            <span className="flex flex-row text-left md:text-6xl text-3xl space-x-5">
+              <span className="font-semibold text-black">More</span>
+              <span className="text-sky-600 font-bold">focus.</span>
+            </span>
+
+            <span className="my-10 text-md  md:text-xl max-w-xl text-gray-600">
+              Voice-first collaboration tool for scrum/agile teams.
+              <br></br>
+              Skip slack and email, just talk to your team.
+            </span>
+
+            <span className="flex flex-row space-x-2">
+              <a
+                href="mailto:usenirvana@gmail.com?subject=Interested in Nirvana for Startups"
+                className="rounded text-teal-600 p-2 shadow-l flex flex-row items-center space-x-2"
+              >
+                Email Us
+              </a>
+              {getStartedButton}
             </span>
           </span>
 
-          <span className="flex flex-row text-left md:text-6xl text-3xl space-x-5">
-            <span className="font-semibold text-black">More</span>
-            <span className="text-sky-600 font-bold">focus.</span>
-          </span>
-
-          <span className="my-10 text-md  md:text-xl max-w-xl text-gray-600">
-            Voice-first collaboration tool for scrum/agile teams.
-            <br></br>
-            Skip slack and email, just talk to your team.
-          </span>
-
-          <span className="flex flex-row space-x-2">
-            <a
-              href="mailto:usenirvana@gmail.com?subject=Interested in Nirvana for Startups"
-              className="rounded text-teal-600 p-2 shadow-l flex flex-row items-center space-x-2"
-            >
-              Email Us
-            </a>
-            {getStartedButton}
+          <span className="flex flex-row relative items-baseline">
+            <VoiceLineConceptDemo />
           </span>
         </div>
 
         {/* main mission */}
-        <div className="mx-auto flex flex-col items-start max-w-screen-sm rounded-lg bg-gray-200 bg-opacity-25 backdrop-blur-xl md:mt-[15rem] mt-[5rem] p-10">
+        <div className="mx-auto flex flex-col items-start max-w-screen-sm rounded-lg bg-gray-200 bg-opacity-25 backdrop-blur-xl md:mt-[40rem] mt-[5rem] p-10">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
             Philosophy
           </span>

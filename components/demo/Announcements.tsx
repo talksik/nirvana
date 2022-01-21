@@ -2,44 +2,55 @@ import { FaAngleDown, FaCheck, FaMicrophoneAlt, FaPlay } from "react-icons/fa";
 import { UserStatus } from "../../models/user";
 
 import Image from "next/image";
+import { Tooltip } from "antd";
+import { DemoStep, IVoiceDemoProps } from "./VoiceLineConceptDemo";
 
-export default function Announcements() {
+export default function Announcements(props: IVoiceDemoProps) {
+  const isAnnouncementsTurn =
+    props.demoStep == DemoStep.playAnnouncement ||
+    props.demoStep == DemoStep.resolveAnnouncement;
+
   return (
-    <section className="p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md -translate-x-20 backdrop-blur-xl">
+    <section
+      className={`p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md -translate-x-20 backdrop-blur-xl ${
+        !isAnnouncementsTurn ? "blur-sm" : ""
+      }`}
+    >
       <span className="flex flex-row justify-start items-center pb-5">
         <span className="flex flex-col mr-20">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
             ANNOUNCEMENTS
-            <button
+            {/* <button
               className="right-1 rounded-lg py-1 px-2 ml-1 
                             shadow-md text-center text-gray-400 text-sm font-bold"
             >
               CTRL + A
-            </button>
+            </button> */}
+          </span>
+
+          <span className="text-gray-400 text-xs">
+            updates, pep talks, blockers, reminders
           </span>
         </span>
 
         {/* tab pane */}
         <span className="ml-auto flex flex-row space-x-5 uppercase mr-5">
-          <span className="underline underline-offset-8 decoration-gray-500 text-gray-500 hover:text-white hover:cursor-pointer">
+          <span className="underline underline-offset-8 decoration-gray-500 text-gray-500 hover:cursor-pointer">
             Active
           </span>
 
-          <span className="text-gray-400 hover:text-white hover:cursor-pointer">
-            Resolved
-          </span>
+          <span className="text-gray-400 hover:cursor-pointer">Resolved</span>
         </span>
 
         <span className="text-sm text-gray-400 flex flex-row items-center">
           TODAY <FaAngleDown />
         </span>
 
-        <button className="bg-gray-400 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40">
-          <FaMicrophoneAlt className="text-lg text-gray-500" />
-        </button>
-        <button className="bg-gray-400 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40">
-          <FaPlay className="text-lg text-gray-500" />
-        </button>
+        <Tooltip title={"You can create announcements in the future."}>
+          <button className="bg-gray-400 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40">
+            <FaMicrophoneAlt className="text-lg text-gray-500" />
+          </button>
+        </Tooltip>
       </span>
 
       <div className="flex flex-row overflow-auto whitespace-nowrap space-x-5 items-center">
@@ -86,9 +97,17 @@ export default function Announcements() {
             </span>
           </span>
 
-          <button className="bg-gray-500 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40">
-            <FaCheck className="text-lg text-gray-500" />
-          </button>
+          <Tooltip title={"Resolve"}>
+            <button className="bg-gray-400 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40">
+              <FaCheck className="text-lg text-gray-500" />
+            </button>
+          </Tooltip>
+
+          <Tooltip title={"Play"}>
+            <button className="bg-gray-400 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40">
+              <FaPlay className="text-lg text-gray-500" />
+            </button>
+          </Tooltip>
         </span>
       </div>
     </section>
