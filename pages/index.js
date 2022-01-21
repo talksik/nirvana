@@ -39,19 +39,26 @@ export default function Home() {
         <div className="flex flex-row py-5 px-5 items-center justify-start mx-auto">
           <MainLogo className="mr-auto text-3xl" />
           <span className="flex flex-row space-x-5 items-center">
+            <span className="text-gray-700 underline underline-offset-4">
+              Home
+            </span>
+            <span className="text-gray-500  border-r-gray-400 border-r-2 pr-5">
+              Philosophy
+            </span>
             <button
               onClick={() => router.push("/teams")}
               className="ml-auto text-gray-500 mr-2"
             >
               Log In
             </button>
+
             {getStartedButton}
           </span>
         </div>
 
         <div className="flex flex-col justify-start items-baseline max-w-screen-sm md:mt-20 backdrop-blur-xl rounded-lg">
           <span className="flex flex-row text-left md:text-6xl text-3xl space-x-5 h-[5rem] overflow-hidden">
-            <span className="font-semibold text-black py-4">Less</span>
+            <span className="font-semibold text-black py-4">No</span>
             <span className="md:hidden flex flex-row space-x-2 py-4 text-red-600">
               <FaSlackHash /> <span>slacking</span>
             </span>
@@ -76,13 +83,13 @@ export default function Home() {
 
           <span className="flex flex-row text-left md:text-6xl text-3xl space-x-5">
             <span className="font-semibold text-black">More</span>
-            <span className="text-sky-600 font-bold">work.</span>
+            <span className="text-sky-600 font-bold">focus.</span>
           </span>
 
           <span className="my-10 text-md  md:text-xl max-w-xl text-gray-600">
-            Minimal collaboration tool for scrum/agile teams. Wasting 80% of
-            your work day on slack, teams, gmail, calendars, chats, emojis,
-            notifications?
+            Voice-first collaboration tool for scrum/agile teams.
+            <br></br>
+            Skip slack and email, just talk to your team.
           </span>
 
           <span className="flex flex-row space-x-2">
