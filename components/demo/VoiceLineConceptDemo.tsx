@@ -44,7 +44,7 @@ export default function VoiceLineConceptDemo() {
             onClick={() => setDemoStep(DemoStep.playIncomingMessage)}
             className="absolute mx-auto my-auto left-1/2 top-1/2 
       bg-gray-200 py-2 px-2 rounded font-semibold inline-flex items-center text-teal-600
-      space-x-2 animate-bounce"
+      space-x-2 animate-bounce z-50"
           >
             <FaPlay /> <span>Play Demo</span>
           </button>

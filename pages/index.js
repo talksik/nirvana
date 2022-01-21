@@ -48,7 +48,7 @@ export default function Home() {
 
   return (
     <div className="landing-page-bg bg-left-bottom bg-fixed bg-cover bg-no-repeat">
-      <div className="container mx-auto md:pb-10 px-5">
+      <div className="container mx-auto md:pb-10 px-5 lg:px-20">
         {/* header */}
         <div className="flex flex-row py-5 px-5 items-center justify-start mx-auto">
           <MainLogo className="mr-auto text-3xl" />
@@ -71,7 +71,7 @@ export default function Home() {
         </div>
 
         {/* above fold main */}
-        <div className="flex flex-row flex-wrap md:flex-nowrap md:mt-20">
+        <div className="flex flex-row flex-wrap md:flex-nowrap md:mt-20 space-x-10">
           <span className="flex flex-col max-w-screen-sm justify-start items-baseline backdrop-blur-xl rounded-lg">
             <span className="flex flex-row text-left md:text-6xl text-5xl space-x-5 h-[5rem] overflow-hidden">
               <span className="font-semibold text-black py-4">No</span>
@@ -124,7 +124,7 @@ export default function Home() {
             </span>
           </span>
 
-          <span className="flex flex-row relative items-baseline flex-1 md:block hidden">
+          <span className="flex flex-row justify-end relative items-baseline flex-1 md:flex hidden">
             <VoiceLineConceptDemo />
           </span>
         </div>
