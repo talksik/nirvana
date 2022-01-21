@@ -12,6 +12,7 @@ import { useAuth } from "./authContext";
 import { SendService } from "../services/sendService";
 import { useTeamDashboardContext } from "./teamDashboardContext";
 import isValidHttpUrl from "../helpers/urlHelper";
+import { GlobalHotKeys, KeyMap } from "react-hotkeys";
 
 interface KeyboardContextInterface {
   selectedTeammate: string; // can only have one selected
@@ -21,10 +22,6 @@ interface KeyboardContextInterface {
   addTeamShortcutBinding: Function;
 
   isRecording: Boolean; // can only record if someone is selected or maybe for an announcement
-
-  // inputDevice: string;
-
-  // outputDevice: string;
 
   isMuted: Boolean;
   isSilenceMode: Boolean; // won't automatically listen to notifications or sounds
@@ -529,8 +526,31 @@ export default function KeyboardContextProvider({ children }) {
     setAudioQueue((prevQueue) => [...prevQueue, ...urls]);
   }
 
+  function startAnnouncement() {
+    toast.success("recording announcement");
+  }
+
+  function sendAnnouncement() {
+    toast.success("announcement sent to team");
+  }
+
+  const keyMap: KeyMap = {
+    RECORD_ANNOUNCEMENT: "a",
+    STOP_RECORDING_ANNOUNCEMENT: {
+      name: "Stop recording",
+      sequence: "a",
+      action: "keyup",
+    },
+  };
+  const handlers = {
+    RECORD_ANNOUNCEMENT: startAnnouncement,
+    STOP_RECORDING_ANNOUNCEMENT: sendAnnouncement,
+  };
+
   return (
     <KeyboardContext.Provider value={value}>
+      <GlobalHotKeys keyMap={keyMap} handlers={handlers} />
+
       {children}
 
       {/* player for audio messages */}
