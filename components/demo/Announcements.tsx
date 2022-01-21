@@ -37,7 +37,7 @@ export default function Announcements(props: IVoiceDemoProps) {
 
   return (
     <section
-      className={`p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md -translate-x-20 backdrop-blur-xl ${
+      className={`p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md absolute right-0 backdrop-blur-xl ${
         isAnnouncementsTurn ? " z-20 " : "blur-sm"
       }`}
     >

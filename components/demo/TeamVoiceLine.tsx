@@ -144,7 +144,7 @@ function TeamVoiceLine(props: IVoiceDemoProps) {
 
   return (
     <section
-      className={`p-5 flex w-80 flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-2xl translate-x-32 translate-y-20 z-10 backdrop-blur-xl transition-all duration-300 ${
+      className={`p-5 flex w-80 flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-2xl absolute top-32 left-10 z-10 backdrop-blur-xl transition-all duration-300 ${
         !isVoiceLineTurn ? "blur-sm" : ""
       } ${props.demoStep == DemoStep.doneDemo ? "z-30" : ""}`}
     >
