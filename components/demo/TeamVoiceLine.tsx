@@ -115,8 +115,6 @@ function TeamVoiceLine(props: IVoiceDemoProps) {
   const [isRecording, setIsRecording] = useState<boolean>(false);
 
   function startRecord(event) {
-    toast("listening");
-
     setIsRecording(true);
   }
 
