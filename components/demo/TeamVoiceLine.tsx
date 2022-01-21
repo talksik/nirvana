@@ -9,6 +9,8 @@ import { useCallback, useEffect, useState } from "react";
 import { KeyCode } from "../../globals/keycode";
 import toast from "react-hot-toast";
 
+import { GlobalHotKeys, HotKeys, KeySequence, KeyMap } from "react-hotkeys";
+
 let testFriends = [
   {
     name: "Liam",
@@ -78,7 +80,7 @@ function renderPulse(status: UserStatus) {
   }
 }
 
-export default function TeamVoiceLine(props: IVoiceDemoProps) {
+function TeamVoiceLine(props: IVoiceDemoProps) {
   const isVoiceLineTurn =
     props.demoStep == DemoStep.playIncomingMessage ||
     props.demoStep == DemoStep.hearReply ||
@@ -104,53 +106,37 @@ export default function TeamVoiceLine(props: IVoiceDemoProps) {
 
   const [isRecording, setIsRecording] = useState<boolean>(false);
 
-  const handleKeyUp = useCallback(
-    (event) => {
-      if (event.repeat) {
-        return;
-      }
-      console.log("on key up");
-      console.log(event.keyCode);
+  function startRecord(event) {
+    toast("listening");
 
-      if (isRecording && event.keyCode == KeyCode.R) {
-        setIsRecording(false);
-      }
+    setIsRecording(true);
+  }
+
+  function endRecording(event) {
+    toast.success("Paul heard it live!");
+
+    setIsRecording(false);
+  }
+
+  const keyMap: KeyMap = {
+    RECORD: "r",
+    STOP_RECORDING: {
+      name: "Stop recording",
+      sequence: "r",
+      action: "keyup",
     },
-    [isRecording]
-  );
-
-  const handleKeyDown = useCallback(
-    (event) => {
-      if (event.repeat) {
-        return;
-      }
-      console.log(event.keyCode);
-
-      if (event.keyCode == KeyCode.R) {
-        setIsRecording(true);
-      }
-    },
-    [isRecording]
-  );
-
-  useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown);
-    document.addEventListener("keyup", handleKeyUp);
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.removeEventListener("keyup", handleKeyUp);
-    };
-  }, [handleKeyDown, handleKeyUp]);
+  };
+  const handlers = { RECORD: startRecord, STOP_RECORDING: endRecording };
 
   return (
     <section
-      className={`p-5 flex w-80 flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-2xl translate-x-32 translate-y-20 z-10 backdrop-blur-xl ${
+      className={`p-5 flex w-80 flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-2xl translate-x-32 translate-y-20 z-10 backdrop-blur-xl transition-all duration-300 ${
         !isVoiceLineTurn ? "blur-sm" : ""
       }`}
-      tabIndex={10}
-      onKeyDown={(e) => console.log("yayayayay")}
     >
+      {/* keyboard shortcut handler */}
+      <GlobalHotKeys keyMap={keyMap} handlers={handlers} />
+
       <span className="flex flex-row justify-start items-center pb-5">
         <span className="flex flex-col">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
@@ -256,3 +242,5 @@ export default function TeamVoiceLine(props: IVoiceDemoProps) {
     </section>
   );
 }
+
+export default TeamVoiceLine;
