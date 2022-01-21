@@ -240,7 +240,7 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
           ) : (
             <span className="text-xs mb-2">
               <a
-                href="https://meet.google.com"
+                href="https://meet.google.com/new"
                 target={"_blank"}
                 rel={"noreferrer"}
                 className=""
