@@ -12,6 +12,7 @@ import { Timestamp } from "firebase/firestore";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { GlobalHotKeys, KeyMap } from "react-hotkeys";
 import { useAuth } from "../../contexts/authContext";
 import {
   ShowModalType,
@@ -151,7 +152,9 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
 
   function resetForm() {
     setRoomLink("");
-    setRoomName("");
+    setRoomName(
+      user.firstName + "'s Room - " + moment(new Date()).format("dddd do")
+    );
     setRoomDescription("");
     setMembersSelected([currUser.uid] as string[]);
     setRoomAttachment("");
@@ -164,7 +167,9 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
   }
 
   const [roomLink, setRoomLink] = useState<string>(pastedLink ?? "");
-  const [roomName, setRoomName] = useState<string>("");
+  const [roomName, setRoomName] = useState<string>(
+    user.firstName + "'s Room - " + moment(new Date()).format("dddd do")
+  );
   const [roomDescription, setRoomDescription] = useState<string>("");
 
   const [roomAttachment, setRoomAttachment] = useState<string>("");
@@ -221,6 +226,29 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
     );
   };
 
+  function createRoomNow() {
+    // show modal
+
+    // enter a google meet link automaticall
+
+    // create a date based room name
+
+    //
+
+    console.log("creating room instantly");
+  }
+
+  const keyMap: KeyMap = {
+    CREATE_ROOM_NOW: {
+      name: "Stop recording",
+      sequence: "q",
+      action: "keyup",
+    },
+  };
+  const handlers = {
+    CREATE_ROOM_NOW: createRoomNow,
+  };
+
   return (
     <Modal
       title="Room Details"
@@ -229,6 +257,8 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
       onOk={handleSubmit}
       onCancel={handleCloseModal}
     >
+      <GlobalHotKeys keyMap={keyMap} handlers={handlers} />
+
       <div className="flex flex-col">
         <span className="flex flex-col items-start">
           <span className="text-lg">Link</span>
