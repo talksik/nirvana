@@ -85,14 +85,14 @@ function TeamDashboard() {
     <div className="container mx-auto py-10 px-10 flex flex-col space-y-5">
       <Header />
 
-      <div className="flex flex-row items-baseline space-x-5 space-y-5">
-        <div className="flex flex-col max-w-sm space-y-5">
+      <div className="flex flex-row items-start space-x-5 h-[56rem]">
+        <div className="flex flex-col max-w-sm space-y-5 h-full">
           <TeamVoiceLine />
 
           <Office />
         </div>
 
-        <div className="flex flex-col space-y-5 flex-1 overflow-auto">
+        <div className="flex flex-col space-y-5 flex-1 h-full">
           <Announcements />
 
           <Rooms />

@@ -81,7 +81,7 @@ export default function Office() {
   // if there are none, then show user button to create initial office rooms and then create them
 
   return (
-    <section className="p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md w-96 shrink-0">
+    <section className="p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md w-96 shrink-0 flex-1">
       <span className="flex flex-row justify-start items-center pb-5">
         <span className="flex flex-col">
           <span className="text-white uppercase">Office</span>
@@ -89,7 +89,7 @@ export default function Office() {
       </span>
 
       {/* all office rooms  */}
-      <span className="flex flex-col space-y-5">
+      <span className="flex flex-col space-y-5 overflow-auto">
         {allOfficeRooms.map((officeRoom) => (
           <OfficeCard key={officeRoom.id} officeRoom={officeRoom} />
         ))}
