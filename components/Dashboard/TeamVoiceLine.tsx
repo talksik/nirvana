@@ -124,12 +124,6 @@ export default function TeamVoiceLine() {
                   <span className="text-xs text-black font-bold">
                     {tmember.nickName}
                   </span>
-
-                  {isMessageIncoming ? (
-                    <FaArrowCircleDown className="text-orange-500" />
-                  ) : (
-                    ""
-                  )}
                 </span>
 
                 <span className={"text-xs span-sans text-gray-500"}>
@@ -142,12 +136,6 @@ export default function TeamVoiceLine() {
                   <span className="text-sm text-white font-bold">
                     {tmember.nickName}
                   </span>
-
-                  {isMessageIncoming ? (
-                    <FaArrowCircleDown className="text-orange-500" />
-                  ) : (
-                    ""
-                  )}
 
                   <span className="text-white shadow-xl font-bold px-3 py-1 rounded">
                     {/* keyboard shortcuts start from 1 */}
@@ -187,7 +175,15 @@ export default function TeamVoiceLine() {
               <BsThreeDots className="text-black ml-2 hover:cursor-pointer" />
             </>
           ) : (
-            <UserPulse status={tmember.userStatus} />
+            <span className="flex flex-row items-center ml-auto ">
+              {isMessageIncoming ? (
+                <FaArrowCircleDown className="text-orange-500" />
+              ) : (
+                ""
+              )}
+
+              <UserPulse status={tmember.userStatus} />
+            </span>
           )}
         </span>
       );
@@ -208,7 +204,7 @@ export default function TeamVoiceLine() {
   }
 
   return (
-    <section className="p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md w-96 shrink-0">
+    <section className="p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md w-96 shrink-0 max-h-[32rem]">
       <span className="flex flex-row justify-start items-center pb-5">
         <span className="flex flex-col">
           <span className="text-white">TEAM</span>
@@ -236,7 +232,9 @@ export default function TeamVoiceLine() {
       <PowerPlayer show={showPowerPlayer} handleCloseModal={handleCloseModal} />
 
       {/* list of team members */}
-      {renderTeamMemberList()}
+      <div className=" overflow-auto flex flex-col">
+        {renderTeamMemberList()}
+      </div>
     </section>
   );
 }

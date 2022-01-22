@@ -31,19 +31,17 @@ export function UserPulse(props: UserStatusPropsInterface) {
   switch (props.status) {
     case UserStatus.online:
       return (
-        <IoPulseOutline className="text-green-500 text-2xl animate-pulse mx-2 ml-auto" />
+        <IoPulseOutline className="text-green-500 text-2xl animate-pulse mx-2" />
       );
     case UserStatus.busy:
       return (
-        <IoPulseOutline className="text-orange-400 text-2xl animate-pulse mx-2 ml-auto" />
+        <IoPulseOutline className="text-orange-400 text-2xl animate-pulse mx-2" />
       );
     case UserStatus.offline:
-      return (
-        <IoRemoveOutline className="text-gray-400 text-2xl mx-2 ml-auto" />
-      );
+      return <IoRemoveOutline className="text-gray-400 text-2xl mx-2" />;
     default:
       return (
-        <IoPulseOutline className="text-gray-400 text-2xl animate-pulse mx-2 ml-auto" />
+        <IoPulseOutline className="text-gray-400 text-2xl animate-pulse mx-2" />
       );
   }
 }

@@ -118,11 +118,12 @@ p {
 ::-webkit-scrollbar {
   height: 5px;
   width: 5px;
+  @apply rounded;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  @apply bg-gray-400 rounded;
 }
 
 /* Handle */
