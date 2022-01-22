@@ -263,6 +263,89 @@ export default function RoomCard(props: IRoomCardProps) {
     }
   }
 
+  if (props.room.status == RoomStatus.archived) {
+    return (
+      <>
+        <span
+          className={`flex flex-row bg-gray-300 bg-opacity-25 px-5 items-center justify-start rounded-lg`}
+        >
+          {membersInvited()}
+
+          {/* header */}
+          <span className="flex flex-row justify-between items-start space-x-1 p-5 h-full">
+            {/* meeting details */}
+            <span className="flex flex-col items-baseline justify-start max-w-xs h-full">
+              <span
+                className={`${
+                  isUserInRoom ? " text-gray-500" : "text-white"
+                } font-semibold`}
+              >
+                {props.room.name}
+              </span>
+              <Popover content={AgendaContent} title="Agenda">
+                <span
+                  className={`${
+                    isUserInRoom ? "text-gray-400" : "text-gray-200"
+                  } text-xs mb-auto text-ellipsis whitespace-pre-line max-h-[3rem] overflow-hidden`}
+                >
+                  {props.room.description}
+                </span>
+              </Popover>
+
+              {/* all invited members who are not in the room already */}
+            </span>
+          </span>
+
+          <RoomTypeTag
+            roomStatus={props.room.status}
+            roomType={props.room.type}
+          />
+
+          {/* room status and link(s) */}
+          <span className="ml-auto flex flex-col items-end justify-between h-full w-fit">
+            {renderTopRightCardInfo()}
+
+            <span
+              className={`${
+                isUserInRoom ? "text-gray-400" : "text-gray-200"
+              } text-xs text-right mb-auto`}
+            >
+              {props.room.approximateDateTime}
+            </span>
+          </span>
+
+          {/* room attachments */}
+          <span className="flex flex-row space-x-2">
+            {props.room.attachments && props.room.attachments.length > 0 ? (
+              <button
+                onClick={() => window.open(props.room.attachments[0], "_blank")}
+                className={`${
+                  isUserInRoom
+                    ? " bg-gray-400 bg-opacity-25 text-gray-400"
+                    : "bg-gray-300 bg-opacity-25 text-white"
+                }  bg-gray-400 bg-opacity-25 p-2 ml-auto rounded hover:bg-opacity-40`}
+              >
+                <FaLink className="text-sm" />
+              </button>
+            ) : (
+              <></>
+            )}
+          </span>
+
+          {/* footer */}
+          <span className="flex flex-row justify-end items-center p-3 rounded-lg">
+            <button
+              onClick={handleJoiningRoom}
+              className="text-sm font-semibold py-1 px-4 rounded bg-gray-200 text-green-500"
+            >
+              Join
+            </button>
+          </span>
+        </span>
+      </>
+    );
+  }
+
   return (
     <span
       className={`flex flex-col ${

@@ -20,11 +20,34 @@ export default function RoomTypeTag(props: RoomTypeTagProps) {
       </span>
     );
   } else if (props.roomStatus == RoomStatus.archived) {
-    return (
-      <span className={"text-gray-700 bg-gray-200 " + universalClassNames}>
-        <span>archived</span>
-      </span>
-    );
+    if (props.roomType == RoomType.now) {
+      return (
+        // <span className={"text-gray-700 bg-gray-200 " + universalClassNames}>
+        //   <span>archived</span>
+        // </span>
+
+        <span className={"text-gray-700 bg-gray-200 " + universalClassNames}>
+          <FaClock />
+          <span>now room</span>
+        </span>
+      );
+    } else if (props.roomType == RoomType.scheduled) {
+      return (
+        <span className={"text-blue-700 bg-blue-200 " + universalClassNames}>
+          <FaClock />
+          <span>scheduled room</span>
+        </span>
+      );
+    } else if (props.roomType == RoomType.recurring) {
+      return (
+        <span
+          className={"text-yellow-700 bg-yellow-200 " + universalClassNames}
+        >
+          <IoTimer />
+          <span>recurring room</span>
+        </span>
+      );
+    }
   }
 
   // if it's just empty and not empty, then go ahead and show the right type

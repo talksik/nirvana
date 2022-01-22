@@ -294,16 +294,20 @@ export default function DashboardRoom() {
           </>
         );
       case RoomTypeFilter.archived:
-        return archivedRooms.map((room) => {
-          // if the room is
-          return (
-            <RoomCard
-              key={room.id}
-              room={room}
-              updateRoomHandler={handleUpdateRoom}
-            />
-          );
-        });
+        return (
+          <span className="flex flex-col space-y-5 px-10">
+            {archivedRooms.map((room) => {
+              // if the room is
+              return (
+                <RoomCard
+                  key={room.id}
+                  room={room}
+                  updateRoomHandler={handleUpdateRoom}
+                />
+              );
+            })}
+          </span>
+        );
       default:
         return allRooms.map((room) => {
           // if the room is
