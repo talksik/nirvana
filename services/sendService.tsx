@@ -5,6 +5,7 @@ import {
   getFirestore,
   serverTimestamp,
 } from "firebase/firestore";
+import Announcement from "../models/announcement";
 import Link from "../models/link";
 import { Message } from "../models/message";
 import { Collections } from "./collections";
@@ -28,6 +29,13 @@ export class SendService {
   async sendLink(link: Link) {
     await addDoc(collection(this.db, Collections.links), {
       ...link,
+      createdDate: serverTimestamp(),
+    });
+  }
+
+  async sendAnnouncement(announcement: Announcement) {
+    await addDoc(collection(this.db, Collections.announcements), {
+      ...announcement,
       createdDate: serverTimestamp(),
     });
   }

@@ -13,6 +13,7 @@ import { SendService } from "../services/sendService";
 import { useTeamDashboardContext } from "./teamDashboardContext";
 import isValidHttpUrl from "../helpers/urlHelper";
 import { GlobalHotKeys, KeyMap } from "react-hotkeys";
+import Announcement from "../models/announcement";
 
 interface KeyboardContextInterface {
   selectedTeammate: string; // can only have one selected
@@ -22,6 +23,7 @@ interface KeyboardContextInterface {
   addTeamShortcutBinding: Function;
 
   isRecording: Boolean; // can only record if someone is selected or maybe for an announcement
+  isRecordingAnnouncement: boolean;
 
   isMuted: Boolean;
   isSilenceMode: Boolean; // won't automatically listen to notifications or sounds
@@ -78,6 +80,8 @@ export default function KeyboardContextProvider({ children }) {
   // SECTION: set up for shortcuts and recording and such
   const [selectedTeammate, setSelectedTeamMember] = useState<string>(null); // id of selected teammate
   const [isRecording, setIsRecording] = useState<Boolean>(false);
+  const [isRecordingAnnouncement, setIsRecordingAnnouncement] =
+    useState<boolean>(false);
   const [hasRecPermit, setHasRecPermit] = useState<Boolean>(false);
 
   const [ctrlDown, setCtrlDown] = useState<boolean>(false);
@@ -109,7 +113,7 @@ export default function KeyboardContextProvider({ children }) {
   const [audioQueue, setAudioQueue] = useState<string[]>([]); // queue for the player to keep playing
 
   // playing incoming messages
-  const { allMessages, messagesByTeamMate } = useTeamDashboardContext();
+  const { allMessages, messagesByTeamMate, team } = useTeamDashboardContext();
 
   useEffect(() => {
     if (!allMessages.length) {
@@ -148,6 +152,7 @@ export default function KeyboardContextProvider({ children }) {
     selectTeamMember,
     addTeamShortcutBinding,
     isRecording,
+    isRecordingAnnouncement,
     teamShortcutMappings,
 
     isMuted,
@@ -527,11 +532,52 @@ export default function KeyboardContextProvider({ children }) {
   }
 
   function startAnnouncement() {
-    toast.success("recording announcement");
+    setIsRecordingAnnouncement(true);
+
+    startRecording();
   }
 
-  function sendAnnouncement() {
+  async function sendAnnouncement() {
     toast.success("announcement sent to team");
+    setIsRecordingAnnouncement(false);
+
+    try {
+      const file = await stopRecording();
+
+      // confirm with user that he wants to make the announcement
+      // before sending and all
+      // show this 2 seconds after playing entire message
+      setTimeout(async () => {
+        if (
+          confirm(
+            "Send this announcement to team? OR just cancel and create a new one to restate something."
+          )
+        ) {
+          const downloadUrl = await cloudStorageService.uploadMessageAudioFile(
+            file
+          );
+
+          console.log("file is stored: " + downloadUrl);
+
+          // create announcement object and send to firestore
+          const newAnnounce = new Announcement(
+            downloadUrl,
+            team.id,
+            currUser.uid
+          );
+
+          await sendService.sendAnnouncement(newAnnounce);
+
+          toast.success("clip sent");
+        } else {
+          toast.error("cancelled announcement");
+
+          return;
+        }
+      }, 2000);
+    } catch (error) {
+      toast.error("problem in sending");
+    }
   }
 
   const keyMap: KeyMap = {
