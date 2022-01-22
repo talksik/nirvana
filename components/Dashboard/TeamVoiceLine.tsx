@@ -204,7 +204,7 @@ export default function TeamVoiceLine() {
   }
 
   return (
-    <section className="p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md w-96 shrink-0 max-h-[32rem]">
+    <section className="p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md w-96 shrink-0">
       <span className="flex flex-row justify-start items-center pb-5">
         <span className="flex flex-col">
           <span className="text-white">TEAM</span>

@@ -8,4 +8,6 @@ export enum Collections {
   rooms = "rooms",
   announcements = "announcements",
   links = "links",
+
+  officeRooms = "officeRooms",
 }

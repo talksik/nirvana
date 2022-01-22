@@ -55,8 +55,6 @@ export default function Announcements() {
         updatedOrNewAnn.id = change.doc.id;
 
         if (change.type === "added" || change.type === "modified") {
-          console.log("New or updated announcement: ", updatedOrNewAnn);
-
           // update rooms map
           setAnnMap((prevMap) => {
             return new Map(prevMap.set(updatedOrNewAnn.id, updatedOrNewAnn));
