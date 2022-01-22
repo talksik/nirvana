@@ -538,7 +538,6 @@ export default function KeyboardContextProvider({ children }) {
   }
 
   async function sendAnnouncement() {
-    toast.success("announcement sent to team");
     setIsRecordingAnnouncement(false);
 
     try {

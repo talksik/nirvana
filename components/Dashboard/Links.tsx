@@ -60,15 +60,11 @@ export default function Links() {
         updatedOrNewLink.id = change.doc.id;
 
         if (change.type === "added" || change.type === "modified") {
-          console.log("New or updated link: ", updatedOrNewLink);
-
-          // update rooms map
           setLinksMap((prevMap) => {
             return new Map(prevMap.set(updatedOrNewLink.id, updatedOrNewLink));
           });
         }
         if (change.type === "removed") {
-          // not really going to happen, more so will be archived
           console.log("Removed link: ", updatedOrNewLink);
         }
       });
