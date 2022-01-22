@@ -124,7 +124,6 @@ export default function DashboardRoom() {
     updatedRoom.id = change.doc.id;
 
     if (change.type === "added" || change.type === "modified") {
-      console.log("New or updated room: ", updatedRoom);
       // update rooms map
       setRoomsMap((prevMap) => {
         return new Map(prevMap.set(updatedRoom.id, updatedRoom));

@@ -69,7 +69,7 @@ export default function AnnouncementCard(props: IAnnouncementCardProps) {
   }
 
   return (
-    <span className="flex flex-row p-3 bg-gray-300 bg-opacity-25 rounded-lg items-center">
+    <span className="flex flex-row p-3 bg-gray-300 bg-opacity-25 rounded-lg items-center shrink-0">
       <span className="relative mr-2 grid items-center justify-items-center">
         <span className="bg-gray-200 bg-opacity-20 rounded-full shadow-md absolute w-full h-full"></span>
 

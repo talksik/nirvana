@@ -139,13 +139,37 @@ export default function KeyboardContextProvider({ children }) {
   // manage audio queue
   useEffect(() => {
     // every time queue changes,
-    // setPlayerSrc as the next item if there is any
+    // setPlayerSrc as the next item if there is any to play it
 
     if (audioQueue && audioQueue.length > 0) {
       toast("Adding Message to Queue");
-      setPlayerSrc(audioQueue[0]);
+
+      // todo: edge case, if it's the same link again, then still play it somehow
+      if (playerSrc == audioQueue[0]) {
+        // play empty one and then add the next audio file
+        setPlayerSrc("");
+
+        setTimeout(() => {
+          setPlayerSrc(audioQueue[0]);
+        }, 1000);
+      } else {
+        setPlayerSrc(audioQueue[0]);
+      }
+    }
+
+    if (!audioQueue || audioQueue.length == 0) {
+      setPlayerSrc(null);
     }
   }, [audioQueue]);
+
+  // show toast when recording
+  useEffect(() => {
+    if (isRecordingAnnouncement || isRecording) {
+      toast.loading("Recording...");
+    } else {
+      toast.dismiss();
+    }
+  }, [isRecording, isRecordingAnnouncement]);
 
   const value: KeyboardContextInterface = {
     selectedTeammate,
@@ -267,7 +291,8 @@ export default function KeyboardContextProvider({ children }) {
     recorder
       .start()
       .then(() => {
-        toast.success("started recording");
+        // toast.success("started recording");
+        console.log("recording started");
       })
       .catch((e) =>
         toast.error("there was a problem in starting your recording")
@@ -502,7 +527,8 @@ export default function KeyboardContextProvider({ children }) {
   function handleResetView() {
     setSelectedTeamMember(null);
     setShowModalType(ShowModalType.na);
-    setPlayerSrc(null);
+
+    setAudioQueue([]);
   }
 
   // IMPORTANT: shortcut handlers need to be updated as the function has to have the fresh state

@@ -17,6 +17,7 @@ import Announcement, { AnnouncementState } from "../../models/announcement";
 import { getTime } from "../../helpers/dateTime";
 import AnnouncementCard from "../AnnouncementCard";
 import { Dropdown, Menu, Radio, Tooltip } from "antd";
+import { useKeyboardContext } from "../../contexts/keyboardContext";
 
 // for query
 const yesterday = new Date();
@@ -27,6 +28,7 @@ const db = getFirestore();
 export default function Announcements() {
   const { currUser } = useAuth();
   const { team } = useTeamDashboardContext();
+  const { isRecordingAnnouncement } = useKeyboardContext();
 
   const [annMap, setAnnMap] = useState<Map<string, Announcement>>(
     new Map<string, Announcement>()
@@ -125,8 +127,12 @@ export default function Announcements() {
             ANNOUNCEMENTS
             <Tooltip title={"Press and hold A to send an announcement."}>
               <button
-                className="right-1 rounded-lg py-1 px-2 ml-1 
-                            shadow-md text-center text-white text-sm font-bold"
+                className={`right-1 rounded-lg py-1 px-2 ml-1 
+                            shadow-md text-center text-white text-sm font-bold ${
+                              isRecordingAnnouncement
+                                ? "bg-orange-500 text-white"
+                                : ""
+                            }`}
               >
                 A
               </button>
@@ -163,15 +169,17 @@ export default function Announcements() {
           </span>
         </Dropdown>
 
+        <Tooltip title={"Press and hold A to record an announcement"}>
+          <button className="bg-gray-300 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40">
+            <FaMicrophoneAlt className="text-lg text-white" />
+          </button>
+        </Tooltip>
         {/* <button className="bg-gray-300 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40">
-          <FaMicrophoneAlt className="text-lg text-white" />
-        </button>
-        <button className="bg-gray-300 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40">
           <FaPlay className="text-lg text-white" />
         </button> */}
       </span>
 
-      <div className="flex flex-row overflow-auto whitespace-nowrap space-x-5 items-center">
+      <div className="flex flex-row overflow-auto whitespace-nowrap space-x-5 items-center pb-5">
         {getTabContent()}
       </div>
     </section>
