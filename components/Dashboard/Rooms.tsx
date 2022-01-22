@@ -376,9 +376,6 @@ export default function DashboardRoom() {
                 title={"Press q to create an instant room if you have GSuite."}
               >
                 <button
-                  onClick={() =>
-                    window.open("https://meet.google.com/new", "_blank")
-                  }
                   className="right-1 rounded-lg py-1 px-2 ml-1 
                                         shadow-md text-center text-white text-sm font-bold"
                 >

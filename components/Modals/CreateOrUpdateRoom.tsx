@@ -99,7 +99,6 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
 
       if (hasGSuite) {
         // create google meet link based on the room name without spaces
-
         var slugName =
           user.firstName +
           "-" +
@@ -252,18 +251,46 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
     );
   };
 
-  function createRoomNow() {
+  async function createRoomNow() {
     console.log("creating room");
 
     // reset form for the right values to be in there
-    // resetForm();
-
-    // handleGetAutoGSuiteLink();
+    resetForm();
 
     // submit form
-    // handleSubmit().then(() => {
-    //   console.log("creating room instantly");
-    // });
+    // handleSubmit().then((res) => console.log(res));
+
+    const newRoom = new Room();
+
+    // create google meet link based on the room name without spaces
+    var slugName =
+      user.firstName + "-" + "room" + moment(new Date()).format("dddddohmma");
+    slugName = slugName.replace(/\s/g, "-");
+
+    const autoLink =
+      "https://accounts.google.com/AccountChooser/signinchooser?continue=https://g.co/meet/" +
+      slugName;
+
+    newRoom.link = autoLink;
+    newRoom.status = RoomStatus.empty;
+    newRoom.membersInRoom = [];
+    newRoom.approximateDateTime = null;
+
+    newRoom.members = [currUser.uid]; // add currUser to the list of "people"
+    newRoom.type = RoomType.now;
+    newRoom.name = roomName;
+    newRoom.createdByUserId = currUser.uid;
+    newRoom.teamId = team.id;
+
+    console.log(newRoom);
+
+    handleModalType(ShowModalType.na);
+
+    await roomService.createOrUpdateRoom(newRoom);
+
+    resetForm();
+
+    toast.success("created room");
   }
 
   const keyMap: KeyMap = {
@@ -278,123 +305,124 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
   };
 
   return (
-    <Modal
-      title="Room Details"
-      centered
-      visible={props.show}
-      onOk={handleSubmit}
-      onCancel={handleCloseModal}
-    >
+    <>
       <GlobalHotKeys keyMap={keyMap} handlers={handlers} />
 
-      <div className="flex flex-col">
-        {hasGSuite ? (
-          <span className="flex flex-col items-start">
-            <span className="text-lg">Link</span>
-            <span className="text-gray-300 text-xs flex-1">
-              We&apos;ll create a link for you. Don&apos;t have a GSuite?{" "}
-              <button
-                onClick={() => sethasGSuite(false)}
-                className="text-blue-500"
-              >
-                Click here.
-              </button>
-            </span>
-          </span>
-        ) : (
-          <span className="flex flex-col items-start">
-            <span className="text-lg">Link</span>
-            {roomLink ? (
-              <span className="text-gray-300 text-xs mb-2">
-                Please make sure this is valid so that your team can join
-                properly.
-              </span>
-            ) : (
-              <span className="text-xs mb-2">
-                <a
-                  href="https://meet.google.com/new"
-                  target={"_blank"}
-                  rel={"noreferrer"}
-                  className=""
-                >
-                  Click here to create one
-                </a>{" "}
-                and then come back and paste the link for your team.{" "}
+      <Modal
+        title="Room Details"
+        centered
+        visible={props.show}
+        onOk={handleSubmit}
+        onCancel={handleCloseModal}
+      >
+        <div className="flex flex-col">
+          {hasGSuite ? (
+            <span className="flex flex-col items-start">
+              <span className="text-lg">Link</span>
+              <span className="text-gray-300 text-xs flex-1">
+                We&apos;ll create a link for you. Don&apos;t have a GSuite?{" "}
                 <button
-                  onClick={() => sethasGSuite(true)}
+                  onClick={() => sethasGSuite(false)}
                   className="text-blue-500"
                 >
-                  Have a GSuite? Click here.
+                  Click here.
                 </button>
               </span>
-            )}
-
-            <input
-              autoFocus
-              className="w-full rounded-lg bg-gray-50 p-3"
-              value={roomLink}
-              placeholder="https://meet.google.com/xxx-xxxx"
-              onChange={(e) => setRoomLink(e.target.value)}
-            />
-          </span>
-        )}
-
-        <span className="flex flex-col items-start flex-1 mt-4 ">
-          <span className="text-lg">Room Name</span>
-          <span className="text-gray-300 text-xs mb-2 flex-1">
-            Be specific enough, everyone down the hall will see this.
-          </span>
-          <input
-            placeholder="ex. Design - Ecommerce Figma"
-            className="w-full rounded-lg bg-gray-50 p-3"
-            value={roomName}
-            onChange={(e) => setRoomName(e.target.value)}
-          />
-        </span>
-
-        {/* room type selection */}
-        <span className="flex flex-col items-start flex-1 mt-4 ">
-          <span className="text-lg">Type</span>
-          <span className="text-gray-300 text-xs mb-2 flex-1"></span>
-          <Radio.Group
-            value={roomType}
-            onChange={(event) => setRoomType(event.target.value)}
-          >
-            <Radio.Button value={RoomType.now}>{RoomType.now}</Radio.Button>
-            <Radio.Button value={RoomType.scheduled}>
-              {RoomType.scheduled}
-            </Radio.Button>
-            <Radio.Button value={RoomType.recurring}>
-              {RoomType.recurring}
-            </Radio.Button>
-          </Radio.Group>
-
-          {roomType == RoomType.recurring ? (
-            <Tooltip
-              title={`Put things like "ping me when ready" or "sometime this afternoon"`}
-            >
-              <span className="flex flex-col items-stretch flex-1 mt-4">
-                <span className="text-md">Approximate Slot</span>
-                <span className="text-gray-300 text-xs mb-2 flex-1">
-                  Sometimes you don&#39;t have a specific time or want to
-                  propose a rough period.
-                </span>
-                <input
-                  placeholder="ex. 2pm-ish...after lunch...every evening"
-                  className="w-full rounded-lg bg-gray-50 p-3"
-                  value={roomAppxDateTime}
-                  onChange={(e) => setRoomAppxDateTime(e.target.value)}
-                />
-              </span>
-            </Tooltip>
+            </span>
           ) : (
-            <></>
+            <span className="flex flex-col items-start">
+              <span className="text-lg">Link</span>
+              {roomLink ? (
+                <span className="text-gray-300 text-xs mb-2">
+                  Please make sure this is valid so that your team can join
+                  properly.
+                </span>
+              ) : (
+                <span className="text-xs mb-2">
+                  <a
+                    href="https://meet.google.com/new"
+                    target={"_blank"}
+                    rel={"noreferrer"}
+                    className=""
+                  >
+                    Click here to create one
+                  </a>{" "}
+                  and then come back and paste the link for your team.{" "}
+                  <button
+                    onClick={() => sethasGSuite(true)}
+                    className="text-blue-500"
+                  >
+                    Have a GSuite? Click here.
+                  </button>
+                </span>
+              )}
+
+              <input
+                autoFocus
+                className="w-full rounded-lg bg-gray-50 p-3"
+                value={roomLink}
+                placeholder="https://meet.google.com/xxx-xxxx"
+                onChange={(e) => setRoomLink(e.target.value)}
+              />
+            </span>
           )}
 
-          {roomType == RoomType.scheduled ? (
-            <span className="flex flex-col items-start flex-1 mt-4">
-              <span className="text-md">Specific Time</span>
-              {/* <TimePicker
+          <span className="flex flex-col items-start flex-1 mt-4 ">
+            <span className="text-lg">Room Name</span>
+            <span className="text-gray-300 text-xs mb-2 flex-1">
+              Be specific enough, everyone down the hall will see this.
+            </span>
+            <input
+              placeholder="ex. Design - Ecommerce Figma"
+              className="w-full rounded-lg bg-gray-50 p-3"
+              value={roomName}
+              onChange={(e) => setRoomName(e.target.value)}
+            />
+          </span>
+
+          {/* room type selection */}
+          <span className="flex flex-col items-start flex-1 mt-4 ">
+            <span className="text-lg">Type</span>
+            <span className="text-gray-300 text-xs mb-2 flex-1"></span>
+            <Radio.Group
+              value={roomType}
+              onChange={(event) => setRoomType(event.target.value)}
+            >
+              <Radio.Button value={RoomType.now}>{RoomType.now}</Radio.Button>
+              <Radio.Button value={RoomType.scheduled}>
+                {RoomType.scheduled}
+              </Radio.Button>
+              <Radio.Button value={RoomType.recurring}>
+                {RoomType.recurring}
+              </Radio.Button>
+            </Radio.Group>
+
+            {roomType == RoomType.recurring ? (
+              <Tooltip
+                title={`Put things like "ping me when ready" or "sometime this afternoon"`}
+              >
+                <span className="flex flex-col items-stretch flex-1 mt-4">
+                  <span className="text-md">Approximate Slot</span>
+                  <span className="text-gray-300 text-xs mb-2 flex-1">
+                    Sometimes you don&#39;t have a specific time or want to
+                    propose a rough period.
+                  </span>
+                  <input
+                    placeholder="ex. 2pm-ish...after lunch...every evening"
+                    className="w-full rounded-lg bg-gray-50 p-3"
+                    value={roomAppxDateTime}
+                    onChange={(e) => setRoomAppxDateTime(e.target.value)}
+                  />
+                </span>
+              </Tooltip>
+            ) : (
+              <></>
+            )}
+
+            {roomType == RoomType.scheduled ? (
+              <span className="flex flex-col items-start flex-1 mt-4">
+                <span className="text-md">Specific Time</span>
+                {/* <TimePicker
                       minuteStep={15}
                       use12Hours
                       format="h:mm a"
@@ -403,101 +431,102 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
                       onChange={handleTimePickerChange}
                     /> */}
 
-              <DatePicker
-                minuteStep={15}
-                use12Hours
-                format="YYYY-MM-DD h:mm a"
-                value={dateTimePicker}
-                onChange={handleDateTimePickerChange}
-                showTime={{ defaultValue: moment("00:00:00", "HH:mm:ss") }}
-              />
-            </span>
-          ) : (
-            <></>
-          )}
-        </span>
-
-        {/* people selection */}
-        <span className="flex flex-col items-start flex-1 mt-4">
-          <span className="flex flex-row w-full items-center">
-            <span className="text-lg flex-1">People</span>
-            {/* team or personal */}
-
-            <span className="flex flex-col items-end">
-              <Tooltip
-                title={
-                  "Private mode coming soon, but keep it collaborative for now."
-                }
-              >
-                <Switch
-                  disabled={true}
-                  defaultChecked
-                  checkedChildren={<span>Visible</span>}
-                  unCheckedChildren={<span>Private</span>}
+                <DatePicker
+                  minuteStep={15}
+                  use12Hours
+                  format="YYYY-MM-DD h:mm a"
+                  value={dateTimePicker}
+                  onChange={handleDateTimePickerChange}
+                  showTime={{ defaultValue: moment("00:00:00", "HH:mm:ss") }}
                 />
-              </Tooltip>
-              <span className="text-gray-300 text-xs mb-2 flex-1">
-                Team sees this room.
+              </span>
+            ) : (
+              <></>
+            )}
+          </span>
+
+          {/* people selection */}
+          <span className="flex flex-col items-start flex-1 mt-4">
+            <span className="flex flex-row w-full items-center">
+              <span className="text-lg flex-1">People</span>
+              {/* team or personal */}
+
+              <span className="flex flex-col items-end">
+                <Tooltip
+                  title={
+                    "Private mode coming soon, but keep it collaborative for now."
+                  }
+                >
+                  <Switch
+                    disabled={true}
+                    defaultChecked
+                    checkedChildren={<span>Visible</span>}
+                    unCheckedChildren={<span>Private</span>}
+                  />
+                </Tooltip>
+                <span className="text-gray-300 text-xs mb-2 flex-1">
+                  Team sees this room.
+                </span>
               </span>
             </span>
+
+            <span className="text-gray-300 text-xs mb-2 flex-1">
+              Optional - Add any mandatory attendees you want or just tell them
+              later.
+            </span>
+            {MemberSelection()}
           </span>
 
-          <span className="text-gray-300 text-xs mb-2 flex-1">
-            Optional - Add any mandatory attendees you want or just tell them
-            later.
-          </span>
-          {MemberSelection()}
-        </span>
+          {showMoreDetails ? (
+            <>
+              <Divider />
 
-        {showMoreDetails ? (
-          <>
-            <Divider />
+              <button
+                className="text-sm text-gray-300 text-left underline decoration-gray-300"
+                onClick={() => setShowMoreDetails(false)}
+              >
+                Hide details...
+              </button>
 
+              <span className="flex flex-col items-start flex-1 mt-4">
+                <span className="text-md">Agenda</span>
+                <span className="text-gray-300 text-xs mb-2 flex-1">
+                  Optional
+                </span>
+                <textarea
+                  placeholder="ex. Let's discuss ways to..."
+                  className="w-full rounded-lg bg-gray-50 p-3"
+                  value={roomDescription}
+                  onChange={(e) => setRoomDescription(e.target.value)}
+                />
+              </span>
+
+              <span className="flex flex-col items-start flex-1 mt-4">
+                <span className="text-md">Attachment</span>
+                <span className="text-gray-300 text-xs mb-2">
+                  Optional - ppt, meeting notes...
+                </span>
+                <span className="text-gray-300 text-xs mb-2">
+                  have multiple? just post it in the team attachments
+                </span>
+                <input
+                  placeholder="https://"
+                  className="w-full rounded-lg bg-gray-50 p-3"
+                  value={roomAttachment}
+                  onChange={(e) => setRoomAttachment(e.target.value)}
+                />
+              </span>
+            </>
+          ) : (
             <button
-              className="text-sm text-gray-300 text-left underline decoration-gray-300"
-              onClick={() => setShowMoreDetails(false)}
+              className="text-sm text-gray-300 text-left underline decoration-gray-300 mt-5"
+              onClick={() => setShowMoreDetails(true)}
             >
-              Hide details...
+              Click to show more details...
             </button>
-
-            <span className="flex flex-col items-start flex-1 mt-4">
-              <span className="text-md">Agenda</span>
-              <span className="text-gray-300 text-xs mb-2 flex-1">
-                Optional
-              </span>
-              <textarea
-                placeholder="ex. Let's discuss ways to..."
-                className="w-full rounded-lg bg-gray-50 p-3"
-                value={roomDescription}
-                onChange={(e) => setRoomDescription(e.target.value)}
-              />
-            </span>
-
-            <span className="flex flex-col items-start flex-1 mt-4">
-              <span className="text-md">Attachment</span>
-              <span className="text-gray-300 text-xs mb-2">
-                Optional - ppt, meeting notes...
-              </span>
-              <span className="text-gray-300 text-xs mb-2">
-                have multiple? just post it in the team attachments
-              </span>
-              <input
-                placeholder="https://"
-                className="w-full rounded-lg bg-gray-50 p-3"
-                value={roomAttachment}
-                onChange={(e) => setRoomAttachment(e.target.value)}
-              />
-            </span>
-          </>
-        ) : (
-          <button
-            className="text-sm text-gray-300 text-left underline decoration-gray-300 mt-5"
-            onClick={() => setShowMoreDetails(true)}
-          >
-            Click to show more details...
-          </button>
-        )}
-      </div>
-    </Modal>
+          )}
+        </div>
+      </Modal>
+    </>
   );
 }
