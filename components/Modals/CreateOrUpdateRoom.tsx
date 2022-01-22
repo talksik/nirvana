@@ -79,12 +79,14 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
     props.handleClose();
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
     // make sure link, room, and type are selected
-    if (!roomLink || !roomName) {
+    if (!roomName) {
       toast.error("Please fill in room link and name.");
+      return;
+    }
+    if (!roomLink && !hasGSuite) {
+      toast.error("must provide room link if you don't have a GSuite");
       return;
     }
 
@@ -95,16 +97,35 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
         newRoom.attachments = [roomAttachment];
       }
 
+      if (hasGSuite) {
+        // create google meet link based on the room name without spaces
+
+        var slugName =
+          user.firstName +
+          "-" +
+          "room" +
+          moment(new Date()).format("dddddohmma");
+        slugName = slugName.replace(/\s/g, "-");
+
+        const autoLink =
+          "https://accounts.google.com/AccountChooser/signinchooser?continue=https://g.co/meet/" +
+          slugName;
+
+        newRoom.link = autoLink;
+      } else {
+        newRoom.link = roomLink;
+      }
+
       if (roomType == RoomType.now) {
         // make sure approximate time isn't selected
         newRoom.approximateDateTime = null;
         newRoom.status = RoomStatus.live;
 
         // automatically add me to the room
-        newRoom.membersInRoom = [currUser.uid];
+        newRoom.membersInRoom = [];
 
         // navigate to the new room automatically
-        window.open(roomLink, "_blank");
+        // window.open(roomLink, "_blank");
       } else if (roomType == RoomType.scheduled) {
         // make sure that either appx or time picker is selected, not both
         if (!dateTimePicker) {
@@ -122,7 +143,6 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
         newRoom.approximateDateTime = roomAppxDateTime;
       }
 
-      newRoom.link = roomLink;
       newRoom.members = [...membersSelected]; // add currUser to the list of "people"
       newRoom.type = roomType;
       newRoom.description = roomDescription;
@@ -133,6 +153,9 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
       if (props.updateRoom) {
         newRoom.id = props.updateRoom.id;
         newRoom.membersInRoom = props.updateRoom.membersInRoom;
+        toast.success("updated room");
+      } else {
+        toast.success("created room");
       }
 
       console.log(newRoom);
@@ -142,10 +165,8 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
       await roomService.createOrUpdateRoom(newRoom);
 
       resetForm();
-
-      toast.success("done");
     } catch (error) {
-      toast.error("problem creating room");
+      toast.error("problem creating/updating room");
       console.log(error);
     }
   };
@@ -153,7 +174,9 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
   function resetForm() {
     setRoomLink("");
     setRoomName(
-      user.firstName + "'s Room - " + moment(new Date()).format("dddd do")
+      user.firstName +
+        "'s Room - " +
+        moment(new Date()).format("dddd do h:mm a")
     );
     setRoomDescription("");
     setMembersSelected([currUser.uid] as string[]);
@@ -164,11 +187,13 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
     setDateTimePicker(null);
 
     setShowMoreDetails(false);
+
+    sethasGSuite(true);
   }
 
   const [roomLink, setRoomLink] = useState<string>(pastedLink ?? "");
   const [roomName, setRoomName] = useState<string>(
-    user.firstName + "'s Room - " + moment(new Date()).format("dddd do")
+    user.firstName + "'s Room - " + moment(new Date()).format("dddd do h:mm a")
   );
   const [roomDescription, setRoomDescription] = useState<string>("");
 
@@ -182,6 +207,7 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
   const [dateTimePicker, setDateTimePicker] = useState(null);
 
   const [showMoreDetails, setShowMoreDetails] = useState<boolean>(false);
+  const [hasGSuite, sethasGSuite] = useState<boolean>(true);
 
   function handleSelectMember(value) {
     // passed in array of selections...userIds
@@ -227,20 +253,22 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
   };
 
   function createRoomNow() {
-    // show modal
+    console.log("creating room");
 
-    // enter a google meet link automaticall
+    // reset form for the right values to be in there
+    // resetForm();
 
-    // create a date based room name
+    // handleGetAutoGSuiteLink();
 
-    //
-
-    console.log("creating room instantly");
+    // submit form
+    // handleSubmit().then(() => {
+    //   console.log("creating room instantly");
+    // });
   }
 
   const keyMap: KeyMap = {
     CREATE_ROOM_NOW: {
-      name: "Stop recording",
+      name: "create room now",
       sequence: "q",
       action: "keyup",
     },
@@ -260,35 +288,56 @@ export default function CreateOrUpdateRoomModal(props: IModalProps) {
       <GlobalHotKeys keyMap={keyMap} handlers={handlers} />
 
       <div className="flex flex-col">
-        <span className="flex flex-col items-start">
-          <span className="text-lg">Link</span>
-          {roomLink ? (
-            <span className="text-gray-300 text-xs mb-2">
-              Please make sure this is valid so that your team can join
-              properly.
-            </span>
-          ) : (
-            <span className="text-xs mb-2">
-              <a
-                href="https://meet.google.com/new"
-                target={"_blank"}
-                rel={"noreferrer"}
-                className=""
+        {hasGSuite ? (
+          <span className="flex flex-col items-start">
+            <span className="text-lg">Link</span>
+            <span className="text-gray-300 text-xs flex-1">
+              We&apos;ll create a link for you. Don&apos;t have a GSuite?{" "}
+              <button
+                onClick={() => sethasGSuite(false)}
+                className="text-blue-500"
               >
-                Click here to create one
-              </a>{" "}
-              and then come back and paste the link for your team.
+                Click here.
+              </button>
             </span>
-          )}
+          </span>
+        ) : (
+          <span className="flex flex-col items-start">
+            <span className="text-lg">Link</span>
+            {roomLink ? (
+              <span className="text-gray-300 text-xs mb-2">
+                Please make sure this is valid so that your team can join
+                properly.
+              </span>
+            ) : (
+              <span className="text-xs mb-2">
+                <a
+                  href="https://meet.google.com/new"
+                  target={"_blank"}
+                  rel={"noreferrer"}
+                  className=""
+                >
+                  Click here to create one
+                </a>{" "}
+                and then come back and paste the link for your team.{" "}
+                <button
+                  onClick={() => sethasGSuite(true)}
+                  className="text-blue-500"
+                >
+                  Have a GSuite? Click here.
+                </button>
+              </span>
+            )}
 
-          <input
-            autoFocus
-            className="w-full rounded-lg bg-gray-50 p-3"
-            value={roomLink}
-            placeholder="https://meet.google.com/xxx-xxxx"
-            onChange={(e) => setRoomLink(e.target.value)}
-          />
-        </span>
+            <input
+              autoFocus
+              className="w-full rounded-lg bg-gray-50 p-3"
+              value={roomLink}
+              placeholder="https://meet.google.com/xxx-xxxx"
+              onChange={(e) => setRoomLink(e.target.value)}
+            />
+          </span>
+        )}
 
         <span className="flex flex-col items-start flex-1 mt-4 ">
           <span className="text-lg">Room Name</span>

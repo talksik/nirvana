@@ -337,9 +337,6 @@ export default function KeyboardContextProvider({ children }) {
 
   const handleKeyUp = useCallback(
     (event) => {
-      console.log("on key up");
-      console.log(event.keyCode);
-
       // if was recording and released R, then stop recording and send message
       if (event.keyCode == KeyCode.R && selectedTeammate && isRecording) {
         console.log("stopped recording");
@@ -393,8 +390,6 @@ export default function KeyboardContextProvider({ children }) {
       if (showModalType != ShowModalType.na) {
         return;
       }
-
-      console.log(event.keyCode);
 
       // recording
       if (event.keyCode == KeyCode.R && !ctrlDown) {

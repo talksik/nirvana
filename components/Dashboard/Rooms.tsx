@@ -372,15 +372,19 @@ export default function DashboardRoom() {
           <span className="flex flex-col mr-auto">
             <span className="text-white ">
               ROOMS
-              <button
-                onClick={() =>
-                  window.open("https://meet.google.com/new", "_blank")
-                }
-                className="right-1 rounded-lg py-1 px-2 ml-1 
-                                        shadow-md text-center text-white text-sm font-bold"
+              <Tooltip
+                title={"Press q to create an instant room if you have GSuite."}
               >
-                CTRL + Q
-              </button>
+                <button
+                  onClick={() =>
+                    window.open("https://meet.google.com/new", "_blank")
+                  }
+                  className="right-1 rounded-lg py-1 px-2 ml-1 
+                                        shadow-md text-center text-white text-sm font-bold"
+                >
+                  Q
+                </button>
+              </Tooltip>
             </span>
             {relativeTimeNextMeeting ? (
               <span className="text-gray-300 text-xs">
