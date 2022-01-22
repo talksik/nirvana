@@ -267,7 +267,7 @@ export default function RoomCard(props: IRoomCardProps) {
     <span
       className={`flex flex-col ${
         isUserInRoom ? " bg-white bg-opacity-80" : "bg-gray-300 bg-opacity-25"
-      }  rounded-lg justify-between w-96 m-2 shrink-0 h-[12rem]`}
+      }  rounded-lg justify-between w-96 m-2 shrink-0 h-[14rem]`}
     >
       {/* header */}
       <span className="flex flex-row justify-between items-start space-x-1 p-5 h-full">
@@ -284,7 +284,7 @@ export default function RoomCard(props: IRoomCardProps) {
             <span
               className={`${
                 isUserInRoom ? "text-gray-400" : "text-gray-200"
-              } text-xs mb-auto text-ellipsis whitespace-pre-line max-h-12 overflow-hidden`}
+              } text-xs mb-auto text-ellipsis whitespace-pre-line max-h-[3rem] overflow-hidden`}
             >
               {props.room.description}
             </span>
@@ -348,7 +348,7 @@ export default function RoomCard(props: IRoomCardProps) {
       </span>
 
       {/* footer */}
-      <span className="flex flex-row justify-end items-center bg-gray-400 bg-opacity-30 p-3">
+      <span className="flex flex-row justify-end items-center bg-gray-400 bg-opacity-30 p-3 rounded-lg">
         {membersInRoom()}
 
         {/* tell them to archive if it's past */}
