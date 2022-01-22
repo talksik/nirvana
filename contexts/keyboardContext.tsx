@@ -548,8 +548,15 @@ export default function KeyboardContextProvider({ children }) {
 
   const [playerSrc, setPlayerSrc] = useState<string>(null);
 
-  function handleAddAudioToQueue(urls: string[]) {
-    setAudioQueue((prevQueue) => [...prevQueue, ...urls]);
+  function handleAddAudioToQueue(
+    urls: string[],
+    clearEverythingElse: boolean = false
+  ) {
+    if (clearEverythingElse) {
+      setAudioQueue(urls);
+    } else {
+      setAudioQueue((prevQueue) => [...prevQueue, ...urls]);
+    }
   }
 
   function startAnnouncement() {

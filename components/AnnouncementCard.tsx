@@ -24,7 +24,7 @@ export default function AnnouncementCard(props: IAnnouncementCardProps) {
   const [loading, setLoading] = useState<boolean>(false);
 
   function playAnnouncement() {
-    handleAddAudioToQueue([props.announcement.audioDataUrl]);
+    handleAddAudioToQueue([props.announcement.audioDataUrl], true);
   }
 
   async function resolveAnnouncement() {

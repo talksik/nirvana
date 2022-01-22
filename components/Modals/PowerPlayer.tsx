@@ -38,7 +38,7 @@ export default function PowerPlayer(props: {
     // // loop through start to end and add to queue
     // var convoChunk: string[] = []
 
-    handleAddAudioToQueue([url]);
+    handleAddAudioToQueue([url], true);
   }
 
   function handleClose(e) {
