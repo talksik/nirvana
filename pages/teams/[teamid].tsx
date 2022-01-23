@@ -87,9 +87,9 @@ function TeamDashboard() {
 
       <div className="flex flex-row items-start space-x-5 h-[56rem]">
         <div className="flex flex-col max-w-sm space-y-5 h-full">
-          <TeamVoiceLine />
-
           <Office />
+
+          <TeamVoiceLine />
         </div>
 
         <div className="flex flex-col space-y-5 flex-1 h-full">
