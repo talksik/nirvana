@@ -7,6 +7,11 @@ import OfficeRoom, { OfficeRoomState } from "../models/officeRoom";
 import { User } from "../models/user";
 import OfficeRoomService from "../services/officeRoomService";
 import { VscDebugDisconnect } from "react-icons/vsc";
+import {
+  AgoraVideoPlayer,
+  createClient,
+  createMicrophoneAudioTrack,
+} from "agora-rtc-react";
 
 interface IOfficeCard {
   officeRoom: OfficeRoom;
@@ -31,6 +36,8 @@ export default function OfficeCard(props: IOfficeCard) {
   }, [] as User[]);
 
   async function handleJoinOfficeRoom() {
+    toast.loading("Connecting");
+
     // make sure user is not in another room
     // get agora token from cloud function
     // join channel for agora
@@ -41,15 +48,24 @@ export default function OfficeCard(props: IOfficeCard) {
     }
 
     try {
-      const newMembers = [...props.officeRoom.members, currUser.uid];
-      await officeRoomService.updateMembersInOfficeRoom(
-        props.officeRoom.id,
-        newMembers
-      );
+      // todo: pass in the right channel name based on the office room id
+      const agoraToken = await officeRoomService.getAgoraToken();
+
+      console.log(agoraToken);
+
+      // join right channel on agora
+
+      // const newMembers = [...props.officeRoom.members, currUser.uid];
+      // await officeRoomService.updateMembersInOfficeRoom(
+      //   props.officeRoom.id,
+      //   newMembers
+      // );
     } catch (error) {
       console.error(error);
       toast.error("problem joining office room");
     }
+
+    toast.dismiss();
   }
 
   async function handleLeaveOfficeRoom() {

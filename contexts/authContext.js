@@ -11,6 +11,7 @@ import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Loading from "../components/Loading";
 import firebase from "../services/firebaseService";
+import cookie from "js-cookie";
 
 const AuthContext = React.createContext(null);
 const googleProvider = new GoogleAuthProvider();
@@ -34,8 +35,10 @@ export function AuthProvider({ children }) {
         // set the token in the cookies for ssr verification
         const token = await user.getIdToken();
         // nookies.set(undefined, "token", token, { path: "/" });
+        cookie.set("auth", token);
       } else {
         // nookies.set(undefined, "token", "", { path: "/" });
+        cookie.remove("auth");
 
         setCurrUser(null);
       }

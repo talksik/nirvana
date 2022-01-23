@@ -11,10 +11,16 @@ import {
 } from "firebase/firestore";
 import OfficeRoom, { OfficeRoomState } from "../models/officeRoom";
 import { Collections } from "./collections";
+import { getFunctions, httpsCallable } from "firebase/functions";
+
+interface IAgoraTokenResult {
+  data: { token: string };
+}
 
 export default class OfficeRoomService {
   private db: Firestore = getFirestore();
   private batch = writeBatch(this.db);
+  private functions = getFunctions();
 
   async createInitialOfficeRooms(createdByUserId: string, teamId: string) {
     const entrance = new OfficeRoom("Entrance", teamId, createdByUserId);
@@ -57,6 +63,36 @@ export default class OfficeRoomService {
   //     });
   //   }
   // }
+
+  async getAgoraToken(): Promise<string> {
+    // const agoraToken = await fetch("/api/agora/token", {
+    //   method: "post",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ channelName: "testChannel" }),
+    // });
+
+    const cfResult = httpsCallable(this.functions, "agoraToken");
+
+    return await cfResult({ channelName: "testChannel" })
+      .then((result: IAgoraTokenResult) => {
+        const data = result.data;
+
+        if (!data.token) {
+          throw new Error("No token retrieved from agora");
+        }
+
+        return data.token;
+      })
+      .catch((error) => {
+        // Getting the Error details.
+        const code = error.code;
+        const message = error.message;
+        const details = error.details;
+        throw error;
+      });
+  }
 
   async updateMembersInOfficeRoom(
     officeRoomId: string,
