@@ -7,17 +7,16 @@ import OfficeRoom, { OfficeRoomState } from "../models/officeRoom";
 import { User } from "../models/user";
 import OfficeRoomService from "../services/officeRoomService";
 import { VscDebugDisconnect } from "react-icons/vsc";
-import {
-  AgoraVideoPlayer,
-  createClient,
-  createMicrophoneAudioTrack,
-} from "agora-rtc-react";
+import AgoraService from "../services/agoraService";
 
 interface IOfficeCard {
   officeRoom: OfficeRoom;
+  handleJoinChannel: Function;
+  handleLeaveChannel: Function;
 }
 
 const officeRoomService = new OfficeRoomService();
+const agoraService = new AgoraService();
 
 export default function OfficeCard(props: IOfficeCard) {
   const { currUser } = useAuth();
@@ -48,36 +47,43 @@ export default function OfficeCard(props: IOfficeCard) {
     }
 
     try {
-      // todo: pass in the right channel name based on the office room id
-      const agoraToken = await officeRoomService.getAgoraToken();
+      // agora token from CF
+      const agoraToken = await agoraService.getAgoraToken(props.officeRoom.id);
 
-      console.log(agoraToken);
+      // // function to do it all
+      // await officeRoomService.joinOfficeRoom(props.officeRoom, currUser.uid);
 
-      // join right channel on agora
+      // handle joining agora channel
+      await props.handleJoinChannel(props.officeRoom.id, agoraToken);
 
-      // const newMembers = [...props.officeRoom.members, currUser.uid];
-      // await officeRoomService.updateMembersInOfficeRoom(
-      //   props.officeRoom.id,
-      //   newMembers
-      // );
+      // update firestore to add ourselves in the office room
+      const newMembers = [...props.officeRoom.members, currUser.uid];
+      await officeRoomService.updateMembersInOfficeRoom(
+        props.officeRoom.id,
+        newMembers
+      );
     } catch (error) {
       console.error(error);
       toast.error("problem joining office room");
     }
 
     toast.dismiss();
+    toast.success("joined office room");
   }
 
   async function handleLeaveOfficeRoom() {
-    // leave the channel for agora
+    toast.loading("leaving");
 
-    // leave from firestore database
     if (!props.officeRoom.members.includes(currUser.uid)) {
       toast.error("You are not in this office room!");
       return;
     }
 
     try {
+      // leave agora channel
+      await props.handleLeaveChannel();
+
+      // leave from firestore database
       const newMembersInRoom = props.officeRoom.members.filter(
         (memberId) => memberId != currUser.uid
       );
@@ -90,6 +96,8 @@ export default function OfficeCard(props: IOfficeCard) {
       console.error(error);
       toast.error("problem leaving office room");
     }
+    toast.dismiss();
+    toast.success("left office room");
   }
 
   // check if user is in the office room

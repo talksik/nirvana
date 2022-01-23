@@ -1,3 +1,9 @@
+import {
+  ClientConfig,
+  IAgoraRTC,
+  IAgoraRTCClient,
+  IMicrophoneAudioTrack,
+} from "agora-rtc-sdk-ng";
 import { Tooltip } from "antd";
 import {
   collection,
@@ -7,9 +13,11 @@ import {
   where,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useAuth } from "../../contexts/authContext";
 import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
 import OfficeRoom from "../../models/officeRoom";
+import { appId } from "../../services/agoraService";
 import { Collections } from "../../services/collections";
 import OfficeRoomService from "../../services/officeRoomService";
 import OfficeCard from "../OfficeCard";
@@ -18,9 +26,18 @@ const db = getFirestore();
 
 const officeRoomService = new OfficeRoomService();
 
+const config: ClientConfig = {
+  mode: "rtc",
+  codec: "vp8",
+};
+
 export default function Office() {
   const { currUser } = useAuth();
   const { team } = useTeamDashboardContext();
+  const [agoraRtc, setAgoraRtc] = useState<IAgoraRTC>(null);
+  const [agoraRtcClient, setAgoraRtcClient] = useState<IAgoraRTCClient>(null);
+  const [localAudioTrack, setLocalAudioTrack] =
+    useState<IMicrophoneAudioTrack>(null);
 
   const [officeRoomsMap, setOfficeRoomsMap] = useState<Map<string, OfficeRoom>>(
     new Map<string, OfficeRoom>()
@@ -66,6 +83,68 @@ export default function Office() {
     });
   }, []);
 
+  // set up agora stuff
+  useEffect(() => {
+    (async function () {
+      // dynamic import as the server side import doesn't work
+      const AgoraRTC = (await import("agora-rtc-sdk-ng")).default;
+      const agoraClient = AgoraRTC.createClient(config);
+
+      setAgoraRtcClient(agoraClient);
+      setAgoraRtc(AgoraRTC);
+    })();
+  }, []);
+
+  async function handleJoinChannel(channelName: string, agoraToken: string) {
+    const localTrack: IMicrophoneAudioTrack =
+      await agoraRtc.createMicrophoneAudioTrack();
+
+    setLocalAudioTrack(localTrack);
+
+    let init = async (chanName: string) => {
+      agoraRtcClient.on("user-published", async (user, mediaType) => {
+        await agoraRtcClient.subscribe(user, mediaType);
+        console.log("subscribe success");
+
+        if (mediaType === "audio") {
+          user.audioTrack?.play();
+        }
+      });
+
+      agoraRtcClient.on("user-unpublished", async (user, type) => {
+        console.log("unpublished", user, type);
+        if (type === "audio") {
+          user.audioTrack?.stop();
+        }
+
+        await agoraRtcClient.unsubscribe(user);
+      });
+
+      agoraRtcClient.on("user-left", (user) => {
+        console.log("user left", user);
+      });
+
+      await agoraRtcClient.join(appId, chanName, agoraToken, null);
+      if (localTrack) await agoraRtcClient.publish(localTrack);
+    };
+
+    if (localTrack) {
+      console.log("init ready");
+      init(channelName);
+    } else {
+      toast.error("Not ready for joining call");
+      return;
+    }
+  }
+
+  async function handleLeaveChannel() {
+    // destroy local track
+    localAudioTrack?.close();
+
+    // leave all channels
+    await agoraRtcClient.leave();
+  }
+
   const allOfficeRooms = Array.from(officeRoomsMap.values());
 
   allOfficeRooms.sort((a, b) => {
@@ -98,7 +177,12 @@ export default function Office() {
       {/* all office rooms  */}
       <span className="flex flex-col overflow-auto pr-2 space-y-2">
         {allOfficeRooms.map((officeRoom) => (
-          <OfficeCard key={officeRoom.id} officeRoom={officeRoom} />
+          <OfficeCard
+            key={officeRoom.id}
+            officeRoom={officeRoom}
+            handleJoinChannel={handleJoinChannel}
+            handleLeaveChannel={handleLeaveChannel}
+          />
         ))}
         {/* <OfficeCard /> */}
       </span>
