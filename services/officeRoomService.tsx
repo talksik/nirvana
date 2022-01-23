@@ -9,7 +9,7 @@ import {
   setDoc,
   writeBatch,
 } from "firebase/firestore";
-import OfficeRoom from "../models/officeRoom";
+import OfficeRoom, { OfficeRoomState } from "../models/officeRoom";
 import { Collections } from "./collections";
 
 export default class OfficeRoomService {
@@ -23,7 +23,7 @@ export default class OfficeRoomService {
     const corner = new OfficeRoom("Corner", teamId, createdByUserId);
     const main = new OfficeRoom("Team Hub", teamId, createdByUserId);
     const handsOnDeck = new OfficeRoom(
-      "All Hand On Deck",
+      "All Hands On Deck",
       teamId,
       createdByUserId
     );
@@ -58,24 +58,27 @@ export default class OfficeRoomService {
   //   }
   // }
 
-  // async updateMembersInRoom(roomId: string, newMembersInRoom: string[]) {
-  //   // if the room is going to be empty, then change status accordingly
-  //   var status: RoomStatus = RoomStatus.live;
-  //   if (newMembersInRoom.length == 0) {
-  //     status = RoomStatus.empty;
-  //   }
+  async updateMembersInOfficeRoom(
+    officeRoomId: string,
+    newMembersInRoom: string[]
+  ) {
+    // if the room is going to be empty, then change status accordingly
+    var state: OfficeRoomState = OfficeRoomState.active;
+    if (newMembersInRoom.length == 0) {
+      state = OfficeRoomState.idle;
+    }
 
-  //   const docRef = doc(this.db, Collections.rooms, roomId);
-  //   await setDoc(
-  //     docRef,
-  //     {
-  //       status,
-  //       membersInRoom: newMembersInRoom,
-  //       lastUpdatedDate: serverTimestamp(),
-  //     },
-  //     { merge: true }
-  //   );
-  // }
+    const docRef = doc(this.db, Collections.officeRooms, officeRoomId);
+    await setDoc(
+      docRef,
+      {
+        state,
+        members: newMembersInRoom,
+        lastUpdatedDate: serverTimestamp(),
+      },
+      { merge: true }
+    );
+  }
 
   // async updateRoom(room: Room) {
   //   const docRef = doc(this.db, Collections.rooms, room.id);
