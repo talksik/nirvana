@@ -150,7 +150,7 @@ export default function OfficeCard(props: IOfficeCard) {
           <Tooltip title={"Join"}>
             <button
               onClick={handleJoinOfficeRoom}
-              className="bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40"
+              className="ml-2 bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40"
             >
               <HiSpeakerphone className="text-lg text-white" />
             </button>
