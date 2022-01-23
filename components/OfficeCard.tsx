@@ -85,7 +85,7 @@ export default function OfficeCard(props: IOfficeCard) {
   return (
     <span
       className={`flex flex-col transition-all duration-300 hover:bg-gray-200 hover:bg-opacity-25
-     py-5 px-3 rounded-lg ${isUserInRoom ? "bg-orange-500 bg-opacity-25" : ""}`}
+     py-3 px-3 rounded-lg ${isUserInRoom ? "bg-orange-500 bg-opacity-25" : ""}`}
     >
       <span className="flex flex-row justify-start items-center">
         {renderOfficePulse(props.officeRoom.state)}
