@@ -1,6 +1,7 @@
 import { Avatar, Tooltip } from "antd";
 import toast from "react-hot-toast";
 import { FaPhoneSlash, FaPlus } from "react-icons/fa";
+import { HiSpeakerphone } from "react-icons/hi";
 import { useAuth } from "../contexts/authContext";
 import { useTeamDashboardContext } from "../contexts/teamDashboardContext";
 import OfficeRoom, { OfficeRoomState } from "../models/officeRoom";
@@ -146,12 +147,14 @@ export default function OfficeCard(props: IOfficeCard) {
             <VscDebugDisconnect className="text-orange-500 text-xl" />
           </button>
         ) : (
-          <button
-            onClick={handleJoinOfficeRoom}
-            className="bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40"
-          >
-            <FaPlus className="text-lg text-white" />
-          </button>
+          <Tooltip title={"Join"}>
+            <button
+              onClick={handleJoinOfficeRoom}
+              className="bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40"
+            >
+              <HiSpeakerphone className="text-lg text-white" />
+            </button>
+          </Tooltip>
         )}
       </span>
     </span>
