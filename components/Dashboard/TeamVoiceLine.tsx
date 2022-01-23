@@ -94,7 +94,7 @@ export default function TeamVoiceLine() {
 
       var customSelectClasses: string = "";
       if (tmember.id == selectedTeammate) {
-        customSelectClasses = "bg-white scale-150 z-20";
+        customSelectClasses = "bg-white scale-150 z-20 w-[25rem]";
       } else if (isMessageIncoming) {
         customSelectClasses = "bg-orange-500 bg-opacity-20";
       }
@@ -103,7 +103,8 @@ export default function TeamVoiceLine() {
         <span
           onClick={() => selectTeamMember(tmember.id)}
           key={i}
-          className={`rounded flex flex-row items-center py-2 px-2 justify-items-start ease-in-out duration-300 hover:cursor-pointer ${customSelectClasses}`}
+          className={`rounded flex flex-row items-center py-2 px-2 justify-items-start 
+          ease-in-out duration-300 hover:cursor-pointer ${customSelectClasses}`}
         >
           <span className="relative flex mr-2">
             <span className="bg-gray-200 bg-opacity-30 rounded-full shadow-md absolute w-full h-full"></span>
@@ -204,7 +205,7 @@ export default function TeamVoiceLine() {
   }
 
   return (
-    <section className="p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md w-96 shrink-0 max-h-[32rem]">
+    <section className="p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md w-96 shrink-0">
       <span className="flex flex-row justify-start items-center pb-5">
         <span className="flex flex-col">
           <span className="text-white">TEAM</span>
@@ -232,7 +233,7 @@ export default function TeamVoiceLine() {
       <PowerPlayer show={showPowerPlayer} handleCloseModal={handleCloseModal} />
 
       {/* list of team members */}
-      <div className=" overflow-auto flex flex-col">
+      <div className="flex flex-col overflow-x-visible">
         {renderTeamMemberList()}
       </div>
     </section>
