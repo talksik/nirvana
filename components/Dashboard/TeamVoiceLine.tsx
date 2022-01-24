@@ -94,7 +94,7 @@ export default function TeamVoiceLine() {
 
       var customSelectClasses: string = "";
       if (tmember.id == selectedTeammate) {
-        customSelectClasses = "bg-white scale-150 z-20 w-[25rem]";
+        customSelectClasses = "bg-white scale-100 z-20 ";
       } else if (isMessageIncoming) {
         customSelectClasses = "bg-orange-500 bg-opacity-20";
       }
@@ -165,7 +165,7 @@ export default function TeamVoiceLine() {
                 )}
               </Tooltip>
 
-              <Tooltip title="press space to play last convo">
+              <Tooltip title="press space to play latest convo chunk">
                 <button className="ml-2 h-10 shadow-lg border-green-400 bg-opacity-80 p-2 rounded hover:bg-opacity-100">
                   <span className="text-sm text-green-500 font-bold">
                     SPACE
@@ -205,7 +205,7 @@ export default function TeamVoiceLine() {
   }
 
   return (
-    <section className="p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md w-96 shrink-0">
+    <section className="p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md w-96 shrink-0 max-h-[35rem]">
       <span className="flex flex-row justify-start items-center pb-5">
         <span className="flex flex-col">
           <span className="text-white">TEAM</span>
@@ -233,7 +233,7 @@ export default function TeamVoiceLine() {
       <PowerPlayer show={showPowerPlayer} handleCloseModal={handleCloseModal} />
 
       {/* list of team members */}
-      <div className="flex flex-col overflow-x-visible">
+      <div className="flex flex-col overflow-y-auto pr-2">
         {renderTeamMemberList()}
       </div>
     </section>
