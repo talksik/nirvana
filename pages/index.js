@@ -61,9 +61,16 @@ export default function Home() {
             </span> */}
             <button
               onClick={handleLogin}
-              className="ml-auto text-gray-500 mr-2 hidden md:block"
+              className="ml-auto text-gray-500  hidden md:block"
             >
               Log In
+            </button>
+
+            <button
+              onClick={handleLogin}
+              className="rounded font-semibold bg-gray-200 p-2 text-teal-600 shadow-lg flex flex-row items-center space-x-2"
+            >
+              <span>Sign Up</span>
             </button>
 
             {getStartedButton}
