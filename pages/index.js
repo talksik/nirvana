@@ -17,8 +17,11 @@ import { Divider } from "antd";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import SkeletonLoader from "../components/Loading/skeletonLoader";
+import { useAuth } from "../contexts/authContext";
 
 export default function Home() {
+  const { currUser } = useAuth();
+
   const handleGetDemo = () => {
     window.open("https://calendly.com/usenirvana/30min", "_blank");
   };
@@ -59,19 +62,34 @@ export default function Home() {
             <span className="text-gray-500  border-r-gray-400 border-r-2 pr-5">
               Philosophy
             </span> */}
-            <button
-              onClick={handleLogin}
-              className="ml-auto text-gray-500  hidden md:block"
-            >
-              Log In
-            </button>
 
-            <button
-              onClick={handleLogin}
-              className="rounded font-semibold bg-gray-200 p-2 text-teal-600 shadow-lg flex flex-row items-center space-x-2"
-            >
-              <span>Sign Up</span>
-            </button>
+            {currUser ? (
+              <>
+                <span className="text-gray-500">Welcome back,</span>
+                <button
+                  onClick={() => window.open("/teams", "_self")}
+                  className="rounded font-semibold bg-gray-200 p-2 text-teal-600 shadow-lg flex flex-row items-center space-x-2"
+                >
+                  Continue
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={handleLogin}
+                  className="ml-auto text-gray-500  hidden md:block"
+                >
+                  Log In
+                </button>
+
+                <button
+                  onClick={handleLogin}
+                  className="rounded font-semibold bg-gray-200 p-2 text-teal-600 shadow-lg flex flex-row items-center space-x-2"
+                >
+                  <span>Sign Up</span>
+                </button>
+              </>
+            )}
 
             {getStartedButton}
           </span>
