@@ -435,7 +435,7 @@ export default function KeyboardContextProvider({ children }) {
             console.log("playing from this cache");
 
             // wait for x changes, and then break adding to the queue...I want to hear the past loop of conversation maybe
-            const maxConvoChanges: number = 2;
+            const maxConvoChanges: number = 1;
             var convoChangeCount: number = 0;
 
             var currTalkerId = arrayMessagesforUser[0].senderUserId;
