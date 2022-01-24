@@ -308,7 +308,7 @@ export default function Header() {
       <span className="flex flex-row items-center space-x-5">
         {/* search bar */}
 
-        {/* <FaBell className="text-lg text-gray-400 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" /> */}
+        <FaBell className="text-lg text-gray-200 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
 
         {renderAudioOutput()}
 
