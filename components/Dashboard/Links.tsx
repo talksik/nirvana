@@ -1,5 +1,5 @@
 import { BsThreeDots } from "react-icons/bs";
-import { FaAngleDown, FaCode, FaPlus } from "react-icons/fa";
+import { FaAngleDown, FaCode, FaFileImage, FaPlus } from "react-icons/fa";
 
 import Image from "next/image";
 import { Dropdown, Menu, Radio, Tooltip } from "antd";
@@ -206,6 +206,19 @@ export default function Links() {
               Week <FaAngleDown />
             </span>
           </Dropdown>
+
+          <Tooltip
+            title={
+              "screenshots: paste screenshot into the paste.pics website and bring back the link here and just paste it"
+            }
+          >
+            <button
+              onClick={() => window.open("https://paste.pics/", "_blank")}
+              className="bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40 ml-2"
+            >
+              <FaFileImage className="text-lg text-white" />
+            </button>
+          </Tooltip>
 
           <Tooltip
             title={

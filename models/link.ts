@@ -54,7 +54,8 @@ export default class Link {
       url.includes(".png") ||
       url.includes(".jpg") ||
       url.includes(".svg") ||
-      url.includes(".gif")
+      url.includes(".gif") ||
+      url.includes(LinkType.pastePics)
     ) {
       return LinkType.image;
     } else if (url.includes(LinkType.pdf)) {
@@ -82,4 +83,5 @@ export enum LinkType {
   image = "image",
   pdf = "pdf",
   codePile = "codepile",
+  pastePics = "paste.pics",
 }
