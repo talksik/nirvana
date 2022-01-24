@@ -9,6 +9,7 @@ import Image from "next/image";
 export default function Profile() {
   const { currUser, logOut } = useAuth();
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const router = useRouter();
   const userService: UserService = new UserService();
@@ -55,6 +56,8 @@ export default function Profile() {
   }, []);
 
   async function handleSubmit(e) {
+    setLoading(true);
+
     e.preventDefault();
 
     if (!firstName) {
@@ -91,6 +94,8 @@ export default function Profile() {
         "Something went wrong in saving your information. Please try again."
       );
     }
+
+    setLoading(false);
   }
 
   const [firstName, setFirstName] = useState<string>(
@@ -114,7 +119,7 @@ export default function Profile() {
       <Divider />
 
       <span className="flex flex-col items-start">
-        <span className="text-md">Avatar</span>
+        <span className="text-md">Avatar*</span>
         <span className="text-gray-300 text-xs">
           Please change your google image to change this.
         </span>
@@ -126,7 +131,7 @@ export default function Profile() {
       </span>
 
       <span className="flex flex-col items-start">
-        <span className="text-md">Email</span>
+        <span className="text-md">Email*</span>
         <span className="text-gray-300 text-xs mb-2">
           This is set from your Google account and cannot be changed.
         </span>
@@ -140,7 +145,7 @@ export default function Profile() {
 
       <div className="flex flex-row justify-between space-x-3">
         <span className="flex flex-col items-start flex-1">
-          <span className="text-md">First Name</span>
+          <span className="text-md">First Name*</span>
           <span className="text-gray-300 text-xs mb-2"></span>
           <input
             placeholder="ex. John"
@@ -151,7 +156,7 @@ export default function Profile() {
         </span>
 
         <span className="flex flex-col items-start flex-1">
-          <span className="text-md">Last Name</span>
+          <span className="text-md">Last Name*</span>
           <span className="text-gray-300 text-xs mb-2"></span>
           <input
             placeholder="ex. Brown"
@@ -165,7 +170,7 @@ export default function Profile() {
       <Divider />
 
       <span className="flex flex-col items-start">
-        <span className="text-md">Nickname</span>
+        <span className="text-md">Nickname*</span>
         <span className="text-gray-300 text-xs mb-2">
           What does your team call you? This is what is displayed.
         </span>
@@ -178,7 +183,7 @@ export default function Profile() {
       </span>
 
       <span className="flex flex-col items-start">
-        <span className="text-md">Role</span>
+        <span className="text-md">Role*</span>
         <span className="text-gray-300 text-xs mb-2">
           Are you a developer? designer? manager?
         </span>
@@ -195,30 +200,39 @@ export default function Profile() {
       <span className="flex flex-row justify-end space-x-2">
         {/* if they already had a nickname, they are probably revisiting this page */}
         {/* can't cancel if they are a new user */}
-        {user && user.nickName ? (
-          <>
-            <button
-              onClick={() => router.push("/teams")}
-              className="bg-gray-100 py-2 px-5 rounded text-gray-400"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="text-sm text-white font-semibold py-2 px-5 bg-teal-500 rounded"
-            >
-              Save
-            </button>
-          </>
+        {loading ? (
+          <svg
+            className="animate-spin h-5 w-5 mr-3 border rounded-full"
+            viewBox="0 0 24 24"
+          ></svg>
         ) : (
           <>
-            {/* if they already had a nickname, they are probably revisiting this page */}
-            <button
-              type="submit"
-              className="text-sm text-white font-semibold py-2 px-5 bg-teal-500 rounded"
-            >
-              {"Continue ->"}
-            </button>
+            {user && user.nickName ? (
+              <>
+                <button
+                  onClick={() => router.push("/teams")}
+                  className="bg-gray-100 py-2 px-5 rounded text-gray-400"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="text-sm text-white font-semibold py-2 px-5 bg-teal-500 rounded"
+                >
+                  Save
+                </button>
+              </>
+            ) : (
+              <>
+                {/* if they already had a nickname, they are probably revisiting this page */}
+                <button
+                  type="submit"
+                  className="text-sm text-white font-semibold py-2 px-5 bg-teal-500 rounded"
+                >
+                  {"Continue ->"}
+                </button>
+              </>
+            )}
           </>
         )}
       </span>
