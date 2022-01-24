@@ -152,7 +152,7 @@ function RouteHandler() {
                   </span>
                 )}
 
-                <span className="text-sm text-gray-300">
+                <span className="text-xs text-gray-300">
                   {"created: " + moment(team.createdDate.toDate()).fromNow()}
                 </span>
               </span>
