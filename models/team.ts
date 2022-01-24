@@ -2,11 +2,12 @@ import { Timestamp } from "firebase/firestore";
 
 export class Team {
   id: string;
-  name:string;
+  name: string;
 
   status: TeamStatus;
 
-  allowedUserCount:number;
+  allowedUserCount: number;
+  subscriptionPlan: TeamSubscriptionPlan;
 
   companySite: string;
 
@@ -19,5 +20,11 @@ export class Team {
 export enum TeamStatus {
   created = "created",
   deactivated = "deactivated",
-  deleted = "deleted"
+  deleted = "deleted",
+}
+
+export enum TeamSubscriptionPlan {
+  free = "free",
+  basic = "basic",
+  pro = "pro",
 }
