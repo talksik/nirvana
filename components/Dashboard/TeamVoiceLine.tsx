@@ -104,7 +104,7 @@ export default function TeamVoiceLine() {
           onClick={() => selectTeamMember(tmember.id)}
           key={i}
           className={`rounded flex flex-row items-center py-2 px-2 justify-items-start 
-          ease-in-out duration-300 hover:cursor-pointer ${customSelectClasses}`}
+          ease-in-out duration-300 hover:cursor-pointer ${customSelectClasses} hover:bg-gray-200 hover:bg-opacity-20`}
         >
           <span
             className={`relative flex mr-2 transition-all duration-500 ${

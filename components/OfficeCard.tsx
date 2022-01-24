@@ -1,6 +1,6 @@
 import { Avatar, Tooltip } from "antd";
 import toast from "react-hot-toast";
-import { FaPhoneSlash, FaPlus } from "react-icons/fa";
+import { FaPhoneSlash, FaPlus, FaWalking } from "react-icons/fa";
 import { HiSpeakerphone } from "react-icons/hi";
 import { useAuth } from "../contexts/authContext";
 import { useTeamDashboardContext } from "../contexts/teamDashboardContext";
@@ -109,54 +109,54 @@ export default function OfficeCard(props: IOfficeCard) {
 
   return (
     <span
-      className={`flex flex-col transition-all duration-300 hover:bg-gray-200 hover:bg-opacity-25
-     py-3 px-3 rounded-lg ${isUserInRoom ? "bg-orange-500 bg-opacity-25" : ""}`}
+      className={`group flex flex-row justify-start items-center  transition-all duration-500 hover:bg-gray-200 hover:bg-opacity-25
+     py-3 px-3 min-h-[3rem] rounded-lg ${
+       isUserInRoom ? "bg-orange-500 bg-opacity-25" : ""
+     }`}
     >
-      <span className="flex flex-row justify-start items-center">
-        {renderOfficePulse(props.officeRoom.state)}
+      {renderOfficePulse(props.officeRoom.state)}
 
-        {/* office location name */}
-        <span className="text-gray-200 text-md font-semibold ml-2">
-          {props.officeRoom.name}
-        </span>
-
-        {/* all members in room */}
-        <span className="ml-auto items-center flex">
-          <Avatar.Group>
-            {allMembersInRoom.map((member) => {
-              return (
-                <Tooltip key={member.id} title={member.nickName}>
-                  <Avatar
-                    src={member.avatarUrl}
-                    style={{ backgroundColor: "teal", verticalAlign: "middle" }}
-                    className="shadow-xl hover:z-20 hover:cursor-pointer"
-                  >
-                    {member.nickName[0]}
-                  </Avatar>
-                </Tooltip>
-              );
-            })}
-          </Avatar.Group>
-        </span>
-
-        {isUserInRoom ? (
-          <button
-            onClick={handleLeaveOfficeRoom}
-            className="ml-2 bg-orange-500 bg-opacity-40 p-2 rounded"
-          >
-            <VscDebugDisconnect className="text-orange-500 text-xl" />
-          </button>
-        ) : (
-          <Tooltip title={"Join"}>
-            <button
-              onClick={handleJoinOfficeRoom}
-              className="ml-2 bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40"
-            >
-              <HiSpeakerphone className="text-lg text-white" />
-            </button>
-          </Tooltip>
-        )}
+      {/* office location name */}
+      <span className="text-gray-200 text-md font-semibold ml-2">
+        {props.officeRoom.name}
       </span>
+
+      {/* all members in room */}
+      <span className="ml-auto items-center flex">
+        <Avatar.Group>
+          {allMembersInRoom.map((member) => {
+            return (
+              <Tooltip key={member.id} title={member.nickName}>
+                <Avatar
+                  src={member.avatarUrl}
+                  style={{ backgroundColor: "teal", verticalAlign: "middle" }}
+                  className="shadow-xl hover:z-20 hover:cursor-pointer"
+                >
+                  {member.nickName[0]}
+                </Avatar>
+              </Tooltip>
+            );
+          })}
+        </Avatar.Group>
+      </span>
+
+      {isUserInRoom ? (
+        <button
+          onClick={handleLeaveOfficeRoom}
+          className="ml-2 bg-orange-500 bg-opacity-40 p-2 rounded"
+        >
+          <VscDebugDisconnect className="text-orange-500 text-xl" />
+        </button>
+      ) : (
+        <Tooltip title={"Join"}>
+          <button
+            onClick={handleJoinOfficeRoom}
+            className="ml-2 bg-gray-300 bg-opacity-25 p-2 rounded hover:bg-opacity-40 group-hover:flex hidden"
+          >
+            <FaWalking className="text-lg text-white" />
+          </button>
+        </Tooltip>
+      )}
     </span>
   );
 }
