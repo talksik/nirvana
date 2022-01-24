@@ -237,7 +237,7 @@ export default function TeamVoiceLine() {
       <PowerPlayer show={showPowerPlayer} handleCloseModal={handleCloseModal} />
 
       {/* list of team members */}
-      <div className="flex flex-col overflow-y-auto pr-2">
+      <div className="flex flex-col overflow-y-auto space-y-2">
         {renderTeamMemberList()}
       </div>
     </section>
