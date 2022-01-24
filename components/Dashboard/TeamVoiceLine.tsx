@@ -126,7 +126,7 @@ export default function TeamVoiceLine() {
             {tmember.id == selectedTeammate ? (
               <>
                 <span className="flex flex-row items-center space-x-2">
-                  <span className="text-xs text-black font-bold">
+                  <span className="text-md text-black font-bold">
                     {tmember.nickName}
                   </span>
                 </span>
