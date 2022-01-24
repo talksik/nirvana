@@ -15,6 +15,7 @@ import {
   FaDatabase,
   FaMicrophoneAltSlash,
   FaVolumeMute,
+  FaLayerGroup,
 } from "react-icons/fa";
 import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
 import router from "next/router";
@@ -123,12 +124,17 @@ export default function Header() {
 
   const TeamsMenu = (
     <Menu key={2} title="teams">
-      <Menu.Item onClick={handleAdminRoute} key={1} icon={<FaDatabase />}>
+      <Menu.Item
+        onClick={() => window.open("/teams", "_self")}
+        key={"team hub"}
+        icon={<FaLayerGroup />}
+      >
+        <button>Team Hub</button>
+      </Menu.Item>
+      <Menu.Item onClick={handleAdminRoute} key={"admin"} icon={<FaDatabase />}>
         <button>Admin</button>
       </Menu.Item>
-
       <Menu.Divider />
-
       {/* all current teams that this person is a part of */}
       {usersTeams &&
         usersTeams.map((uteam, i) => {
@@ -145,17 +151,6 @@ export default function Header() {
             </Menu.Item>
           );
         })}
-
-      <Menu.Divider />
-
-      {/* create TEAM */}
-      <Menu.Item
-        key={"createteam"}
-        icon={<FaPeopleCarry />}
-        onClick={() => router.push("/teams/create")}
-      >
-        <button>Create Team</button>
-      </Menu.Item>
     </Menu>
   );
   const UserMenu = (

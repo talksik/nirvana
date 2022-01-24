@@ -6,8 +6,8 @@ export class Team {
 
   status: TeamStatus;
 
-  allowedUserCount: number;
-  subscriptionPlan: TeamSubscriptionPlan;
+  allowedUserCount: number = 2;
+  // subscriptionPlan: TeamSubscriptionPlan = TeamSubscriptionPlan.basic
 
   companySite: string;
 

@@ -124,6 +124,7 @@ function RouteHandler() {
       {/* all teams part of */}
       <div className="flex flex-row flex-wrap">
         {teams.map((team) => {
+          console.log(team);
           return (
             <span
               key={team.id}
@@ -131,8 +132,15 @@ function RouteHandler() {
               p-5 rounded bg-gray-200 bg-opacity-20 flex flex-row justify-between items-center w-[20rem] m-2"
             >
               <span className="flex flex-col mr-10 items-start">
-                <span className="text-lg text-teal-600 group-hover:font-semibold transition-all">
-                  {team.name}
+                <span className="flex flex-row items-center space-x-2">
+                  <span className="text-lg text-teal-600 group-hover:font-semibold transition-all">
+                    {team.name}
+                  </span>
+                  <Tooltip title={"Number of pro spots purchased"}>
+                    <span className="bg-teal-600 bg-opacity-50 text-xs rounded-full w-5 h-5 flex items-center justify-evenly text-white ">
+                      {team.allowedUserCount || 2}
+                    </span>
+                  </Tooltip>
                 </span>
 
                 {team.companySite && (
