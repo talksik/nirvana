@@ -140,7 +140,7 @@ export default function Links() {
         <span className="flex flex-row justify-start pb-5 items-center">
           <span className="flex flex-col mr-20">
             <span className="text-white mr-auto">
-              LINKS
+              DRAWER
               <button
                 onClick={() => handleModalType(ShowModalType.createLink)}
                 className="right-1 rounded-lg py-1 px-2 ml-1 
@@ -153,6 +153,18 @@ export default function Links() {
             <span className="text-gray-300 text-xs">
               links: jira tickets, drive files/folders, powerpoints...
             </span>
+
+            {meLinks.length > 6 || teamLinks.length > 6 ? (
+              <span className="text-gray-300 text-xs">
+                Make sure to{" "}
+                <span className="text-orange-500">
+                  {"clear out your drawer and your team's"}
+                </span>{" "}
+                so that you are focused on this week.
+              </span>
+            ) : (
+              <></>
+            )}
           </span>
 
           <div className="ml-auto">
