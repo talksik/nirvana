@@ -164,7 +164,7 @@ export default function Office() {
     <section className="p-5 flex flex-col bg-gray-100 bg-opacity-25 rounded-lg shadow-md w-96 shrink-0 flex-1 overflow-auto">
       <Tooltip
         title={
-          "Tell teammates above to chat in the 'kitchen' or other places in the office."
+          "Tell teammates to chat in the 'kitchen' or other places in the office to resolve matters on the spot."
         }
       >
         <span className="flex flex-row justify-start items-center pb-5">

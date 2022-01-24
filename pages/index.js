@@ -72,7 +72,7 @@ export default function Home() {
 
         {/* above fold main */}
         <div className="flex flex-row flex-wrap md:flex-nowrap md:mt-20 space-x-10">
-          <span className="flex flex-col max-w-screen-sm justify-start items-baseline backdrop-blur-xl rounded-lg">
+          <span className="flex flex-col max-w-screen-sm justify-start items-baseline backdrop-blur-xl rounded-lg p-5">
             <span className="flex flex-row text-left md:text-6xl text-5xl space-x-5 h-[5rem] overflow-hidden">
               <span className="font-semibold text-black py-4">No</span>
               <span className="md:hidden flex flex-row space-x-2 py-4 text-red-600">
@@ -102,8 +102,8 @@ export default function Home() {
               <span className="text-sky-600 font-bold">focus.</span>
             </span>
 
-            <span className="my-10 text-md text-xl max-w-xl text-gray-600">
-              Voice-first collaboration tool for scrum/agile teams.
+            <span className="my-10 text-md text-xl max-w-xl text-gray-600 w-max">
+              Voice-only collaboration tool for scrum/agile teams.
               <br></br>
               Skip slack and email, just talk to your team.
             </span>
