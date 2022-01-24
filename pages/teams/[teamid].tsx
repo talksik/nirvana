@@ -20,6 +20,7 @@ import UserService from "../../services/userService";
 import Announcements from "../../components/Dashboard/Announcements";
 import Links from "../../components/Dashboard/Links";
 import Office from "../../components/Dashboard/Office";
+import ShortcutHelpModal from "../../components/Modals/ShortcutHelpModal";
 
 // User has switched back to the tab
 const onFocus = () => {
@@ -82,25 +83,29 @@ function TeamDashboard() {
   }, []);
 
   return (
-    <div className="container mx-auto py-10 px-10 flex flex-col space-y-5">
-      <Header />
+    <>
+      <ShortcutHelpModal />
 
-      <div className="flex flex-row items-start space-x-5 h-[56rem]">
-        <div className="flex flex-col max-w-sm space-y-5 h-full">
-          <Office />
+      <div className="container mx-auto py-10 px-10 flex flex-col space-y-5">
+        <Header />
 
-          <TeamVoiceLine />
+        <div className="flex flex-row items-start space-x-5 h-[56rem]">
+          <div className="flex flex-col max-w-sm space-y-5 h-full">
+            <Office />
+
+            <TeamVoiceLine />
+          </div>
+
+          <div className="flex flex-col space-y-5 flex-1 h-full">
+            <Announcements />
+
+            <Rooms />
+          </div>
         </div>
 
-        <div className="flex flex-col space-y-5 flex-1 h-full">
-          <Announcements />
-
-          <Rooms />
-        </div>
+        <Links />
       </div>
-
-      <Links />
-    </div>
+    </>
   );
 }
 
