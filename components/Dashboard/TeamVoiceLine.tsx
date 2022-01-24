@@ -106,7 +106,11 @@ export default function TeamVoiceLine() {
           className={`rounded flex flex-row items-center py-2 px-2 justify-items-start 
           ease-in-out duration-300 hover:cursor-pointer ${customSelectClasses}`}
         >
-          <span className="relative flex mr-2">
+          <span
+            className={`relative flex mr-2 transition-all duration-500 ${
+              tmember.id == selectedTeammate ? "scale-110" : ""
+            }`}
+          >
             <span className="bg-gray-200 bg-opacity-30 rounded-full shadow-md absolute w-full h-full"></span>
 
             <UserStatusBubble status={tmember.userStatus} />
