@@ -137,8 +137,8 @@ export default function ShortcutHelpModal() {
               <span className="flex flex-row justify-between items-center">
                 {/* spontaneous bug room */}
                 <span
-                  className="shrink-0 h-[15rem] backdrop-blur-xl flex flex-col bg-white bg-opacity-80
-                 rounded-lg justify-between w-80 max-w-screen-sm m-2 overflow-clip"
+                  className="shrink-0 h-[15rem] flex flex-col bg-gray-200 bg-opacity-80
+                 rounded-lg justify-between w-80 max-w-screen-sm m-2 overflow-clip shadow-lg"
                 >
                   {/* header */}
                   <span className="flex flex-1 flex-row justify-between items-baseline space-x-1 p-5">
