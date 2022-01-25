@@ -114,6 +114,13 @@ p {
   @apply bg-white text-black rounded  !important;
 }
 
+.slick-dots > li {
+  @apply bg-teal-600 !important;
+}
+li.slick-active button {
+  @apply bg-orange-500 !important;
+}
+
 /* scrollbar customization */
 ::-webkit-scrollbar {
   height: 5px;
