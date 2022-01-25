@@ -225,9 +225,7 @@ export default function ShortcutHelpModal() {
                 </span>
 
                 <span className="flex flex-col ml-2 items-end">
-                  <span className="text-lg text-gray-500">
-                    Join an Official Room
-                  </span>
+                  <span className="text-lg text-gray-500">Join a Room</span>
                   <span className={`text-md text-gray-300 text-right`}>
                     Click on the{" "}
                     <button className="inline bg-gray-300 bg-opacity-25 p-1 rounded hover:bg-opacity-40">
