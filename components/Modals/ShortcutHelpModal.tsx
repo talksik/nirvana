@@ -1,9 +1,9 @@
-import { Modal } from "antd";
+import { Carousel, Modal } from "antd";
 import { useState } from "react";
 import { GlobalHotKeys, KeyMap } from "react-hotkeys";
 
 export default function ShortcutHelpModal() {
-  const [visible, setVisible] = useState<boolean>(true);
+  const [visible, setVisible] = useState<boolean>(false);
 
   function handleToggleModal() {
     setVisible((pv) => !pv);
@@ -38,7 +38,22 @@ export default function ShortcutHelpModal() {
         visible={visible}
         onCancel={handleToggleModal}
         onOk={handleToggleModal}
-      ></Modal>
+      >
+        <Carousel autoplay className="text-black bg-black h-[25rem]">
+          <div>
+            <h3>1</h3>
+          </div>
+          <div>
+            <h3>2</h3>
+          </div>
+          <div>
+            <h3>3</h3>
+          </div>
+          <div>
+            <h3>4</h3>
+          </div>
+        </Carousel>
+      </Modal>
     </>
   );
 }
