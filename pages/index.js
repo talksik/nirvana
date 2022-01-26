@@ -9,7 +9,11 @@ import {
   FaCheck,
   FaInfo,
   FaInfoCircle,
+  FaClock,
+  FaLink,
 } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
+import { BsThreeDots } from "react-icons/bs";
 import TeamVoiceLine from "../components/demo/TeamVoiceLine";
 import Announcements from "../components/demo/Announcements";
 import Rooms from "../components/demo/Rooms";
@@ -158,14 +162,15 @@ export default function Home() {
           />
         </span>
 
+        {/* voice line section */}
         <span className="flex flex-row py-32">
-          <span className="flex flex-col grow max-w-sm rounded-lg bg-gray-200 bg-opacity-25 backdrop-blur-xl p-10">
+          <span className="flex flex-col grow max-w-sm rounded-lg shadow-lg bg-gray-200 bg-opacity-25 backdrop-blur-xl p-10">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
               VOICE LINE
             </span>
 
             <span className="text-left text-3xl text-gray-700 font-bold">
-              Move 10x faster.
+              Move 10x <span className="text-teal-600">Faster.</span>
             </span>
 
             <span className="text-left text-lg text-gray-700"></span>
@@ -222,61 +227,163 @@ export default function Home() {
           </span>
         </span>
 
-        <span className="flex flex-row py-20">
-          <span className="text-left flex flex-col grow max-w-md rounded-lg bg-gray-200 bg-opacity-25 backdrop-blur-xl p-10">
+        {/* bond/team/collaborate section */}
+        <span className="flex flex-row items-center py-20">
+          <span className="flex-1 flex flex-row flex-wrap backdrop-blur-md p-10 rounded">
+            {/* illustration of collaborating */}
+            <img
+              src="/illustrations/undraw_team_collaboration_re_ow29.svg"
+              className="h-[20rem] shrink-0"
+            />
+          </span>
+          {/* description text */}
+          <span className="text-left flex flex-col grow max-w-lg shadow-lg rounded-lg bg-gray-200 bg-opacity-25 backdrop-blur-xl p-10">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
               TEAM
             </span>
-
             <span className="text-3xl text-gray-700 font-bold">
-              Bond & Collaborate Better.
+              Bond & Collaborate <span className="text-teal-600">Better.</span>
+            </span>
+            <span className="text-lg text-gray-700"></span>
+            <Divider />
+            {/* checkmarks of value add */}
+            <span className="flex flex-row items-baseline space-x-2">
+              <FaCheck className="text-teal-500 text-md shrink-0" />
+
+              <span className="flex flex-col">
+                <span className="flex flex-row items-center space-x-2">
+                  <span className="text-left text-lg text-gray-600">
+                    {"Spontaneous Conversations."}
+                  </span>
+                </span>
+                <span className="text-sm text-gray-500">
+                  {"No more 'let's find a time to discuss...'"}
+                </span>
+              </span>
             </span>
 
+            <span className="flex flex-row items-baseline space-x-2">
+              <FaCheck className="text-teal-500 text-md shrink-0" />
+
+              <span className="flex flex-col">
+                <span className="flex flex-row items-center space-x-2">
+                  <span className="text-left text-lg text-gray-600">
+                    {"Cross Collaborate."}
+                  </span>
+                </span>
+                <span className="text-sm text-gray-500">
+                  {"Glance all of the conversations going on in your team."}
+                </span>
+              </span>
+            </span>
+
+            <Divider />
+
+            <span className="text-md text-gray-600">
+              Work in the{" "}
+              <Tooltip
+                title={
+                  "Nirvana voice-only rooms to hang out and code, create, ideate..."
+                }
+              >
+                <span className="text-teal-600">
+                  &apos;corner&apos; office room
+                </span>{" "}
+                <FaInfoCircle className="text-sm text-teal-500 inline animate-bounce" />
+              </Tooltip>{" "}
+              with your closest teammates throughout the day.
+            </span>
+            <span className="text-md text-gray-600">
+              Have lunch in the &apos;kitchen&apos; with your team.
+            </span>
+            <span className="text-md text-gray-600">
+              Connect in seconds, resolve matters in minutes.
+            </span>
+
+            <br></br>
+            <span className="text-center">or</span>
+            <br></br>
+            <span className="text-md text-gray-600">
+              Create more formal meeting rooms (
+              <FcGoogle className="inline" /> Meet).
+              <span className="text-teal-600">
+                {" "}
+                Spontaneous, scheduled, or recurring.
+              </span>{" "}
+              All within Nirvana.
+            </span>
+          </span>
+        </span>
+
+        {/* focus on today section */}
+        <span className="flex flex-row items-center py-20">
+          {/* description card */}
+          <span className="text-left flex flex-col grow max-w-lg shadow-lg rounded-lg bg-gray-200 bg-opacity-25 backdrop-blur-xl p-10">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+              CLARITY
+            </span>
+            <span className="text-3xl text-gray-700 font-bold">
+              Focus on <span className="text-teal-600">Right Now.</span>
+            </span>
             <span className="text-lg text-gray-700"></span>
 
             <Divider />
 
             {/* checkmarks of value add */}
-            <span className="flex flex-row items-center space-x-2">
-              <FaCheck className="text-teal-500" />
-              <span className="text-lg text-gray-600">{"Asynchronous."}</span>
-              <Tooltip
-                title={
-                  "If you send a voice clip to someone, and they are online, they hear you instantly without changing tabs/windows."
-                }
-              >
-                <FaInfoCircle className="text-lg text-teal-500 animate-bounce" />
-              </Tooltip>
-            </span>
+            <span className="flex flex-row items-baseline space-x-2">
+              <FaCheck className="text-teal-500 text-md shrink-0" />
 
-            <span className="flex flex-row items-center space-x-2">
-              <FaCheck className="text-teal-500" />
-              <span className="text-lg text-gray-600">
-                {"NO low-quality chatter."}
+              <span className="flex flex-col">
+                <span className="flex flex-row items-center space-x-2">
+                  <span className="text-left text-lg text-gray-600">
+                    {"Clarity of Mind."}
+                  </span>
+                </span>
+                <span className="text-sm text-gray-500">
+                  {"Come to work seeing only what's important today/this week."}
+                </span>
               </span>
             </span>
 
-            <span className="flex flex-row items-center space-x-2">
-              <FaCheck className="text-teal-500" />
-              <span className="text-lg text-gray-600">
-                {"Clearer communication."}{" "}
+            <span className="flex flex-row items-baseline space-x-2">
+              <FaCheck className="text-teal-500 text-md shrink-0" />
+
+              <span className="flex flex-col">
+                <span className="flex flex-row items-center space-x-2">
+                  <span className="text-left text-lg text-gray-600">
+                    {"Inbox Zero."}
+                  </span>
+                </span>
+                <span className="text-sm text-gray-500">
+                  {
+                    "Conversations are ephemeral like in real life. We keep you at inbox zero."
+                  }
+                </span>
               </span>
             </span>
 
             <Divider />
 
             <span className="text-md text-gray-600">
-              {
-                "An experience as if your team was across the table. And it's still"
-              }
-              <span className="text-teal-600"> asynchronous.</span>
+              Your <span className="text-orange-500">current tools</span>{" "}
+              bombard you with files, notifications, scrolling, clicking,
+              emojis, threads...
             </span>
+
             <br></br>
+
             <span className="text-md text-gray-600">
-              No more days of{" "}
-              <span className="text-orange-500">back and forth texting</span>{" "}
-              for complex, technical issues.
+              They are designed to{" "}
+              <span className="text-orange-500"> addict you, </span>and keep you
+              <span className="text-orange-500"> distracted.</span>
             </span>
+          </span>
+          <span className="flex-1 justify-evenly flex flex-row flex-wrap backdrop-blur-md p-10 rounded">
+            {/* illustration of collaborating */}
+            <img
+              src="/illustrations/undraw_freelancer_re_irh4.svg"
+              className="h-[20rem] shrink-0"
+            />
           </span>
         </span>
 
