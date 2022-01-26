@@ -54,7 +54,7 @@ export default function ShortcutHelpModal() {
       {/* fixed help on bottom left */}
       <span
         onClick={handleShowModal}
-        className="hover:cursor-pointer fixed bottom-10 right-10 bg-gray-200 bg-opacity-80 py-2 px-3 rounded text-gray-500 flex flex-row items-center space-x-2"
+        className="hover:cursor-pointer z-50 backdrop-blur-md fixed bottom-10 right-10 bg-gray-200 bg-opacity-80 py-2 px-3 rounded text-gray-500 flex flex-row items-center space-x-2"
       >
         <span>Help</span>
 
