@@ -350,7 +350,7 @@ export default function RoomCard(props: IRoomCardProps) {
     <span
       className={`flex flex-col ${
         isUserInRoom ? " bg-white bg-opacity-80" : "bg-gray-300 bg-opacity-25"
-      }  rounded-lg justify-between w-96 m-2 shrink-0 h-[14rem]`}
+      }  rounded-lg justify-between w-96 m-2 shrink-0 h-[14rem] shadow-md`}
     >
       {/* header */}
       <span className="flex flex-row justify-between items-start space-x-1 p-5 h-full">

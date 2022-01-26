@@ -225,15 +225,16 @@ export default function ShortcutHelpModal() {
                 </span>
 
                 <span className="flex flex-col ml-2 items-end">
-                  <span className="text-lg text-gray-500">Join a Room</span>
+                  <span className="text-lg text-gray-500">
+                    Create a Meeting Room
+                  </span>
                   <span className={`text-md text-gray-300 text-right`}>
                     Click on the{" "}
                     <button className="inline bg-gray-300 bg-opacity-25 p-1 rounded hover:bg-opacity-40">
                       <FaPlus className="text-md text-white" />
                     </button>{" "}
-                    to create a <br></br>
-                    <FcGoogle className="inline text-lg" /> Meet (if your team
-                    has GSuite).
+                    to create a formal <FcGoogle className="inline text-lg" />{" "}
+                    Meet.
                   </span>
                   <span className={`text-md text-teal-600 text-right`}>
                     Spontaneous, scheduled, or recurring rooms.

@@ -65,7 +65,7 @@ export default function Home() {
 
             {currUser ? (
               <>
-                <span className="text-gray-500">Welcome back,</span>
+                <span className="text-gray-500">Welcome back!</span>
                 <button
                   onClick={() => window.open("/teams", "_self")}
                   className="rounded font-semibold bg-gray-200 p-2 text-teal-600 shadow-lg flex flex-row items-center space-x-2"
