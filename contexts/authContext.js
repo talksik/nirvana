@@ -83,7 +83,7 @@ export function AuthProvider({ children }) {
 
     Promise.resolve(await signOut(auth));
 
-    router.push("/teams/landing");
+    router.push("/");
   };
 
   const value = {

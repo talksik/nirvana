@@ -208,7 +208,7 @@ export function TeamDashboardContextProvider({ children }) {
         setValue((prevValue) => ({ ...prevValue, teamMembers }));
       } catch (error) {
         console.log(error);
-        router.push("/teams/landing");
+        router.push("/");
       }
 
       setLoading(false);
