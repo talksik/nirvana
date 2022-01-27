@@ -34,10 +34,6 @@ export default function Home() {
     window.open("https://calendly.com/usenirvana/30min", "_blank");
   };
 
-  const router = useRouter();
-
-  const [loading, setLoading] = useState(false);
-
   const getStartedButton = (
     <button
       onClick={handleGetDemo}
@@ -48,10 +44,6 @@ export default function Home() {
     </button>
   );
 
-  if (loading) {
-    return <SkeletonLoader />;
-  }
-
   return (
     <LangingPageLayout>
       {/* header text */}
@@ -59,7 +51,7 @@ export default function Home() {
         <span className="flex flex-col items-center">
           <span className="text-5xl font-bold">
             <span className="text-teal-800">Minimal </span>
-            Collaboration Tool for
+            Communication Tool for
           </span>
 
           <span className="text-5xl font-bold text-left">
@@ -69,14 +61,14 @@ export default function Home() {
 
         <span className="my-5 text-xl text-center text-black font-semibold w-max">
           A <span className="text-teal-600">&apos;less is more&apos;</span>{" "}
-          approach to team communication.
+          approach.
           <br></br>
           Skip{" "}
           <img
             src="/icons/zoom-logo.svg"
             className="inline w-[4rem] h-[2rem] px-1"
           />{" "}
-          fatigue,{" "}
+          scheduling,{" "}
           <img
             src="/icons/slack-logo.svg"
             className="inline w-[5rem] h-[2rem] px-1"
@@ -93,11 +85,7 @@ export default function Home() {
           {/* Improve team focus, performance, and wellbeing. */}
         </span>
 
-        <span className="p-2 rounded-lg font-bold text-left text-sm bg-purple-200 text-purple-700">
-          No credit card required
-        </span>
-
-        <span className="flex flex-row items-center space-x-2 mt-5">
+        <span className="flex flex-row items-center space-x-5 my-5">
           <Link href="/features">Features</Link>
 
           <button
@@ -107,6 +95,11 @@ export default function Home() {
             <span>Get Started</span>
             <FaAngleRight />
           </button>
+        </span>
+
+        <span className="text-center text-xs text-gray-500">
+          Try Nirvana for 2 people for 30 days. <br></br>No credit card
+          required.
         </span>
       </div>
 

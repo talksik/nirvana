@@ -26,15 +26,12 @@ export default function LangingPageLayout({ children }) {
     router.push("/teams");
   }
 
-  const handleGetDemo = () => {
-    window.open("https://calendly.com/usenirvana/30min", "_blank");
-  };
   const getStartedButton = (
     <button
-      onClick={handleGetDemo}
+      onClick={() => window.open("/teams/login", "_blank")}
       className="rounded font-semibold bg-teal-600 p-2 text-white shadow-lg flex flex-row items-center space-x-2"
     >
-      <span>Get Demo</span>
+      <span>Get Started</span>
       <FaAngleRight />
     </button>
   );
@@ -110,20 +107,57 @@ export default function LangingPageLayout({ children }) {
                   Log In
                 </button>
 
-                <button
-                  onClick={handleLogin}
-                  className="rounded font-semibold bg-gray-200 p-2 text-teal-600 shadow-lg flex flex-row items-center space-x-2"
-                >
-                  <span>Sign Up</span>
-                </button>
+                {getStartedButton}
               </>
             )}
-
-            {getStartedButton}
           </span>
         </div>
 
         {children}
+      </div>
+
+      {/* footer */}
+      <div className="bg-black w-full p-[10rem]">
+        <span className="flex flex-row items-start justify-between">
+          <span className="flex flex-col">
+            <MainLogo className="text-white text-3xl" />
+
+            <span className="text-gray-200 mt-auto">&copy; nirvana</span>
+            <span className="text-gray-200 flex space-x-2">
+              <a
+                className="text-gray-200"
+                href="https://docs.google.com/document/d/1NRWN-6kDyOcADaUAQ-YWVHnz6i9ccGJ3/edit?usp=sharing&ouid=113470786690353109086&rtpof=true&sd=true"
+              >
+                terms and conditions
+              </a>{" "}
+              <span>|</span>
+              <a
+                className="text-gray-200"
+                href="https://docs.google.com/document/d/1S3JsGqXgkriAsBOybXpVR0JJ4hiRkaNt/edit?usp=sharing&ouid=113470786690353109086&rtpof=true&sd=true"
+              >
+                privacy policy.
+              </a>
+            </span>
+          </span>
+
+          <span className="flex flex-col">
+            <span className="font-bold text-white text-lg">Product</span>
+          </span>
+
+          <span className="flex flex-col">
+            <span className="font-bold text-white text-lg">Resources</span>
+          </span>
+
+          <span className="flex flex-col">
+            <span className="font-bold text-white text-lg">Product</span>
+          </span>
+
+          <span className="flex flex-col">
+            <span className="font-bold text-white text-lg">Get in touch</span>
+            <span>Questions or feedback?</span>
+            <span></span>
+          </span>
+        </span>
       </div>
     </div>
   );
