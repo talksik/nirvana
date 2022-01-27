@@ -137,7 +137,7 @@ function RouteHandler() {
                     {team.name}
                   </span>
                   <Tooltip title={"Number of pro spots purchased"}>
-                    <span className="bg-teal-600 bg-opacity-50 text-xs rounded-full w-5 h-5 flex items-center justify-evenly text-white ">
+                    <span className="bg-teal-600 bg-opacity-50 text-xs rounded-full w-5 h-5 flex items-center justify-evenly text-white shrink-0">
                       {team.allowedUserCount || 2}
                     </span>
                   </Tooltip>
@@ -146,7 +146,7 @@ function RouteHandler() {
                 {team.companySite && (
                   <span
                     onClick={() => window.open(team.companySite, "_blank")}
-                    className="text-xs hover:cursor-pointer font-semibold text-teal-600 p-1 bg-teal-500 bg-opacity-20 rounded"
+                    className="text-xs hover:cursor-pointer font-semibold text-gray-500"
                   >
                     {team.companySite}
                   </span>

@@ -16,6 +16,7 @@ import {
   FaMicrophoneAltSlash,
   FaVolumeMute,
   FaLayerGroup,
+  FaUser,
 } from "react-icons/fa";
 import { useTeamDashboardContext } from "../../contexts/teamDashboardContext";
 import router from "next/router";
@@ -155,8 +156,20 @@ export default function Header() {
   );
   const UserMenu = (
     <Menu title="user menu">
-      <Menu.Item key={2} onClick={() => router.push("/teams/profile")}>
+      <Menu.Item
+        key={2}
+        onClick={() => router.push("/teams/profile")}
+        icon={<FaUser />}
+      >
         <button>Profile</button>
+      </Menu.Item>
+
+      <Menu.Item
+        onClick={() => window.open("/teams", "_self")}
+        key={"team hub"}
+        icon={<FaLayerGroup />}
+      >
+        <button>Team Hub</button>
       </Menu.Item>
 
       <Menu.Divider />
@@ -300,10 +313,10 @@ export default function Header() {
       </span>
 
       {/* header control section */}
-      <span className="flex flex-row items-center space-x-5">
+      <span className="flex-row items-center space-x-5 hidden md:flex ml-auto">
         {/* search bar */}
 
-        <FaBell className="text-lg text-gray-200 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
+        <FaBell className=" shrink-0 text-lg text-gray-200 hover:text-white ease-in-out duration-300 hover:scale-110 hover:cursor-pointer" />
 
         {renderAudioOutput()}
 
@@ -319,20 +332,20 @@ export default function Header() {
             {team.name} <FaAngleDown />
           </button>
         </Dropdown>
-
-        {/* avatar */}
-        <Dropdown overlay={UserMenu} trigger={["click"]}>
-          <span className="relative flex hover:cursor-pointer">
-            <span className="bg-gray-200 bg-opacity-30 rounded-full shadow-md absolute w-full h-full"></span>
-            <UserStatusBubble status={user.userStatus} />
-            <img
-              src={user.avatarUrl}
-              alt="asdf"
-              className="rounded-full w-12"
-            />
-          </span>
-        </Dropdown>
       </span>
+
+      {/* avatar */}
+      <Dropdown
+        overlay={UserMenu}
+        trigger={["click"]}
+        className="ml-2 shrink-0"
+      >
+        <span className="relative flex hover:cursor-pointer">
+          <span className="bg-gray-200 bg-opacity-30 rounded-full shadow-md absolute w-full h-full"></span>
+          <UserStatusBubble status={user.userStatus} />
+          <img src={user.avatarUrl} alt="asdf" className="rounded-full w-12" />
+        </span>
+      </Dropdown>
     </section>
   );
 }
