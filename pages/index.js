@@ -27,6 +27,7 @@ import { useState } from "react";
 import SkeletonLoader from "../components/Loading/skeletonLoader";
 import { useAuth } from "../contexts/authContext";
 import LangingPageLayout from "../components/Layouts/LandingPageLayout";
+import Link from "next/link";
 
 export default function Home() {
   const handleGetDemo = () => {
@@ -53,58 +54,61 @@ export default function Home() {
 
   return (
     <LangingPageLayout>
-      {/* above fold main */}
-      <span className="flex flex-col justify-evenly items-center backdrop-blur-xl rounded-lg p-5">
-        <span className="flex flex-row text-left md:text-6xl text-5xl space-x-5 h-[5rem] overflow-hidden">
-          <span className="font-semibold text-black py-4">No</span>
-          <span className="md:hidden flex flex-row space-x-2 py-4 text-red-600">
-            <FaSlackHash /> <span>slacking</span>
+      {/* header text */}
+      <div className="flex flex-col items-center backdrop-blur-lg p-10">
+        <span className="flex flex-col items-center">
+          <span className="text-5xl font-bold">
+            <span className="text-teal-800">Minimal </span>
+            Collaboration Tool for
           </span>
-          <span className="hidden flippingWords md:visible md:flex flex-col space-y-5 text-red-600 ">
-            <span className="flex flex-row space-x-2">
-              <FaRocketchat /> <span>threads</span>
-            </span>
-            <span className="flex flex-row space-x-2">
-              <FaSlackHash /> <span>slacking</span>
-            </span>
-            <span className="flex flex-row space-x-2">
-              <FaCalendarAlt /> <span>calendars</span>
-            </span>
-            <span className="flex flex-row space-x-2">
-              <FaNewspaper /> <span>files</span>
-            </span>
-            <span className="flex flex-row space-x-2">
-              <FaRocketchat /> <span>threads</span>
-            </span>
+
+          <span className="text-5xl font-bold text-left">
+            <span className="text-red-800">Messy, Distracted</span> WFH Teams.
           </span>
         </span>
 
-        <span className="flex flex-row text-left md:text-6xl text-5xl space-x-5">
-          <span className="font-semibold text-black">More</span>
-          <span className="text-sky-600 font-bold">focus.</span>
-        </span>
-
-        <span className="my-10 text-xl text-center text-gray-600 w-max">
-          Minimal, voice-only collaboration tool for scrum/agile teams.
+        <span className="my-5 text-xl text-center text-black font-semibold w-max">
+          A <span className="text-teal-600">&apos;less is more&apos;</span>{" "}
+          approach to team communication.
           <br></br>
-          Skip slack and email, just talk to your team.
+          Skip{" "}
+          <img
+            src="/icons/zoom-logo.svg"
+            className="inline w-[4rem] h-[2rem] px-1"
+          />{" "}
+          fatigue,{" "}
+          <img
+            src="/icons/slack-logo.svg"
+            className="inline w-[5rem] h-[2rem] px-1"
+          />{" "}
+          notifications, and{" "}
+          <img
+            src="/icons/gmail-logo.svg"
+            className="inline w-[2rem] h-[1rem]"
+          />{" "}
+          threads,
+          <br></br>
+          and just talk to your team.
+          <br></br>
+          {/* Improve team focus, performance, and wellbeing. */}
         </span>
 
-        <span className="flex flex-row space-x-2">
-          <button
-            onClick={() =>
-              window.open(
-                "mailto:usenirvana@gmail.com?subject=Interested in Nirvana for Startups",
-                "_blank"
-              )
-            }
-            className="rounded text-teal-600 p-2 shadow-l flex flex-row items-center space-x-2"
-          >
-            Email Us
-          </button>
-          {getStartedButton}
+        <span className="p-2 rounded-lg font-bold text-left text-sm bg-purple-200 text-purple-700">
+          No credit card required
         </span>
-      </span>
+
+        <span className="flex flex-row items-center space-x-2 mt-5">
+          <Link href="/features">Features</Link>
+
+          <button
+            onClick={() => window.open("/teams/login", "_self")}
+            className="rounded font-semibold bg-teal-600 p-2 text-white shadow-lg flex flex-row items-center justify-evenly space-x-2"
+          >
+            <span>Get Started</span>
+            <FaAngleRight />
+          </button>
+        </span>
+      </div>
 
       <span className="flex w-full justify-evenly">
         <img
@@ -116,12 +120,15 @@ export default function Home() {
       {/* voice line section */}
       <span className="flex flex-row py-32">
         <span className="flex flex-col grow max-w-sm rounded-lg shadow-lg bg-gray-200 bg-opacity-40 backdrop-blur-xl p-10">
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
-            VOICE LINE
+          <span className="bg-clip-text font-bold text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+            VOICE ONLY
           </span>
 
           <span className="text-left text-3xl text-gray-700 font-bold">
             Move 10x <span className="text-teal-600">Faster.</span>
+          </span>
+          <span className="text-sm text-gray-500">
+            {"Resolve issues faster, and improve performance."}
           </span>
 
           <span className="text-left text-lg text-gray-700"></span>
@@ -150,10 +157,18 @@ export default function Home() {
             </span>
           </span>
 
-          <span className="flex flex-row items-center space-x-2">
-            <FaCheck className="text-teal-500" />
-            <span className="text-left text-lg text-gray-600">
-              {"Clearer communication."}{" "}
+          <span className="flex flex-row items-baseline space-x-2">
+            <FaCheck className="text-teal-500 text-md shrink-0" />
+
+            <span className="flex flex-col">
+              <span className="flex flex-row items-center space-x-2">
+                <span className="text-left text-lg text-gray-600">
+                  {"Clear Communication."}
+                </span>
+              </span>
+              <span className="text-sm text-gray-500">
+                {/* {"Resolve issues faster, and improve performance."} */}
+              </span>
             </span>
           </span>
 
@@ -189,7 +204,7 @@ export default function Home() {
         </span>
         {/* description text */}
         <span className="text-left flex flex-col grow max-w-lg shadow-lg rounded-lg bg-gray-200 bg-opacity-40 backdrop-blur-xl p-10">
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+          <span className="bg-clip-text font-bold text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
             TEAM
           </span>
           <span className="text-3xl text-gray-700 font-bold">
@@ -271,7 +286,7 @@ export default function Home() {
       <span className="flex flex-row items-center py-20">
         {/* description card */}
         <span className="text-left flex flex-col grow max-w-lg shadow-lg rounded-lg bg-gray-200 bg-opacity-40 backdrop-blur-xl p-10">
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+          <span className="bg-clip-text font-bold text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
             CLARITY
           </span>
           <span className="text-3xl text-gray-700 font-bold">
@@ -282,6 +297,20 @@ export default function Home() {
           <Divider />
 
           {/* checkmarks of value add */}
+
+          <span className="flex flex-row items-baseline space-x-2">
+            <FaCheck className="text-teal-500 text-md shrink-0" />
+
+            <span className="flex flex-col">
+              <span className="flex flex-row items-center space-x-2">
+                <span className="text-left text-lg text-gray-600">
+                  {"Overall Wellbeing."}
+                </span>
+              </span>
+              <span className="text-sm text-gray-500"></span>
+            </span>
+          </span>
+
           <span className="flex flex-row items-baseline space-x-2">
             <FaCheck className="text-teal-500 text-md shrink-0" />
 
