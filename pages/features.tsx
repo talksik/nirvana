@@ -13,7 +13,7 @@ import LandingPageActionBar from "../components/demo/LandingPageActionBar";
 export default function Features() {
   return (
     <LangingPageLayout>
-      <span className="flex flex-col my-20 items-center">
+      <span className="flex flex-col my-20 items-center text-center">
         <span>FEATURES</span>
         <span className="text-5xl font-bold">
           Your WFH <span className="text-teal-600">Hub</span>
