@@ -1,7 +1,8 @@
+import { Dropdown, Menu } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { FaAngleRight } from "react-icons/fa";
+import { FaAngleRight, FaGripHorizontal } from "react-icons/fa";
 import { useAuth } from "../../contexts/authContext";
 import MainLogo from "../MainLogo";
 
@@ -36,13 +37,64 @@ export default function LangingPageLayout({ children }) {
     </button>
   );
 
+  const mobileMenu = (
+    <Menu>
+      <Menu.Item key="0">
+        <a onClick={() => window.open(LandingPageNavigation.product, "_self")}>
+          Product
+        </a>
+      </Menu.Item>
+      <Menu.Item key="1">
+        <a href={LandingPageNavigation.features}>Features</a>
+      </Menu.Item>
+
+      <Menu.Item key="3">
+        <a href={LandingPageNavigation.pricing}>Pricing</a>
+      </Menu.Item>
+
+      <Menu.Item key="4">
+        <a href={LandingPageNavigation.philosophy}>Philosophy</a>
+      </Menu.Item>
+
+      <Menu.Divider />
+
+      {currUser ? (
+        <Menu.Item key="5">
+          <button
+            onClick={() => window.open("/teams", "_self")}
+            className="rounded font-semibold bg-gray-200 p-2 text-teal-600 shadow-lg flex flex-row items-center space-x-2"
+          >
+            Continue
+          </button>
+        </Menu.Item>
+      ) : (
+        <>
+          <Menu.Item key="6">
+            <button onClick={handleLogin} className="ml-auto">
+              Log In
+            </button>
+          </Menu.Item>
+
+          <Menu.Item key="7">
+            <button
+              onClick={() => window.open("/teams/login", "_blank")}
+              className="text-teal-600"
+            >
+              Get Started
+            </button>
+          </Menu.Item>
+        </>
+      )}
+    </Menu>
+  );
+
   return (
     <div className="landing-page-bg bg-left-bottom bg-fixed bg-cover bg-no-repeat min-h-screen">
       <div className="container mx-auto px-5 lg:px-20 min-h-screen">
         {/* header */}
         <div className="flex flex-row py-5 px-5 items-center justify-start mx-auto">
           <MainLogo className="mr-auto text-3xl" />
-          <span className="flex flex-row space-x-5 items-center">
+          <span className="hidden md:flex flex-row space-x-5 items-center">
             <span
               onClick={() =>
                 window.open(LandingPageNavigation.product, "_self")
@@ -111,6 +163,10 @@ export default function LangingPageLayout({ children }) {
               </>
             )}
           </span>
+
+          <Dropdown overlay={mobileMenu} trigger={["click"]}>
+            <FaGripHorizontal className="md:hidden text-3xl text-teal-600" />
+          </Dropdown>
         </div>
 
         {children}

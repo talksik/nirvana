@@ -26,6 +26,7 @@ export default function Philosophy() {
   return (
     <LangingPageLayout>
       <span className="flex flex-col my-20 items-center">
+        <span>PHILOSOPHY</span>
         <span className="text-5xl font-bold text-center">
           We live in a <span className="text-red-800"> distracted world.</span>{" "}
           <br></br>
