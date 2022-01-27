@@ -40,20 +40,18 @@ export default function LangingPageLayout({ children }) {
   const mobileMenu = (
     <Menu>
       <Menu.Item key="0">
-        <a onClick={() => window.open(LandingPageNavigation.product, "_self")}>
-          Product
-        </a>
+        <Link href={LandingPageNavigation.product}>Product</Link>
       </Menu.Item>
       <Menu.Item key="1">
-        <a href={LandingPageNavigation.features}>Features</a>
+        <Link href={LandingPageNavigation.features}>Features</Link>
       </Menu.Item>
 
       <Menu.Item key="3">
-        <a href={LandingPageNavigation.pricing}>Pricing</a>
+        <Link href={LandingPageNavigation.pricing}>Pricing</Link>
       </Menu.Item>
 
       <Menu.Item key="4">
-        <a href={LandingPageNavigation.philosophy}>Philosophy</a>
+        <Link href={LandingPageNavigation.philosophy}>Philosophy</Link>
       </Menu.Item>
 
       <Menu.Divider />
@@ -96,9 +94,7 @@ export default function LangingPageLayout({ children }) {
           <MainLogo className="mr-auto text-3xl" />
           <span className="hidden md:flex flex-row space-x-5 items-center">
             <span
-              onClick={() =>
-                window.open(LandingPageNavigation.product, "_self")
-              }
+              onClick={() => router.push(LandingPageNavigation.product)}
               className={`text-gray-500 hover:text-teal-600 hover:cursor-pointer ${
                 currPage == LandingPageNavigation.product
                   ? "text-teal-600 underline underline-offset-4"

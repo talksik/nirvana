@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import MainLogo from "../../components/MainLogo";
 import { useAuth } from "../../contexts/authContext";
 
 export default function Login() {
@@ -19,23 +20,13 @@ export default function Login() {
   return (
     <>
       <div className="h-screen w-screen flex flex-row">
-        {/* nice image on right side */}
-        <div
-          className="landing-page-bg bg-cover bg-no-repeat bg-center flex-1"
-          style={
-            {
-              // background: "url('/wallpapers/superhuman.jpg')",
-            }
-          }
-        ></div>
-
         {/* signin modal */}
         <div className="flex-1 bg-white bg-opacity-80 p-10 rounded-lg shadow-lg flex flex-col items-start justify-start">
           {/* header */}
           <div className="text-lg flex flex-row items-center space-x-2">
             <FaArrowLeft
               className="hover:cursor-pointer"
-              onClick={() => router.push("/")}
+              onClick={() => window.open("/", "_self")}
             />{" "}
           </div>
 
@@ -60,8 +51,20 @@ export default function Login() {
             </span>
           </div>
 
-          {JSON.stringify(currUser?.email)}
+          <span className="mx-auto flex items-center space-x-1">
+            <span>&copy;</span>
+            <MainLogo className=" text-2xl" />
+          </span>
         </div>
+        {/* nice image on right side */}
+        <div
+          className="hidden md:block landing-page-bg bg-cover bg-no-repeat bg-center flex-1"
+          style={
+            {
+              // background: "url('/wallpapers/superhuman.jpg')",
+            }
+          }
+        ></div>
       </div>
     </>
   );
