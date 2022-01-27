@@ -2,6 +2,7 @@ import { Divider } from "antd";
 import { useRouter } from "next/router";
 import { FaAngleRight } from "react-icons/fa";
 import Rooms from "../components/demo/Rooms";
+import LangingPageLayout from "../components/Layouts/LandingPageLayout";
 
 export default function Philosophy() {
   const handleGetDemo = () => {
@@ -20,7 +21,7 @@ export default function Philosophy() {
     </button>
   );
   return (
-    <>
+    <LangingPageLayout>
       {/* main mission */}
       <div className="mx-auto flex flex-col items-start max-w-screen-sm rounded-lg bg-gray-200 bg-opacity-25 backdrop-blur-xl md:mt-[15rem] mt-[5rem] p-10">
         <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
@@ -50,6 +51,6 @@ export default function Philosophy() {
 
         <span className="ml-auto">{getStartedButton}</span>
       </span>
-    </>
+    </LangingPageLayout>
   );
 }
