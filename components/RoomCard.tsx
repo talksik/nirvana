@@ -350,12 +350,12 @@ export default function RoomCard(props: IRoomCardProps) {
     <span
       className={`flex flex-col ${
         isUserInRoom ? " bg-white bg-opacity-80" : "bg-gray-300 bg-opacity-25"
-      }  rounded-lg justify-between w-96 m-2 shrink-0 h-[14rem] shadow-md`}
+      }  rounded-lg justify-between md:w-96 w-72 m-2 shrink-0 h-[14rem] shadow-md overflow-ellipsis`}
     >
       {/* header */}
       <span className="flex flex-row justify-between items-start space-x-1 p-5 h-full">
         {/* meeting details */}
-        <span className="flex flex-col items-baseline justify-start max-w-xs h-full">
+        <span className="flex flex-col items-baseline justify-start max-w-[12rem] h-full">
           <span
             className={`${
               isUserInRoom ? " text-gray-500" : "text-white"
@@ -367,7 +367,7 @@ export default function RoomCard(props: IRoomCardProps) {
             <span
               className={`${
                 isUserInRoom ? "text-gray-400" : "text-gray-200"
-              } text-xs mb-auto text-ellipsis whitespace-pre-line max-h-[3rem] overflow-hidden`}
+              } text-xs mb-auto text-ellipsis whitespace-pre-line max-h-[3rem] truncate`}
             >
               {props.room.description}
             </span>

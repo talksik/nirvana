@@ -86,11 +86,11 @@ function TeamDashboard() {
     <>
       <ShortcutHelpModal />
 
-      <div className="container mx-auto py-10 px-10 flex flex-col space-y-5">
+      <div className="container mx-auto py-10 lg:px-10 flex flex-col space-y-5">
         <Header />
 
-        <div className="flex flex-row items-start space-x-5 h-[56rem]">
-          <div className="flex flex-col max-w-sm space-y-5 h-full">
+        <div className="flex flex-row items-start lg:space-x-5 h-[56rem]">
+          <div className="hidden lg:flex flex-col max-w-sm space-y-5 h-full">
             <Office />
 
             <TeamVoiceLine />
