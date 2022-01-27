@@ -3,7 +3,7 @@ import { FaAngleRight } from "react-icons/fa";
 
 export default function LandingPageActionBar() {
   return (
-    <span className="flex md:my-20 mx-auto md:flex-row flex-col items-center max-w-screen-md p-10 backdrop-blur-md bg-gray-200 bg-opacity-40 rounded-lg">
+    <span className="flex md:my-20 my-10 mx-auto md:flex-row flex-col items-center max-w-screen-md p-10 backdrop-blur-md bg-gray-200 bg-opacity-40 rounded-lg">
       <span className="flex flex-col items-start text-3xl font-bold">
         <span>Ready to Focus?</span>
         <span className="text-teal-600">{"It's now or never."}</span>
