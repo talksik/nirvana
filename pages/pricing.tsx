@@ -12,10 +12,10 @@ import LandingPageLayout from "../components/Layouts/LandingPageLayout";
 export default function Pricing() {
   return (
     <LandingPageLayout>
-      <div className="flex flex-col items-center backdrop-blur-md p-10 my-36">
+      <div className="flex flex-col items-center text-center backdrop-blur-md p-10 lg:my-20 mb-20">
         <span>PRICING</span>
         <span className="text-5xl font-bold">Get Started Now,</span>
-        <span className="text-5xl font-bold text-left text-teal-600 mb-2">
+        <span className="text-5xl font-bold text-teal-600 mb-2">
           Pay for Spots Later.
         </span>
         <span className="text-gray-500 mb-2">
@@ -23,7 +23,7 @@ export default function Pricing() {
           <span className="text-teal-600">2 free spots</span> on sign up.
         </span>
 
-        <span className="p-2 rounded-lg font-bold text-left text-sm bg-purple-200 text-purple-700">
+        <span className="p-2 rounded-lg font-bold text-sm bg-purple-200 text-purple-700">
           No credit card required
         </span>
 
@@ -40,7 +40,7 @@ export default function Pricing() {
         </span>
       </div>
 
-      <span className="flex flex-row justify-center space-x-5 mb-32">
+      <span className="flex flex-row justify-center space-x-5 mb-32 flex-wrap">
         {/* lite pricing */}
         <span className="flex flex-col items-start bg-white bg-opacity-40 p-10 max-w-sm rounded backdrop-blur-md w-[22rem] shadow-lg">
           <span className="flex flex-row items-center justify-between w-full">
