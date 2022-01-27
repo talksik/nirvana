@@ -21,7 +21,7 @@ export default function Features() {
         </span>
       </span>
 
-      <span className="flex flex-col items-center">
+      <span className="flex flex-col items-center mb-20">
         <span className="flex flex-row space-x-2 mb-2">
           <span className="flex flex-col items-start bg-white bg-opacity-40 p-10 max-w-sm rounded backdrop-blur-md">
             <FcAssistant className="text-5xl -ml-2" />

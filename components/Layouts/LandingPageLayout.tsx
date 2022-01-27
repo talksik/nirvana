@@ -38,7 +38,7 @@ export default function LangingPageLayout({ children }) {
 
   return (
     <div className="landing-page-bg bg-left-bottom bg-fixed bg-cover bg-no-repeat min-h-screen">
-      <div className="container mx-auto px-5 lg:px-20 ">
+      <div className="container mx-auto px-5 lg:px-20 min-h-screen">
         {/* header */}
         <div className="flex flex-row py-5 px-5 items-center justify-start mx-auto">
           <MainLogo className="mr-auto text-3xl" />
@@ -117,7 +117,7 @@ export default function LangingPageLayout({ children }) {
       </div>
 
       {/* footer */}
-      <div className="bg-black w-full p-[10rem]">
+      <div className="bg-black w-full px-[10rem] py-[5rem]">
         <span className="flex flex-row items-start justify-between">
           <span className="flex flex-col">
             <MainLogo className="text-white text-3xl" />
@@ -140,22 +140,65 @@ export default function LangingPageLayout({ children }) {
             </span>
           </span>
 
-          <span className="flex flex-col">
+          <span className="flex flex-col items-start text-gray-200">
             <span className="font-bold text-white text-lg">Product</span>
+            <a onClick={() => window.open("/", "_self")}>Home</a>
+            <a href="/features">Features</a>
+            <a href="/pricing">Pricing</a>
+            <a href="/philosophy">Philosophy</a>
           </span>
 
-          <span className="flex flex-col">
+          <span className="flex flex-col items-start text-gray-200">
             <span className="font-bold text-white text-lg">Resources</span>
+            <a
+              onClick={() =>
+                window.open(
+                  "https://www.vox.com/recode/2019/5/1/18511575/productivity-slack-google-microsoft-facebook",
+                  "_blank"
+                )
+              }
+            >
+              The productivity pit: how Slack is ruining work
+            </a>
+
+            <a
+              onClick={() =>
+                window.open(
+                  "https://www.nationalgeographic.com/science/article/coronavirus-zoom-fatigue-is-taxing-the-brain-here-is-why-that-happens",
+                  "_blank"
+                )
+              }
+            >
+              ‘Zoom fatigue’ is taxing the brain. Here&apos;s why that happens
+            </a>
+
+            <a
+              onClick={() =>
+                window.open(
+                  "https://nulab.com/blog/collaboration/work-chat-distractions-do-work-instant-messengers-make-us-more-or-less-productive/",
+                  "_blank"
+                )
+              }
+            >
+              Work chat distractions: Do work instant messengers <br></br>make
+              us more or less productive?
+            </a>
           </span>
 
-          <span className="flex flex-col">
-            <span className="font-bold text-white text-lg">Product</span>
-          </span>
-
-          <span className="flex flex-col">
+          <span className="flex flex-col items-start text-gray-200">
             <span className="font-bold text-white text-lg">Get in touch</span>
             <span>Questions or feedback?</span>
-            <span></span>
+            <span>{"We'd love to hear from you."}</span>
+            <a
+              onClick={() =>
+                window.open(
+                  "mailto:usenirvana@gmail.com?subject=Interested in Nirvana for Startups",
+                  "_blank"
+                )
+              }
+            >
+              Email Us
+            </a>
           </span>
         </span>
       </div>

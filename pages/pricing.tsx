@@ -39,7 +39,7 @@ export default function Pricing() {
         </span>
       </div>
 
-      <span className="flex flex-row justify-center space-x-5">
+      <span className="flex flex-row justify-center space-x-5 mb-32">
         {/* lite pricing */}
         <span className="flex flex-col items-start bg-white bg-opacity-40 p-10 max-w-sm rounded backdrop-blur-md w-[22rem] shadow-lg">
           <span className="flex flex-row items-center justify-between w-full">
