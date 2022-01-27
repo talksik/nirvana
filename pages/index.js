@@ -11,6 +11,7 @@ import {
   FaInfoCircle,
   FaClock,
   FaLink,
+  FaPlay,
 } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { BsThreeDots } from "react-icons/bs";
@@ -63,12 +64,15 @@ export default function Home() {
         <div className="flex flex-row py-5 px-5 items-center justify-start mx-auto">
           <MainLogo className="mr-auto text-3xl" />
           <span className="flex flex-row space-x-5 items-center">
-            {/* <span className="text-gray-700 underline underline-offset-4">
+            <span className="text-gray-700 underline underline-offset-4">
               Home
             </span>
-            <span className="text-gray-500  border-r-gray-400 border-r-2 pr-5">
+            <a
+              href="/philosophy"
+              className="text-gray-500  border-r-gray-400 border-r-2 pr-5"
+            >
               Philosophy
-            </span> */}
+            </a>
 
             {currUser ? (
               <>
@@ -164,7 +168,7 @@ export default function Home() {
 
         {/* voice line section */}
         <span className="flex flex-row py-32">
-          <span className="flex flex-col grow max-w-sm rounded-lg shadow-lg bg-gray-200 bg-opacity-25 backdrop-blur-xl p-10">
+          <span className="flex flex-col grow max-w-sm rounded-lg shadow-lg bg-gray-200 bg-opacity-40 backdrop-blur-xl p-10">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
               VOICE LINE
             </span>
@@ -237,12 +241,13 @@ export default function Home() {
             />
           </span>
           {/* description text */}
-          <span className="text-left flex flex-col grow max-w-lg shadow-lg rounded-lg bg-gray-200 bg-opacity-25 backdrop-blur-xl p-10">
+          <span className="text-left flex flex-col grow max-w-lg shadow-lg rounded-lg bg-gray-200 bg-opacity-40 backdrop-blur-xl p-10">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
               TEAM
             </span>
             <span className="text-3xl text-gray-700 font-bold">
-              Bond & Collaborate <span className="text-teal-600">Better.</span>
+              Bond & Collaborate{" "}
+              <span className="text-teal-600">Seamlessly.</span>
             </span>
             <span className="text-lg text-gray-700"></span>
             <Divider />
@@ -318,7 +323,7 @@ export default function Home() {
         {/* focus on today section */}
         <span className="flex flex-row items-center py-20">
           {/* description card */}
-          <span className="text-left flex flex-col grow max-w-lg shadow-lg rounded-lg bg-gray-200 bg-opacity-25 backdrop-blur-xl p-10">
+          <span className="text-left flex flex-col grow max-w-lg shadow-lg rounded-lg bg-gray-200 bg-opacity-40 backdrop-blur-xl p-10">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
               CLARITY
             </span>
@@ -387,33 +392,42 @@ export default function Home() {
           </span>
         </span>
 
-        {/* main mission */}
-        <div className="mx-auto flex flex-col items-start max-w-screen-sm rounded-lg bg-gray-200 bg-opacity-25 backdrop-blur-xl md:mt-[40rem] mt-[5rem] p-10">
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
-            Philosophy
+        {/* action section to get started now */}
+        <span className="flex my-20 mx-auto flex-row items-center max-w-screen-md p-10 backdrop-blur-md bg-gray-200 bg-opacity-40 rounded-lg">
+          <span className="flex flex-col items-start text-3xl font-bold">
+            <span>Ready to Focus?</span>
+            <span className="text-teal-600">{"It's now or never."}</span>
           </span>
 
-          <span className="text-left text-lg mb-5 text-gray-700">
-            In today&apos;s distracted world, we mistake adding software and
-            tools for productivity.
+          <span className="ml-auto">{getStartedButton}</span>
+        </span>
+
+        {/* customer testimonial section */}
+        <span className="flex my-20 mx-auto flex-col items-center max-w-screen-lg p-10 backdrop-blur-md bg-gray-200 bg-opacity-40 rounded-lg">
+          <span className="text-3xl font-bold">Our Customers</span>
+          <span>
+            <span className="text-teal-600">Listen</span> to what they have to
+            say.
           </span>
 
-          <span className="text-left text-lg text-gray-700">
-            At Nirvana, we are bringing work back to the basics. Voice first
-            communication because voice makes us human and less is more. An
-            experience as if your team was right next to you.
-          </span>
+          {/* all voice testimonial cards */}
+          <span className="flex flex-row items-center justify-evenly mt-5">
+            <span className="p-5 flex flex-row items-center bg-white bg-opacity-20 rounded shadow-md">
+              <img
+                src="https://lh3.googleusercontent.com/a-/AOh14GhTB6LbOqohOA3csckho3OA976yp3lMEtl2MDzbgX0=s96-c"
+                className="rounded-full shadow-md h-[3rem]"
+              />
+              <span className="flex flex-col ml-2 mr-10">
+                <span className="text-lg">Heran Patel</span>
+                <span className="text-gray-400">CEO of FinityOne</span>
+              </span>
 
-          <></>
-        </div>
-
-        {/* action section */}
-        <div className="flex flex-col items-center mx-auto max-w-screen-sm backdrop-blur-xl rounded-lg p-10">
-          <span className="text-xl mb-10 font-semibold text-gray-500">
-            Ready to start working?
+              <button className="bg-gray-500 bg-opacity-25 p-2 ml-2 rounded hover:bg-opacity-40">
+                <FaPlay className="text-lg text-gray-500" />
+              </button>
+            </span>
           </span>
-          {getStartedButton}
-        </div>
+        </span>
       </div>
     </div>
   );

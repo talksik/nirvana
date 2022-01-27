@@ -53,6 +53,7 @@ export default function CreateTeam() {
       team.name = teamName;
       team.createdByUserId = currUser.uid;
       team.status = TeamStatus.created;
+      team.allowedUserCount = 2;
 
       if (companySite != initialSite) {
         // make sure to put null in database for the team

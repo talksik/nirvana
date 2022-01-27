@@ -41,46 +41,15 @@ export default function Philosophy() {
         <></>
       </div>
 
-      {/* rooms concept */}
-      <div className="mx-auto flex flex-row flex-wrap items-start justify-between md:mt-[15rem] mt-[5rem]">
-        <Rooms />
-
-        <span className="flex flex-col grow max-w-sm rounded-lg bg-gray-200 bg-opacity-25 backdrop-blur-xl p-10">
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
-            Rooms
-          </span>
-
-          <span className="text-left text-lg text-gray-700">
-            See what&apos;s going on across the hall at a glance.
-          </span>
-
-          <Divider />
-
-          <span className="text-left text-md text-gray-600">
-            Join Ben and Cathy&apos;s conversation to review design mockups or
-            jump into another room for wine Wednesdays!
-          </span>
-
-          <Divider />
-
-          <span className="text-left text-md text-gray-600 mt-5">
-            Why go back and forth through chat 100 times or schedule a meeting
-            tomorrow at 2pm?
-          </span>
-
-          <span className="text-left text-md text-gray-600 mt-5">
-            Jump into rooms and resolve issues quicker.
-          </span>
+      {/* action section to get started now */}
+      <span className="flex my-20 mx-auto flex-row items-center max-w-screen-md p-10 backdrop-blur-md bg-gray-200 bg-opacity-40 rounded-lg">
+        <span className="flex flex-col items-start text-3xl font-bold">
+          <span>Ready to Focus?</span>
+          <span className="text-teal-600">{"It's now or never."}</span>
         </span>
-      </div>
 
-      {/* action section */}
-      <div className="flex flex-col items-center mx-auto max-w-screen-sm backdrop-blur-xl rounded-lg p-10">
-        <span className="text-xl mb-10 font-semibold text-gray-500">
-          Ready to start working?
-        </span>
-        {getStartedButton}
-      </div>
+        <span className="ml-auto">{getStartedButton}</span>
+      </span>
     </>
   );
 }
