@@ -27,6 +27,7 @@ import { useState } from "react";
 import SkeletonLoader from "../components/Loading/skeletonLoader";
 import { useAuth } from "../contexts/authContext";
 import LangingPageLayout from "../components/Layouts/LandingPageLayout";
+import LandingPageActionBar from "../components/demo/LandingPageActionBar";
 import Link from "next/link";
 
 export default function Home() {
@@ -55,7 +56,8 @@ export default function Home() {
           </span>
 
           <span className="text-5xl font-bold text-left">
-            <span className="text-red-800">Messy, Distracted</span> WFH Teams.
+            <span className="text-red-800">Messy, Distracted</span> Remote
+            Teams.
           </span>
         </span>
 
@@ -362,14 +364,7 @@ export default function Home() {
       </span>
 
       {/* action section to get started now */}
-      <span className="flex my-20 mx-auto flex-row items-center max-w-screen-md p-10 backdrop-blur-md bg-gray-200 bg-opacity-40 rounded-lg">
-        <span className="flex flex-col items-start text-3xl font-bold">
-          <span>Ready to Focus?</span>
-          <span className="text-teal-600">{"It's now or never."}</span>
-        </span>
-
-        <span className="ml-auto">{getStartedButton}</span>
-      </span>
+      <LandingPageActionBar />
 
       {/* customer testimonial section */}
       <span className="flex my-20 mx-auto flex-col items-center max-w-screen-lg p-10 backdrop-blur-md bg-gray-200 bg-opacity-40 rounded-lg">

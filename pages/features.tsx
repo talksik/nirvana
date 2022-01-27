@@ -8,6 +8,7 @@ import {
   FcOrgUnit,
   FcVideoCall,
 } from "react-icons/fc";
+import LandingPageActionBar from "../components/demo/LandingPageActionBar";
 
 export default function Features() {
   return (
@@ -93,6 +94,8 @@ export default function Features() {
           </span>
         </span>
       </span>
+
+      <LandingPageActionBar />
     </LangingPageLayout>
   );
 }

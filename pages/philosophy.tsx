@@ -2,6 +2,7 @@ import { Divider } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FaAngleRight } from "react-icons/fa";
+import LandingPageActionBar from "../components/demo/LandingPageActionBar";
 import Rooms from "../components/demo/Rooms";
 import LangingPageLayout from "../components/Layouts/LandingPageLayout";
 
@@ -21,6 +22,7 @@ export default function Philosophy() {
       <FaAngleRight />
     </button>
   );
+
   return (
     <LangingPageLayout>
       <span className="flex flex-col my-20 items-center">
@@ -60,23 +62,10 @@ export default function Philosophy() {
             focus, performance, and wellbeing.
           </span>
         </span>
-
-        <></>
       </div>
 
       {/* action section to get started now */}
-      <span className="flex my-20 mx-auto flex-row items-center max-w-screen-md p-10 backdrop-blur-md bg-gray-200 bg-opacity-40 rounded-lg">
-        <span className="flex flex-col items-start text-3xl font-bold">
-          <span>Ready to Focus?</span>
-          <span className="text-teal-600">{"It's now or never."}</span>
-        </span>
-
-        <span className="flex flex-row items-center space-x-5 ml-auto">
-          <Link href="/features">Features</Link>
-
-          {getStartedButton}
-        </span>
-      </span>
+      <LandingPageActionBar />
     </LangingPageLayout>
   );
 }
