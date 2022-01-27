@@ -49,7 +49,9 @@ export default function Pricing() {
             </span>
           </span>
 
-          <span className="text-gray-500">Hit the ground running.</span>
+          <span className="text-gray-500">
+            Hit the ground running with 2 free spots.
+          </span>
 
           <button
             onClick={() => window.open("/teams/login", "_self")}
