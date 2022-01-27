@@ -101,13 +101,16 @@ export default function Home() {
       </div>
 
       {/* main above fold product image */}
-      <span className="flex w-full justify-evenly">
+      <span className="md:flex w-full justify-evenly hidden">
         <img
           onClick={() => window.open("/teams/demo", "_blank")}
           src="/screenshots/frame_safari_dark.png"
-          className="flex-1 lg:min-h-[80rem] lg:min-w-[85rem] min-h-[10rem] min-w-[15rem]"
+          className="flex-1 min-h-[20rem] min-w-[30rem]"
         />
-        {/* <AntDImage width={1200} src="/screenshots/frame_safari_dark.png" /> */}
+      </span>
+      {/* image for mobile, just barely see it kind of thing */}
+      <span className="md:hidden">
+        <AntDImage width={800} src="/screenshots/frame_safari_dark.png" />
       </span>
 
       {/* voice line section */}
