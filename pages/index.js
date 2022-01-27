@@ -109,7 +109,7 @@ export default function Home() {
       <span className="flex w-full justify-evenly">
         <img
           src="/screenshots/frame_safari_dark.png"
-          className="h-[80rem] w-[85rem]"
+          className="h-[80rem] w-[85rem] shrink-0"
         />
       </span>
 

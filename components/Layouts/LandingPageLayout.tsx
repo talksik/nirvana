@@ -6,7 +6,7 @@ import { useAuth } from "../../contexts/authContext";
 import MainLogo from "../MainLogo";
 
 enum LandingPageNavigation {
-  home = "/",
+  product = "/",
   features = "/features",
   pricing = "/pricing",
   philosophy = "/philosophy",
@@ -41,20 +41,22 @@ export default function LangingPageLayout({ children }) {
 
   return (
     <div className="landing-page-bg bg-left-bottom bg-fixed bg-cover bg-no-repeat min-h-screen">
-      <div className="container mx-auto md:pb-10 px-5 lg:px-20">
+      <div className="container mx-auto px-5 lg:px-20 ">
         {/* header */}
         <div className="flex flex-row py-5 px-5 items-center justify-start mx-auto">
           <MainLogo className="mr-auto text-3xl" />
           <span className="flex flex-row space-x-5 items-center">
             <span
-              onClick={() => window.open(LandingPageNavigation.home, "_self")}
+              onClick={() =>
+                window.open(LandingPageNavigation.product, "_self")
+              }
               className={`text-gray-500 hover:text-teal-600 hover:cursor-pointer ${
-                currPage == LandingPageNavigation.home
+                currPage == LandingPageNavigation.product
                   ? "text-teal-600 underline underline-offset-4"
                   : ""
               }`}
             >
-              Home
+              Product
             </span>
 
             <a
