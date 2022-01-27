@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Image from "next/image";
 import {
   FaSlackHash,
   FaNewspaper,
@@ -21,11 +20,7 @@ import Rooms from "../components/demo/Rooms";
 import VoiceLineConceptDemo from "../components/demo/VoiceLineConceptDemo";
 
 import MainLogo from "../components/MainLogo";
-import { Divider, Tooltip } from "antd";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import SkeletonLoader from "../components/Loading/skeletonLoader";
-import { useAuth } from "../contexts/authContext";
+import { Divider, Tooltip, Image as AntDImage } from "antd";
 import LangingPageLayout from "../components/Layouts/LandingPageLayout";
 import LandingPageActionBar from "../components/demo/LandingPageActionBar";
 import Link from "next/link";
@@ -105,11 +100,14 @@ export default function Home() {
         </span>
       </div>
 
+      {/* main above fold product image */}
       <span className="flex w-full justify-evenly">
         <img
+          onClick={() => window.open("/teams/demo", "_blank")}
           src="/screenshots/frame_safari_dark.png"
-          className="lg:min-h-[80rem] lg:min-w-[85rem] min-h-[30rem] min-w-[40rem]"
+          className="flex-1 lg:min-h-[80rem] lg:min-w-[85rem] min-h-[10rem] min-w-[15rem]"
         />
+        {/* <AntDImage width={1200} src="/screenshots/frame_safari_dark.png" /> */}
       </span>
 
       {/* voice line section */}
@@ -197,6 +195,7 @@ export default function Home() {
             className="min-h-[20rem] min-w-[20rem] shrink-0"
           />
         </span>
+
         {/* description text */}
         <span className="mx-auto text-left flex flex-col grow max-w-lg shadow-lg rounded-lg bg-gray-200 bg-opacity-40 backdrop-blur-xl p-10">
           <span className="bg-clip-text font-bold text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
