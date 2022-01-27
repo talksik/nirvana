@@ -8,7 +8,6 @@ import MainLogo from "../MainLogo";
 enum LandingPageNavigation {
   home = "/",
   features = "/features",
-  useCases = "/usecases",
   pricing = "/pricing",
   philosophy = "/philosophy",
 }
@@ -48,7 +47,7 @@ export default function LangingPageLayout({ children }) {
           <MainLogo className="mr-auto text-3xl" />
           <span className="flex flex-row space-x-5 items-center">
             <span
-              onClick={() => window.open("/", "_self")}
+              onClick={() => window.open(LandingPageNavigation.home, "_self")}
               className={`text-gray-500 hover:text-teal-600 hover:cursor-pointer ${
                 currPage == LandingPageNavigation.home
                   ? "text-teal-600 underline underline-offset-4"
@@ -59,7 +58,7 @@ export default function LangingPageLayout({ children }) {
             </span>
 
             <a
-              href="/features"
+              href={LandingPageNavigation.features}
               className={`text-gray-500 hover:text-teal-600 hover:cursor-pointer ${
                 currPage == LandingPageNavigation.features
                   ? "text-teal-600 underline underline-offset-4"
@@ -68,19 +67,9 @@ export default function LangingPageLayout({ children }) {
             >
               Features
             </a>
-            <a
-              href="/usecases"
-              className={`text-gray-500 hover:text-teal-600 hover:cursor-pointer ${
-                currPage == LandingPageNavigation.useCases
-                  ? "text-teal-600 underline underline-offset-4"
-                  : ""
-              }`}
-            >
-              Use Cases
-            </a>
 
             <a
-              href="/pricing"
+              href={LandingPageNavigation.pricing}
               className={`text-gray-500 hover:text-teal-600 hover:cursor-pointer ${
                 currPage == LandingPageNavigation.pricing
                   ? "text-teal-600 underline underline-offset-4"
@@ -90,7 +79,7 @@ export default function LangingPageLayout({ children }) {
               Pricing
             </a>
             <a
-              href="/philosophy"
+              href={LandingPageNavigation.philosophy}
               className={`text-gray-500 border-r-gray-400 border-r-2 pr-5 hover:text-teal-600 hover:cursor-pointer ${
                 currPage == LandingPageNavigation.philosophy
                   ? "text-teal-600 underline underline-offset-4"
