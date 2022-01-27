@@ -49,36 +49,36 @@ export default function Home() {
     <LangingPageLayout>
       {/* header text */}
       <div className="flex flex-col items-center backdrop-blur-lg p-10">
-        <span className="flex flex-col items-center">
-          <span className="text-5xl font-bold">
+        <span className="flex flex-col items-center text-center text-3xl md:text-5xl font-bold ">
+          <span>
             <span className="text-teal-800">Minimal </span>
             Communication Tool for
           </span>
 
-          <span className="text-5xl font-bold text-left">
+          <span className="">
             <span className="text-red-800">Messy, Distracted</span> Remote
             Teams.
           </span>
         </span>
 
-        <span className="my-5 text-xl text-center text-black font-semibold w-max">
+        <span className="my-5 text-lg md:text-xl text-center text-black font-semibold w-max">
           A <span className="text-teal-600">&apos;less is more&apos;</span>{" "}
           approach.
           <br></br>
           Skip{" "}
           <img
             src="/icons/zoom-logo.svg"
-            className="inline w-[4rem] h-[2rem] px-1"
+            className="w-[4rem] inline-block h-[2rem] px-1"
           />{" "}
-          scheduling,{" "}
+          scheduling, <br className="md:hidden"></br>
           <img
             src="/icons/slack-logo.svg"
-            className="inline w-[5rem] h-[2rem] px-1"
+            className="inline-block w-[5rem] h-[2rem] px-1"
           />{" "}
-          notifications, and{" "}
+          notifications, <br className="md:hidden"></br> and{" "}
           <img
             src="/icons/gmail-logo.svg"
-            className="inline w-[2rem] h-[1rem]"
+            className="inline-block w-[2rem] h-[1rem]"
           />{" "}
           threads,
           <br></br>
@@ -108,13 +108,13 @@ export default function Home() {
       <span className="flex w-full justify-evenly">
         <img
           src="/screenshots/frame_safari_dark.png"
-          className="h-[80rem] w-[85rem] shrink-0"
+          className="lg:min-h-[80rem] lg:min-w-[85rem] min-h-[30rem] min-w-[40rem]"
         />
       </span>
 
       {/* voice line section */}
-      <span className="flex flex-row py-32">
-        <span className="flex flex-col grow max-w-sm rounded-lg shadow-lg bg-gray-200 bg-opacity-40 backdrop-blur-xl p-10">
+      <span className="flex flex-row md:py-32 py-10 flex-wrap">
+        <span className="mx-auto flex flex-col grow max-w-sm rounded-lg shadow-lg bg-gray-200 bg-opacity-40 backdrop-blur-xl p-10">
           <span className="bg-clip-text font-bold text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
             VOICE ONLY
           </span>
@@ -183,22 +183,22 @@ export default function Home() {
           </span>
         </span>
 
-        <span className="flex flex-row justify-end relative items-baseline flex-1 md:flex hidden">
+        <span className="flex-row justify-end relative items-baseline flex-1 md:flex hidden">
           <VoiceLineConceptDemo />
         </span>
       </span>
 
       {/* bond/team/collaborate section */}
-      <span className="flex flex-row items-center py-20">
+      <span className="flex flex-row items-center md:py-20 flex-wrap">
         <span className="flex-1 flex flex-row flex-wrap backdrop-blur-md p-10 rounded">
           {/* illustration of collaborating */}
           <img
             src="/illustrations/undraw_team_collaboration_re_ow29.svg"
-            className="h-[20rem] shrink-0"
+            className="min-h-[20rem] min-w-[20rem] shrink-0"
           />
         </span>
         {/* description text */}
-        <span className="text-left flex flex-col grow max-w-lg shadow-lg rounded-lg bg-gray-200 bg-opacity-40 backdrop-blur-xl p-10">
+        <span className="mx-auto text-left flex flex-col grow max-w-lg shadow-lg rounded-lg bg-gray-200 bg-opacity-40 backdrop-blur-xl p-10">
           <span className="bg-clip-text font-bold text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
             TEAM
           </span>
@@ -278,9 +278,9 @@ export default function Home() {
       </span>
 
       {/* focus on today section */}
-      <span className="flex flex-row items-center py-20">
+      <span className="flex flex-row items-center md:py-20 py-10 flex-wrap">
         {/* description card */}
-        <span className="text-left flex flex-col grow max-w-lg shadow-lg rounded-lg bg-gray-200 bg-opacity-40 backdrop-blur-xl p-10">
+        <span className="mx-auto text-left flex flex-col grow max-w-lg shadow-lg rounded-lg bg-gray-200 bg-opacity-40 backdrop-blur-xl p-10">
           <span className="bg-clip-text font-bold text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
             CLARITY
           </span>
@@ -358,7 +358,7 @@ export default function Home() {
           {/* illustration of collaborating */}
           <img
             src="/illustrations/undraw_freelancer_re_irh4.svg"
-            className="h-[20rem] shrink-0"
+            className="min-h-[20rem] min-w-[20rem] shrink-0"
           />
         </span>
       </span>

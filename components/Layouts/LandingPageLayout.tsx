@@ -173,8 +173,8 @@ export default function LangingPageLayout({ children }) {
       </div>
 
       {/* footer */}
-      <div className="bg-black w-full px-[10rem] py-[5rem]">
-        <span className="flex flex-row items-start justify-between">
+      <div className="bg-black w-full lg:px-[10rem] px-[5rem] py-[5rem] ">
+        <span className="flex md:flex-row md:space-x-5 space-y-5 flex-col items-start justify-between">
           <span className="flex flex-col">
             <MainLogo className="text-white text-3xl" />
 
