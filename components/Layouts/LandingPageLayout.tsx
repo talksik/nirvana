@@ -142,10 +142,10 @@ export default function LangingPageLayout({ children }) {
 
           <span className="flex flex-col items-start text-gray-200">
             <span className="font-bold text-white text-lg">Product</span>
-            <a onClick={() => window.open("/", "_self")}>Home</a>
-            <a href="/features">Features</a>
-            <a href="/pricing">Pricing</a>
-            <a href="/philosophy">Philosophy</a>
+            <Link href={"/"}>Home</Link>
+            <Link href="/features">Features</Link>
+            <Link href="/pricing">Pricing</Link>
+            <Link href="/philosophy">Philosophy</Link>
           </span>
 
           <span className="flex flex-col items-start text-gray-200">
