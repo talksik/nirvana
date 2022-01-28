@@ -101,7 +101,7 @@ function RouteHandler() {
           <button onClick={() => router.push("/teams/profile")}>
             <img
               src={user ? user.avatarUrl : currUser.photoURL}
-              alt="asdf"
+              alt="avatar"
               className="rounded-full w-12 shadow-lg"
             />
           </button>
