@@ -14,5 +14,5 @@ export const helloWorld = functions.https.onRequest((request, response) => {
 import { agoraToken } from "./agora";
 exports.agoraToken = agoraToken;
 
-// import { inviteUserToTeam } from "./notifications";
-// exports.inviteUserToTeam = inviteUserToTeam;
+import { inviteUserToTeam } from "./notifications";
+exports.inviteUserToTeam = inviteUserToTeam;

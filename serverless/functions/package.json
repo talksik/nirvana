@@ -3,13 +3,13 @@
   "scripts": {
     "lint": "eslint --ext .js,.ts .",
     "build": "npm run lint && tsc",
-    "serve": "npm run build && firebase emulators:start --only functions & tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "hotReload": "tsc --watch",
-    "copyModels": "cp -r ../../web/models /models"
+    "copyModels": "cp -r ../../web/models ./models"
   },
   "engines": {
     "node": "16"
