@@ -224,6 +224,11 @@ export default class TeamService implements IService {
   }
 
   async createTeamInvite(teamMember: TeamMember) {
+    if (teamMember.status == TeamMemberStatus.activated) {
+      console.log('cannot invite this user, already active.')
+      return
+    }
+
     // if a person was already invited, then update that record, otherwise create a new one
     const existingTeamMember = await this.getTeamMemberByEmailInvite(
       teamMember.teamId,
