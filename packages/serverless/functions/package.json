@@ -1,5 +1,6 @@
 {
   "name": "@nirvana/functions",
+  "version": "1.0.0",
   "scripts": {
     "lint": "eslint --ext .js,.ts .",
     "build": "npm run lint && tsc",
@@ -20,7 +21,7 @@
     "agora-access-token": "^2.0.4",
     "firebase-admin": "^9.8.0",
     "firebase-functions": "^3.14.1",
-    "@nirvana/common": "1.0.0"
+    "@nirvana/common": "*"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^3.9.1",
