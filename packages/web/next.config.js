@@ -3,4 +3,5 @@ module.exports = {
   experimental: {
     externalDir: true,
   },
+  outputFileTracing: false
 }
