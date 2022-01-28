@@ -9,7 +9,10 @@ admin.initializeApp();
 export const helloWorld = functions.https.onRequest((request, response) => {
   functions.logger.info("Hello no!", { structuredData: true });
   response.send("Hello from woahhhhhh!");
-});
+})
 
 import { agoraToken } from "./agora";
 exports.agoraToken = agoraToken;
+
+// import { inviteUserToTeam } from "./notifications";
+// exports.inviteUserToTeam = inviteUserToTeam;

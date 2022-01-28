@@ -8,7 +8,8 @@
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "hotReload": "tsc --watch"
+    "hotReload": "tsc --watch",
+    "copyModels": "cp -r ../../web/models /models"
   },
   "engines": {
     "node": "16"
