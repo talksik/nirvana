@@ -1,5 +1,6 @@
 {
   "name": "nirvana",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -23,7 +24,8 @@
     "react-hotkeys": "^2.0.0",
     "react-icons": "^4.3.1",
     "react-moment": "^1.1.1",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "@nirvana/common": "1.0.0"
   },
   "devDependencies": {
     "@types/react": "^17.0.38",
