@@ -12,9 +12,6 @@
     "hotReload": "tsc --watch",
     "copyModels": "cp -r ../../web/models ./models"
   },
-  "engines": {
-    "node": "14"
-  },
   "main": "lib/index.js",
   "dependencies": {
     "@sendgrid/mail": "^7.6.0",
