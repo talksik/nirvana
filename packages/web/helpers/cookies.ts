@@ -1,0 +1,3 @@
+export enum CookieType {
+  TEAM_SHORTCUTS_ONBOARDING = "TEAM_SHORTCUTS_ONBOARDING",
+}

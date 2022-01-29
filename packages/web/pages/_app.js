@@ -5,6 +5,9 @@ import { AuthProvider } from "../contexts/authContext";
 import SiteLayout from "../components/Layouts/SiteLayout";
 import { Toaster } from "react-hot-toast";
 
+import { connection }from '@nirvana/common' 
+connection() 
+
 function MyApp({ Component, pageProps }) {
   return (
     <SiteLayout>
