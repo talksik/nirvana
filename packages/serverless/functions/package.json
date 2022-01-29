@@ -13,7 +13,7 @@
     "copyModels": "cp -r ../../web/models ./models"
   },
   "engines": {
-    "node": "16"
+    "node": "14"
   },
   "main": "lib/index.js",
   "dependencies": {
