@@ -3,16 +3,26 @@ import { useRouter } from "next/router";
 import { useRef } from "react";
 import { GlobalHotKeys, KeyMap } from "react-hotkeys";
 import {
+  FaAtlassian,
   FaCheck,
+  FaCode,
+  FaDotCircle,
+  FaGithub,
+  FaGlobe,
+  FaGoogleDrive,
   FaHeadphones,
+  FaImage,
   FaImages,
   FaLayerGroup,
+  FaMapPin,
   FaMicrophoneAlt,
   FaMoon,
+  FaPhoneSlash,
   FaPlus,
   FaRegClock,
   FaSearch,
   FaUser,
+  FaWalking,
 } from "react-icons/fa";
 import MainLogo from "../components/MainLogo";
 import UserStatusBubble from "../components/UserStatusBubble";
@@ -118,7 +128,7 @@ function Header() {
 
 function Sidebar() {
   return (
-    <div className="flex flex-col justify-start items-start min-w-[20rem]">
+    <div className="flex flex-col justify-start items-baseline w-[20rem]">
       {/* new button */}
       <button className="rounded-full flex flex-row items-center px-5 py-2 ml-8 shadow-lg bg-white space-x-2">
         <FaPlus className="text-teal-600 text-lg" />
@@ -155,10 +165,87 @@ function Sidebar() {
       </div>
 
       {/* Live Rooms */}
-      <div className="px-5 mt-10">
+      <div className="flex flex-col items-start px-5 ml-8 py-5 space-y-2 w-full">
         {/* section title */}
-        <span className="text-md tracking-widest font-semibold text-slate-400 uppercase">
-          Live
+        <span className="flex flex-row items-center space-x-2">
+          <FaDotCircle className="text-orange-500 text-lg" />
+
+          <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
+            Live
+          </span>
+        </span>
+
+        {/* list of current rooms */}
+        <span className="flex flex-row items-center bg-teal-600 rounded-lg shadow-lg p-2 w-full">
+          <Avatar.Group
+            maxCount={2}
+            size="large"
+            maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+          >
+            <Avatar src="https://joeschmoe.io/api/v1/random" />
+            <Avatar style={{ backgroundColor: "#f56a00" }}>K</Avatar>
+            <Avatar style={{ backgroundColor: "#87d068" }} icon={<FaUser />} />
+            <Avatar style={{ backgroundColor: "#1890ff" }} icon={<FaUser />} />
+          </Avatar.Group>
+
+          <span className="text-white ml-2">Engineering</span>
+
+          <FaPhoneSlash className="ml-auto text-red-500 text-2xl" />
+        </span>
+
+        <span className="group flex flex-row items-center bg-slate-50 rounded-lg shadow-lg p-2 w-full">
+          <Avatar.Group
+            maxCount={2}
+            size="large"
+            maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+          >
+            <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+          </Avatar.Group>
+
+          <span className="text-slate-400 ml-2">Josh</span>
+
+          <FaWalking className="ml-auto text-teal-600 text-2xl hidden group-hover:flex hover:cursor-pointer transition-all" />
+        </span>
+      </div>
+
+      {/* pinned convos */}
+      <div className="flex flex-col items-start px-5 ml-8 py-5 space-y-2 w-full">
+        {/* section title */}
+        <span className="flex flex-row items-center w-full">
+          <FaMapPin className="text-sky-400 text-lg mr-1" />
+
+          <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
+            Pinned
+          </span>
+
+          <FaPlus className="text-slate-400 text-lg shrink-0 ml-auto" />
+        </span>
+
+        {/* pinned drawer items */}
+        <span className="flex flex-row items-center flex-wrap w-full gap-2">
+          <span className="rounded-lg bg-slate-200 p-2 hover:cursor-pointer">
+            <FaGithub className="text-slate-400 text-3xl shrink-0" />
+          </span>
+
+          <span className="rounded-lg bg-slate-200 p-2 hover:cursor-pointer">
+            <FaAtlassian className="text-sky-400 text-3xl shrink-0" />
+          </span>
+
+          <span className="rounded-lg bg-slate-200 p-2 hover:cursor-pointer">
+            <FaImage className="text-orange-400 text-3xl shrink-0" />
+          </span>
+
+          <span className="rounded-lg bg-slate-200 p-2 hover:cursor-pointer">
+            <FaCode className="text-blue-400 text-3xl shrink-0" />
+          </span>
+
+          <span className="rounded-lg bg-slate-200 p-2 hover:cursor-pointer">
+            <FaGlobe className="text-purple-400 text-3xl shrink-0" />
+          </span>
+
+          <span className="rounded-lg bg-slate-200 p-2 hover:cursor-pointer">
+            <FaGoogleDrive className="text-emerald-400 text-3xl shrink-0" />
+          </span>
         </span>
       </div>
     </div>
