@@ -15,11 +15,14 @@ import {
   FaAngleRight,
   FaAtlassian,
   FaCheck,
+  FaCheckDouble,
+  FaCircle,
   FaCode,
   FaDotCircle,
   FaGithub,
   FaGlobe,
   FaGoogleDrive,
+  FaGripHorizontal,
   FaHeadphones,
   FaImage,
   FaImages,
@@ -105,7 +108,7 @@ function Header() {
   };
 
   return (
-    <div className="flex flex-row justify-start items-center py-5 px-10">
+    <div className="flex flex-row justify-start items-center py-3 px-10 bg-slate-50 border-b mb-10">
       <GlobalHotKeys handlers={handlers} keyMap={keyMap} />
 
       <MainLogo className="text-3xl" />
@@ -159,19 +162,31 @@ function Sidebar() {
         <span className="flex flex-row items-center hover:cursor-pointer transition-all">
           <span className="w-5 h-5 -translate-x-4 rounded bg-teal-600"></span>
           <FaStream className="ml-8 mr-2 text-teal-600 text-lg" />
+
           <span className="text-md text-slate-500 font-semibold">Todo</span>
+
+          <span className="text-slate-300 text-md ml-auto">4</span>
         </span>
 
-        <span className="flex flex-row items-center hover:cursor-pointer transition-all">
+        <span className="flex flex-row items-center hover:cursor-pointer transition-all w-full">
           <span className="w-5 h-5 -translate-x-4 rounded bg-teal-600 bg-transparent"></span>
           <FaRocket className="ml-8 mr-2 text-slate-400 text-lg" />
           <span className="text-md text-slate-400 font-semibold">Priority</span>
+
+          <span className="ml-2 text-emerald-700 bg-emerald-200 bg-opacity-20 p-1 rounded-md text-xs font-semibold flex items-center flex-row space-x-1">
+            <HiSpeakerphone />
+            <span>new</span>
+          </span>
+
+          <span className="text-slate-300 text-md ml-auto">3</span>
         </span>
 
         <span className="flex flex-row items-center hover:cursor-pointer transition-all">
           <span className="w-5 h-5 -translate-x-4 rounded bg-teal-600 bg-transparent"></span>
           <FaRegClock className="ml-8 mr-2 text-slate-400 text-lg" />
-          <span className="text-md text-slate-400 font-semibold">Snooze</span>
+          <span className="text-md text-slate-400 font-semibold">Later</span>
+
+          <span className="text-slate-300 text-md ml-auto">1</span>
         </span>
 
         <span className="flex flex-row items-center hover:cursor-pointer transition-all">
@@ -187,7 +202,18 @@ function Sidebar() {
           <FaImages className="ml-8 mr-2 text-slate-400 text-lg" />
           <span className="text-md text-slate-400 font-semibold">Drawer</span>
 
-          <span className="ml-auto text-emerald-700 bg-emerald-200 bg-opacity-20 p-1 rounded-md text-xs font-semibold flex items-center flex-row space-x-1">
+          <span className="ml-2 text-emerald-700 bg-emerald-200 bg-opacity-20 p-1 rounded-md text-xs font-semibold flex items-center flex-row space-x-1">
+            <HiSpeakerphone />
+            <span>new</span>
+          </span>
+        </span>
+
+        <span className="flex flex-row items-center hover:cursor-pointer transition-all w-full">
+          <span className="w-5 h-5 -translate-x-4 rounded bg-teal-600 bg-transparent"></span>
+          <FaGripHorizontal className="ml-8 mr-2 text-slate-400 text-lg" />
+          <span className="text-md text-slate-400 font-semibold">Rooms</span>
+
+          <span className="ml-2 text-emerald-700 bg-emerald-200 bg-opacity-20 p-1 rounded-md text-xs font-semibold flex items-center flex-row space-x-1">
             <HiSpeakerphone />
             <span>new</span>
           </span>
@@ -201,7 +227,7 @@ function Sidebar() {
           <FaDotCircle className="text-orange-500 text-lg" />
 
           <span className="text-md tracking-widest font-semibold text-slate-300 uppercase ml-1">
-            Rooms
+            Live
           </span>
         </span>
 
@@ -218,7 +244,7 @@ function Sidebar() {
             <Avatar style={{ backgroundColor: "#1890ff" }} icon={<FaUser />} />
           </Avatar.Group>
 
-          <span className="text-white ml-2 font-semibold">Engineering</span>
+          <span className="text-white ml-2 font-semibold">Cafeteria</span>
 
           <FaPhoneSlash className="ml-auto text-red-500 text-2xl" />
         </span>
@@ -232,7 +258,7 @@ function Sidebar() {
             <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
           </Avatar.Group>
 
-          <span className="text-slate-400 ml-2">Business Talk Specs</span>
+          <span className="text-slate-400 ml-2">Chillin and Coding</span>
 
           <span
             className="ml-auto invisible 
@@ -264,10 +290,6 @@ function Sidebar() {
 
           <span className="rounded-lg bg-slate-200 p-2 hover:cursor-pointer">
             <FaAtlassian className="text-sky-400 text-3xl shrink-0" />
-          </span>
-
-          <span className="rounded-lg bg-slate-200 p-2 hover:cursor-pointer">
-            <FaImage className="text-orange-400 text-3xl shrink-0" />
           </span>
 
           <span className="rounded-lg bg-slate-200 p-2 hover:cursor-pointer">
@@ -340,7 +362,7 @@ function Sidebar() {
           </span>
         </span>
 
-        <span className="group flex flex-row items-center rounded-lg p-2 w-full hover:cursor-pointer bg-orange-500 bg-opacity-20">
+        <span className="group flex flex-row items-center rounded-lg p-2 w-full hover:cursor-pointer">
           <Avatar.Group
             maxCount={2}
             size="large"
@@ -359,7 +381,7 @@ function Sidebar() {
             <span className="text-slate-300 text-xs">designer</span>
           </span>
 
-          <FaRegArrowAltCircleDown className="text-orange-500 text-lg ml-auto animate-bounce" />
+          <FaCircle className="ml-auto text-orange-500 mr-2 animate-pulse text-[0.7em]" />
 
           <span
             className="ml-2 shadow-lg flex flex-row items-center h-10 w-10 
@@ -457,22 +479,29 @@ function Sidebar() {
 function Convos() {
   return (
     <div className="flex flex-col px-20 items-baseline flex-1 container mx-auto">
-      {/* Pinned */}
-      <span className="flex flex-row items-center mb-5">
-        <FaThumbtack className="text-sky-400 text-lg mr-1" />
-
+      {/* Today */}
+      <span className="flex flex-row items-center mb-5 px-5 w-full">
         <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
-          Pinned
+          Today
         </span>
+
+        <FaCheckDouble className="text-slate-300 ml-auto text-lg" />
       </span>
 
       <span className="flex flex-col w-full items-stretch">
-        <span className="py-2 px-4 border-x border-t last:border-b border-slate-300 bg-teal-600 flex flex-row items-center first:rounded-t-lg last:rounded-b-lg">
-          <span className="max-w-sm flex flex-row items-center">
+        {/* engineering */}
+        <span
+          className="py-2 px-4 border-t border-t-slate-200 flex flex-row hover:bg-slate-50 transition-all
+         items-center first:rounded-t-lg last:rounded-b-lg"
+        >
+          <FaCircle className="text-orange-500 mr-2 animate-pulse" />
+
+          <span className="w-[15rem] flex flex-row items-center">
             <Avatar.Group
               maxCount={1}
               size="large"
               maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+              className="w-[5rem]"
             >
               <Avatar src="https://joeschmoe.io/api/v1/random" />
               <Avatar style={{ backgroundColor: "#f56a00" }}>K</Avatar>
@@ -494,18 +523,47 @@ function Convos() {
               />
             </Avatar.Group>
 
-            <span className="text-white ml-2 font-semibold">Engineering</span>
+            <span className="text-slate-500 ml-2">Engineering</span>
           </span>
 
-          <FaPhoneSlash className="ml-auto text-red-500 text-2xl" />
+          <span className="text-slate-300 w-[20rem] truncate text-sm">
+            {`Josh: "let's just figure out how to finish the rest of the "`}
+          </span>
+
+          <span className="ml-auto text-slate-300 text-sm group-hover:invisible">
+            9:00am
+          </span>
+
+          {/* actions */}
+          <span className="ml-auto flex flex-row items-center group-hover:visible invisible absolute right-5">
+            <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
+              <FaRocket className="ml-auto text-lg" />
+            </span>
+            <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
+              <FaRegClock className="ml-auto text-lg" />
+            </span>
+            <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
+              <FaCheck className="ml-auto text-lg" />
+            </span>
+            <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
+              <FaAngleRight className="ml-auto text-lg" />
+            </span>
+          </span>
         </span>
 
-        <span className="group relative py-2 px-4 border-x border-t last:border-b border-slate-300 bg-slate-50 flex flex-row items-center first:rounded-t-lg last:rounded-b-lg">
+        {/* general */}
+        <span
+          className="group relative border-t border-t-slate-200 hover:bg-slate-50 
+        transition-all py-2 px-4 flex flex-row items-center first:rounded-t-lg last:rounded-b-lg"
+        >
+          <FaCircle className="text-slate-100 mr-2 animate-pulse" />
+
           <span className="w-[15rem] flex flex-row items-center">
             <Avatar.Group
               maxCount={1}
               size="large"
               maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+              className="w-[5rem]"
             >
               <Avatar shape="circle" src="https://picsum.photos/200/300" />
               <Avatar shape="circle" src="https://picsum.photos/240/300" />
@@ -522,17 +580,20 @@ function Convos() {
             <span className="text-slate-600 ml-2">General</span>
           </span>
 
-          <span className="text-slate-300 w-[10rem] truncate">
+          <span className="text-slate-300 w-[10rem] truncate text-sm">
             You spoke 2 hours ago
           </span>
 
-          <span className="ml-auto font-bold group-hover:invisible">
+          <span className="ml-auto text-slate-300 text-sm group-hover:invisible">
             7:22am
           </span>
 
           {/* actions */}
           <span className="ml-auto flex flex-row items-center group-hover:visible invisible absolute right-5">
             <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
+              <FaRocket className="ml-auto text-lg" />
+            </span>
+            <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
               <FaRegClock className="ml-auto text-lg" />
             </span>
             <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
@@ -544,49 +605,182 @@ function Convos() {
           </span>
         </span>
 
-        <span className="group py-2 px-4 border-x border-t last:border-b border-slate-300 bg-slate-50 flex flex-row items-center first:rounded-t-lg last:rounded-b-lg">
-          <span className="max-w-sm flex flex-row items-center">
+        {/* one on one chat with sydney */}
+        <span
+          className="group py-2 border-t border-t-slate-200 last:border-b hover:bg-slate-50 transition-all
+         relative px-4 flex flex-row items-center first:rounded-t-lg last:rounded-b-lg"
+        >
+          <FaCircle className="text-orange-500 mr-2 animate-pulse" />
+
+          <span className="w-[15rem] flex flex-row items-center">
             <Avatar.Group
               maxCount={2}
               size="large"
               maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+              className="w-[5rem]"
             >
               <Badge dot color={"green"}>
                 <Avatar shape="circle" src="https://picsum.photos/200/100" />
               </Badge>
             </Avatar.Group>
 
-            <span className="text-slate-600 ml-2 font-bold">Sydney</span>
+            <span className="text-slate-600 ml-2">Sydney</span>
+          </span>
 
-            <FaRegArrowAltCircleDown className="text-orange-500 text-lg ml-2 animate-bounce" />
+          <span className="text-slate-300 w-[20rem] truncate text-sm">
+            {`"Did you ever figure out that problem with the "`}
+          </span>
+
+          <span className="ml-auto text-slate-300 text-sm group-hover:invisible">
+            6:50am
           </span>
 
           {/* actions */}
-          <span className="ml-auto flex flex-row items-center group-hover:visible invisible transition-all">
-            <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 transition-all">
+          <span className="ml-auto flex flex-row items-center group-hover:visible invisible absolute right-5">
+            <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
+              <FaRocket className="ml-auto text-lg" />
+            </span>
+            <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
               <FaRegClock className="ml-auto text-lg" />
             </span>
-            <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 transition-all">
+            <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
               <FaCheck className="ml-auto text-lg" />
             </span>
-            <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 transition-all">
+            <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
               <FaAngleRight className="ml-auto text-lg" />
             </span>
           </span>
         </span>
       </span>
 
-      <span className="flex flex-row items-center mt-10">
+      <span className="flex flex-row items-center mb-5 px-5 w-full mt-10">
         <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
           Last 7 Days
         </span>
+
+        <FaCheckDouble className="text-slate-300 ml-auto text-lg" />
       </span>
 
-      <span className="flex flex-row items-center mt-10">
+      <span className="flex flex-col w-full items-stretch">
+        <span
+          className="group py-2 border-t border-t-slate-200 last:border-b hover:bg-slate-50 transition-all
+         relative px-4 flex flex-row items-center first:rounded-t-lg last:rounded-b-lg"
+        >
+          <FaCircle className="text-orange-500 mr-2 animate-pulse" />
+
+          <span className="w-[15rem] flex flex-row items-center">
+            <Avatar.Group
+              maxCount={2}
+              size="large"
+              maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+              className="w-[5rem]"
+            >
+              <Badge dot color={"green"}>
+                <Avatar shape="circle" src="https://picsum.photos/240/100" />
+              </Badge>
+            </Avatar.Group>
+
+            <span className="text-slate-600 ml-2">Justin</span>
+          </span>
+
+          <span className="text-slate-300 w-[20rem] truncate text-sm">
+            {`"Here's a quick github link for that library you were looking for"`}
+          </span>
+
+          <span className="flex flex-row items-center space-x-2 mx-auto">
+            <span className="rounded-lg bg-slate-200 p-2 hover:cursor-pointer">
+              <FaGithub className="text-slate-400 text-xl shrink-0" />
+            </span>
+
+            <span className="rounded-lg bg-slate-200 p-2 hover:cursor-pointer">
+              <FaAtlassian className="text-sky-400 text-xl shrink-0" />
+            </span>
+          </span>
+
+          <span className="ml-auto text-slate-300 text-sm group-hover:invisible">
+            6:50am
+          </span>
+
+          {/* actions */}
+          <span className="ml-auto flex flex-row items-center group-hover:visible invisible absolute right-5">
+            <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
+              <FaRocket className="ml-auto text-lg" />
+            </span>
+            <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
+              <FaRegClock className="ml-auto text-lg" />
+            </span>
+            <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
+              <FaCheck className="ml-auto text-lg" />
+            </span>
+            <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
+              <FaAngleRight className="ml-auto text-lg" />
+            </span>
+          </span>
+        </span>
+
+        <span
+          className="group py-2 border-t border-t-slate-200 last:border-b hover:bg-slate-50 transition-all
+         relative px-4 flex flex-row items-center first:rounded-t-lg last:rounded-b-lg"
+        >
+          <FaCircle className="text-orange-500 mr-2 animate-pulse" />
+
+          <span className="w-[15rem] flex flex-row items-center">
+            <Avatar.Group
+              maxCount={2}
+              size="large"
+              maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+              className="w-[5rem]"
+            >
+              <Avatar shape="circle" src="https://picsum.photos/190/100" />
+              <Avatar shape="circle" src="https://picsum.photos/192/100" />
+            </Avatar.Group>
+
+            <span className="text-slate-600 ml-2">Steph and Lee</span>
+          </span>
+
+          <span className="text-slate-300 w-[20rem] truncate text-sm">
+            {`"Let's hop into a room to discuss this sometime this afternoon..."`}
+          </span>
+
+          <span className="ml-auto text-slate-300 text-sm group-hover:invisible">
+            6:50am
+          </span>
+
+          {/* actions */}
+          <span className="ml-auto flex flex-row items-center group-hover:visible invisible absolute right-5">
+            <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
+              <FaRocket className="ml-auto text-lg" />
+            </span>
+            <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
+              <FaRegClock className="ml-auto text-lg" />
+            </span>
+            <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
+              <FaCheck className="ml-auto text-lg" />
+            </span>
+            <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
+              <FaAngleRight className="ml-auto text-lg" />
+            </span>
+          </span>
+        </span>
+      </span>
+
+      <span className="flex flex-row items-center mb-5 px-5 w-full mt-10">
         <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
           Earlier This Month
         </span>
+
+        <FaCheckDouble className="text-slate-300 ml-auto text-lg" />
       </span>
+
+      <span className="flex flex-row items-center mb-5 px-5 w-full mt-10">
+        <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
+          November 2021
+        </span>
+
+        <FaCheckDouble className="text-slate-300 ml-auto text-lg" />
+      </span>
+
+      <span className="mx-auto text-slate-300">{"That's all"}</span>
     </div>
   );
 }
