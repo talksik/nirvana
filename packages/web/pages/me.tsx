@@ -1,4 +1,4 @@
-import { Avatar, Divider, Dropdown, Menu, Switch } from "antd";
+import { Avatar, Badge, Divider, Dropdown, Menu, Tag, Tooltip } from "antd";
 import { useRouter } from "next/router";
 import { useRef } from "react";
 import { GlobalHotKeys, KeyMap } from "react-hotkeys";
@@ -14,16 +14,18 @@ import {
   FaImage,
   FaImages,
   FaLayerGroup,
-  FaMapPin,
+  FaMicrophone,
   FaMicrophoneAlt,
-  FaMoon,
   FaPhoneSlash,
+  FaPlay,
   FaPlus,
   FaRegClock,
   FaSearch,
+  FaThumbtack,
   FaUser,
   FaWalking,
 } from "react-icons/fa";
+import { HiSpeakerphone } from "react-icons/hi";
 import MainLogo from "../components/MainLogo";
 import UserStatusBubble from "../components/UserStatusBubble";
 import { UserStatus } from "../models/user";
@@ -157,21 +159,26 @@ function Sidebar() {
 
         <Divider />
 
-        <span className="flex flex-row items-center hover:cursor-pointer transition-all">
+        <span className="flex flex-row items-center hover:cursor-pointer transition-all w-full">
           <span className="w-5 h-5 -translate-x-4 rounded bg-teal-600 bg-transparent"></span>
           <FaImages className="ml-8 mr-2 text-slate-400 text-lg" />
           <span className="text-md text-slate-400 font-semibold">Drawer</span>
+
+          <span className="ml-auto text-emerald-700 bg-emerald-200 bg-opacity-20 p-1 rounded-md text-xs font-semibold flex items-center flex-row space-x-1">
+            <HiSpeakerphone />
+            <span>new</span>
+          </span>
         </span>
       </div>
 
       {/* Live Rooms */}
       <div className="flex flex-col items-start px-5 ml-8 py-5 space-y-2 w-full">
         {/* section title */}
-        <span className="flex flex-row items-center space-x-2">
+        <span className="flex flex-row items-center ">
           <FaDotCircle className="text-orange-500 text-lg" />
 
-          <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
-            Live
+          <span className="text-md tracking-widest font-semibold text-slate-300 uppercase ml-1">
+            Rooms
           </span>
         </span>
 
@@ -188,7 +195,7 @@ function Sidebar() {
             <Avatar style={{ backgroundColor: "#1890ff" }} icon={<FaUser />} />
           </Avatar.Group>
 
-          <span className="text-white ml-2">Engineering</span>
+          <span className="text-white ml-2 font-semibold">Engineering</span>
 
           <FaPhoneSlash className="ml-auto text-red-500 text-2xl" />
         </span>
@@ -208,11 +215,11 @@ function Sidebar() {
         </span>
       </div>
 
-      {/* pinned convos */}
+      {/* pinned items */}
       <div className="flex flex-col items-start px-5 ml-8 py-5 space-y-2 w-full">
         {/* section title */}
         <span className="flex flex-row items-center w-full">
-          <FaMapPin className="text-sky-400 text-lg mr-1" />
+          <FaThumbtack className="text-sky-400 text-lg mr-1" />
 
           <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
             Pinned
@@ -245,6 +252,140 @@ function Sidebar() {
 
           <span className="rounded-lg bg-slate-200 p-2 hover:cursor-pointer">
             <FaGoogleDrive className="text-emerald-400 text-3xl shrink-0" />
+          </span>
+        </span>
+
+        <Divider />
+
+        {/* list of pinned convos */}
+        <span className="flex flex-row items-center bg-slate-50 rounded-lg shadow-lg p-2 w-full">
+          <Avatar.Group
+            maxCount={2}
+            size="large"
+            maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+          >
+            <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+          </Avatar.Group>
+
+          <span className="flex flex-col items-start ml-2">
+            <span className="text-slate-500 font-semibold">Josh</span>
+
+            <span className="text-slate-300 text-xs">engineer</span>
+          </span>
+
+          <Tooltip title={"Press and hold R to send a voice clip."}>
+            <span
+              className="ml-auto shadow-lg flex flex-row items-center h-10 w-10 
+            justify-center rounded-lg text-orange-700 bg-slate-300 text-lg font-bold hover:cursor-pointer"
+            >
+              <FaMicrophone />
+            </span>
+          </Tooltip>
+          <span className="ml-2 shadow-lg flex flex-row items-center h-10 w-10 justify-center rounded-lg text-teal-600 bg-slate-300 text-lg font-bold">
+            <FaPlay />
+          </span>
+        </span>
+
+        <span className="group flex flex-row items-center rounded-lg p-2 w-full hover:cursor-pointer">
+          <Avatar.Group
+            maxCount={2}
+            size="large"
+            maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+          >
+            <Avatar src="https://yt3.ggpht.com/ytc/AKedOLQDVVudyMlzgNrCzOfNkUKn0KGGwfHQ-PjU02p6PQ=s48-c-k-c0x00ffffff-no-rj" />
+          </Avatar.Group>
+
+          <span className="flex flex-col items-start ml-2">
+            <span className="text-slate-400">Mark</span>
+
+            <span className="text-slate-300 text-xs">architect</span>
+          </span>
+
+          <span
+            className="ml-auto shadow-lg flex flex-row items-center h-10 w-10 
+            justify-center rounded-lg text-slate-400  font-bold hover:cursor-pointer"
+          >
+            2
+          </span>
+        </span>
+
+        <span className="group flex flex-row items-center rounded-lg p-2 w-full hover:cursor-pointer">
+          <Avatar.Group
+            maxCount={2}
+            size="large"
+            maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+          >
+            <Badge dot color={"green"}>
+              <Avatar shape="circle" src="https://picsum.photos/200/100" />
+            </Badge>
+          </Avatar.Group>
+
+          <span className="flex flex-col items-start ml-2">
+            <span className="text-slate-400">Sydney</span>
+
+            <span className="text-slate-300 text-xs">designer</span>
+          </span>
+
+          <span
+            className="ml-auto shadow-lg flex flex-row items-center h-10 w-10 
+            justify-center rounded-lg text-slate-400  font-bold hover:cursor-pointer"
+          >
+            3
+          </span>
+        </span>
+
+        <span className="group flex flex-row items-center rounded-lg p-2 w-full hover:cursor-pointer">
+          <Avatar.Group
+            maxCount={2}
+            size="large"
+            maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+          >
+            <Badge dot color={"green"}>
+              <Avatar shape="circle" src="https://picsum.photos/202/600" />
+            </Badge>
+          </Avatar.Group>
+
+          <span className="flex flex-col items-start ml-2">
+            <span className="text-slate-400">Jessica</span>
+
+            <span className="text-slate-300 text-xs">recruiter</span>
+          </span>
+
+          <span
+            className="ml-auto shadow-lg flex flex-row items-center h-10 w-10 
+            justify-center rounded-lg text-slate-400  font-bold hover:cursor-pointer"
+          >
+            4
+          </span>
+        </span>
+
+        <span className="group flex flex-row items-center rounded-lg p-2 w-full hover:cursor-pointer">
+          <Avatar.Group
+            maxCount={2}
+            size="large"
+            maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+          >
+            <Avatar shape="circle" src="https://picsum.photos/200/300" />
+            <Avatar shape="circle" src="https://picsum.photos/240/300" />
+            <Avatar shape="circle" src="https://picsum.photos/240/300" />
+            <Avatar shape="circle" src="https://picsum.photos/240/300" />
+            <Avatar shape="circle" src="https://picsum.photos/240/300" />
+            <Avatar shape="circle" src="https://picsum.photos/240/300" />
+            <Avatar shape="circle" src="https://picsum.photos/240/300" />
+            <Avatar shape="circle" src="https://picsum.photos/240/300" />
+            <Avatar shape="circle" src="https://picsum.photos/240/300" />
+            <Avatar shape="circle" src="https://picsum.photos/240/300" />
+          </Avatar.Group>
+
+          <span className="flex flex-col items-start ml-2">
+            <span className="text-slate-400">General</span>
+          </span>
+
+          <span
+            className="ml-auto shadow-lg flex flex-row items-center h-10 w-10 
+            justify-center rounded-lg text-slate-400  font-bold hover:cursor-pointer"
+          >
+            5
           </span>
         </span>
       </div>
