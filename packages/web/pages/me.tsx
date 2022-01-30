@@ -1,8 +1,15 @@
-import { Avatar, Dropdown, Menu } from "antd";
+import { Avatar, Dropdown, Menu, Switch } from "antd";
 import { useRouter } from "next/router";
 import { useRef } from "react";
 import { GlobalHotKeys, KeyMap } from "react-hotkeys";
-import { FaLayerGroup, FaSearch, FaUser } from "react-icons/fa";
+import {
+  FaHeadphones,
+  FaLayerGroup,
+  FaMicrophoneAlt,
+  FaMoon,
+  FaSearch,
+  FaUser,
+} from "react-icons/fa";
 import MainLogo from "../components/MainLogo";
 import UserStatusBubble from "../components/UserStatusBubble";
 import { UserStatus } from "../models/user";
@@ -76,7 +83,13 @@ function Header() {
         />
       </div>
 
-      {/* controls & profile section */}
+      {/* controls */}
+      <div className="flex flex-row items-center space-x-5 px-5">
+        <FaHeadphones className="text-xl text-teal-600 hover:cursor-pointer hover:scale-110 trasition-all animate-pulse" />
+        <FaMicrophoneAlt className="text-xl text-teal-600 hover:cursor-pointer hover:scale-110 trasition-all animate-pulse" />
+      </div>
+
+      {/* profile section */}
       <Dropdown
         overlay={UserMenu}
         trigger={["click"]}
