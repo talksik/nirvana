@@ -9,19 +9,19 @@ export default function UserStatusBubble(props: UserStatusPropsInterface) {
   switch (props.status) {
     case UserStatus.online:
       return (
-        <span className="absolute top-0 right-0 w-3 h-3 bg-green-400 rounded-full"></span>
+        <span className="absolute top-0 right-0 w-3 h-3 bg-green-400 rounded-full z-20 border border-white"></span>
       );
     case UserStatus.busy:
       return (
-        <span className="absolute top-0 right-0 w-3 h-3 bg-orange-400 rounded-full"></span>
+        <span className="absolute top-0 right-0 w-3 h-3 bg-orange-400 rounded-full  z-20 border border-white"></span>
       );
     case UserStatus.offline:
       return (
-        <span className="absolute top-0 right-0 w-3 h-3 bg-gray-400 rounded-full"></span>
+        <span className="absolute top-0 right-0 w-3 h-3 bg-gray-400 rounded-full  z-20 border border-white"></span>
       );
     default:
       return (
-        <span className="absolute top-0 right-0 w-3 h-3 bg-gray-400 rounded-full"></span>
+        <span className="absolute top-0 right-0 w-3 h-3 bg-gray-400 rounded-full  z-20 border border-white"></span>
       );
   }
 }
