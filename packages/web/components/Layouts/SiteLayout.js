@@ -1,5 +1,4 @@
-
-import Head from "next/head"
+import Head from "next/head";
 
 export default function SiteLayout({ children }) {
   return (
@@ -24,12 +23,13 @@ export default function SiteLayout({ children }) {
           href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2&display=swap"
           rel="stylesheet"
         />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"
+        />
       </Head>
 
-      <main>
-        {children}
-      </main>
+      <main>{children}</main>
     </>
-  )
+  );
 }
