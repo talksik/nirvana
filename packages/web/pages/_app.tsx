@@ -4,6 +4,8 @@ import { AuthProvider } from "../contexts/authContext";
 import SiteLayout from "../components/Layouts/SiteLayout";
 import { Toaster } from "react-hot-toast";
 
+import { RecoilRoot } from "recoil";
+
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 
@@ -24,11 +26,13 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
-    <SiteLayout>
-      <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
+    <RecoilRoot>
+      <SiteLayout>
+        <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
 
-      <Toaster position="top-center" />
-    </SiteLayout>
+        <Toaster position="top-center" />
+      </SiteLayout>
+    </RecoilRoot>
   );
 }
 
