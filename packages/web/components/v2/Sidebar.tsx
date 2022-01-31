@@ -12,11 +12,6 @@ import {
   FaUser,
   FaPhoneSlash,
   FaWalking,
-  FaGithub,
-  FaAtlassian,
-  FaCode,
-  FaGlobe,
-  FaGoogleDrive,
   FaMicrophone,
   FaPlay,
   FaCircle,
@@ -59,37 +54,10 @@ function Sidebar() {
           />
 
           <span className="text-md text-slate-500 font-semibold group-hover:text-slate-600">
-            Todo
+            Conversations
           </span>
 
           <span className="text-slate-300 text-md ml-auto">4</span>
-        </span>
-
-        <span
-          onClick={() => handleRoute(Routes.priority)}
-          className="flex flex-row items-center hover:cursor-pointer transition-all group"
-        >
-          <span
-            className={`w-5 h-5 -translate-x-4 rounded bg-sky-500 ${
-              currPage == Routes.priority ? "visible" : "invisible"
-            }`}
-          ></span>
-          <FaRocket
-            className={`ml-8 mr-2 text-lg ${
-              currPage == Routes.priority ? "text-sky-500" : "text-slate-400"
-            } group-hover:text-slate-600`}
-          />
-
-          <span className="text-md text-slate-400 font-semibold group-hover:text-slate-600">
-            Priority
-          </span>
-
-          <span className="ml-2 text-emerald-700 bg-emerald-200 bg-opacity-20 p-1 rounded-md text-xs font-semibold flex items-center flex-row space-x-1">
-            <HiSpeakerphone />
-            <span>new</span>
-          </span>
-
-          <span className="text-slate-300 text-md ml-auto">3</span>
         </span>
 
         <span
@@ -184,7 +152,20 @@ function Sidebar() {
             <HiSpeakerphone />
             <span>new</span>
           </span>
+
+          <span className="flex flex-row items-center ml-auto">
+            <FaDotCircle className="text-orange-500 text-md animate-pulse" />
+
+            <span
+              className="text-xs tracking-widest font-semibold 
+            text-slate-300 uppercase ml-1"
+            >
+              Live
+            </span>
+          </span>
         </span>
+
+        <Divider />
       </div>
 
       {/* Live Rooms */}

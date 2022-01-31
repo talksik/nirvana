@@ -26,6 +26,15 @@ export default Me;
 function Convos() {
   return (
     <>
+      <span className="flex flex-row items-center mb-5 px-5 w-full">
+        <FaRocket className="text-sky-400 text-lg mr-1" />
+        <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
+          Priority
+        </span>
+
+        <FaCheckDouble className="text-slate-300 ml-auto text-lg" />
+      </span>
+
       {/* Today */}
       <span className="flex flex-row items-center mb-5 px-5 w-full">
         <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
