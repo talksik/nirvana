@@ -10,8 +10,6 @@ import {
   FaGripHorizontal,
   FaDotCircle,
   FaUser,
-  FaPhoneSlash,
-  FaWalking,
   FaMicrophone,
   FaPlay,
   FaCircle,
@@ -55,6 +53,17 @@ function Sidebar() {
 
           <span className="text-md text-slate-500 font-semibold group-hover:text-slate-600">
             Conversations
+          </span>
+
+          <span className="flex flex-row items-center ml-2">
+            <FaDotCircle className="text-orange-500 text-md animate-pulse" />
+
+            <span
+              className="text-xs tracking-widest font-semibold 
+            text-slate-300 uppercase ml-1"
+            >
+              Live
+            </span>
           </span>
 
           <span className="text-slate-300 text-md ml-auto">4</span>
@@ -129,99 +138,14 @@ function Sidebar() {
           </span>
         </span>
 
-        <span
-          onClick={() => handleRoute(Routes.rooms)}
-          className="flex flex-row items-center hover:cursor-pointer transition-all group"
-        >
-          <span
-            className={`w-5 h-5 -translate-x-4 rounded bg-rose-500 ${
-              currPage == Routes.rooms ? "visible" : "invisible"
-            }`}
-          ></span>
-          <FaGripHorizontal
-            className={`ml-8 mr-2 text-lg ${
-              currPage == Routes.rooms ? "text-rose-500" : "text-slate-400"
-            } group-hover:text-slate-600`}
-          />
-
-          <span className="text-md text-slate-400 font-semibold group-hover:text-slate-600">
-            Rooms
-          </span>
-
-          <span className="ml-2 text-emerald-700 bg-emerald-200 bg-opacity-20 p-1 rounded-md text-xs font-semibold flex items-center flex-row space-x-1">
-            <HiSpeakerphone />
-            <span>new</span>
-          </span>
-
-          <span className="flex flex-row items-center ml-auto">
-            <FaDotCircle className="text-orange-500 text-md animate-pulse" />
-
-            <span
-              className="text-xs tracking-widest font-semibold 
-            text-slate-300 uppercase ml-1"
-            >
-              Live
-            </span>
-          </span>
-        </span>
-
         <Divider />
-      </div>
-
-      {/* Live Rooms */}
-      <div className="flex flex-col items-start px-5 ml-8 py-5 space-y-2 w-full">
-        {/* section title */}
-        <span className="flex flex-row items-center ">
-          <FaDotCircle className="text-orange-500 text-lg" />
-
-          <span className="text-md tracking-widest font-semibold text-slate-300 uppercase ml-1">
-            Live
-          </span>
-        </span>
-
-        {/* list of current rooms */}
-        <span className="flex flex-row items-center bg-teal-600 rounded-lg shadow-lg p-2 w-full">
-          <Avatar.Group
-            maxCount={2}
-            size="large"
-            maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
-          >
-            <Avatar src="https://joeschmoe.io/api/v1/random" />
-            <Avatar style={{ backgroundColor: "#f56a00" }}>K</Avatar>
-            <Avatar style={{ backgroundColor: "#87d068" }} icon={<FaUser />} />
-            <Avatar style={{ backgroundColor: "#1890ff" }} icon={<FaUser />} />
-          </Avatar.Group>
-
-          <span className="text-white ml-2 font-semibold">Cafeteria</span>
-
-          <FaPhoneSlash className="ml-auto text-red-500 text-2xl" />
-        </span>
-
-        <span className="group flex flex-row items-center bg-slate-50 rounded-lg shadow-lg p-2 w-full">
-          <Avatar.Group
-            maxCount={2}
-            size="large"
-            maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
-          >
-            <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-          </Avatar.Group>
-
-          <span className="text-slate-400 ml-2">Chillin and Coding</span>
-
-          <span
-            className="ml-auto invisible 
-          group-hover:visible hover:cursor-pointer transition-all"
-          >
-            <FaWalking className="text-teal-600 text-2xl" />
-          </span>
-        </span>
       </div>
 
       {/* pinned items */}
       <div className="flex flex-col items-start px-5 ml-8 py-5 space-y-2 w-full">
         {/* section title */}
         <span className="flex flex-row items-center w-full">
-          <FaRocket className="text-sky-400 text-lg mr-1" />
+          <FaRocket className="text-sky-500 text-lg mr-1" />
 
           <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
             Priority

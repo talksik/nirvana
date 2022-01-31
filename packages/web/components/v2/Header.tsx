@@ -99,12 +99,12 @@ export default function Header() {
       {/* controls */}
       <div className="flex flex-row items-center space-x-5 px-5">
         <FaHeadphones
-          className="text-xl text-slate-200 
-        hover:cursor-pointer hover:text-white hover:scale-110 trasition-all animate-pulse"
+          className="text-xl text-teal-500 
+        hover:cursor-pointer hover:scale-110 trasition-all animate-pulse"
         />
         <FaMicrophoneAlt
-          className="text-xl text-slate-200 
-        hover:cursor-pointer hover:text-white hover:scale-110 trasition-all animate-pulse"
+          className="text-xl text-teal-500
+        hover:cursor-pointer hover:scale-110 trasition-all animate-pulse"
         />
       </div>
 

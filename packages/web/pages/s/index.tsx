@@ -5,10 +5,12 @@ import {
   FaCheck,
   FaCheckDouble,
   FaCircle,
+  FaDotCircle,
   FaGithub,
   FaRegClock,
   FaRocket,
   FaUser,
+  FaWalking,
 } from "react-icons/fa";
 import React from "react";
 import getDynamicMeLayout from "../../components/Layouts/DynamicMeLayout";
@@ -27,12 +29,46 @@ function Convos() {
   return (
     <>
       <span className="flex flex-row items-center mb-5 px-5 w-full">
-        <FaRocket className="text-sky-400 text-lg mr-1" />
+        <FaDotCircle className="text-orange-500 text-lg mr-1" />
+        <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
+          Live
+        </span>
+      </span>
+
+      {/* row of live room cards */}
+      <span className="flex flex-row flex-wrap">
+        {/* engineering rooms */}
+        <span className="group relative flex flex-row items-center bg-slate-50 rounded-lg border p-5">
+          <Avatar.Group
+            maxCount={3}
+            size={{ xs: 1000 }}
+            maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+          >
+            <Avatar
+              src="https://joeschmoe.io/api/v1/random"
+              style={{ backgroundColor: "cyan" }}
+            />
+            <Avatar src="https://joeschmoe.io/api/v1/100" />
+            <Avatar src="https://joeschmoe.io/api/v1/2" />
+            <Avatar src="https://joeschmoe.io/api/v1/10" />
+            <Avatar src="https://joeschmoe.io/api/v1/8" />
+          </Avatar.Group>
+
+          <span className="text-md font-semibold ml-2 mr-10">Engineering</span>
+
+          <span className="text-xs text-slate-300 group-hover:invisible">
+            {"01:20"}
+          </span>
+
+          <FaWalking className="absolute right-5 text-slate-50 group-hover:text-teal-600 text-lg transition-all -z-10 group-hover:z-10" />
+        </span>
+      </span>
+
+      <span className="flex flex-row items-center mb-5 px-5 w-full mt-10">
+        <FaRocket className="text-sky-500 text-lg mr-1" />
         <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
           Priority
         </span>
-
-        <FaCheckDouble className="text-slate-300 ml-auto text-lg" />
       </span>
 
       {/* Today */}
@@ -48,7 +84,7 @@ function Convos() {
         {/* engineering */}
         <span
           className="py-2 px-4 border-t border-t-slate-200 flex flex-row hover:bg-slate-50 transition-all
-         items-center first:rounded-t-lg last:rounded-b-lg"
+         items-center"
         >
           <FaCircle className="text-orange-500 mr-2 animate-pulse" />
 
@@ -110,7 +146,7 @@ function Convos() {
         {/* general */}
         <span
           className="group relative border-t border-t-slate-200 hover:bg-slate-50 
-        transition-all py-2 px-4 flex flex-row items-center first:rounded-t-lg last:rounded-b-lg"
+        transition-all py-2 px-4 flex flex-row items-center"
         >
           <FaCircle className="text-slate-100 mr-2 animate-pulse" />
 
@@ -164,7 +200,7 @@ function Convos() {
         {/* one on one chat with sydney */}
         <span
           className="group py-2 border-t border-t-slate-200 last:border-b hover:bg-slate-50 transition-all
-         relative px-4 flex flex-row items-center first:rounded-t-lg last:rounded-b-lg"
+         relative px-4 flex flex-row items-center"
         >
           <FaCircle className="text-orange-500 mr-2 animate-pulse" />
 
