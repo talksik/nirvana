@@ -6,7 +6,7 @@ export default function Priority() {
   return (
     <div className="mx-auto my-auto flex flex-col">
       <img
-        src="/illustrations/undraw_team_collaboration_re_ow29.svg"
+        src="/illustrations/undraw_absorbed_in_xahs.svg"
         className="h-[15rem] mx-auto my-auto"
       />
 
