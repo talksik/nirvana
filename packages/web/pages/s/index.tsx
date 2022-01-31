@@ -9,6 +9,7 @@ import Header from "../../components/v2/Header";
 import Later from "../../components/v2/Later";
 import Sidebar from "../../components/v2/Sidebar";
 import { currPagePath } from "../../recoil/main";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 export default function Me() {
   // figure out what content to render from here
@@ -50,9 +51,18 @@ export default function Me() {
       <div className="flex-1 flex flex-row items-stretch">
         <Sidebar />
 
-        <div className="flex-1 flex flex-col px-20 justify-start items-stretch container mx-auto">
-          {getCurrentContent()}
-        </div>
+        <TransitionGroup>
+          <CSSTransition
+            appear={true}
+            key={Math.random()}
+            timeout={1200}
+            classNames="slide"
+          >
+            <div className="flex-1 flex flex-col px-20 justify-start items-stretch container mx-auto">
+              {getCurrentContent()}
+            </div>
+          </CSSTransition>
+        </TransitionGroup>
       </div>
     </div>
   );
