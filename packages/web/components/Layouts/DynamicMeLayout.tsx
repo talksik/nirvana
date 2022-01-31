@@ -9,10 +9,10 @@ export default function getDynamicMeLayout(page: React.ReactElement) {
     <div className="flex flex-col">
       <Header />
 
-      <div className="flex-1 flex flex-row items-baseline">
+      <div className="flex-1 flex flex-row items-stretch">
         <Sidebar />
 
-        <div className="flex flex-col px-20 items-baseline flex-1 container mx-auto">
+        <div className="flex-1 flex flex-col px-20 justify-start items-stretch container mx-auto">
           {page}
         </div>
       </div>
