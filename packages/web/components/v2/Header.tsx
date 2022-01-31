@@ -1,3 +1,4 @@
+// import Routes from "@nirvana/common/helpers/routes";
 import { Menu, Dropdown, Avatar } from "antd";
 import { useRouter } from "next/router";
 import { useRef } from "react";
@@ -15,6 +16,9 @@ import UserStatusBubble from "../UserStatusBubble";
 
 export default function Header() {
   const router = useRouter();
+
+  const currPage = router.pathname;
+  console.log(currPage);
 
   const UserMenu = (
     <Menu title="user menu">
@@ -58,11 +62,29 @@ export default function Header() {
     SELECT_SEARCH: selectSearch,
   };
 
+  // let headerBgColorClasses: string;
+  // switch (currPage) {
+  //   case Routes.convos:
+  //     headerBgColorClasses = "bg-teal-600";
+  //     break;
+  //   case Routes.done:
+  //     headerBgColorClasses = "bg-emerald-500";
+  //     break;
+  //   case Routes.later:
+  //     headerBgColorClasses = "bg-purple-500";
+  //     break;
+  //   case Routes.priority:
+  //     headerBgColorClasses = "bg-sky-500";
+  //     break;
+  // }
+
   return (
-    <div className="flex flex-row justify-start items-center py-3 px-10 bg-slate-50 border-b mb-10">
+    <div
+      className={`flex flex-row justify-start items-center py-3 px-10 bg-slate-50 border-b mb-10`}
+    >
       <GlobalHotKeys handlers={handlers} keyMap={keyMap} />
 
-      <MainLogo className="text-3xl" />
+      <MainLogo className="text-3xl text-white" />
 
       {/* search bar */}
       <div className="mx-auto flex flex-row items-center space-x-2">
@@ -76,8 +98,14 @@ export default function Header() {
 
       {/* controls */}
       <div className="flex flex-row items-center space-x-5 px-5">
-        <FaHeadphones className="text-xl text-teal-600 hover:cursor-pointer hover:scale-110 trasition-all animate-pulse" />
-        <FaMicrophoneAlt className="text-xl text-teal-600 hover:cursor-pointer hover:scale-110 trasition-all animate-pulse" />
+        <FaHeadphones
+          className="text-xl text-slate-200 
+        hover:cursor-pointer hover:text-white hover:scale-110 trasition-all animate-pulse"
+        />
+        <FaMicrophoneAlt
+          className="text-xl text-slate-200 
+        hover:cursor-pointer hover:text-white hover:scale-110 trasition-all animate-pulse"
+        />
       </div>
 
       {/* profile section */}
