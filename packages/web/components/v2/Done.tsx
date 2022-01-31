@@ -1,4 +1,3 @@
-import getDynamicMeLayout from "../../components/Layouts/DynamicMeLayout";
 import React from "react";
 import { FaCheck } from "react-icons/fa";
 
@@ -18,7 +17,3 @@ export default function Done() {
     </div>
   );
 }
-
-Done.getLayout = function getLayout(page: React.ReactElement) {
-  return getDynamicMeLayout(page);
-};

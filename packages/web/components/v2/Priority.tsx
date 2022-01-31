@@ -1,4 +1,3 @@
-import getDynamicMeLayout from "../../components/Layouts/DynamicMeLayout";
 import React from "react";
 import { FaRocket } from "react-icons/fa";
 
@@ -19,7 +18,3 @@ export default function Priority() {
     </div>
   );
 }
-
-Priority.getLayout = function getLayout(page: React.ReactElement) {
-  return getDynamicMeLayout(page);
-};

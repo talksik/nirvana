@@ -1,4 +1,3 @@
-import getDynamicMeLayout from "../../components/Layouts/DynamicMeLayout";
 import React from "react";
 import { FaLink } from "react-icons/fa";
 
@@ -18,7 +17,3 @@ export default function Drawer() {
     </div>
   );
 }
-
-Drawer.getLayout = function getLayout(page: React.ReactElement) {
-  return getDynamicMeLayout(page);
-};

@@ -7,7 +7,6 @@ import {
   FaRegClock,
   FaCheck,
   FaImages,
-  FaGripHorizontal,
   FaDotCircle,
   FaUser,
   FaMicrophone,
@@ -16,11 +15,11 @@ import {
 } from "react-icons/fa";
 import { HiSpeakerphone } from "react-icons/hi";
 import Routes from "@nirvana/common/helpers/routes";
+import Link from "next/link";
 
 function Sidebar() {
   const router = useRouter();
   const currPage = router.pathname;
-  console.log(currPage);
 
   const handleRoute = (route: Routes) => {
     router.push(route);
@@ -36,6 +35,11 @@ function Sidebar() {
 
       {/* navigation items */}
       <div className="flex flex-col my-5 space-y-5 w-full">
+        <Link href={Routes.convos}>{Routes.convos}</Link>
+        <Link href={Routes.later}>{Routes.later}</Link>
+        <Link href={Routes.done}>{Routes.done}</Link>
+        <Link href={Routes.drawer}>{Routes.drawer}</Link>
+
         <span
           onClick={() => handleRoute(Routes.convos)}
           className="flex flex-row items-center hover:cursor-pointer transition-all group"

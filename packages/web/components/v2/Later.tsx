@@ -1,8 +1,8 @@
-import getDynamicMeLayout from "../../components/Layouts/DynamicMeLayout";
 import React from "react";
 import { FaRegClock } from "react-icons/fa";
 
 export default function Later() {
+  console.log("re-rendering later");
   return (
     <div className="mx-auto my-auto flex flex-col">
       <img
@@ -19,7 +19,3 @@ export default function Later() {
     </div>
   );
 }
-
-Later.getLayout = function getLayout(page: React.ReactElement) {
-  return getDynamicMeLayout(page);
-};

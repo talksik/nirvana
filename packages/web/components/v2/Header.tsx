@@ -17,9 +17,6 @@ import UserStatusBubble from "../UserStatusBubble";
 export default function Header() {
   const router = useRouter();
 
-  const currPage = router.pathname;
-  console.log(currPage);
-
   const UserMenu = (
     <Menu title="user menu">
       <Menu.Item
