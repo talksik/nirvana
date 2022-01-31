@@ -249,31 +249,6 @@ function Sidebar() {
           <FaPlus className="text-slate-400 text-lg shrink-0 ml-auto" />
         </span>
 
-        {/* pinned drawer items */}
-        <span className="flex flex-row items-center flex-wrap w-full gap-2">
-          <span className="rounded-lg bg-slate-200 p-2 hover:cursor-pointer">
-            <FaGithub className="text-slate-400 text-3xl shrink-0" />
-          </span>
-
-          <span className="rounded-lg bg-slate-200 p-2 hover:cursor-pointer">
-            <FaAtlassian className="text-sky-400 text-3xl shrink-0" />
-          </span>
-
-          <span className="rounded-lg bg-slate-200 p-2 hover:cursor-pointer">
-            <FaCode className="text-blue-400 text-3xl shrink-0" />
-          </span>
-
-          <span className="rounded-lg bg-slate-200 p-2 hover:cursor-pointer">
-            <FaGlobe className="text-purple-400 text-3xl shrink-0" />
-          </span>
-
-          <span className="rounded-lg bg-slate-200 p-2 hover:cursor-pointer">
-            <FaGoogleDrive className="text-emerald-400 text-3xl shrink-0" />
-          </span>
-        </span>
-
-        <Divider />
-
         {/* list of pinned convos */}
         <span className="flex flex-row items-center bg-slate-50 rounded-lg shadow-lg p-2 w-full">
           <Avatar.Group
