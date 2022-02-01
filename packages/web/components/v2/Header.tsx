@@ -93,6 +93,10 @@ export default function Header() {
         />
       </div>
 
+      <button className="rounded-lg p-2 border text-slate-400 text-xs hover:bg-slate-100">
+        Focus Mode
+      </button>
+
       {/* controls */}
       <div className="flex flex-row items-center space-x-5 px-5">
         <FaHeadphones

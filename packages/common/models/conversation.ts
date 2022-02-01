@@ -6,12 +6,11 @@ export default class Conversation {
 
   name: string; // engineering, general, arjun and jacob...
 
-  createdDate: Timestamp = Timestamp.now()
-  createdByUserId: string
+  createdDate: Timestamp = Timestamp.now();
+  createdByUserId: string;
 
-
-  constructor(name: string createdByUserId: string) {
-    this.name = name;
-    this.createdByUserId = createdByUserId
+  constructor(_name: string, _createdByUserId: string) {
+    this.name = _name;
+    this.createdByUserId = _createdByUserId;
   }
 }

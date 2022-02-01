@@ -37,4 +37,8 @@ export enum UserStatus {
   online = "online",
   offline = "offline",
   busy = "busy",
+
+  // new statuses
+  inLiveRoom = "inLiveRoom",
+  focusMode = "focusMode",
 }
