@@ -1,5 +1,7 @@
 import { Select, Tag } from "antd";
+import Avatar from "antd/lib/avatar/avatar";
 import { useEffect, useRef } from "react";
+import { FaRegTimesCircle } from "react-icons/fa";
 
 const options = [
   { value: "gold" },
@@ -15,6 +17,10 @@ export default function CreateConversation() {
     input.current?.focus();
   }, []);
 
+  // as people are selected, add a list of users
+  // if it's an email of a non-nirvana user, then hit invite button to email them with a voice clip along with it
+  // if it's an existing user, then show a nice chip of that user's profile picture and their name
+
   return (
     <div className="mx-auto my-auto w-96">
       <Select
@@ -29,10 +35,20 @@ export default function CreateConversation() {
         ref={input}
       />
 
-      {/* list of existing conversations with these people */}
-      <span className="flex flex-col">
-        <span className="flex flex-row items-center p-5">
-          <span>Engineering</span>
+      {/* list of selected people who are nirvana users */}
+      <span className="flex flex-row flex-wrap mt-10">
+        <span className="flex flex-row items-center py-1 px-3 space-x-2 bg-sky-200 rounded-full">
+          <Avatar
+            src={"https://joeschmoe.io/api/v1/random"}
+            shape="square"
+            size={"small"}
+          />
+
+          <span className="text-sky-500 font-bold">{"Joe Smoe"}</span>
+
+          <button className="p-2 rounded-full hover:cursor-pointer text-sky-300">
+            <FaRegTimesCircle className="ml-auto text-lg" />
+          </button>
         </span>
       </span>
     </div>

@@ -16,6 +16,7 @@ import {
 } from "react-transition-group";
 import CreateConversation from "../../components/v2/CreateConversation";
 import { FaArrowLeft } from "react-icons/fa";
+import KeyboardShortcutHandler from "../../components/v2/KeyboardShortcutHandler";
 
 export default function Me() {
   // figure out what content to render from here
@@ -64,6 +65,8 @@ export default function Me() {
 
   return (
     <div className="flex flex-col">
+      <KeyboardShortcutHandler />
+
       <Header />
 
       {fullCleanPageContent ? (
