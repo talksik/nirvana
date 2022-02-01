@@ -210,3 +210,7 @@ li.slick-active button {
 .slide-exit-done {
   opacity: 0;
 }
+
+.ant-select-selector {
+  @apply bg-slate-50 rounded placeholder-slate-300 !important;
+}

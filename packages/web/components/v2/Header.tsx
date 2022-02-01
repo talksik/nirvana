@@ -1,5 +1,4 @@
-// import Routes from "@nirvana/common/helpers/routes";
-import Routes from "@nirvana/common/helpers/routes";
+import { QueryRoutes, Routes } from "@nirvana/common/helpers/routes";
 import { Menu, Dropdown, Avatar } from "antd";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
@@ -50,6 +49,10 @@ export default function Header() {
 
   const selectSearch = () => {
     inputRef.current?.focus();
+    router.push({
+      pathname: Routes.home,
+      query: { page: QueryRoutes.search },
+    });
   };
 
   const updateInput = (e) => {
@@ -64,7 +67,7 @@ export default function Header() {
     }
 
     router.push({
-      query: { q: encodeURI(newSearchInput) },
+      query: { q: encodeURI(newSearchInput), page: QueryRoutes.search },
     });
   };
 

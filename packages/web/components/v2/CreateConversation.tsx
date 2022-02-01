@@ -109,8 +109,8 @@ export default function CreateConversation() {
         </span>
 
         <input
-          className="p-3 rounded mt-2 bg-slate-50 border"
-          placeholder="engineering, hangout, kitchen..."
+          className="p-3 rounded mt-2 bg-slate-50 border placeholder-slate-300"
+          placeholder="coding and chilling room, birthdays, sprint 7"
         />
       </span>
 

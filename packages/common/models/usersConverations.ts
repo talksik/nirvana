@@ -23,6 +23,7 @@ export default class UserConversation {
 }
 
 export enum UserConversationState {
+  inbox = "inbox",
   default = "default",
   priority = "priority",
   later = "later",

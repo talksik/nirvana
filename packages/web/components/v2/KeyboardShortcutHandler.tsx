@@ -1,4 +1,4 @@
-import Routes from "@nirvana/common/helpers/routes";
+import { QueryRoutes } from "@nirvana/common/helpers/routes";
 import { useRouter } from "next/router";
 import { GlobalHotKeys, KeyMap, configure } from "react-hotkeys";
 
@@ -11,7 +11,7 @@ export default function KeyboardShortcutHandler() {
 
   const handleEscape = () => {
     console.log("woah");
-    router.push(Routes.convos);
+    router.push({ query: { page: QueryRoutes.convos } });
   };
 
   const keyMap: KeyMap = {

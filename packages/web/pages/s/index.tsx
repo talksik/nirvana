@@ -1,51 +1,34 @@
-import Routes from "@nirvana/common/helpers/routes";
 import { useRouter } from "next/router";
-import React, { ReactElement, useEffect } from "react";
-import { useRecoilState } from "recoil";
+import React, { ReactElement } from "react";
 import Conversations from "../../components/v2/Conversations";
 import Done from "../../components/v2/Done";
 import Drawer from "../../components/v2/Drawer";
 import Header from "../../components/v2/Header";
 import Later from "../../components/v2/Later";
 import Sidebar from "../../components/v2/Sidebar";
-import { currPagePath } from "../../recoil/main";
-import {
-  CSSTransition,
-  TransitionGroup,
-  SwitchTransition,
-} from "react-transition-group";
+import { CSSTransition, SwitchTransition } from "react-transition-group";
 import CreateConversation from "../../components/v2/CreateConversation";
 import { FaArrowLeft } from "react-icons/fa";
 import KeyboardShortcutHandler from "../../components/v2/KeyboardShortcutHandler";
 import SearchResults from "../../components/v2/SearchResults";
+import { QueryRoutes, Routes } from "@nirvana/common/helpers/routes";
 
 export default function Me() {
   // figure out what content to render from here
   const router = useRouter();
-  const [currRoute, setCurrRoute] = useRecoilState(currPagePath);
+  const currPage = router.query.page;
 
-  useEffect(() => {
-    const onHashChangeStart = (url) => {
-      console.log(`Path changing to ${url}`);
-      setCurrRoute(url);
-    };
-
-    router.events.on("hashChangeStart", onHashChangeStart);
-
-    return () => {
-      router.events.off("hashChangeStart", onHashChangeStart);
-    };
-  }, [router.events]);
+  console.log(currPage);
 
   function getCurrentContent() {
-    switch (currRoute) {
-      case Routes.convos:
+    switch (currPage) {
+      case QueryRoutes.convos:
         return <Conversations />;
-      case Routes.later:
+      case QueryRoutes.later:
         return <Later />;
-      case Routes.done:
+      case QueryRoutes.done:
         return <Done />;
-      case Routes.drawer:
+      case QueryRoutes.drawer:
         return <Drawer />;
       default:
         return <></>;
@@ -60,10 +43,10 @@ export default function Me() {
    */
 
   var fullCleanPageContent: ReactElement = undefined;
-  if (currRoute === Routes.createConvo) {
-    fullCleanPageContent = <CreateConversation />;
-  } else if (router.query.q) {
+  if (currPage === QueryRoutes.search) {
     fullCleanPageContent = <SearchResults />;
+  } else if (currPage === QueryRoutes.createConvo) {
+    fullCleanPageContent = <CreateConversation />;
   }
 
   if (fullCleanPageContent) {
@@ -72,7 +55,12 @@ export default function Me() {
         <div className="flex flex-row">
           <span className="flex flex-col items-center">
             <button
-              onClick={() => router.push(Routes.convos)}
+              onClick={() =>
+                router.push({
+                  pathname: Routes.home,
+                  query: { page: QueryRoutes.convos },
+                })
+              }
               className="rounded-lg p-2 border flex flex-row items-center space-x-2
             text-slate-400 text-xs hover:bg-slate-50"
             >
@@ -86,7 +74,16 @@ export default function Me() {
           </span>
         </div>
 
-        {fullCleanPageContent}
+        <SwitchTransition>
+          <CSSTransition
+            appear={true}
+            key={Math.random()}
+            timeout={400}
+            classNames="slide"
+          >
+            {fullCleanPageContent}
+          </CSSTransition>
+        </SwitchTransition>
       </div>
     );
   }

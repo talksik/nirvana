@@ -1,10 +1,12 @@
-enum Routes {
-  convos = "/s#conversations",
-  later = "/s#later",
-  done = "/s#done",
-  drawer = "/s#drawer",
-  createConvo = "/s#createConversation",
-  search = "/s#search",
+export enum QueryRoutes {
+  convos = "conversations",
+  later = "later",
+  done = "done",
+  drawer = "drawer",
+  createConvo = "createConversation",
+  search = "search",
 }
 
-export default Routes;
+export enum Routes {
+  home = "/s",
+}
