@@ -63,50 +63,58 @@ export default function Me() {
     fullCleanPageContent = <CreateConversation />;
   }
 
+  if (fullCleanPageContent) {
+    return (
+      <div className="flex flex-col px-20">
+        <div className="flex flex-row">
+          <span className="flex flex-col items-center">
+            <button
+              onClick={() => router.push(Routes.convos)}
+              className="rounded-lg p-2 border flex flex-row items-center space-x-2
+            text-slate-400 text-xs hover:bg-slate-50"
+            >
+              <FaArrowLeft />
+              <span>back</span>
+            </button>
+
+            <span className="flex flex-row items-center text-xs text-slate-300">
+              ESC
+            </span>
+          </span>
+        </div>
+        {fullCleanPageContent}
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex-1 flex flex-row items-stretch">
+      <Sidebar />
+
+      <SwitchTransition>
+        <CSSTransition
+          appear={true}
+          key={Math.random()}
+          timeout={400}
+          classNames="slide"
+        >
+          <div className="flex-1 flex flex-col px-20 justify-start items-stretch container mx-auto">
+            {getCurrentContent()}
+          </div>
+        </CSSTransition>
+      </SwitchTransition>
+    </div>
+  );
+}
+
+Me.getLayout = function (content: ReactElement) {
   return (
     <div className="flex flex-col">
       <KeyboardShortcutHandler />
 
       <Header />
 
-      {fullCleanPageContent ? (
-        <div className="flex flex-col px-20">
-          <div className="flex flex-row">
-            <span className="flex flex-col items-center">
-              <button
-                onClick={() => router.push(Routes.convos)}
-                className="rounded-lg p-2 border flex flex-row items-center space-x-2
-            text-slate-400 text-xs hover:bg-slate-50"
-              >
-                <FaArrowLeft />
-                <span>back</span>
-              </button>
-
-              <span className="flex flex-row items-center text-xs text-slate-300">
-                ESC
-              </span>
-            </span>
-          </div>
-          {fullCleanPageContent}
-        </div>
-      ) : (
-        <div className="flex-1 flex flex-row items-stretch">
-          <Sidebar />
-
-          <SwitchTransition>
-            <CSSTransition
-              appear={true}
-              key={"main_tabs_content"}
-              timeout={400}
-              classNames="slide"
-            >
-              <div className="flex-1 flex flex-col px-20 justify-start items-stretch container mx-auto">
-                {getCurrentContent()}
-              </div>
-            </CSSTransition>
-          </SwitchTransition>
-        </div>
-      )}
+      {content}
     </div>
   );
-}
+};
