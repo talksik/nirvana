@@ -1,10 +1,11 @@
 import * as functions from "firebase-functions";
-const config = functions.config().env;
+const config = functions.config().env.algolia;
 
 import algoliasearch from "algoliasearch";
 
 const client = algoliasearch(config.ALGOLIA_APP_ID, config.ALGOLIA_API_KEY);
 
+// setting up indices
 const USERS_INDEX_NAME: string = config.ALGOLIA_USERS_INDEX_NAME;
 const usersIndex = client.initIndex(USERS_INDEX_NAME);
 
@@ -22,5 +23,5 @@ export const manageUserIndex = functions.firestore
     }
 
     // otherwise, just update the index with new user information
-    return usersIndex.saveObject({ objectId, ...document });
+    return usersIndex.saveObject({ objectID: objectId, ...document });
   });

@@ -1,9 +1,9 @@
 {
   "env": {
     "algolia": {
-      "ALGOLIA_APP_ID": "1RAMCAU1FW",
       "ALGOLIA_API_KEY": "c44a7dda47bfb69527b061b7b5994d56",
-      "ALGOLIA_USERS_INDEX_NAME": "test_USERS"
+      "ALGOLIA_USERS_INDEX_NAME": "test_USERS",
+      "ALGOLIA_APP_ID": "1RAMCAU1FW"
     }
   }
 }

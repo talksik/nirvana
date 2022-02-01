@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "scripts": {
     "lint": "eslint --ext .js,.ts .",
-    "build": "npm run lint && tsc",
-    "serve": "npm run build && firebase functions:config:get > .runtimeconfig.json && firebase emulators:start --only functions",
-    "shell": "npm run build && firebase functions:shell",
-    "start": "npm run shell",
+    "build": "yarn lint && tsc",
+    "serve": "yarn build && firebase functions:config:get > .runtimeconfig.json && firebase emulators:start --only functions",
+    "shell": "yarn build && firebase functions:shell",
+    "start": "yarn shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "hotReload": "tsc --watch",
@@ -15,7 +15,6 @@
   },
   "main": "lib/index.js",
   "dependencies": {
-    "@nirvana/common": "*",
     "@sendgrid/mail": "^7.6.0",
     "@types/algoliasearch": "^4.0.0",
     "agora-access-token": "^2.0.4",
