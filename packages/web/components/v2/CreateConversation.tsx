@@ -1,4 +1,5 @@
 import { Select, Tag } from "antd";
+import { useEffect, useRef } from "react";
 
 const options = [
   { value: "gold" },
@@ -8,18 +9,24 @@ const options = [
 ];
 
 export default function CreateConversation() {
+  const input = useRef<HTMLInputElement>();
+
+  useEffect(() => {
+    input.current?.focus();
+  }, []);
+
   return (
     <div className="mx-auto my-auto w-96">
       <Select
-        placeholder={"Please select people to start the conversation with"}
-        mode="multiple"
-        showArrow
+        placeholder={"Look up email addresses, names, etc."}
         tagRender={tagRender}
-        defaultValue={["gold", "cyan"]}
         style={{ width: "100%" }}
         options={options}
         size="large"
-        className=""
+        mode="multiple"
+        allowClear
+        // defaultValue={['a10', 'c12']}
+        ref={input}
       />
 
       {/* list of existing conversations with these people */}
