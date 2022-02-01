@@ -43,9 +43,9 @@ export default function Header() {
     </Menu>
   );
 
-  const inputRef = useRef<HTMLInputElement>();
+  const inputRef = useRef<HTMLInputElement | undefined>();
   const selectSearch = () => {
-    inputRef.current.focus();
+    inputRef.current?.focus();
   };
 
   const keyMap: KeyMap = {

@@ -3,7 +3,7 @@ enum Routes {
   later = "/s#later",
   done = "/s#done",
   drawer = "/s#drawer",
-  rooms = "/s#rooms",
+  createConvo = "/s#createConversation",
 }
 
 export default Routes;

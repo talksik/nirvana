@@ -5,6 +5,7 @@ export default class ConversationData {
   //    if user wants more data, click button to fetch further back
   // see if this convo is a priority one
   // all users in the conversation: userId's perhaps, but the actual user we can get from the relevantUsersCache map
+  // want to create individual convo chunks...if I send three messages in a row, it should show my name and only one click to listen to all three in order
 }
 
 // one map: all relevant users, a map we build based on where the user visits

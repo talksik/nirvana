@@ -30,7 +30,10 @@ function Sidebar() {
   return (
     <div className="flex flex-col justify-start items-baseline w-[20rem]">
       {/* new button */}
-      <button className="rounded-full flex flex-row items-center px-5 py-2 ml-8 shadow-lg bg-white space-x-2">
+      <button
+        onClick={() => handleRoute(Routes.createConvo)}
+        className="rounded-full flex flex-row items-center px-5 py-2 ml-8 shadow-lg bg-white space-x-2"
+      >
         <FaPlus className="text-teal-600 text-lg" />
         <span className="text-slate-500 font-semibold">New</span>
       </button>
