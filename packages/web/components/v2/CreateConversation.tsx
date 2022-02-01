@@ -109,7 +109,7 @@ export default function CreateConversation() {
         </span>
 
         <input
-          className="p-2 rounded mt-2 bg-slate-50"
+          className="p-3 rounded mt-2 bg-slate-50 border"
           placeholder="engineering, hangout, kitchen..."
         />
       </span>
