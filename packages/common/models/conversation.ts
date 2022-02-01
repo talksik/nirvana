@@ -5,15 +5,15 @@ export default class Conversation {
   id: string = uuid();
 
   type: ConversationType;
-  name: string; // engineering, general, arjun and jacob...
+  name?: string; // engineering, general, arjun, jacob and rachel...
 
   createdDate: Timestamp = Timestamp.now();
   createdByUserId: string;
 
   constructor(
-    _name: string,
     _createdByUserId: string,
-    _type: ConversationType
+    _type: ConversationType,
+    _name?: string
   ) {
     this.name = _name;
     this.createdByUserId = _createdByUserId;
@@ -22,6 +22,6 @@ export default class Conversation {
 }
 
 export enum ConversationType {
-  personal = "personal",
-  group = "group",
+  personal = "personal", // no conversation name then
+  group = "group", // must have conversation name
 }

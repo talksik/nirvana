@@ -1,16 +1,16 @@
 import { useRouter } from "next/router";
 import React, { ReactElement } from "react";
-import Conversations from "../../components/v2/Conversations";
-import Done from "../../components/v2/Done";
-import Drawer from "../../components/v2/Drawer";
-import Header from "../../components/v2/Header";
-import Later from "../../components/v2/Later";
-import Sidebar from "../../components/v2/Sidebar";
+import Conversations from "../../components/MainTabsOrPages/Conversations";
+import Done from "../../components/MainTabsOrPages/Done";
+import Drawer from "../../components/MainTabsOrPages/Drawer";
+import Header from "../../components/MainTabsOrPages/Header";
+import Later from "../../components/MainTabsOrPages/Later";
+import Sidebar from "../../components/MainTabsOrPages/Sidebar";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import CreateConversation from "../../components/v2/CreateConversation";
+import CreateConversation from "../../components/FullPageExperiences/CreateConversation.tsx";
 import { FaArrowLeft } from "react-icons/fa";
-import KeyboardShortcutHandler from "../../components/v2/KeyboardShortcutHandler";
-import SearchResults from "../../components/v2/SearchResults";
+import KeyboardShortcutHandler from "../../components/MainTabsOrPages/KeyboardShortcutHandler";
+import SearchResults from "../../components/FullPageExperiences/SearchResults";
 import { QueryRoutes, Routes } from "@nirvana/common/helpers/routes";
 
 export default function Me() {

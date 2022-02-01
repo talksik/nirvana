@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import MainLogo from "../../components/MainLogo";
+import MainLogo from "../../components/Logo/MainLogo";
 import { useAuth } from "../../contexts/authContext";
 
 export default function Login() {

@@ -19,7 +19,7 @@ import Announcements from "../components/demo/Announcements";
 import Rooms from "../components/demo/Rooms";
 import VoiceLineConceptDemo from "../components/demo/VoiceLineConceptDemo";
 
-import MainLogo from "../components/MainLogo";
+import MainLogo from "../components/Logo/MainLogo";
 import { Divider, Tooltip, Image as AntDImage } from "antd";
 import LangingPageLayout from "../components/Layouts/LandingPageLayout";
 import LandingPageActionBar from "../components/demo/LandingPageActionBar";

@@ -11,8 +11,8 @@ import {
   FaMicrophoneAlt,
 } from "react-icons/fa";
 import { UserStatus } from "../../models/user";
-import MainLogo from "../MainLogo";
-import UserStatusBubble from "../UserStatusBubble";
+import MainLogo from "../Logo/MainLogo";
+import UserStatusBubble from "../UserDetails/UserStatusBubble";
 
 export default function Header() {
   const router = useRouter();

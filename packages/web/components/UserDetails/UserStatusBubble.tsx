@@ -1,5 +1,5 @@
 import { IoPulseOutline, IoRemoveOutline } from "react-icons/io5";
-import { UserStatus } from "../models/user";
+import { UserStatus } from "../../models/user";
 
 interface UserStatusPropsInterface {
   status: UserStatus;
