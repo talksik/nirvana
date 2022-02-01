@@ -4,22 +4,25 @@ import {
   serverTimestamp,
   Timestamp,
 } from "firebase/firestore";
+import { v4 as uuidv4 } from "uuid";
+
 import IFirestoreSerializable from "./firestoreSerializable";
 
 export class User {
-  id: string;
+  id: string = uuidv4();
   emailAddress: string;
-  nickName: string;
+
   firstName: string;
   lastName: string;
+
   avatarUrl: string;
   userStatus: UserStatus;
 
-  /**designer? dev? */
-  teamRole: string;
+  /**designer? dev? in the future can put other things like 'best in the world' */
+  description?: string;
 
-  createdDate: Timestamp;
-  lastUpdatedDate: Timestamp;
+  createdDate: Timestamp = Timestamp.now();
+  lastUpdatedDate?: Timestamp;
 
   // serialize() {
   //     return {
@@ -31,6 +34,22 @@ export class User {
   // deserialize(firestoreData: {}) {
   //     this.lastUpdatedDate = firestoreData.lastUpdatedDate.toDate()
   // }
+
+  constructor(
+    _id: string = uuidv4(),
+    _emailAddress: string,
+    _firstName: string,
+    _lastName: string,
+    _avatarUrl: string,
+    _userStatus: UserStatus
+  ) {
+    this.id = _id;
+    this.emailAddress = _emailAddress;
+    this.firstName = _firstName;
+    this.lastName = _lastName;
+    this.avatarUrl = _avatarUrl;
+    this.userStatus = _userStatus;
+  }
 }
 
 export enum UserStatus {

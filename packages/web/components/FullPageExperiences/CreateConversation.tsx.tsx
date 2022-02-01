@@ -1,16 +1,22 @@
+import { User, UserStatus } from "@nirvana/common/models/user";
 import { Select, Tag } from "antd";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import SimpleUserDetailsRow from "../UserDetails/SimpleUserDetailsRow";
-
-const options = [
-  { value: "gold" },
-  { value: "lime" },
-  { value: "green" },
-  { value: "cyan" },
-];
 
 export default function CreateConversation() {
   const input = useRef<HTMLInputElement>();
+  const [selectedUsers, setSelectedUsers] = useState<User[]>([] as User[]);
+
+  // recommendations list: algolio results + cached "relevant users" from all cached conversations currently
+  // options for the select
+  // have a list of 10 max?
+  const [recommendedUsers, setRecommendedUsers] = useState<User[]>(
+    [] as User[]
+  );
+
+  const options = recommendedUsers.map((recUser) => {
+    value: recUser.firstName + " " + recUser.lastName;
+  });
 
   useEffect(() => {
     input.current?.focus();
@@ -38,13 +44,25 @@ export default function CreateConversation() {
         <span className="uppercase tracking-widest text-slate-400 font-semibold">
           Selected
         </span>
-        <button className="ml-auto text-slate-400">clear</button>
+
+        <button className="ml-auto text-slate-300 text-xs">clear</button>
       </span>
 
       {/* list of selected people who are nirvana users */}
 
       <span className="flex flex-col">
-        <SimpleUserDetailsRow />
+        <SimpleUserDetailsRow
+          user={
+            new User(
+              undefined,
+              "johnny.Smith@microsoft.com",
+              "Johnny",
+              "Smith",
+              "https://joeschmoe.io/api/v1/random",
+              UserStatus.online
+            )
+          }
+        />
       </span>
 
       <span className="flex flex-col mt-10">
