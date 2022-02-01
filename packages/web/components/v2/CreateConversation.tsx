@@ -120,6 +120,8 @@ export default function CreateConversation() {
       >
         <span>Create</span>
       </button>
+
+      {/* if it's a one on one, and i already have a conversation with them, then block creating a new one? */}
     </div>
   );
 }

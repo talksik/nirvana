@@ -17,6 +17,7 @@ import {
 import CreateConversation from "../../components/v2/CreateConversation";
 import { FaArrowLeft } from "react-icons/fa";
 import KeyboardShortcutHandler from "../../components/v2/KeyboardShortcutHandler";
+import SearchResults from "../../components/v2/SearchResults";
 
 export default function Me() {
   // figure out what content to render from here
@@ -61,6 +62,8 @@ export default function Me() {
   var fullCleanPageContent: ReactElement = undefined;
   if (currRoute === Routes.createConvo) {
     fullCleanPageContent = <CreateConversation />;
+  } else if (router.query.q) {
+    fullCleanPageContent = <SearchResults />;
   }
 
   if (fullCleanPageContent) {
@@ -82,6 +85,7 @@ export default function Me() {
             </span>
           </span>
         </div>
+
         {fullCleanPageContent}
       </div>
     );

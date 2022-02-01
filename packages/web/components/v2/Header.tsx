@@ -1,7 +1,8 @@
 // import Routes from "@nirvana/common/helpers/routes";
+import Routes from "@nirvana/common/helpers/routes";
 import { Menu, Dropdown, Avatar } from "antd";
 import { useRouter } from "next/router";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { KeyMap, GlobalHotKeys } from "react-hotkeys";
 import {
   FaUser,
@@ -44,8 +45,27 @@ export default function Header() {
   );
 
   const inputRef = useRef<HTMLInputElement | undefined>();
+
+  const [searchInput, setSearchInput] = useState<string>("");
+
   const selectSearch = () => {
     inputRef.current?.focus();
+  };
+
+  const updateInput = (e) => {
+    const newSearchInput = e.target.value;
+    setSearchInput(newSearchInput);
+
+    if (!newSearchInput) {
+      router.query.q = undefined;
+    } else {
+      // update url => initiates the search
+      router.query.q = encodeURI(newSearchInput);
+    }
+
+    router.push({
+      query: { q: encodeURI(newSearchInput) },
+    });
   };
 
   const keyMap: KeyMap = {
@@ -88,8 +108,10 @@ export default function Header() {
         <FaSearch className="text-lg text-slate-300" />
         <input
           placeholder="Type / to search"
-          className="bg-transparent placeholder-slate-300"
+          className="bg-transparent placeholder-slate-300 p-2 w-96"
           ref={inputRef}
+          onChange={updateInput}
+          value={searchInput}
         />
       </div>
 
