@@ -57,7 +57,7 @@ export default function Me() {
    *    4. profile edit? nah not needed...just keep current separate page
    */
 
-  var fullCleanPageContent: ReactElement = <></>;
+  var fullCleanPageContent: ReactElement = undefined;
   if (currRoute === Routes.createConvo) {
     fullCleanPageContent = <CreateConversation />;
   }
@@ -71,6 +71,7 @@ export default function Me() {
           <div className="flex flex-row">
             <span className="flex flex-col items-center">
               <button
+                onClick={() => router.push(Routes.convos)}
                 className="rounded-lg p-2 border flex flex-row items-center space-x-2
             text-slate-400 text-xs hover:bg-slate-50"
               >
