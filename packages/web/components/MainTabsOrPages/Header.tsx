@@ -10,11 +10,15 @@ import {
   FaHeadphones,
   FaMicrophoneAlt,
 } from "react-icons/fa";
+import { useAuth } from "../../contexts/authContext";
 import { UserStatus } from "../../models/user";
 import MainLogo from "../Logo/MainLogo";
 import UserStatusBubble from "../UserDetails/UserStatusBubble";
 
 export default function Header() {
+  const { currUser } = useAuth();
+  console.log(currUser);
+
   const router = useRouter();
 
   const UserMenu = (
@@ -81,22 +85,6 @@ export default function Header() {
   const handlers = {
     SELECT_SEARCH: selectSearch,
   };
-
-  // let headerBgColorClasses: string;
-  // switch (currPage) {
-  //   case Routes.convos:
-  //     headerBgColorClasses = "bg-teal-600";
-  //     break;
-  //   case Routes.done:
-  //     headerBgColorClasses = "bg-emerald-500";
-  //     break;
-  //   case Routes.later:
-  //     headerBgColorClasses = "bg-purple-500";
-  //     break;
-  //   case Routes.priority:
-  //     headerBgColorClasses = "bg-sky-500";
-  //     break;
-  // }
 
   return (
     <div

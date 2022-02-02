@@ -58,7 +58,7 @@ function Sidebar() {
           />
 
           <span className="text-md text-slate-500 font-semibold group-hover:text-slate-600">
-            Conversations
+            Convos
           </span>
 
           <span className="flex flex-row items-center ml-2">

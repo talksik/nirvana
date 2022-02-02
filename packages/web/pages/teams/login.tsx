@@ -13,7 +13,7 @@ export default function Login() {
     // if auth, go to dashboard
     if (currUser) {
       console.log("already logged in, redirecting to router");
-      router.push("/teams");
+      router.push("/s");
     }
   }, [currUser]);
 

@@ -57,15 +57,8 @@ export default function Conversations() {
         </span>
       </span>
 
-      <span className="flex flex-row items-center mb-5 px-5 w-full mt-10">
-        <FaRocket className="text-sky-500 text-lg mr-1" />
-        <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
-          Priority
-        </span>
-      </span>
-
       {/* Today */}
-      <span className="flex flex-row items-center mb-5 px-5 w-full">
+      <span className="flex flex-row items-center mb-5 px-5 w-full mt-10">
         <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
           Today
         </span>
