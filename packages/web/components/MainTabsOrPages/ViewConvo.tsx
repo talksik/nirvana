@@ -25,7 +25,7 @@ const testDrawerItems: {
 }[] = [
   {
     linkType: LinkType.googleMeet,
-    linkName: "Gmeet - Meeting",
+    linkName: "Gmeet - Meeting Link",
     relativeSentTime: "5 seconds ago",
   },
   {
@@ -101,16 +101,13 @@ const testAudioClips: {
   },
 ];
 
-const gridRows = 4;
-const gridItems = 4 * 100;
-
 export default function ViewConvo(props: { conversationId: string }) {
   // auth if do not have this conversation in react cache, then we are not authorized
 
   // if somehow it's still cached but we were removed,
   // then authenticate by checking if we are in the array of users for the conversation
 
-  const endOfTimeline = useRef();
+  const endOfTimeline = useRef<HTMLSpanElement>();
 
   useEffect(() => {
     endOfTimeline.current?.scrollIntoView({ behavior: "smooth" });
@@ -246,7 +243,7 @@ export default function ViewConvo(props: { conversationId: string }) {
               );
             })}
 
-            <div ref={endOfTimeline}></div>
+            <span ref={endOfTimeline}></span>
           </span>
 
           {/* stuff for recording and playing action */}
