@@ -12,26 +12,13 @@ import { FaArrowLeft } from "react-icons/fa";
 import KeyboardShortcutHandler from "../../components/MainTabsOrPages/KeyboardShortcutHandler";
 import SearchResults from "../../components/FullPageExperiences/SearchResults";
 import { QueryRoutes, Routes } from "@nirvana/common/helpers/routes";
+import ViewConvo from "../../components/MainTabsOrPages/ViewConvo";
 
 export default function Me() {
   // figure out what content to render from here
   const router = useRouter();
   const currPage = router.query.page;
-
-  function getCurrentContent() {
-    switch (currPage) {
-      case QueryRoutes.convos:
-        return <Conversations />;
-      case QueryRoutes.later:
-        return <Later />;
-      case QueryRoutes.done:
-        return <Done />;
-      case QueryRoutes.drawer:
-        return <Drawer />;
-      default:
-        return <></>;
-    }
-  }
+  const currConvo = router.query.convoId;
 
   /** full page replacements: clean full page
    *    1. search page:
@@ -45,6 +32,8 @@ export default function Me() {
     fullCleanPageContent = <SearchResults />;
   } else if (currPage === QueryRoutes.createConvo) {
     fullCleanPageContent = <CreateConversation />;
+  } else if (currConvo) {
+    fullCleanPageContent = <ViewConvo conversationId={"woahhh"} />;
   }
 
   if (fullCleanPageContent) {
@@ -60,7 +49,7 @@ export default function Me() {
                 })
               }
               className="rounded-lg p-2 border flex flex-row items-center space-x-2
-            text-slate-400 text-xs hover:bg-slate-50"
+             text-slate-400 text-xs hover:bg-slate-50"
             >
               <FaArrowLeft />
               <span>back</span>
@@ -84,6 +73,21 @@ export default function Me() {
         </SwitchTransition>
       </div>
     );
+  }
+
+  function getCurrentContent() {
+    switch (currPage) {
+      case QueryRoutes.convos:
+        return <Conversations />;
+      case QueryRoutes.later:
+        return <Later />;
+      case QueryRoutes.done:
+        return <Done />;
+      case QueryRoutes.drawer:
+        return <Drawer />;
+      default:
+        return <></>;
+    }
   }
 
   return (

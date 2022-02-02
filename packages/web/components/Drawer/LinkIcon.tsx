@@ -8,7 +8,9 @@ import {
   FaGlobe,
   FaGoogleDrive,
 } from "react-icons/fa";
-import Link, { LinkType } from "../models/link";
+import Link, { LinkType } from "@nirvana/common/models/link";
+
+import { SiGooglemeet } from "react-icons/si";
 
 export default function LinkIcon(props: {
   className?: string;
@@ -41,7 +43,7 @@ export default function LinkIcon(props: {
       return <FaFileCode {...rest} className={`${className} text-pink-200 `} />;
     case LinkType.github:
       return (
-        <FaGithubSquare {...rest} className={`${className} text-gray-200 `} />
+        <FaGithubSquare {...rest} className={`${className} text-gray-400 `} />
       );
     case LinkType.googleDrive:
       return (
@@ -52,7 +54,13 @@ export default function LinkIcon(props: {
         <FaFileImage {...rest} className={`${className} text-purple-500 `} />
       );
     case LinkType.pdf:
-      <FaFilePdf {...rest} className={`${className} text-orange-500 `} />;
+      return (
+        <FaFilePdf {...rest} className={`${className} text-orange-500 `} />
+      );
+    case LinkType.googleMeet:
+      return (
+        <SiGooglemeet {...rest} className={`${className} text-emerald-500 `} />
+      );
     default:
       return (
         <FaFileAlt {...rest} className={`${className} text-orange-500 `} />

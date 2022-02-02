@@ -84,4 +84,5 @@ export enum LinkType {
   pdf = "pdf",
   codePile = "codepile",
   pastePics = "paste.pics",
+  googleMeet = "googleMeet",
 }

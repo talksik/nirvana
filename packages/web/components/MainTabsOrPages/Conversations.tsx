@@ -1,4 +1,5 @@
 import { Avatar, Badge } from "antd";
+import { useRouter } from "next/router";
 import {
   FaDotCircle,
   FaWalking,
@@ -12,8 +13,18 @@ import {
   FaGithub,
   FaAtlassian,
 } from "react-icons/fa";
+import { Routes } from "@nirvana/common/helpers/routes";
 
 export default function Conversations() {
+  const router = useRouter();
+
+  const handleViewConversationDetails = (convoId) => {
+    router.push({
+      pathname: Routes.home,
+      query: { convoId },
+    });
+  };
+
   return (
     <>
       <span className="flex flex-row items-center mb-5 px-5 w-full">
@@ -66,7 +77,10 @@ export default function Conversations() {
         <FaCheckDouble className="text-slate-300 ml-auto text-lg" />
       </span>
 
-      <span className="flex flex-col w-full items-stretch">
+      <span
+        onClick={() => handleViewConversationDetails("woah")}
+        className="flex flex-col w-full items-stretch"
+      >
         {/* engineering */}
         <span
           className="py-2 px-4 border-t border-t-slate-200 flex flex-row hover:bg-slate-50 transition-all

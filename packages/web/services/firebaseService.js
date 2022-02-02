@@ -11,7 +11,7 @@
 // Import the functions you need from the SDKs you need
 import * as firebase from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, enableIndexedDbPersistence } from "firebase/firestore";
 import {
   browserSessionPersistence,
   getAuth,
@@ -34,27 +34,23 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-// if (typeof window !== "undefined") {
 const app = firebase.initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
-
 console.log("initialized firebase");
 
+// const analytics = getAnalytics(app);
+
 setPersistence(getAuth(), browserSessionPersistence);
-// }
 
-// import { credential } from 'firebase-admin';
-// import { initializeApp } from 'firebase-admin/app';
-
-// import serviceAccount from '../nirvana-for-business-firebase-adminsdk'
-
-// if(typeof window === 'undefined') {
-//   console.log('initializing firebase admin')
-//   initializeApp({
-//     credential: credential.cert({
-//       privateKey: serviceAccount.private_key,
-//       clientEmail: serviceAccount.client_email,
-//       projectId: serviceAccount.project_id,
-//     })
-//   });
-// }
+// Initialize firestore persistence for data caching
+const db = getFirestore(app);
+enableIndexedDbPersistence(db).catch((err) => {
+  if (err.code == "failed-precondition") {
+    // Multiple tabs open, persistence can only be enabled
+    // in one tab at a a time.
+    // ...
+  } else if (err.code == "unimplemented") {
+    // The current browser does not support all of the
+    // features required to enable persistence
+    // ...
+  }
+});
