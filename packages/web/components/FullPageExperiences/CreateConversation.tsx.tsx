@@ -16,6 +16,7 @@ export default function CreateConversation() {
   const [selectedUsers, setSelectedUsers] = useState<User[]>([] as User[]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userSearchInput, setUserSearchInput] = useState<string>("");
+  const [conversationName, setConversationName] = useState<string>("");
 
   // recommendations list: algolio results + cached "relevant users" from all cached conversations currently
   // options for the select
@@ -28,10 +29,6 @@ export default function CreateConversation() {
   useEffect(() => {
     input.current?.focus();
   }, []);
-
-  // as people are selected, add a list of users
-  // if it's an email of a non-nirvana user, then hit invite button to email them with a voice clip along with it
-  // if it's an existing user, then show a nice chip of that user's profile picture and their name
 
   const handleChangeUserSearchInput = async (event) => {
     const newInput = event?.target?.value;
@@ -86,6 +83,12 @@ export default function CreateConversation() {
       toast("Already added member!");
       return;
     }
+
+    // also remove from the search set
+    // for now unless they re-search, they will see it again but for now not an issue
+    setRecommendedUsers((prevRecUsers) =>
+      prevRecUsers.filter((pU) => pU.id != addUser.id)
+    );
     setSelectedUsers((prevUsers) => [addUser, ...prevUsers]);
   };
 
@@ -97,6 +100,31 @@ export default function CreateConversation() {
 
   const clearSelected = () => {
     setSelectedUsers([] as User[]);
+  };
+
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  const createConversation = (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    if (!conversationName) {
+      toast.error("Please put in a conversation name");
+      return;
+    }
+
+    if (!selectedUsers?.length) {
+      toast.error("You must select members!");
+      return;
+    }
+
+    try {
+      console.log("created conversation in database");
+    } catch (error) {
+      toast.error("Problem in creating issue");
+    }
+
+    // setIsSubmitting(false);
   };
 
   return (
@@ -167,8 +195,6 @@ export default function CreateConversation() {
 
       {selectedUsers?.length ? (
         <>
-          <Divider />
-
           <span className="flex flex-row items-center mb-2">
             <span className="uppercase tracking-widest text-slate-400 font-semibold">
               Selected
@@ -202,25 +228,30 @@ export default function CreateConversation() {
 
           <span className="flex flex-col mt-10">
             <span className="uppercase tracking-widest text-slate-400 font-semibold">
-              Name
+              Name<span className="text-orange-500">*</span>
             </span>
             <span className="text-slate-300 text-xs">
-              Name this conversation: engineering, hangout, lunch time, or leave
-              it as is.
+              It can be casual or like an email subject line.
             </span>
 
             <input
               className="p-3 rounded mt-2 bg-slate-50 border placeholder-slate-300"
-              placeholder="coding and chilling room, birthdays, sprint 7"
+              placeholder="ex: code 'n chill, sales, birthdays, sprint 7..."
+              value={conversationName}
+              onChange={(e) => setConversationName(e.target.value)}
             />
           </span>
 
-          <button
-            className="rounded p-2 border flex flex-row items-center space-x-2
+          {!isSubmitting && (
+            <button
+              onClick={createConversation}
+              className="rounded p-2 border flex flex-row items-center space-x-2
             text-white font-semibold text-xs ml-auto mt-5 bg-teal-600 hover:scale-110 transition-all"
-          >
-            <span>Create</span>
-          </button>
+              disabled={isSubmitting}
+            >
+              <span>Create</span>
+            </button>
+          )}
         </>
       ) : (
         <></>
