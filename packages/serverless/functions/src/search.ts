@@ -1,4 +1,5 @@
 import * as functions from "firebase-functions";
+import * as admin from "firebase-admin";
 const config = functions.config().env.algolia;
 
 import algoliasearch from "algoliasearch";
@@ -25,3 +26,21 @@ export const manageUserIndex = functions.firestore
     // otherwise, just update the index with new user information
     return usersIndex.saveObject({ objectID: objectId, ...document });
   });
+
+// TODO: protect this endpoint to avoid infiltratros if they know the endpoint name
+export const updateUsersIndexWithAllUsers = functions.https.onRequest(
+  async (request, response) => {
+    const snapshot = await admin.firestore().collection("users").get();
+
+    var users: {}[] = [];
+
+    snapshot.forEach((doc) => {
+      const currUser = doc.data();
+      users.push({ objectID: doc.id, ...currUser });
+    });
+
+    await usersIndex.saveObjects(users);
+
+    response.send("Completed index all users!");
+  }
+);

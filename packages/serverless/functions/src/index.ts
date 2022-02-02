@@ -17,5 +17,6 @@ exports.agoraToken = agoraToken;
 import { inviteUserToTeam } from "./notifications";
 exports.inviteUserToTeam = inviteUserToTeam;
 
-import { manageUserIndex } from "./search";
+import { manageUserIndex, updateUsersIndexWithAllUsers } from "./search";
 exports.manageUserIndex = manageUserIndex;
+exports.updateUsersIndexWithAllUsers = updateUsersIndexWithAllUsers;
