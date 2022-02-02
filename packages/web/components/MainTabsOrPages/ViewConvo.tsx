@@ -48,12 +48,21 @@ const testAudioClips: {
   relativeSentTime: string;
   duration: number;
   alreadyPlayed: boolean;
+  isGap?: boolean;
 }[] = [
   {
     senderName: "John",
     relativeSentTime: "yesterday",
     duration: 150,
     alreadyPlayed: true,
+  },
+
+  {
+    senderName: "Moha",
+    relativeSentTime: "5 minutes ago",
+    duration: 600,
+    alreadyPlayed: false,
+    isGap: true,
   },
   {
     senderName: "Alex",
@@ -67,6 +76,7 @@ const testAudioClips: {
     duration: 300,
     alreadyPlayed: false,
   },
+
   {
     senderName: "Alex",
     relativeSentTime: "30 minutes ago",
@@ -81,6 +91,9 @@ const testAudioClips: {
   },
 ];
 
+const gridRows = 4;
+const gridItems = 4 * 100;
+
 export default function ViewConvo(props: { conversationId: string }) {
   // auth if do not have this conversation in react cache, then we are not authorized
 
@@ -89,48 +102,7 @@ export default function ViewConvo(props: { conversationId: string }) {
 
   return (
     <>
-      <div className="flex flex-row items-stretch mt-5 space-x-10">
-        {/* drawer items */}
-        <div className="flex-1 flex flex-col max-w-xs shrink-0">
-          <span className="text-md tracking-widest font-semibold text-slate-300 uppercase mb-2">
-            Shared
-          </span>
-
-          {/* column list of drawer items - github first one  */}
-          {testDrawerItems.map((link) => (
-            <span
-              key={link.linkName}
-              className="group flex flex-row items-center border-t p-2 hover:bg-slate-50 transition-all"
-            >
-              {/* <span className="rounded-lg bg-slate-200 p-2 hover:cursor-pointer"></span> */}
-
-              <LinkIcon
-                linkType={link.linkType}
-                className="text-3xl shrink-0"
-              />
-
-              <span className="flex flex-col ml-2">
-                <span className="text-slate-400 text-sm">{link.linkName}</span>
-                <span className="text-slate-300 text-xs">
-                  {link.relativeSentTime}
-                </span>
-              </span>
-
-              <span className="flex flex-row ml-auto space-x-1 group-hover:visible invisible">
-                <Tooltip title={"Add to personal drawer."}>
-                  <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 ">
-                    <FaImages className="text-xl text-slate-400" />
-                  </span>
-                </Tooltip>
-
-                <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 ">
-                  <FaExternalLinkAlt className="text-lg text-slate-400" />
-                </span>
-              </span>
-            </span>
-          ))}
-        </div>
-
+      <div className="flex flex-col items-stretch mt-5 space-y-10">
         {/* main timeline view with action buttons on top */}
         <div className="flex-1 flex flex-col overflow-auto">
           {/* header */}
@@ -179,40 +151,64 @@ export default function ViewConvo(props: { conversationId: string }) {
             </span>
           </span>
 
-          {/* have one row, but just translate it along y downward to put it in it's own place */}
-          <span className="flex flex-row flex-nowrap pb-[10rem] py-[5rem] overflow-auto min-h-max">
-            {testAudioClips.map((audClip, index) => (
-              <span
-                key={index}
-                className={`flex flex-row items-center p-5 rounded h-[5rem] shadow shrink-0
-                 ${index % 2 == 1 && "translate-y-20"} ${
-                  index % 2 == 0 && ""
-                } ${
-                  audClip.alreadyPlayed ? "bg-slate-100 border" : "bg-sky-50 "
-                }`}
-                style={{
-                  width: `${Math.round(audClip.duration)}px;`,
-                  //   minWidth: "fit-content",
-                }}
-              >
-                <UserAvatar
-                  userFirstName={"s"}
-                  status={UserStatus.busy}
-                  size={UserAvatarSizes.large}
-                  avatarUrl={"https://joeschmoe.io/api/v1/" + Math.random()}
-                />
-
-                <span className="flex flex-col ml-2">
-                  <span className="text-slate-500 font-semibold">
-                    {audClip.senderName}
-                  </span>
-                  <span className="text-slate-400 text-xs">
-                    {audClip.relativeSentTime}
-                  </span>
-                </span>
-              </span>
+          {/* grid */}
+          <div className="grid grid-rows-4 auto-cols-max grid-flow-col overflow-auto relative">
+            {[...Array(gridItems)].map((e, i) => (
+              <div key={i} className="border w-[5rem] h-[5rem]"></div>
             ))}
-          </span>
+
+            {/* have one row, but just translate it along y downward to put it in it's own place */}
+            <span className="flex flex-row flex-nowrap pb-[10rem] py-[5rem] overflow-auto min-h-max absolute">
+              {testAudioClips.map((audClip, index) => {
+                if (audClip.isGap) {
+                  return (
+                    <span
+                      key={index}
+                      className={`flex flex-row items-center p-5 rounded h-[5rem] shadow shrink-0
+               ${index % 2 == 1 && "translate-y-20"} ${index % 2 == 0 && ""}`}
+                      style={{
+                        // minWidth: "max-content",
+                        width: `5rem`,
+                      }}
+                    ></span>
+                  );
+                }
+                return (
+                  <span
+                    key={index}
+                    className={`flex flex-row items-center p-5 rounded h-[5rem] shadow shrink-0
+                 ${index % 2 == 1 && "translate-y-20"} ${
+                      index % 2 == 0 && ""
+                    } ${
+                      audClip.alreadyPlayed
+                        ? "bg-slate-100 border"
+                        : "bg-sky-100 "
+                    }`}
+                    style={{
+                      // minWidth: "max-content",
+                      width: `10rem`,
+                    }}
+                  >
+                    <UserAvatar
+                      userFirstName={"s"}
+                      status={UserStatus.busy}
+                      size={UserAvatarSizes.large}
+                      avatarUrl={"https://joeschmoe.io/api/v1/" + Math.random()}
+                    />
+
+                    <span className="flex flex-col ml-2">
+                      <span className="text-slate-500 font-semibold">
+                        {audClip.senderName}
+                      </span>
+                      <span className="text-slate-400 text-xs">
+                        {audClip.relativeSentTime}
+                      </span>
+                    </span>
+                  </span>
+                );
+              })}
+            </span>
+          </div>
 
           {/* stuff for recording and playing action */}
           <span className="mx-auto flex flex-row py-10 space-x-5">
@@ -233,6 +229,52 @@ export default function ViewConvo(props: { conversationId: string }) {
                 <FaPlay className="text-teal-600 text-xl" />
               </span>
             </Tooltip>
+          </span>
+        </div>
+
+        {/* drawer items */}
+        <div className="flex-1 flex flex-col">
+          <span className="text-md tracking-widest font-semibold text-slate-300 uppercase mb-2">
+            Shared
+          </span>
+
+          {/* row of cards drawer items  */}
+          <span className="flex flex-row items-stretch gap-5 overflow-auto w-full pb-10">
+            {testDrawerItems.map((link) => (
+              <span
+                key={link.linkName}
+                className="group flex flex-row items-center border rounded 
+                p-2 hover:bg-slate-50 transition-all shrink-0 w-[15rem] bg-slate-50 text-ellipsis"
+              >
+                {/* <span className="rounded-lg bg-slate-200 p-2 hover:cursor-pointer"></span> */}
+
+                <LinkIcon
+                  linkType={link.linkType}
+                  className="text-3xl shrink-0"
+                />
+
+                <span className="flex flex-col ml-2">
+                  <span className="text-slate-400 text-sm">
+                    {link.linkName}
+                  </span>
+                  <span className="text-slate-300 text-xs">
+                    {link.relativeSentTime}
+                  </span>
+                </span>
+
+                <span className="flex flex-row ml-auto space-x-1 group-hover:visible invisible">
+                  <Tooltip title={"Add to personal drawer."}>
+                    <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 ">
+                      <FaImages className="text-xl text-slate-400" />
+                    </span>
+                  </Tooltip>
+
+                  <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 ">
+                    <FaExternalLinkAlt className="text-lg text-slate-400" />
+                  </span>
+                </span>
+              </span>
+            ))}
           </span>
         </div>
       </div>
