@@ -36,8 +36,8 @@ export default function Conversations() {
 
       {/* row of live room cards */}
       <span className="flex flex-row flex-wrap">
-        {/* engineering rooms */}
-        <span className="group relative flex flex-row items-center bg-slate-50 rounded-lg border p-5">
+        {/* engineering liveroom */}
+        <span className="group relative flex flex-row items-center bg-slate-50 rounded-lg border p-5 animate-pulse">
           <Avatar.Group
             maxCount={3}
             size={{ xs: 1000 }}

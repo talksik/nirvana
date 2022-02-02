@@ -1,27 +1,143 @@
 import { v4 as uuid } from "uuid";
 import { Timestamp } from "firebase/firestore";
 
+export class CompleteConversation {
+  id: string; // conversation id
+
+  conversation: Conversation;
+
+  constructor(convo: Conversation) {
+    this.conversation = convo;
+    this.id = this.conversation.id;
+  }
+
+  userMember?: ConversationMember;
+
+  members: ConversationMember[] = [] as ConversationMember[];
+  audioClips: AudioClip[] = [] as AudioClip[];
+  links: Link[] = [] as Link[];
+}
 export default class Conversation {
   id: string = uuid();
 
-  type: ConversationType;
-  name?: string; // engineering, general, arjun, jacob and rachel...
+  name: string; // engineering, general, arjun, jacob and rachel...
 
   createdDate: Timestamp = Timestamp.now();
   createdByUserId: string;
 
-  constructor(
-    _createdByUserId: string,
-    _type: ConversationType,
-    _name?: string
-  ) {
+  lastActivityDate?: Timestamp; // caching this for purpose of saving on listeners
+
+  membersInLiveRoom: string[] = [] as string[]; // all members in a live call right now for this convo
+
+  constructor(_createdByUserId: string, _name: string) {
     this.name = _name;
     this.createdByUserId = _createdByUserId;
-    this.type = _type;
   }
 }
 
-export enum ConversationType {
-  personal = "personal", // no conversation name then
-  group = "group", // must have conversation name
+export class ConversationMember {
+  id: string; // will be the userId
+  state: ConversationMemberState;
+
+  role: ConversationMemberRole;
+
+  createdDate: Timestamp = Timestamp.now();
+  lastUpdatedDate?: Timestamp;
+
+  constructor(
+    _userId: string,
+    _state: ConversationMemberState,
+    _role: ConversationMemberRole
+  ) {
+    this.id = _userId;
+    this.state = _state;
+    this.role = _role;
+  }
+}
+
+export enum ConversationMemberRole {
+  admin = "admin",
+  member = "member",
+  attendee = "attendee", // for future when only execs or higher ups want to talk in an async chat
+}
+
+export enum ConversationMemberState {
+  inbox = "inbox",
+  default = "default",
+  priority = "priority",
+  later = "later",
+  done = "done",
+  blocked = "removed", // blocked from the conversation now
+}
+
+export class AudioClip {
+  id: string = uuid();
+
+  audioDataUrl: string;
+
+  senderUserId: string;
+  createdDate: Timestamp = Timestamp.now();
+
+  constructor(_audioDataurl: string, _senderUserId: string) {
+    this.audioDataUrl = _audioDataurl;
+    this.senderUserId = _senderUserId;
+  }
+}
+
+export class Link {
+  id: string = uuid();
+
+  url: string;
+  name: string;
+  type: LinkType;
+
+  createdByUserId: string;
+  createdDate: Timestamp = Timestamp.now();
+
+  constructor(_name: string, _linkUrl: string, _senderUserId: string) {
+    this.createdByUserId = _senderUserId;
+    this.url = _linkUrl;
+    this.name = _name;
+    this.type = Link.getLinkType(_linkUrl);
+  }
+
+  static getLinkType(url: string): LinkType {
+    if (url.includes(LinkType.github)) {
+      return LinkType.github;
+    } else if (url.includes(LinkType.atlassian)) {
+      return LinkType.atlassian;
+    } else if (
+      url.includes(LinkType.googleDrive) ||
+      url.includes("docs.google")
+    ) {
+      return LinkType.googleDrive;
+    } else if (
+      url.includes(".png") ||
+      url.includes(".jpg") ||
+      url.includes(".svg") ||
+      url.includes(".gif") ||
+      url.includes(LinkType.pastePics)
+    ) {
+      return LinkType.image;
+    } else if (url.includes(LinkType.pdf)) {
+      return LinkType.pdf;
+    } else if (url.includes(LinkType.codePile)) {
+      return LinkType.codePile;
+    } else {
+      return LinkType.default;
+    }
+  }
+}
+
+export enum LinkType {
+  default = "default",
+  github = "github",
+  atlassian = "atlassian",
+  googleDrive = "drive.google",
+  onedrive = "onedrive",
+  image = "image",
+  pdf = "pdf",
+  codePile = "codepile",
+  pastePics = "paste.pics",
+  googleMeet = "googleMeet",
 }
