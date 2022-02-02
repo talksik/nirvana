@@ -2,6 +2,7 @@ import { LinkType } from "@nirvana/common/models/link";
 import { UserStatus } from "@nirvana/common/models/user";
 import { Tooltip } from "antd";
 import { duration } from "moment";
+import toast from "react-hot-toast";
 import {
   FaCheck,
   FaEdit,
@@ -175,8 +176,9 @@ export default function ViewConvo(props: { conversationId: string }) {
                 }
                 return (
                   <span
+                    onClick={() => toast(`${audClip.senderName} speaking...`)}
                     key={index}
-                    className={`flex flex-row items-center p-5 rounded h-[5rem] shadow shrink-0
+                    className={`hover:cursor-pointer flex flex-row items-center p-5 rounded h-[5rem] shadow shrink-0 last:animate-pulse last:bg-orange-200
                  ${index % 2 == 1 && "translate-y-20"} ${
                       index % 2 == 0 && ""
                     } ${
