@@ -12,6 +12,8 @@ this conversation had something going on (new link, new room, new clip...) AND
 other users just subscribe to this published source // -> users - A -> last
 interaction date // -> audioClips - c // -> links // -> live }
 
+- also be able to see very cleraly who the last speaker was in the conversation
+
 # Listeners
 
 ### A - listener for all - users within conversation documents
@@ -45,3 +47,14 @@ all conversations in the conversation map and place in right category /\*\*
 - } \*/
 
 //
+
+# Dashboard
+
+### Data Needed
+
+- live conversations going on right now and which people are in them
+- all inbox-like conversations such as today, last 7 days, etc
+  a. being able to play the last message in the conversation with a play button
+  b. see if there is a new update in the conversation which I have not viewed
+- priority conversations
+  a. need to be able to play any messages from there
