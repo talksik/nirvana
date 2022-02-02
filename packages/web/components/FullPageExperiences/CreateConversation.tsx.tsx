@@ -118,12 +118,17 @@ export default function CreateConversation() {
       </span>
 
       {/* show search results nicely like tailwind website */}
+      <span className="text-slate-400 text-xs text-center">
+        showing {recommendedUsers.length} results
+      </span>
+      <span className="text-slate-400 text-xs text-center">
+        Click{" "}
+        <a href="mailto:?subject=Join my conversation on Nirvana!">here</a> to
+        invite a user to Nirvana.
+      </span>
 
-      {recommendedUsers && recommendedUsers.length > 0 ? (
-        <>
-          <span className="text-slate-400 text-xs">
-            showing {recommendedUsers.length} results
-          </span>
+      {recommendedUsers?.length > 0 ? (
+        <div className="flex flex-col items-stretch">
           {recommendedUsers.map((recUser) => {
             return (
               <SimpleUserDetailsRow
@@ -141,7 +146,7 @@ export default function CreateConversation() {
               />
             );
           })}
-        </>
+        </div>
       ) : (
         <></>
       )}

@@ -15,8 +15,12 @@ export default function SelectedUserRow(props: {
       />
 
       <span className="flex flex-col ml-2">
-        <span className="text-teal-500 font-bold">{"Joe Smoe"}</span>
-        <span className="text-slate-400 text-xs">{"joe@microsoft.com"}</span>
+        <span className="text-teal-500 font-bold">
+          {props.user.firstName + " " + props.user.lastName}
+        </span>
+        <span className="text-slate-400 text-xs">
+          {props.user.emailAddress}
+        </span>
       </span>
 
       {props.actionButton}
