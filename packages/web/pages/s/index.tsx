@@ -18,8 +18,6 @@ export default function Me() {
   const router = useRouter();
   const currPage = router.query.page;
 
-  console.log(currPage);
-
   function getCurrentContent() {
     switch (currPage) {
       case QueryRoutes.convos:
