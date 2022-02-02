@@ -39,8 +39,6 @@ console.log("initialized firebase");
 
 // const analytics = getAnalytics(app);
 
-setPersistence(getAuth(), browserSessionPersistence);
-
 // Initialize firestore persistence for data caching
 const db = getFirestore(app);
 enableIndexedDbPersistence(db).catch((err) => {
@@ -54,3 +52,5 @@ enableIndexedDbPersistence(db).catch((err) => {
     // ...
   }
 });
+
+setPersistence(getAuth(), browserSessionPersistence);
