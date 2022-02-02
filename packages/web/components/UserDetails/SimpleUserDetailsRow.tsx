@@ -7,7 +7,7 @@ export default function SelectedUserRow(props: {
   actionButton: ReactElement;
 }) {
   return (
-    <span className="flex flex-row items-center py-1 border-t">
+    <span className="flex flex-row items-center border-t hover:bg-slate-50 p-5">
       <UserAvatar
         userFirstName={props.user.firstName}
         avatarUrl={props.user.avatarUrl}

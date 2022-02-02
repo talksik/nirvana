@@ -81,8 +81,22 @@ export default function CreateConversation() {
     };
   }, []);
 
-  const selectUser = (user) => {
-    setSelectedUsers((prevUsers) => [user, ...prevUsers]);
+  const selectUser = (addUser: User) => {
+    if (selectedUsers.some((currUser) => currUser.id == addUser.id)) {
+      toast("Already added member!");
+      return;
+    }
+    setSelectedUsers((prevUsers) => [addUser, ...prevUsers]);
+  };
+
+  const removeUser = (removeUser: User) => {
+    setSelectedUsers((prevUsers) =>
+      prevUsers.filter((pUser) => pUser.id != removeUser.id)
+    );
+  };
+
+  const clearSelected = () => {
+    setSelectedUsers([] as User[]);
   };
 
   return (
@@ -160,7 +174,12 @@ export default function CreateConversation() {
               Selected
             </span>
 
-            <button className="ml-auto text-slate-300 text-xs">clear</button>
+            <button
+              onClick={clearSelected}
+              className="ml-auto text-slate-300 text-xs"
+            >
+              clear
+            </button>
           </span>
 
           {/* list of selected people who are nirvana users */}
@@ -170,7 +189,10 @@ export default function CreateConversation() {
                 key={selectUser.id}
                 user={selectUser}
                 actionButton={
-                  <button className="p-2 rounded-full hover:cursor-pointer text-orange-500 ml-auto">
+                  <button
+                    onClick={() => removeUser(selectUser)}
+                    className="p-2 rounded-full hover:cursor-pointer text-orange-500 ml-auto"
+                  >
                     <FaRegTimesCircle className="ml-auto text-lg" />
                   </button>
                 }
