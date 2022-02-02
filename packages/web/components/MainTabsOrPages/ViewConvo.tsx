@@ -2,6 +2,7 @@ import { LinkType } from "@nirvana/common/models/link";
 import { UserStatus } from "@nirvana/common/models/user";
 import { Tooltip } from "antd";
 import { duration } from "moment";
+import { useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import {
   FaCheck,
@@ -50,6 +51,7 @@ const testAudioClips: {
   duration: number;
   alreadyPlayed: boolean;
   isGap?: boolean;
+  isLink?: boolean;
 }[] = [
   {
     senderName: "John",
@@ -86,6 +88,13 @@ const testAudioClips: {
   },
   {
     senderName: "Moha",
+    relativeSentTime: "8 minutes ago",
+    duration: 600,
+    alreadyPlayed: false,
+    isLink: true,
+  },
+  {
+    senderName: "Moha",
     relativeSentTime: "5 minutes ago",
     duration: 600,
     alreadyPlayed: false,
@@ -100,6 +109,12 @@ export default function ViewConvo(props: { conversationId: string }) {
 
   // if somehow it's still cached but we were removed,
   // then authenticate by checking if we are in the array of users for the conversation
+
+  const endOfTimeline = useRef();
+
+  useEffect(() => {
+    endOfTimeline.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
 
   return (
     <>
@@ -152,65 +167,87 @@ export default function ViewConvo(props: { conversationId: string }) {
             </span>
           </span>
 
-          {/* grid */}
-          <div className="grid grid-rows-4 auto-cols-max grid-flow-col overflow-auto relative">
-            {[...Array(gridItems)].map((e, i) => (
-              <div key={i} className="border w-[5rem] h-[5rem]"></div>
-            ))}
-
-            {/* have one row, but just translate it along y downward to put it in it's own place */}
-            <span className="flex flex-row flex-nowrap pb-[10rem] py-[5rem] overflow-auto min-h-max absolute">
-              {testAudioClips.map((audClip, index) => {
-                if (audClip.isGap) {
-                  return (
-                    <span
-                      key={index}
-                      className={`flex flex-row items-center p-5 rounded h-[5rem] shadow shrink-0
-               ${index % 2 == 1 && "translate-y-20"} ${index % 2 == 0 && ""}`}
-                      style={{
-                        // minWidth: "max-content",
-                        width: `5rem`,
-                      }}
-                    ></span>
-                  );
-                }
+          {/* have one row, but just translate it along y downward to put it in it's own place */}
+          <span className="flex flex-row flex-nowrap pb-[10rem] py-[5rem] overflow-auto min-h-max">
+            {testAudioClips.map((audClip, index) => {
+              if (audClip.isGap) {
                 return (
                   <span
-                    onClick={() => toast(`${audClip.senderName} speaking...`)}
                     key={index}
-                    className={`hover:cursor-pointer flex flex-row items-center p-5 rounded h-[5rem] shadow shrink-0 last:animate-pulse last:bg-orange-200
-                 ${index % 2 == 1 && "translate-y-20"} ${
-                      index % 2 == 0 && ""
-                    } ${
-                      audClip.alreadyPlayed
-                        ? "bg-slate-100 border"
-                        : "bg-sky-100 "
-                    }`}
+                    className={`flex flex-row justify-center items-center p-5 h-[5rem] shadow shrink-0
+                    ${
+                      index % 2 == 1 &&
+                      "translate-y-[4.75rem] border-t-4 border-t-teal-600"
+                    } ${index % 2 == 0 && "border-b-4 border-b-teal-600"}`}
                     style={{
                       // minWidth: "max-content",
-                      width: `10rem`,
+                      width: `5rem`,
                     }}
                   >
-                    <UserAvatar
-                      userFirstName={"s"}
-                      status={UserStatus.busy}
-                      size={UserAvatarSizes.large}
-                      avatarUrl={"https://joeschmoe.io/api/v1/" + Math.random()}
-                    />
-
-                    <span className="flex flex-col ml-2">
-                      <span className="text-slate-500 font-semibold">
-                        {audClip.senderName}
-                      </span>
-                      <span className="text-slate-400 text-xs">
-                        {audClip.relativeSentTime}
-                      </span>
-                    </span>
+                    ...
                   </span>
                 );
-              })}
-            </span>
-          </div>
+              } else if (audClip.isLink) {
+                return (
+                  <span
+                    key={index}
+                    className={`flex flex-row justify-center items-center p-5 h-[5rem] shadow shrink-0
+                    ${
+                      index % 2 == 1 &&
+                      "translate-y-[4.75rem] border-t-4 border-t-teal-600"
+                    } ${index % 2 == 0 && "border-b-4 border-b-teal-600"}`}
+                    style={{
+                      // minWidth: "max-content",
+                      width: `5rem`,
+                    }}
+                  >
+                    <LinkIcon
+                      linkType={LinkType.googleMeet}
+                      className="text-3xl"
+                    />
+                  </span>
+                );
+              }
+              return (
+                <span
+                  onClick={() => toast(`${audClip.senderName} speaking...`)}
+                  key={index}
+                  className={`hover:cursor-pointer flex flex-row items-center 
+                  p-5 h-[5rem] shadow shrink-0 last:animate-pulse last:bg-orange-200
+                 ${
+                   index % 2 == 1 &&
+                   "translate-y-[4.75rem] border-t-4 border-t-teal-600"
+                 } ${index % 2 == 0 && "border-b-4 border-b-teal-600"} ${
+                    audClip.alreadyPlayed
+                      ? "bg-slate-100 border"
+                      : "bg-sky-100 "
+                  }`}
+                  style={{
+                    minWidth: "max-content",
+                    width: `${Math.round(audClip.duration)}px`,
+                  }}
+                >
+                  <UserAvatar
+                    userFirstName={"s"}
+                    status={UserStatus.busy}
+                    size={UserAvatarSizes.large}
+                    avatarUrl={"https://joeschmoe.io/api/v1/" + Math.random()}
+                  />
+
+                  <span className="flex flex-col ml-2">
+                    <span className="text-slate-500 font-semibold">
+                      {audClip.senderName}
+                    </span>
+                    <span className="text-slate-400 text-xs">
+                      {audClip.relativeSentTime}
+                    </span>
+                  </span>
+                </span>
+              );
+            })}
+
+            <div ref={endOfTimeline}></div>
+          </span>
 
           {/* stuff for recording and playing action */}
           <span className="mx-auto flex flex-row py-10 space-x-5">
