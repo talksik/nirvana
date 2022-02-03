@@ -6,8 +6,8 @@ import {
   FaMoneyBill,
   FaPhone,
 } from "react-icons/fa";
-import LandingPageActionBar from "../components/demo/LandingPageActionBar";
-import LandingPageLayout from "../components/Layouts/LandingPageLayout";
+import LandingPageActionBar from "../../components/demo/LandingPageActionBar";
+import LandingPageLayout from "../../components/Layouts/LandingPageLayout";
 
 export default function Pricing() {
   return (
