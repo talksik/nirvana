@@ -31,7 +31,7 @@ export default function MainRecoilDataHandler() {
   useEffect(() => {
     const unsubs: Unsubscribe[] = [] as Unsubscribe[];
 
-    const convoSubs: Unsubscribe[] = [] as Unsubscribe;
+    const convoSubs: Unsubscribe[] = [] as Unsubscribe[];
 
     (async function () {
       try {
