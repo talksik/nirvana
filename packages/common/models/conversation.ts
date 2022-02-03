@@ -43,6 +43,7 @@ export class ConversationMember {
 
   createdDate: Timestamp = Timestamp.now();
   lastUpdatedDate?: Timestamp;
+  lastInteractionDate?: Timestamp;
 
   constructor(
     _userId: string,

@@ -1,4 +1,4 @@
-export enum Collections {
+enum Collections {
   users = "users",
   teams = "teams",
   teamMembers = "teamMembers",
@@ -10,4 +10,10 @@ export enum Collections {
   links = "links",
 
   officeRooms = "officeRooms",
+
+  // v2
+  conversations = "conversations",
+  conversationMembers = "members",
 }
+
+export default Collections;

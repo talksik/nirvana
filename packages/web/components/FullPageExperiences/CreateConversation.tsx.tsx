@@ -1,18 +1,30 @@
-import { User, UserStatus } from "@nirvana/common/models/user";
-import { Divider, Select, Tag } from "antd";
-import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
+import { User } from "@nirvana/common/models/user";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { FaPlus, FaRegTimesCircle, FaSearch } from "react-icons/fa";
-import searchClient, { usersIndex } from "../../services/algoliaSearchService";
+import { usersIndex } from "../../services/algoliaSearchService";
 import SimpleLoadingDot from "../Loading/SimpleLoadingDot";
 import SimpleUserDetailsRow from "../UserDetails/SimpleUserDetailsRow";
 import { debounce } from "lodash";
 import toast from "react-hot-toast";
 import { SearchResponse } from "@algolia/client-search";
+import Conversation, {
+  ConversationMember,
+  ConversationMemberRole,
+  ConversationMemberState,
+} from "@nirvana/common/models/conversation";
+import { useAuth } from "../../contexts/authContext";
+import { conversationService } from "@nirvana/common/services";
+import { QueryRoutes, Routes } from "@nirvana/common/helpers/routes";
+import { useRouter } from "next/router";
 
 const searchDebounceMsTime = 3000;
 
 export default function CreateConversation() {
+  const { currUser } = useAuth();
+  const router = useRouter();
+
   const input = useRef<HTMLInputElement>();
+
   const [selectedUsers, setSelectedUsers] = useState<User[]>([] as User[]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userSearchInput, setUserSearchInput] = useState<string>("");
@@ -79,6 +91,10 @@ export default function CreateConversation() {
   }, []);
 
   const selectUser = (addUser: User) => {
+    if (addUser.id == currUser.uid) {
+      toast.error("You cannot add yourself, silly!");
+      return;
+    }
     if (selectedUsers.some((currUser) => currUser.id == addUser.id)) {
       toast("Already added member!");
       return;
@@ -104,27 +120,59 @@ export default function CreateConversation() {
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const createConversation = (e) => {
+  const createConversation = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     if (!conversationName) {
       toast.error("Please put in a conversation name");
+      setIsSubmitting(false);
       return;
     }
 
     if (!selectedUsers?.length) {
       toast.error("You must select members!");
+      setIsSubmitting(false);
       return;
     }
 
     try {
-      console.log("created conversation in database");
+      const newConversation = new Conversation(currUser.uid, conversationName);
+
+      // create each conversation member based on the selected people
+      const members = selectedUsers.map((selUser) => {
+        return new ConversationMember(
+          selUser.id,
+          ConversationMemberState.default,
+          ConversationMemberRole.member
+        );
+      });
+      // add myself to this collection of members
+      members.push(
+        new ConversationMember(
+          currUser.uid,
+          ConversationMemberState.default,
+          ConversationMemberRole.admin
+        )
+      );
+
+      console.log(members);
+      console.log(newConversation);
+
+      // create main conversation object and all of the members associated
+      await conversationService.createConversation(newConversation, members);
+
+      toast.success("Created Conversation");
+
+      // router.push({
+      //   pathname: Routes.home,
+      //   query: { page: QueryRoutes.convos },
+      // });
     } catch (error) {
-      toast.error("Problem in creating issue");
+      toast.error("Problem in creating conversation");
     }
 
-    // setIsSubmitting(false);
+    setIsSubmitting(false);
   };
 
   return (
