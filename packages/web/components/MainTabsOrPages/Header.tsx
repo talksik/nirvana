@@ -106,7 +106,7 @@ export default function Header() {
       </div>
 
       <button className="rounded-lg p-2 border text-slate-400 text-xs hover:bg-slate-100">
-        Focus Mode
+        Flow State
       </button>
 
       {/* controls */}
