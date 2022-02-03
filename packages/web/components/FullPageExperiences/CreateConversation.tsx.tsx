@@ -1,5 +1,5 @@
 import { User } from "@nirvana/common/models/user";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { RefObject, useEffect, useMemo, useRef, useState } from "react";
 import { FaPlus, FaRegTimesCircle, FaSearch } from "react-icons/fa";
 import { usersIndex } from "../../services/algoliaSearchService";
 import SimpleLoadingDot from "../Loading/SimpleLoadingDot";
@@ -164,10 +164,10 @@ export default function CreateConversation() {
 
       toast.success("Created Conversation");
 
-      // router.push({
-      //   pathname: Routes.home,
-      //   query: { page: QueryRoutes.convos },
-      // });
+      router.push({
+        pathname: Routes.home,
+        query: { page: QueryRoutes.convos },
+      });
     } catch (error) {
       toast.error("Problem in creating conversation");
     }

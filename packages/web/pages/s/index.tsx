@@ -13,8 +13,11 @@ import KeyboardShortcutHandler from "../../components/MainTabsOrPages/KeyboardSh
 import SearchResults from "../../components/FullPageExperiences/SearchResults";
 import { QueryRoutes, Routes } from "@nirvana/common/helpers/routes";
 import ViewConvo from "../../components/MainTabsOrPages/ViewConvo";
+import MainRecoilDataHandler from "../../recoil/MainRecoilDataHandler";
 
 export default function Me() {
+  // TODO: if not authenticated, take user away
+
   // figure out what content to render from here
   const router = useRouter();
   const currPage = router.query.page;
@@ -113,6 +116,8 @@ export default function Me() {
 Me.getLayout = function (content: ReactElement) {
   return (
     <div className="flex flex-col">
+      <MainRecoilDataHandler />
+
       <KeyboardShortcutHandler />
 
       <Header />

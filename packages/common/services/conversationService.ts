@@ -41,6 +41,7 @@ export default class ConversationService {
           {
             ...conversation,
             createdDate: serverTimestamp(),
+            lastActivityDate: serverTimestamp(),
           },
           { merge: true }
         );

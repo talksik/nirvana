@@ -1,22 +1,6 @@
 import { v4 as uuid } from "uuid";
 import { Timestamp } from "firebase/firestore";
 
-export class CompleteConversation {
-  id: string; // conversation id
-
-  conversation: Conversation;
-
-  constructor(convo: Conversation) {
-    this.conversation = convo;
-    this.id = this.conversation.id;
-  }
-
-  userMember?: ConversationMember;
-
-  members: ConversationMember[] = [] as ConversationMember[];
-  audioClips: AudioClip[] = [] as AudioClip[];
-  links: Link[] = [] as Link[];
-}
 export default class Conversation {
   id: string = uuid();
 

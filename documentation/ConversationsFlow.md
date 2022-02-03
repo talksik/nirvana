@@ -53,8 +53,11 @@ all conversations in the conversation map and place in right category /\*\*
 ### Data Needed
 
 - live conversations going on right now and which people are in them
-- all inbox-like conversations such as today, last 7 days, etc
-  a. being able to play the last message in the conversation with a play button
-  b. see if there is a new update in the conversation which I have not viewed
-- priority conversations
-  a. need to be able to play any messages from there
+- all inbox-like conversations such as today, last 7 days, etc a. being able to
+  play the last message in the conversation with a play button b. see if there
+  is a new update in the conversation which I have not viewed c. how many new
+  audio clips or links are in the conversation
+- priority conversations a. need to be able to play last convo chunk from here
+  and reply from here
+
+- drawer a. need all links in all conversations where I am active b.

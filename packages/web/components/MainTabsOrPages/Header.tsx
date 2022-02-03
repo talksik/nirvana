@@ -17,7 +17,6 @@ import UserStatusBubble from "../UserDetails/UserStatusBubble";
 
 export default function Header() {
   const { currUser } = useAuth();
-  console.log(currUser);
 
   const router = useRouter();
 
