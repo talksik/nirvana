@@ -1,5 +1,6 @@
 import Conversation from "@nirvana/common/models/conversation";
 import { Avatar } from "antd";
+import moment from "moment";
 import {
   FaCircle,
   FaUser,
@@ -39,12 +40,16 @@ export default function ConversationFullRow(props: {
       )}
 
       <span className="w-[15rem] flex flex-row items-center">
-        <MasterAvatarGroupWithUserFetch
-          listOfUserIds={props.conversation.activeMembers}
-          showCurrUser={false}
-        />
+        <span className="w-[5rem]">
+          <MasterAvatarGroupWithUserFetch
+            listOfUserIds={props.conversation.activeMembers}
+            showCurrUser={false}
+          />
+        </span>
 
-        <span className="text-slate-500 ml-2">{props.conversation.name}</span>
+        <span className="text-slate-500 ml-2 font-semibold">
+          {props.conversation.name}
+        </span>
       </span>
 
       <span className="text-slate-300 w-[20rem] truncate text-sm">
@@ -52,7 +57,7 @@ export default function ConversationFullRow(props: {
       </span>
 
       <span className="ml-auto text-slate-300 text-sm group-hover:invisible">
-        9:00am
+        {moment(props.conversation.lastActivityDate.toDate()).fromNow()}
       </span>
 
       {/* actions */}
