@@ -15,23 +15,23 @@ import {
 } from "firebase/firestore";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { useAuth } from "../contexts/authContext";
 import {
-  allRelevantConversations,
-  allUsersConversations,
+  allRelevantConversationsAtom,
+  allUsersConversationsAtom,
   nirvanaUserDataAtom,
 } from "./main";
 
-const db = getFirestore();
+import { firestoreDb as db } from "../services/firebaseService";
 
 export default function MainRecoilDataHandler() {
   const { currUser } = useAuth();
   const [nirvanaUser, setNirvanaUser] = useRecoilState(nirvanaUserDataAtom);
 
-  const [userConvos, setUserConvos] = useRecoilState(allUsersConversations);
+  const [userConvos, setUserConvos] = useRecoilState(allUsersConversationsAtom);
   const [relevantConvos, setRelevantConvos] = useRecoilState(
-    allRelevantConversations
+    allRelevantConversationsAtom
   );
 
   useEffect(() => {
@@ -51,16 +51,17 @@ export default function MainRecoilDataHandler() {
             newConvoMember.id = change.doc.id;
 
             if (change.type === "added" || change.type === "modified") {
+              // if we are adding a new convo relevant to me, then start a convo listener for this convo
+              const convoId = change.doc.ref.parent.parent!.id;
+
               // update all user convo associations
               setUserConvos((prevMap) => {
-                return new Map(prevMap.set(newConvoMember.id, newConvoMember));
+                return new Map(prevMap.set(convoId, newConvoMember));
               });
 
               // if we are adding a new convo relevant to me, then start a convo listener for this convo
-              const convoId = change.doc.ref.parent.parent?.id;
 
               // find if this is a done, later, or inbox, and only add listeners accordingly
-              console.log(convoId);
               // if (change.type === "added" && convoId) {
               //   const unsubConvo = onSnapshot(
               //     doc(db, Collections.conversations, convoId),

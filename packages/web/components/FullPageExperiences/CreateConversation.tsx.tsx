@@ -152,6 +152,7 @@ export default function CreateConversation() {
       });
 
       // add myself to this collection of members
+      arrActiveMembers.push(currUser!.uid);
       members.push(
         new ConversationMember(
           currUser!.uid,

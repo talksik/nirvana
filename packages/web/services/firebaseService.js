@@ -40,8 +40,9 @@ console.log("initialized firebase");
 // const analytics = getAnalytics(app);
 
 // Initialize firestore persistence for data caching
-const db = getFirestore(app);
-enableIndexedDbPersistence(db).catch((err) => {
+export const firestoreDb = getFirestore(app);
+
+enableIndexedDbPersistence(firestoreDb).catch((err) => {
   if (err.code == "failed-precondition") {
     // Multiple tabs open, persistence can only be enabled
     // in one tab at a a time.
