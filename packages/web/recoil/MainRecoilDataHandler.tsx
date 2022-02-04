@@ -15,15 +15,18 @@ import {
 } from "firebase/firestore";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { useAuth } from "../contexts/authContext";
 import {
+  allRelevantContactsAtom,
   allRelevantConversationsAtom,
   allUsersConversationsAtom,
+  cachedRelevantContactsSelector,
   nirvanaUserDataAtom,
 } from "./main";
 
 import { firestoreDb as db } from "../services/firebaseService";
+import { userService } from "@nirvana/common/services";
 
 export default function MainRecoilDataHandler() {
   const { currUser } = useAuth();
@@ -33,6 +36,8 @@ export default function MainRecoilDataHandler() {
   const [relevantConvos, setRelevantConvos] = useRecoilState(
     allRelevantConversationsAtom
   );
+
+  const [relContacts, setRelContacts] = useRecoilState(allRelevantContactsAtom);
 
   useEffect(() => {
     const unsubs: Unsubscribe[] = [] as Unsubscribe[];
@@ -117,6 +122,40 @@ export default function MainRecoilDataHandler() {
             if (change.type === "removed") {
               // todo: if convo was removed for me, then take out of array
               // arrayConvos.filter()
+            }
+          });
+
+          // build user's cache
+          let allUsersToCache: string[] = [] as string[];
+
+          arrayConvos.forEach((currconvo) => {
+            allUsersToCache = [...allUsersToCache, ...currconvo.activeMembers];
+          });
+
+          console.log(
+            "going to try caching a bunch of users...maybe some duplicates",
+            allUsersToCache
+          );
+
+          // if this userId is in the contacts map, then cool
+          // otherwise fetch with userService
+
+          allUsersToCache.map(async (oUser) => {
+            if (
+              relContacts.has(oUser) &&
+              relContacts.get(oUser) instanceof User
+            ) {
+              // do nothing
+
+              console.log("user already cached, no need to re-cache");
+            } else {
+              // otherwise, fetch document from firestore and then set the cache
+              const retrievedUser = await userService.getUser(oUser);
+              console.log("fetching user to add to cache");
+
+              if (retrievedUser) {
+                setRelContacts(new Map(relContacts.set(oUser, retrievedUser)));
+              }
             }
           });
 

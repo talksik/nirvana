@@ -3,9 +3,15 @@ import { useAuth } from "../../contexts/authContext";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { allRelevantContactsAtom } from "../../recoil/main";
 import { userService } from "@nirvana/common/services";
+import { Avatar } from "antd";
 
-export default function MasterAvatarGroup(props: { listOfUsers: User[] }) {
-  const contactsMap = useRecoilValue(allRelevantContactsAtom);
+const AVATAR_SHAPE = "square";
+
+export default function MasterAvatarGroup(props: {
+  listOfUsers: User[];
+  showCurrUser?: boolean;
+}) {
+  const { currUser } = useAuth();
 
   /**
    * Requirements:
@@ -15,46 +21,100 @@ export default function MasterAvatarGroup(props: { listOfUsers: User[] }) {
    *  if 6 more 'other' people, then show 3 and then one circle saying how many more there are
    */
 
-  const { currUser } = useAuth();
+  let finalistUsers: User[] = props.listOfUsers;
 
-  const listOfOtherUsers = props.listOfUsers.filter(
-    (lUser) => lUser.id != currUser!.uid
-  );
+  if (!props.showCurrUser) {
+    finalistUsers = props.listOfUsers.filter(
+      (lUser) => lUser.id != currUser!.uid
+    );
+  }
+
+  // these are the finalists, so now show all of them depending on the number
+  if (finalistUsers?.length == 1) {
+    return (
+      <Avatar
+        key={finalistUsers[0].id}
+        src={finalistUsers[0].avatarUrl}
+        shape={AVATAR_SHAPE}
+        size={"large"}
+      />
+    );
+  }
+
+  if (finalistUsers?.length == 2) {
+    return (
+      <span className="flex flex-row items-center w-[4rem] relative">
+        <span className="absolute left-0">
+          <Avatar
+            key={finalistUsers[0].id}
+            src={finalistUsers[0].avatarUrl}
+            shape={AVATAR_SHAPE}
+            size={"default"}
+          />
+        </span>
+        <span className="absolute right-0">
+          <Avatar
+            key={finalistUsers[1].id}
+            src={finalistUsers[1].avatarUrl}
+            shape={AVATAR_SHAPE}
+            size={"default"}
+          />
+        </span>
+      </span>
+    );
+  }
 
   return (
-    <span>
-      {listOfOtherUsers.map((oUser) => (
-        <img key={oUser.id} src={oUser.avatarUrl} />
+    <Avatar.Group
+      maxCount={2}
+      size="default"
+      maxStyle={{
+        color: "rgb(203 213 225)",
+        fontSize: "10px",
+        backgroundColor: "rgb(248 250 252)",
+        borderRadius: 0,
+      }}
+      className="bg-slate-50 text-slate-300"
+    >
+      {finalistUsers.map((oUser) => (
+        <Avatar
+          key={oUser.id}
+          src={oUser.avatarUrl}
+          shape={AVATAR_SHAPE}
+          size={"default"}
+        />
       ))}
-    </span>
+    </Avatar.Group>
   );
 }
 
 export function MasterAvatarGroupWithUserFetch(props: {
   listOfUserIds: string[];
+  showCurrUser?: boolean;
 }) {
-  const [contactsMap, setContactsMap] = useRecoilState(allRelevantContactsAtom);
+  const relContactsMap = useRecoilValue(allRelevantContactsAtom);
 
   const { currUser } = useAuth();
 
-  const listOfOtherUsers = props.listOfUserIds.filter(
-    (lUser) => lUser != currUser!.uid
-  );
+  let listOfOtherUsers: string[] = [] as string[];
+  if (props.showCurrUser) {
+    listOfOtherUsers = props.listOfUserIds;
+  } else {
+    listOfOtherUsers = props.listOfUserIds.filter(
+      (lUser) => lUser != currUser!.uid
+    );
+  }
 
   const resultUsers: User[] = [] as User[];
 
-  listOfOtherUsers.forEach(async (oUser) => {
-    if (contactsMap.has(oUser) && contactsMap.get(oUser) instanceof User) {
-      resultUsers.push(contactsMap.get(oUser)!);
-    } else {
-      // otherwise, fetch document from firestore and then set the cache
-      const retrievedUser = await userService.getUser(oUser);
-
-      if (retrievedUser) {
-        setContactsMap(new Map(contactsMap.set(oUser, retrievedUser)));
-      }
+  console.log(listOfOtherUsers);
+  listOfOtherUsers.forEach((oUser) => {
+    if (relContactsMap.has(oUser)) {
+      resultUsers.push(relContactsMap.get(oUser)!);
     }
   });
 
-  return <MasterAvatarGroup listOfUsers={resultUsers} />;
+  console.log("fetched users for frontend: ", resultUsers);
+
+  return <MasterAvatarGroup listOfUsers={resultUsers} {...props} />;
 }

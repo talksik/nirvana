@@ -5,8 +5,9 @@ import Conversation, {
   Link,
 } from "@nirvana/common/models/conversation";
 import { User as NirvanaUser } from "@nirvana/common/models/user";
+import { userService } from "@nirvana/common/services";
 
-import { atom, selector, selectorFamily } from "recoil";
+import { atom, DefaultValue, selector, selectorFamily } from "recoil";
 
 export enum RecoilActions {
   TEST = "TEST",
@@ -110,11 +111,18 @@ export const allRelevantContactsAtom = atom<Map<string, NirvanaUser>>({
 
 // todo: useful selector where a component can pass in a list of users
 // and return their full information
-export const cachedRelevantContactsSelector = selector<NirvanaUser[]>({
+export const cachedRelevantContactsSelector = selector<string[]>({
   key: RecoilActions.RELEVANT_CONTACTS_SELECTOR_CACHE,
   get: async ({ get }) => {
-    const currContacts: Map<string, NirvanaUser> = get(allRelevantContactsAtom);
     return [];
   },
   // selector set (pass in a user and build cache if somethings not in the cache already)
+  set: async ({ set, get }, listUserIdsToCache: string[]) => {
+    if (listUserIdsToCache instanceof DefaultValue) {
+      // set(newUserToCache)
+      return;
+    }
+
+    const contactsMap = get(allRelevantContactsAtom);
+  },
 });
