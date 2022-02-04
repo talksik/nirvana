@@ -107,14 +107,11 @@ export function MasterAvatarGroupWithUserFetch(props: {
 
   const resultUsers: User[] = [] as User[];
 
-  console.log(listOfOtherUsers);
   listOfOtherUsers.forEach((oUser) => {
     if (relContactsMap.has(oUser)) {
       resultUsers.push(relContactsMap.get(oUser)!);
     }
   });
-
-  console.log("fetched users for frontend: ", resultUsers);
 
   return <MasterAvatarGroup listOfUsers={resultUsers} {...props} />;
 }

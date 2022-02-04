@@ -6,7 +6,7 @@ export default class Conversation {
 
   name: string; // engineering, general, arjun, jacob and rachel...
 
-  lastActivityDate?: Timestamp; // caching this for purpose of saving on listeners
+  lastActivityDate: Timestamp = Timestamp.now(); // caching this for purpose of saving on listeners
 
   activeMembers: string[]; // userIds
   membersInLiveRoom: string[] = [] as string[]; // all members in a live call right now for this convo

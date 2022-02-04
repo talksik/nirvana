@@ -29,6 +29,8 @@ export enum RecoilActions {
   LIVE_ROOMS = "LIVE_ROOMS",
   RELATIVE_TIME_SECTIONS_CONVOS = "RELATIVE_TIME_SECTIONS_CONVOS",
 
+  CHECK_INCOMING_MESSAGE = "CHECK_INCOMING_MESSAGE",
+
   ALL_RELEVANT_CONTACTS = "ALL_RELEVANT_CONTACTS",
   RELEVANT_CONTACTS_SELECTOR_CACHE = "RELEVANT_CONTACTS_SELECTOR_CACHE",
 
@@ -62,12 +64,12 @@ export const allRelevantConversationsAtom = atom({
   key: RecoilActions.ALL_RELEVANT_CONVERSATIONS,
   default: new Map<string, Conversation>(),
   effects: [
-    ({ onSet }) => {
-      onSet((newMap) => {
-        //go through and make sure that our relevant user's cache is up to date
-        //  const allUsersInConvos = newMap.values()
-      });
-    },
+    // ({ onSet }) => {
+    //   onSet((newMap) => {
+    //     //go through and make sure that our relevant user's cache is up to date
+    //     //  const allUsersInConvos = newMap.values()
+    //   });
+    // },
   ],
 });
 
@@ -194,6 +196,42 @@ export const RelativeTimeSeparatedConvosSelector = selector<
 
     return organizedMapRelConvos;
   },
+});
+
+export const checkIncomingMessageSelector = selectorFamily({
+  key: RecoilActions.CHECK_INCOMING_MESSAGE,
+  get:
+    (convoId: string) =>
+    ({ get }) => {
+      const currConvosMap: Map<string, Conversation> = get(
+        allRelevantConversationsAtom
+      );
+
+      const currUserConvoMembersMap = get(allUsersConversationsAtom);
+
+      // true if our last interaction date is < lastActivityDate
+      const currConvo = currConvosMap.get(convoId);
+      const currUserConvoAssoc = currUserConvoMembersMap.get(convoId);
+
+      if (!currConvo || !currUserConvoAssoc) {
+        return false;
+      }
+
+      if (!currUserConvoAssoc?.lastInteractionDate) {
+        return true;
+      }
+
+      if (
+        currConvo.lastActivityDate.toDate() >
+        currUserConvoAssoc.lastInteractionDate?.toDate()
+      ) {
+        return true;
+      }
+
+      return false;
+
+      // todo: if it's incoming and it's in done/archive, then move it into the inbox by updating userConvoMember relationship
+    },
 });
 
 // map cache of all relevant users

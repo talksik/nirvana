@@ -8,6 +8,11 @@ import {
   FaCheck,
   FaAngleRight,
 } from "react-icons/fa";
+import { useRecoilValue } from "recoil";
+import {
+  allRelevantConversationsAtom,
+  checkIncomingMessageSelector,
+} from "../../recoil/main";
 import { MasterAvatarGroupWithUserFetch } from "../UserDetails/MasterAvatarGroup";
 
 export default function ConversationFullRow(props: {
@@ -19,12 +24,19 @@ export default function ConversationFullRow(props: {
     quickUpdateText = `${props.conversation.cachedAudioClips[0].senderUserId} spoke just now...`;
   }
 
+  // check if I am outdate on a certain conversation
+  const isNewIncoming = useRecoilValue(
+    checkIncomingMessageSelector(props.conversation.id)
+  );
+
   return (
     <span
-      className="py-5 px-4 border-t border-t-slate-200 flex flex-row hover:bg-slate-50 transition-all
-   items-center"
+      className="py-5 px-4 border-t border-t-slate-200 flex flex-row
+       hover:bg-slate-50 transition-all items-center"
     >
-      <FaCircle className="text-orange-500 mr-2 animate-pulse text-[0.75rem]" />
+      {isNewIncoming && (
+        <FaCircle className="text-orange-500 mr-2 animate-pulse text-[0.75rem]" />
+      )}
 
       <span className="w-[15rem] flex flex-row items-center">
         <MasterAvatarGroupWithUserFetch
