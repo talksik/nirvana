@@ -135,7 +135,8 @@ export const RelativeTimeSeparatedConvosSelector = selector<
     // inbox/default Convos: already sorted
     const defaultConvos = sortedConvos.filter((convo) => {
       return (
-        userMemberMap.get(convo.id)?.state == ConversationMemberState.default
+        userMemberMap.get(convo.id)?.state == ConversationMemberState.default &&
+        !convo.membersInLiveRoom?.length
       );
     });
 
