@@ -1,13 +1,48 @@
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 import { FaArrowLeft } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { useRecoilState } from "recoil";
 import MainLogo from "../../components/Logo/MainLogo";
 import { useAuth } from "../../contexts/authContext";
 
+const googleProvider = new GoogleAuthProvider();
+const auth = getAuth();
+
 export default function Login() {
-  const { currUser, signInGoogle } = useAuth();
+  const { currUser } = useAuth();
+
   const router = useRouter();
+
+  const signInGoogle = () => {
+    return signInWithPopup(auth, googleProvider)
+      .then((res) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(res);
+
+        const token = credential?.accessToken;
+        // The signed-in user info.
+        const user = res.user;
+
+        // todo : don't need this?
+        // setCurrUser(new UserData(user));
+
+        console.log(user);
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        console.log(error);
+        toast.error("something went wrong");
+      });
+  };
 
   useEffect(() => {
     // if auth, go to dashboard

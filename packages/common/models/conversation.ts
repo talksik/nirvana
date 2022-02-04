@@ -6,16 +6,26 @@ export default class Conversation {
 
   name: string; // engineering, general, arjun, jacob and rachel...
 
+  lastActivityDate?: Timestamp; // caching this for purpose of saving on listeners
+
+  activeMembers: string[]; // userIds
+  membersInLiveRoom: string[] = [] as string[]; // all members in a live call right now for this convo
+
+  cachedAudioClips: AudioClip[] = [] as AudioClip[];
+  cachedDrawerItems: Link[] = [] as Link[];
+  tldrClips: AudioClip[] = [] as AudioClip[];
+
   createdDate: Timestamp = Timestamp.now();
   createdByUserId: string;
 
-  lastActivityDate?: Timestamp; // caching this for purpose of saving on listeners
-
-  membersInLiveRoom: string[] = [] as string[]; // all members in a live call right now for this convo
-
-  constructor(_createdByUserId: string, _name: string) {
+  constructor(
+    _createdByUserId: string,
+    _name: string,
+    _initialUsers: string[] = [] as string[]
+  ) {
     this.name = _name;
     this.createdByUserId = _createdByUserId;
+    this.activeMembers = _initialUsers;
   }
 }
 

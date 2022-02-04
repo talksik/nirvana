@@ -1,21 +1,38 @@
+import { User as FirebaseUser } from "@firebase/auth";
 import Conversation, {
   ConversationMember,
   AudioClip,
   Link,
 } from "@nirvana/common/models/conversation";
+import { User as NirvanaUser } from "@nirvana/common/models/user";
 
 import { atom } from "recoil";
 
 export enum RecoilActions {
+  TEST = "TEST",
+
   CURR_PAGE_PATH = "CURR_PAGE_PATH",
+
   ALL_COMPLETE_CONVERSATIONS = "ALL_COMPLETE_CONVERSATIONS",
   ALL_USERS_CONVERSATION_RELATIONSHIPS = "ALL_USERS_CONVERSATION_RELATIONSHIPS",
   ALL_RELEVANT_CONVERSATIONS = "ALL_RELEVANT_CONVERSATIONS",
+
+  USER_DATA = "USER_DATA",
 }
 
-// export const currPagePath = atom({
-//   key: RecoilActions.CURR_PAGE_PATH, // unique ID (with respect to other atoms/selectors)
-//   default: "/s", // default value (aka initial value)
+export const nirvanaUserDataAtom = atom<NirvanaUser | null>({
+  key: RecoilActions.ALL_COMPLETE_CONVERSATIONS,
+  default: null,
+});
+
+// testing if we can import data in server side, but since it's next js we need firebase calls in client side
+// import { conversationService } from "@nirvana/common/services";
+
+// const getTest = (async () => await conversationService.test())();
+
+// export const test = atom({
+//   key: RecoilActions.TEST, // unique ID (with respect to other atoms/selectors)
+//   default: getTest, // default value (aka initial value)
 // });
 
 export class CompleteConversation {

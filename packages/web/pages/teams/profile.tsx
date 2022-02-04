@@ -1,13 +1,13 @@
 import { Divider } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useAuth } from "../../contexts/authContext";
 import { User } from "../../models/user";
 import UserService from "../../services/userService";
-import Image from "next/image";
+import { useAuth } from "../../contexts/authContext";
 
 export default function Profile() {
-  const { currUser, logOut } = useAuth();
+  const { currUser } = useAuth();
+
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 

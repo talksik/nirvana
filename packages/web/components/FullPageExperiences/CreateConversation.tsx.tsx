@@ -12,10 +12,11 @@ import Conversation, {
   ConversationMemberRole,
   ConversationMemberState,
 } from "@nirvana/common/models/conversation";
-import { useAuth } from "../../contexts/authContext";
 import { conversationService } from "@nirvana/common/services";
 import { QueryRoutes, Routes } from "@nirvana/common/helpers/routes";
 import { useRouter } from "next/router";
+import { useRecoilState } from "recoil";
+import { useAuth } from "../../contexts/authContext";
 
 const searchDebounceMsTime = 3000;
 
@@ -91,7 +92,7 @@ export default function CreateConversation() {
   }, []);
 
   const selectUser = (addUser: User) => {
-    if (addUser.id == currUser.uid) {
+    if (addUser.id == currUser!.uid) {
       toast.error("You cannot add yourself, silly!");
       return;
     }
@@ -137,23 +138,32 @@ export default function CreateConversation() {
     }
 
     try {
-      const newConversation = new Conversation(currUser.uid, conversationName);
+      const arrActiveMembers: string[] = [] as string[];
 
       // create each conversation member based on the selected people
       const members = selectedUsers.map((selUser) => {
+        arrActiveMembers.push(selUser.id);
+
         return new ConversationMember(
           selUser.id,
           ConversationMemberState.default,
           ConversationMemberRole.member
         );
       });
+
       // add myself to this collection of members
       members.push(
         new ConversationMember(
-          currUser.uid,
+          currUser!.uid,
           ConversationMemberState.default,
           ConversationMemberRole.admin
         )
+      );
+
+      const newConversation = new Conversation(
+        currUser!.uid,
+        conversationName,
+        arrActiveMembers
       );
 
       console.log(members);

@@ -54,3 +54,5 @@ enableIndexedDbPersistence(db).catch((err) => {
 });
 
 setPersistence(getAuth(), browserSessionPersistence);
+
+export default app;

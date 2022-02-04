@@ -3,8 +3,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { FaAngleRight, FaGripHorizontal } from "react-icons/fa";
-import { useAuth } from "../../contexts/authContext";
+import { useRecoilState } from "recoil";
 import MainLogo from "../Logo/MainLogo";
+import { useAuth } from "../../contexts/authContext";
 
 enum LandingPageNavigation {
   product = "/",

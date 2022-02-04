@@ -29,10 +29,10 @@ import { KeyCode } from "../../globals/keycode";
 
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-
+import { useRecoilState } from "recoil";
 import { useAuth } from "../../contexts/authContext";
 
-let testFriends = [
+const testFriends = [
   {
     name: "Liam",
     role: "engineer",
@@ -72,7 +72,8 @@ let testFriends = [
 ];
 
 export default function Dashboard() {
-  const { currUser, logOut } = useAuth();
+  const { currUser } = useAuth();
+
   const router = useRouter();
 
   useEffect(() => {

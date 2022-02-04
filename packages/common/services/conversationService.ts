@@ -15,13 +15,15 @@ import Collections from "./collections";
 export default class ConversationService {
   private db: Firestore = getFirestore();
 
-  async test() {
+  async test(): Promise<boolean> {
     const docRef = doc(this.db, "test", "test");
     await setDoc(
       docRef,
       { hi: " hiii", lastUpdatedDate: serverTimestamp() },
       { merge: true }
     );
+
+    return false;
   }
 
   async createConversation(

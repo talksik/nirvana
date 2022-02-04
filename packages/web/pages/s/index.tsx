@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import Conversations from "../../components/MainTabsOrPages/Conversations";
 import Done from "../../components/MainTabsOrPages/Done";
 import Drawer from "../../components/MainTabsOrPages/Drawer";
@@ -14,9 +14,18 @@ import SearchResults from "../../components/FullPageExperiences/SearchResults";
 import { QueryRoutes, Routes } from "@nirvana/common/helpers/routes";
 import ViewConvo from "../../components/MainTabsOrPages/ViewConvo";
 import MainRecoilDataHandler from "../../recoil/MainRecoilDataHandler";
+import { useAuth } from "../../contexts/authContext";
 
 export default function Me() {
   // TODO: if not authenticated, take user away
+  const { currUser } = useAuth();
+  useEffect(() => {
+    if (!currUser) {
+      console.log("not authenticated...routing from dashboard to teams home");
+      router.push("/teams/login");
+      return;
+    }
+  }, []);
 
   // figure out what content to render from here
   const router = useRouter();

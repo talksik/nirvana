@@ -10,10 +10,11 @@ import {
   FaHeadphones,
   FaMicrophoneAlt,
 } from "react-icons/fa";
-import { useAuth } from "../../contexts/authContext";
+import { useRecoilState } from "recoil";
 import { UserStatus } from "../../models/user";
 import MainLogo from "../Logo/MainLogo";
 import UserStatusBubble from "../UserDetails/UserStatusBubble";
+import { useAuth } from "../../contexts/authContext";
 
 export default function Header() {
   const { currUser } = useAuth();
