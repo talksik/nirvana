@@ -16,9 +16,13 @@ import {
 import { Routes } from "@nirvana/common/helpers/routes";
 import LiveRoom from "../Conversations/LiveRoom";
 import Conversation from "@nirvana/common/models/conversation";
+import { useRecoilValue } from "recoil";
+import { liveRoomsSelector } from "../../recoil/main";
 
 export default function Conversations() {
   const router = useRouter();
+
+  const liveRooms = useRecoilValue(liveRoomsSelector);
 
   const handleViewConversationDetails = (convoId) => {
     router.push({
@@ -29,18 +33,23 @@ export default function Conversations() {
 
   return (
     <>
-      <span className="flex flex-row items-center mb-5 px-5 w-full">
-        <FaDotCircle className="text-orange-500 text-lg mr-1" />
-        <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
-          Live
-        </span>
-      </span>
+      {liveRooms?.length > 0 && (
+        <>
+          <span className="flex flex-row items-center mb-5 px-5 w-full">
+            <FaDotCircle className="text-orange-500 text-lg mr-1" />
+            <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
+              Live
+            </span>
+          </span>
 
-      {/* row of live room cards */}
-      <span className="flex flex-row flex-wrap">
-        {/* engineering liveroom */}
-        {/* <LiveRoom conversation={} /> */}
-      </span>
+          {/* row of live room cards */}
+          <span className="flex flex-row flex-wrap">
+            {liveRooms.map((lRoom) => (
+              <LiveRoom key={lRoom.id} conversation={lRoom} />
+            ))}
+          </span>
+        </>
+      )}
 
       {/* Today */}
       <span className="flex flex-row items-center mb-5 px-5 w-full mt-10">

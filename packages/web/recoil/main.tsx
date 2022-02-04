@@ -6,7 +6,7 @@ import Conversation, {
 } from "@nirvana/common/models/conversation";
 import { User as NirvanaUser } from "@nirvana/common/models/user";
 
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 
 export enum RecoilActions {
   TEST = "TEST",
@@ -16,6 +16,9 @@ export enum RecoilActions {
   ALL_COMPLETE_CONVERSATIONS = "ALL_COMPLETE_CONVERSATIONS",
   ALL_USERS_CONVERSATION_RELATIONSHIPS = "ALL_USERS_CONVERSATION_RELATIONSHIPS",
   ALL_RELEVANT_CONVERSATIONS = "ALL_RELEVANT_CONVERSATIONS",
+
+  SORTED_CONVERSATIONS = "SORTED_CONVERSATIONS",
+  LIVE_ROOMS = "LIVE_ROOMS",
 
   USER_DATA = "USER_DATA",
 }
@@ -83,4 +86,42 @@ export const allUsersConversations = atom({
 export const allRelevantConversations = atom({
   key: RecoilActions.ALL_RELEVANT_CONVERSATIONS,
   default: new Map<string, Conversation>(),
+});
+
+export const sortedRoomSelector = selector<Conversation[]>({
+  key: RecoilActions.SORTED_CONVERSATIONS,
+  get: ({ get }) => {
+    const relConvos = get(allRelevantConversations);
+    const convosArr: Conversation[] = Array.from(relConvos.values());
+
+    convosArr.sort((a, b) => {
+      if (!a.lastActivityDate) {
+        return -1;
+      }
+      if (!b.lastActivityDate) {
+        return 1;
+      }
+
+      if (a.lastActivityDate > b.lastActivityDate) {
+        return 1;
+      }
+
+      return -1;
+    });
+
+    return convosArr;
+  },
+});
+
+// get all rooms with active members in the room, and
+export const liveRoomsSelector = selector<Conversation[]>({
+  key: RecoilActions.LIVE_ROOMS,
+  get: ({ get }) => {
+    const sortedConvos = get(sortedRoomSelector);
+    const liveRooms = sortedConvos.filter(
+      (conv) => conv.membersInLiveRoom?.length > 0
+    );
+
+    return liveRooms;
+  },
 });
