@@ -17,12 +17,31 @@ import { Routes } from "@nirvana/common/helpers/routes";
 import LiveRoom from "../Conversations/LiveRoom";
 import Conversation from "@nirvana/common/models/conversation";
 import { useRecoilValue } from "recoil";
-import { liveRoomsSelector } from "../../recoil/main";
+import {
+  liveRoomsSelector,
+  RelativeTimeConvosSections,
+  RelativeTimeSeparatedConvosSelector,
+} from "../../recoil/main";
 
 export default function Conversations() {
   const router = useRouter();
 
   const liveRooms = useRecoilValue(liveRoomsSelector);
+  const relativeConvoSections = useRecoilValue(
+    RelativeTimeSeparatedConvosSelector
+  );
+  const todayConvos = relativeConvoSections.get(
+    RelativeTimeConvosSections.today
+  );
+  const last7DaysConvos = relativeConvoSections.get(
+    RelativeTimeConvosSections.last7Days
+  );
+  const earlierMonthConvos = relativeConvoSections.get(
+    RelativeTimeConvosSections.earlierThisMonth
+  );
+  const oldJunkConvos = relativeConvoSections.get(
+    RelativeTimeConvosSections.oldJunk
+  );
 
   const handleViewConversationDetails = (convoId) => {
     router.push({
@@ -52,13 +71,15 @@ export default function Conversations() {
       )}
 
       {/* Today */}
-      <span className="flex flex-row items-center mb-5 px-5 w-full mt-10">
-        <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
-          Today
-        </span>
+      {todayConvos && todayConvos?.length > 0 && (
+        <span className="flex flex-row items-center mb-5 px-5 w-full mt-10">
+          <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
+            Today
+          </span>
 
-        <FaCheckDouble className="text-slate-300 ml-auto text-lg" />
-      </span>
+          <FaCheckDouble className="text-slate-300 ml-auto text-lg" />
+        </span>
+      )}
 
       <span
         onClick={() => handleViewConversationDetails("woah")}
@@ -349,7 +370,7 @@ export default function Conversations() {
 
       <span className="flex flex-row items-center mb-5 px-5 w-full mt-10">
         <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
-          November 2021
+          Old Junk
         </span>
 
         <FaCheckDouble className="text-slate-300 ml-auto text-lg" />

@@ -3,11 +3,18 @@ import Conversation, {
   ConversationMember,
   AudioClip,
   Link,
+  ConversationMemberState,
 } from "@nirvana/common/models/conversation";
 import { User as NirvanaUser } from "@nirvana/common/models/user";
 import { userService } from "@nirvana/common/services";
 
 import { atom, DefaultValue, selector, selectorFamily } from "recoil";
+import {
+  today,
+  yesterday,
+  Days7Ago,
+  earlierThisMonth as earlyMonthDate,
+} from "@nirvana/common/helpers/dateTime";
 
 export enum RecoilActions {
   TEST = "TEST",
@@ -20,6 +27,7 @@ export enum RecoilActions {
 
   SORTED_CONVERSATIONS = "SORTED_CONVERSATIONS",
   LIVE_ROOMS = "LIVE_ROOMS",
+  RELATIVE_TIME_SECTIONS_CONVOS = "RELATIVE_TIME_SECTIONS_CONVOS",
 
   ALL_RELEVANT_CONTACTS = "ALL_RELEVANT_CONTACTS",
   RELEVANT_CONTACTS_SELECTOR_CACHE = "RELEVANT_CONTACTS_SELECTOR_CACHE",
@@ -34,6 +42,7 @@ export const nirvanaUserDataAtom = atom<NirvanaUser | null>({
 
 // testing if we can import data in server side, but since it's next js we need firebase calls in client side
 // import { conversationService } from "@nirvana/common/services";
+import { earlierThisMonth } from "@nirvana/common/helpers/dateTime";
 
 // const getTest = (async () => await conversationService.test())();
 
@@ -76,7 +85,7 @@ export const sortedRoomSelector = selector<Conversation[]>({
         return 1;
       }
 
-      if (a.lastActivityDate > b.lastActivityDate) {
+      if (a.lastActivityDate.toDate() > b.lastActivityDate.toDate()) {
         return 1;
       }
 
@@ -102,6 +111,90 @@ export const liveRoomsSelector = selector<Conversation[]>({
   },
 });
 
+export enum RelativeTimeConvosSections {
+  today = "TODAY",
+
+  last7Days = "LAST 7 DAYS",
+
+  earlierThisMonth = "EARLIER THIS MONTH",
+
+  oldJunk = "OLD JUNK",
+}
+
+// map from the section title to the list of conversations, all sorted desc lastActivity date
+export const RelativeTimeSeparatedConvosSelector = selector<
+  Map<RelativeTimeConvosSections, Conversation[]>
+>({
+  key: RecoilActions.RELATIVE_TIME_SECTIONS_CONVOS,
+  get: ({ get }) => {
+    const sortedConvos = get(sortedRoomSelector);
+
+    // find the convos where the user convo membership state is "inbox" or default
+    const userMemberMap = get(allUsersConversationsAtom);
+
+    // inbox/default Convos: already sorted
+    const defaultConvos = sortedConvos.filter((convo) => {
+      return (
+        userMemberMap.get(convo.id)?.state == ConversationMemberState.default
+      );
+    });
+
+    // go through these and organize in the different sections
+
+    const organizedMapRelConvos = new Map<
+      RelativeTimeConvosSections,
+      Conversation[]
+    >(new Map());
+
+    // putting in sections in map so we can just add later
+    organizedMapRelConvos.set(
+      RelativeTimeConvosSections.today,
+      [] as Conversation[]
+    );
+    organizedMapRelConvos.set(
+      RelativeTimeConvosSections.last7Days,
+      [] as Conversation[]
+    );
+    organizedMapRelConvos.set(
+      RelativeTimeConvosSections.earlierThisMonth,
+      [] as Conversation[]
+    );
+    organizedMapRelConvos.set(
+      RelativeTimeConvosSections.oldJunk,
+      [] as Conversation[]
+    );
+
+    defaultConvos.map((convo) => {
+      let sectionForConvo = RelativeTimeConvosSections.today;
+
+      // put it in the junk with this
+      if (!convo.lastActivityDate) {
+        sectionForConvo = RelativeTimeConvosSections.oldJunk;
+      } else if (convo.lastActivityDate.toDate() > yesterday) {
+        sectionForConvo = RelativeTimeConvosSections.today;
+      } else if (convo.lastActivityDate.toDate() > Days7Ago) {
+        sectionForConvo = RelativeTimeConvosSections.last7Days;
+      } else if (convo.lastActivityDate.toDate() > earlyMonthDate) {
+        sectionForConvo = RelativeTimeConvosSections.earlierThisMonth;
+      } else {
+        sectionForConvo = RelativeTimeConvosSections.oldJunk;
+      }
+
+      const currValInSection = organizedMapRelConvos.get(sectionForConvo);
+
+      // already set, but just making sure
+      if (currValInSection) {
+        organizedMapRelConvos.set(sectionForConvo, [
+          ...currValInSection,
+          convo,
+        ]);
+      }
+    });
+
+    return organizedMapRelConvos;
+  },
+});
+
 // map cache of all relevant users
 // get all of the users in all of the conversations, once through a simple service call
 export const allRelevantContactsAtom = atom<Map<string, NirvanaUser>>({
@@ -110,19 +203,4 @@ export const allRelevantContactsAtom = atom<Map<string, NirvanaUser>>({
 });
 
 // todo: useful selector where a component can pass in a list of users
-// and return their full information
-export const cachedRelevantContactsSelector = selector<string[]>({
-  key: RecoilActions.RELEVANT_CONTACTS_SELECTOR_CACHE,
-  get: async ({ get }) => {
-    return [];
-  },
-  // selector set (pass in a user and build cache if somethings not in the cache already)
-  set: async ({ set, get }, listUserIdsToCache: string[]) => {
-    if (listUserIdsToCache instanceof DefaultValue) {
-      // set(newUserToCache)
-      return;
-    }
-
-    const contactsMap = get(allRelevantContactsAtom);
-  },
-});
+// and return their full information...either get from cache if there or fetch from database if not and update cache
