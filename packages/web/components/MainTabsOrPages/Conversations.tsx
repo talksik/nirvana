@@ -79,8 +79,6 @@ export default function Conversations() {
             <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
               Today
             </span>
-
-            <FaCheckDouble className="text-slate-300 ml-auto text-lg" />
           </span>
           <span
             onClick={() => handleViewConversationDetails("woah")}
@@ -100,8 +98,6 @@ export default function Conversations() {
             <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
               Today
             </span>
-
-            <FaCheckDouble className="text-slate-300 ml-auto text-lg" />
           </span>
           <span
             onClick={() => handleViewConversationDetails("woah")}
@@ -121,8 +117,6 @@ export default function Conversations() {
             <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
               Today
             </span>
-
-            <FaCheckDouble className="text-slate-300 ml-auto text-lg" />
           </span>
           <span
             onClick={() => handleViewConversationDetails("woah")}
@@ -142,8 +136,6 @@ export default function Conversations() {
             <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
               Today
             </span>
-
-            <FaCheckDouble className="text-slate-300 ml-auto text-lg" />
           </span>
           <span
             onClick={() => handleViewConversationDetails("woah")}
