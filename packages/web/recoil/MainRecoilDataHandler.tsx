@@ -21,7 +21,6 @@ import {
   allRelevantContactsAtom,
   allRelevantConversationsAtom,
   allUsersConversationsAtom,
-  cachedRelevantContactsSelector,
   nirvanaUserDataAtom,
 } from "./main";
 
