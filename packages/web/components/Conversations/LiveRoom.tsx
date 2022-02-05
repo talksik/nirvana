@@ -11,7 +11,9 @@ export default function LiveRoom(props: { conversation: Conversation }) {
         showCurrUser={true}
       />
 
-      <span className="text-md font-semibold ml-2 mr-10">Engineering</span>
+      <span className="text-md font-semibold ml-2 mr-10">
+        {props.conversation.name}
+      </span>
 
       <span className="ml-auto text-xs text-slate-300 group-hover:invisible">
         {"01:20"}
