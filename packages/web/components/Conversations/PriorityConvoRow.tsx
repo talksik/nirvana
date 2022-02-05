@@ -42,7 +42,7 @@ export default function PriorityConvoRow(props: {
   return (
     <span
       onClick={handleSelectConvo}
-      className={`group flex flex-row items-center rounded-lg p-2 w-full transition-all hover:cursor-pointer ${
+      className={`group flex flex-row items-center rounded-lg p-2 w-full transition-all hover:cursor-pointer z-10 ${
         isSelected && "bg-slate-50 shadow-lg scale-125 w-[25rem]"
       }`}
     >
