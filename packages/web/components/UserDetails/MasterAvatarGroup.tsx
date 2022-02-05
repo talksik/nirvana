@@ -5,7 +5,7 @@ import { allRelevantContactsAtom } from "../../recoil/main";
 import { userService } from "@nirvana/common/services";
 import { Avatar } from "antd";
 
-const AVATAR_SHAPE = "square";
+const AVATAR_SHAPE = "circle";
 
 export default function MasterAvatarGroup(props: {
   listOfUsers: User[];
@@ -69,12 +69,10 @@ export default function MasterAvatarGroup(props: {
       maxCount={2}
       size="default"
       maxStyle={{
-        color: "rgb(203 213 225)",
+        color: "rgb(148 163 184)",
         fontSize: "10px",
         backgroundColor: "rgb(248 250 252)",
-        borderRadius: 0,
       }}
-      className="bg-slate-50 text-slate-300"
     >
       {finalistUsers.map((oUser) => (
         <Avatar

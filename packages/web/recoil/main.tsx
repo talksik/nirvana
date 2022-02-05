@@ -38,6 +38,8 @@ export enum RecoilActions {
   RELEVANT_CONTACTS_SELECTOR_CACHE = "RELEVANT_CONTACTS_SELECTOR_CACHE",
 
   USER_DATA = "USER_DATA",
+
+  SELECTED_CONVERSATION_ATOM = "SELECTED_CONVERSATION_ATOM",
 }
 
 export const nirvanaUserDataAtom = atom<NirvanaUser | null>({
@@ -151,6 +153,8 @@ export const priorityConvosSelector = selector<Conversation[]>({
 
       return false;
     });
+
+    // todo: sort by createdDate, not lastActivityDate
 
     return priorityConvos;
   },
@@ -305,3 +309,15 @@ export const allRelevantContactsAtom = atom<Map<string, NirvanaUser>>({
 
 // todo: useful selector where a component can pass in a list of users
 // and return their full information...either get from cache if there or fetch from database if not and update cache
+
+// RECORDING, SHORTCUTS, PLAYING, MIC, HEADPHONES, etc.
+export const isRecording = atom<boolean>({
+  key: "haha",
+  default: false,
+});
+
+export const selectedPriorityConvoAtom = atom<string | null>({
+  // convoId
+  key: RecoilActions.SELECTED_CONVERSATION_ATOM,
+  default: null,
+});
