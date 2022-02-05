@@ -165,10 +165,10 @@ function Sidebar() {
           />
 
           <span className="text-md text-slate-400 font-semibold group-hover:text-slate-600">
-            Drawer
+            Drawer{" "}
           </span>
 
-          <span className="text-emerald-700 bg-emerald-200 bg-opacity-20 p-1 rounded-md text-xs font-semibold flex items-center flex-row space-x-1">
+          <span className="ml-2 text-emerald-700 bg-emerald-200 bg-opacity-20 p-1 rounded-md text-xs font-semibold flex items-center flex-row space-x-1">
             <HiSpeakerphone />
             <span>new</span>
           </span>

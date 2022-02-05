@@ -4,12 +4,12 @@ import { GlobalHotKeys, KeyMap, configure } from "react-hotkeys";
 import { selectedPriorityConvoAtom } from "../../recoil/main";
 import { useSetRecoilState } from "recoil";
 
-configure({
-  ignoreTags: [],
-});
-
 export default function KeyboardShortcutHandler() {
   const router = useRouter();
+
+  configure({
+    ignoreTags: [],
+  });
 
   const setSelectedPriorityConvo = useSetRecoilState(selectedPriorityConvoAtom);
 

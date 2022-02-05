@@ -13,7 +13,7 @@ import {
   selectedPriorityConvoAtom,
 } from "../../recoil/main";
 import PriorityConvoRow from "../Conversations/PriorityConvoRow";
-import { GlobalHotKeys, HotKeys } from "react-hotkeys";
+import { configure, GlobalHotKeys, HotKeys, KeyMap } from "react-hotkeys";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -62,12 +62,37 @@ export default function Priority() {
     }
   };
 
-  const keyMap = {
+  configure({
+    ignoreTags: ["input", "select", "textarea"],
+  });
+
+  const startRecording = () => {
+    toast.loading("speaking to Patels");
+  };
+
+  const stopRecording = () => {
+    console.log("stop recording");
+    toast.dismiss();
+  };
+
+  const keyMap: KeyMap = {
     SELECT_PRIORITY_CONVO: ["1", "2", "3", "4", "5", "6", "7", "8"],
+    START_RECORDING: {
+      name: "START RECORDING",
+      sequence: "r",
+      action: "keydown",
+    },
+    STOP_RECORDING: {
+      name: "STOP RECORDING",
+      sequence: "r",
+      action: "keyup",
+    },
   };
 
   const handlers = {
     SELECT_PRIORITY_CONVO: selectingPriorityConvoHandler,
+    START_RECORDING: startRecording,
+    STOP_RECORDING: stopRecording,
   };
 
   return (

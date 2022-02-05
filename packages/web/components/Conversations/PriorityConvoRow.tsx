@@ -1,5 +1,5 @@
 import { Avatar, Tooltip } from "antd";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   checkIncomingMessageSelector,
   selectedPriorityConvoAtom,
@@ -7,14 +7,23 @@ import {
 import Conversation from "../../../common/models/conversation";
 import { MasterAvatarGroupWithUserFetch } from "../UserDetails/MasterAvatarGroup";
 import moment from "moment";
-import { FaMicrophoneAlt, FaPlay } from "react-icons/fa";
+import {
+  FaCaretRight,
+  FaCircle,
+  FaMicrophoneAlt,
+  FaPlay,
+} from "react-icons/fa";
+import { useCallback } from "react";
+import { FaAngleRight } from "react-icons/fa";
 
 export default function PriorityConvoRow(props: {
   conversation: Conversation;
   itemIndex: number;
 }) {
   // figure out if this is a selectedConvo
-  const selectedConvo = useRecoilValue(selectedPriorityConvoAtom);
+  const [selectedConvo, setSelectedConvo] = useRecoilState(
+    selectedPriorityConvoAtom
+  );
 
   const isSelected = selectedConvo == props.conversation.id ? true : false;
 
@@ -26,10 +35,15 @@ export default function PriorityConvoRow(props: {
   // todo: implement method in conversation
   // const isOneonOne =
 
+  const handleSelectConvo = useCallback(() => {
+    setSelectedConvo(props.conversation.id);
+  }, [props.conversation]);
+
   return (
     <span
+      onClick={handleSelectConvo}
       className={`group flex flex-row items-center rounded-lg p-2 w-full transition-all hover:cursor-pointer ${
-        isSelected && "bg-slate-50 shadow-lg scale-125"
+        isSelected && "bg-slate-50 shadow-lg scale-125 w-[25rem]"
       }`}
     >
       <MasterAvatarGroupWithUserFetch
@@ -48,8 +62,13 @@ justify-center rounded-lg text-slate-400 font-bold hover:cursor-pointer text-xs"
           </span>
         </span>
 
-        <span className="text-slate-300 text-xs">
-          {moment(props.conversation.lastActivityDate.toDate()).fromNow()}
+        <span className="flex flex-row">
+          {isNewIncoming && (
+            <FaCircle className="ml-2 text-orange-500 mr-2 animate-pulse text-[0.75rem]" />
+          )}
+          <span className="text-slate-300 text-xs">
+            {moment(props.conversation.lastActivityDate.toDate()).fromNow()}
+          </span>
         </span>
       </span>
 
@@ -57,7 +76,7 @@ justify-center rounded-lg text-slate-400 font-bold hover:cursor-pointer text-xs"
         <>
           <Tooltip title={"Record by pressing and holding R on keyboard."}>
             <span className="ml-auto p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
-              <FaMicrophoneAlt className="ml-auto text-md text-orange-800" />
+              <FaMicrophoneAlt className="ml-auto text-lg text-orange-800" />
             </span>
           </Tooltip>
 
@@ -65,7 +84,12 @@ justify-center rounded-lg text-slate-400 font-bold hover:cursor-pointer text-xs"
             title={"Play last convo chunk by pressing SPACE on keyboard."}
           >
             <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
-              <FaPlay className="ml-auto text-md text-emerald-800" />
+              <FaPlay className="ml-auto text-lg text-emerald-800" />
+            </span>
+          </Tooltip>
+          <Tooltip title={"View Details"}>
+            <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
+              <FaAngleRight className="ml-auto text-md text-slate-400" />
             </span>
           </Tooltip>
         </>
