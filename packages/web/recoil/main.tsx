@@ -177,20 +177,23 @@ export const doneConvosSelector = selector<Conversation[]>({
       // if convo lastActivityDate > lastInteractionDate
       // move to default/inbox convos
       const userConvoAssoc = convoUserMap.get(conv.id);
-      if (
-        userConvoAssoc?.lastInteractionDate &&
-        conv.lastActivityDate > userConvoAssoc?.lastInteractionDate
-      ) {
-        conversationService.updateUserConvoRelationship(
-          userConvoAssoc.id,
-          conv.id,
-          ConversationMemberState.default,
-          false
-        );
-      }
 
       // get the userconvoAssoc and see the state
       if (userConvoAssoc?.state == ConversationMemberState.done) {
+        if (
+          userConvoAssoc?.lastInteractionDate &&
+          conv.lastActivityDate > userConvoAssoc?.lastInteractionDate
+        ) {
+          conversationService.updateUserConvoRelationship(
+            userConvoAssoc.id,
+            conv.id,
+            ConversationMemberState.default,
+            false
+          );
+
+          return false;
+        }
+
         return true;
       }
 

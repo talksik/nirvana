@@ -193,7 +193,7 @@ function Sidebar() {
             Priority
           </span>
 
-          <FaPlus className="text-slate-400 text-lg shrink-0 ml-auto" />
+          {/* <FaPlus className="text-slate-400 text-lg shrink-0 ml-auto" /> */}
         </span>
 
         {/* list of pinned convos */}
