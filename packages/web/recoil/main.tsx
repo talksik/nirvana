@@ -27,6 +27,9 @@ export enum RecoilActions {
 
   SORTED_CONVERSATIONS = "SORTED_CONVERSATIONS",
   LIVE_ROOMS = "LIVE_ROOMS",
+  LATER_CONVERSATIONS_SELECTOR = "LATER_CONVERSATIONS_SELECTOR",
+  PRIORITY_CONVERSATIONS_SELECTOR = "PRIORITY_CONVERSATIONS_SELECTOR",
+  DONE_CONVERSATIONS_SELECTOR = "DONE_CONVERSATIONS_SELECTOR",
   RELATIVE_TIME_SECTIONS_CONVOS = "RELATIVE_TIME_SECTIONS_CONVOS",
 
   CHECK_INCOMING_MESSAGE = "CHECK_INCOMING_MESSAGE",
@@ -110,6 +113,65 @@ export const liveRoomsSelector = selector<Conversation[]>({
     );
 
     return liveRooms;
+  },
+});
+
+export const laterConvosSelector = selector<Conversation[]>({
+  key: RecoilActions.LATER_CONVERSATIONS_SELECTOR,
+  get: ({ get }) => {
+    const sortedConvos = get(sortedRoomSelector);
+    const convoUserMap = get(allUsersConversationsAtom);
+
+    const laterConvos: Conversation[] = sortedConvos.filter((conv) => {
+      // get the userconvoAssoc and see the state
+      if (convoUserMap.get(conv.id)?.state == ConversationMemberState.later) {
+        return true;
+      }
+
+      return false;
+    });
+
+    return laterConvos;
+  },
+});
+
+export const priorityConvosSelector = selector<Conversation[]>({
+  key: RecoilActions.PRIORITY_CONVERSATIONS_SELECTOR,
+  get: ({ get }) => {
+    const sortedConvos = get(sortedRoomSelector);
+    const convoUserMap = get(allUsersConversationsAtom);
+
+    const priorityConvos: Conversation[] = sortedConvos.filter((conv) => {
+      // get the userconvoAssoc and see the state
+      if (
+        convoUserMap.get(conv.id)?.state == ConversationMemberState.priority
+      ) {
+        return true;
+      }
+
+      return false;
+    });
+
+    return priorityConvos;
+  },
+});
+
+export const doneConvosSelector = selector<Conversation[]>({
+  key: RecoilActions.DONE_CONVERSATIONS_SELECTOR,
+  get: ({ get }) => {
+    const sortedConvos = get(sortedRoomSelector);
+    const convoUserMap = get(allUsersConversationsAtom);
+
+    const doneConvos: Conversation[] = sortedConvos.filter((conv) => {
+      // get the userconvoAssoc and see the state
+      if (convoUserMap.get(conv.id)?.state == ConversationMemberState.done) {
+        return true;
+      }
+
+      return false;
+    });
+
+    return doneConvos;
   },
 });
 
