@@ -98,7 +98,7 @@ export default function Conversations() {
         <>
           <span className="flex flex-row items-center mb-5 px-5 w-full mt-10">
             <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
-              Today
+              Last 7 Days
             </span>
           </span>
           <span
@@ -117,7 +117,7 @@ export default function Conversations() {
         <>
           <span className="flex flex-row items-center mb-5 px-5 w-full mt-10">
             <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
-              Today
+              Earlier This Month
             </span>
           </span>
           <span
@@ -136,7 +136,7 @@ export default function Conversations() {
         <>
           <span className="flex flex-row items-center mb-5 px-5 w-full mt-10">
             <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
-              Today
+              Older Junk
             </span>
           </span>
           <span
