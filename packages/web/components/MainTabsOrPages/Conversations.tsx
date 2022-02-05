@@ -32,7 +32,6 @@ export default function Conversations() {
     RelativeTimeSeparatedConvosSelector
   );
 
-  console.log(relativeConvoSections);
   const todayConvos = relativeConvoSections.get(
     RelativeTimeConvosSections.today
   );

@@ -43,6 +43,9 @@ export enum RecoilActions {
 
   COUNT_DEFAULT_CONVOS_SELECTOR = "COUNT_DEFAULT_CONVOS_SELECTOR",
   COUNT_NAVIGATION_ITEMS = "COUNT_NAVIGATION_ITEMS",
+
+  IS_RECORDING_ATOM = "IS_RECORDING_ATOM",
+  HAS_MIC_PERMISSIONS = "HAS_MIC_PERMISSIONS",
 }
 
 export const nirvanaUserDataAtom = atom<NirvanaUser | null>({
@@ -378,8 +381,8 @@ export const allRelevantContactsAtom = atom<Map<string, NirvanaUser>>({
 // and return their full information...either get from cache if there or fetch from database if not and update cache
 
 // RECORDING, SHORTCUTS, PLAYING, MIC, HEADPHONES, etc.
-export const isRecording = atom<boolean>({
-  key: "haha",
+export const isRecordingAtom = atom<boolean>({
+  key: RecoilActions.IS_RECORDING_ATOM,
   default: false,
 });
 
@@ -387,4 +390,9 @@ export const selectedPriorityConvoAtom = atom<string | null>({
   // convoId
   key: RecoilActions.SELECTED_CONVERSATION_ATOM,
   default: null,
+});
+
+export const hasMicPermissionsAtom = atom<boolean>({
+  key: RecoilActions.HAS_MIC_PERMISSIONS,
+  default: false,
 });

@@ -27,7 +27,6 @@ export default class UserService {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      console.log("got user data");
       let user: User = docSnap.data() as User;
       return user;
     } else {

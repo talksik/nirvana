@@ -131,10 +131,10 @@ export default function MainRecoilDataHandler() {
             allUsersToCache = [...allUsersToCache, ...currconvo.activeMembers];
           });
 
-          console.log(
-            "going to try caching a bunch of users...maybe some duplicates",
-            allUsersToCache
-          );
+          // console.log(
+          //   "going to try caching a bunch of users...maybe some duplicates",
+          //   allUsersToCache
+          // );
 
           // if this userId is in the contacts map, then cool
           // otherwise fetch with userService
@@ -145,12 +145,11 @@ export default function MainRecoilDataHandler() {
               relContacts.get(oUser) instanceof User
             ) {
               // do nothing
-
-              console.log("user already cached, no need to re-cache");
+              // console.log("user already cached, no need to re-cache");
             } else {
               // otherwise, fetch document from firestore and then set the cache
               const retrievedUser = await userService.getUser(oUser);
-              console.log("fetching user to add to cache");
+              // console.log("fetching user to add to cache");
 
               if (retrievedUser) {
                 setRelContacts(new Map(relContacts.set(oUser, retrievedUser)));
@@ -165,7 +164,7 @@ export default function MainRecoilDataHandler() {
               newMap.set(currconvo.id, currconvo);
             });
 
-            console.log("updated convos: ", newMap);
+            // console.log("updated convos: ", newMap);
 
             return newMap;
           });

@@ -1,6 +1,6 @@
 import { Avatar, Tooltip, Badge } from "antd";
 import React from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import {
   FaCircle,
   FaMicrophone,
@@ -9,6 +9,8 @@ import {
   FaUser,
 } from "react-icons/fa";
 import {
+  hasMicPermissionsAtom,
+  isRecordingAtom,
   priorityConvosSelector,
   selectedPriorityConvoAtom,
 } from "../../recoil/main";
@@ -16,6 +18,13 @@ import PriorityConvoRow from "../Conversations/PriorityConvoRow";
 import { configure, GlobalHotKeys, HotKeys, KeyMap } from "react-hotkeys";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import MicRecorder from "mic-recorder-to-mp3";
+import { v4 as uuidv4 } from "uuid";
+
+// New instance
+const recorder = new MicRecorder({
+  bitRate: 128,
+});
 
 const MAX_SHORTCUT_MAPPINGS_PRIORITY = 8;
 
@@ -27,6 +36,10 @@ export default function Priority() {
 
   const setSelectedConversationId = useSetRecoilState(
     selectedPriorityConvoAtom
+  );
+
+  const [hasMicPermissions, sethasMicPermissions] = useRecoilState(
+    hasMicPermissionsAtom
   );
 
   // set keyboard shortcuts for 1->8, but only if this component is shown, and not in stuff like
@@ -44,6 +57,32 @@ export default function Priority() {
     });
     setmapShortcutsToConvoId(newMap);
   }, [priorityConvos]);
+
+  // checking for permissions for recording
+  useEffect(() => {
+    try {
+      // won't work in https!!!
+      navigator.mediaDevices
+        .getUserMedia({ audio: true })
+        .then((stream) => {
+          // stop playing anything
+          // stopBothVideoAndAudio(stream);
+
+          console.log("Permission Granted");
+          sethasMicPermissions(true);
+        })
+        .catch((e) => {
+          console.log("Permission Denied");
+          toast.error(
+            "Please make sure that you have connected a microphone and given permissions."
+          );
+          sethasMicPermissions(false);
+        });
+    } catch (error) {
+      console.log(error);
+      toast.error("something went wrong");
+    }
+  }, []);
 
   const selectingPriorityConvoHandler = (event) => {
     const key = event.key;
@@ -66,13 +105,69 @@ export default function Priority() {
     ignoreTags: ["input", "select", "textarea"],
   });
 
+  const [recordingToastId, setRecordingToastId] = useState<string>("");
+  const [isRecording, setIsRecording] = useRecoilState(isRecordingAtom);
+
   const startRecording = () => {
-    toast.loading("speaking to Patels");
+    // check if there is a person selected
+
+    // check that we have mic permissions
+    if (!hasMicPermissions) {
+      toast.error(
+        "Please make sure that you have connected a microphone and given permissions."
+      );
+
+      return;
+    }
+
+    // check that we are not in flow state
+
+    // start recording
+    recorder
+      .start()
+      .then(() => {
+        // toast.success("started recording");
+        console.log("recording started");
+
+        setIsRecording(true);
+      })
+      .catch((e) =>
+        toast.error("there was a problem in starting your recording")
+      );
+
+    const toastId = toast.loading("speaking to Patels");
+    setRecordingToastId(toastId);
   };
 
   const stopRecording = () => {
     console.log("stop recording");
-    toast.dismiss();
+    toast.remove(recordingToastId);
+
+    if (!isRecording) {
+      return;
+    }
+
+    setIsRecording(false);
+
+    recorder
+      .stop()
+      .getMp3()
+      .then(([buffer, blob]) => {
+        const blobURL = URL.createObjectURL(blob);
+
+        const file = new File(buffer, uuidv4() + ".mp3", {
+          type: blob.type,
+          lastModified: Date.now(),
+        });
+
+        const player = new Audio(URL.createObjectURL(file));
+        // player.onended = onEndedPlaying;
+        player.play();
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("problem in sending audio clip");
+      });
   };
 
   const keyMap: KeyMap = {
