@@ -79,7 +79,8 @@ export default class ConversationService {
   async updateUserConvoRelationship(
     userId: string,
     convoId: string,
-    newState: ConversationMemberState
+    newState: ConversationMemberState,
+    changeLastInteractionDate: boolean = true
   ) {
     const docRef = doc(
       this.db,
@@ -88,14 +89,18 @@ export default class ConversationService {
       Collections.conversationMembers,
       userId
     );
-    await setDoc(
-      docRef,
-      {
-        state: newState,
-        lastUpdatedDate: serverTimestamp(),
-        lastInteractionDate: serverTimestamp(),
-      },
-      { merge: true }
-    );
+
+    const newUpdates = changeLastInteractionDate
+      ? {
+          state: newState,
+          lastUpdatedDate: serverTimestamp(),
+          lastInteractionDate: serverTimestamp(),
+        }
+      : {
+          state: newState,
+          lastUpdatedDate: serverTimestamp(),
+        };
+
+    await setDoc(docRef, newUpdates, { merge: true });
   }
 }

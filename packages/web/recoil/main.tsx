@@ -181,7 +181,8 @@ export const doneConvosSelector = selector<Conversation[]>({
         conversationService.updateUserConvoRelationship(
           userConvoAssoc.id,
           conv.id,
-          ConversationMemberState.default
+          ConversationMemberState.default,
+          false
         );
       }
 
