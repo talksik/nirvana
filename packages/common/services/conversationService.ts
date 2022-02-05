@@ -11,6 +11,7 @@ import {
 } from "firebase/firestore";
 import Conversation, { ConversationMember } from "../models/conversation";
 import Collections from "./collections";
+import { ConversationMemberState } from "../models/conversation";
 
 export default class ConversationService {
   private db: Firestore = getFirestore();
@@ -73,5 +74,28 @@ export default class ConversationService {
       console.error(e);
       throw new Error("Problem in creating conversation");
     }
+  }
+
+  async updateUserConvoRelationship(
+    userId: string,
+    convoId: string,
+    newState: ConversationMemberState
+  ) {
+    const docRef = doc(
+      this.db,
+      Collections.conversations,
+      convoId,
+      Collections.conversationMembers,
+      userId
+    );
+    await setDoc(
+      docRef,
+      {
+        state: newState,
+        lastUpdatedDate: serverTimestamp(),
+        lastInteractionDate: serverTimestamp(),
+      },
+      { merge: true }
+    );
   }
 }

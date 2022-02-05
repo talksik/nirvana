@@ -12,14 +12,21 @@ import {
 import { useRecoilValue } from "recoil";
 import {
   allRelevantConversationsAtom,
+  allUsersConversationsAtom,
   checkIncomingMessageSelector,
 } from "../../recoil/main";
 import { MasterAvatarGroupWithUserFetch } from "../UserDetails/MasterAvatarGroup";
 import { FaPlay } from "react-icons/fa";
+import { ConversationMemberState } from "../../../common/models/conversation";
+import { conversationService } from "@nirvana/common/services";
+import { useAuth } from "../../contexts/authContext";
+import toast from "react-hot-toast";
 
 export default function ConversationFullRow(props: {
   conversation: Conversation;
 }) {
+  const { currUser } = useAuth();
+  const usersConvosMap = useRecoilValue(allUsersConversationsAtom);
   let quickUpdateText = "";
 
   if (props.conversation.cachedAudioClips?.length > 0) {
@@ -30,6 +37,24 @@ export default function ConversationFullRow(props: {
   const isNewIncoming = useRecoilValue(
     checkIncomingMessageSelector(props.conversation.id)
   );
+
+  const handleOrganizeConversation = async (
+    toState: ConversationMemberState
+  ) => {
+    try {
+      // use service to make change in database which will change local data
+      await conversationService.updateUserConvoRelationship(
+        currUser!.uid,
+        props.conversation.id,
+        toState
+      );
+
+      toast.success("Moved conversation to " + toState);
+    } catch (error) {
+      console.error(error);
+      toast.error("Problem in moving conversation");
+    }
+  };
 
   return (
     <span
@@ -73,17 +98,35 @@ export default function ConversationFullRow(props: {
         </Tooltip>
 
         <Tooltip title={"Priority"}>
-          <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
+          <span
+            onClick={(e) => {
+              e.stopPropagation();
+              handleOrganizeConversation(ConversationMemberState.priority);
+            }}
+            className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200"
+          >
             <FaRocket className="ml-auto text-lg" />
           </span>
         </Tooltip>
         <Tooltip title={"Later"}>
-          <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
+          <span
+            onClick={(e) => {
+              e.stopPropagation();
+              handleOrganizeConversation(ConversationMemberState.later);
+            }}
+            className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200"
+          >
             <FaRegClock className="ml-auto text-lg" />
           </span>
         </Tooltip>
         <Tooltip title={"Done"}>
-          <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
+          <span
+            onClick={(e) => {
+              e.stopPropagation();
+              handleOrganizeConversation(ConversationMemberState.done);
+            }}
+            className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200"
+          >
             <FaCheck className="ml-auto text-lg" />
           </span>
         </Tooltip>
