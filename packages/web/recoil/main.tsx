@@ -6,7 +6,7 @@ import Conversation, {
   ConversationMemberState,
 } from "@nirvana/common/models/conversation";
 import { User as NirvanaUser } from "@nirvana/common/models/user";
-import { userService } from "@nirvana/common/services";
+import { conversationService, userService } from "@nirvana/common/services";
 
 import { atom, DefaultValue, selector, selectorFamily } from "recoil";
 import {
@@ -167,8 +167,26 @@ export const doneConvosSelector = selector<Conversation[]>({
     const convoUserMap = get(allUsersConversationsAtom);
 
     const doneConvos: Conversation[] = sortedConvos.filter((conv) => {
+      if (!convoUserMap.has(conv.id)) {
+        return false;
+      }
+
+      // if convo lastActivityDate > lastInteractionDate
+      // move to default/inbox convos
+      const userConvoAssoc = convoUserMap.get(conv.id);
+      if (
+        userConvoAssoc?.lastInteractionDate &&
+        conv.lastActivityDate > userConvoAssoc?.lastInteractionDate
+      ) {
+        conversationService.updateUserConvoRelationship(
+          userConvoAssoc.id,
+          conv.id,
+          ConversationMemberState.default
+        );
+      }
+
       // get the userconvoAssoc and see the state
-      if (convoUserMap.get(conv.id)?.state == ConversationMemberState.done) {
+      if (userConvoAssoc?.state == ConversationMemberState.done) {
         return true;
       }
 
