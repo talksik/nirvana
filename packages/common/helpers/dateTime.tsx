@@ -20,13 +20,13 @@ export function getTime(date?: Date) {
 
 const today = new Date();
 
-const yesterday = today;
+const yesterday = new Date();
 yesterday.setDate(yesterday.getDate() - 1);
 
-const Days7Ago = today;
+const Days7Ago = new Date();
 Days7Ago.setDate(Days7Ago.getDate() - 7);
 
-const earlierThisMonth = today;
+const earlierThisMonth = new Date();
 earlierThisMonth.setDate(earlierThisMonth.getDate() - 30);
 
 export { today, yesterday, Days7Ago, earlierThisMonth };

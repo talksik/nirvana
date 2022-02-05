@@ -31,6 +31,8 @@ export default function Conversations() {
   const relativeConvoSections = useRecoilValue(
     RelativeTimeSeparatedConvosSelector
   );
+
+  console.log(relativeConvoSections);
   const todayConvos = relativeConvoSections.get(
     RelativeTimeConvosSections.today
   );
