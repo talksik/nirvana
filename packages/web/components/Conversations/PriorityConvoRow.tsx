@@ -22,8 +22,8 @@ export default function PriorityConvoRow(props: {
 
   return (
     <span
-      className={`group flex flex-row items-center rounded-lg p-2 w-full hover:cursor-pointer ${
-        isSelected && "bg-slate-50 shadow-lg"
+      className={`group flex flex-row items-center rounded-lg p-2 w-full transition-all hover:cursor-pointer ${
+        isSelected && "bg-slate-50 shadow-lg scale-125"
       }`}
     >
       <MasterAvatarGroupWithUserFetch
