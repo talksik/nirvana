@@ -1,6 +1,9 @@
 import { Avatar } from "antd";
 import { useRecoilValue } from "recoil";
-import { selectedPriorityConvoAtom } from "../../recoil/main";
+import {
+  checkIncomingMessageSelector,
+  selectedPriorityConvoAtom,
+} from "../../recoil/main";
 import Conversation from "../../../common/models/conversation";
 import { MasterAvatarGroupWithUserFetch } from "../UserDetails/MasterAvatarGroup";
 import moment from "moment";
@@ -15,7 +18,9 @@ export default function PriorityConvoRow(props: {
   const isSelected = selectedConvo == props.conversation.id ? true : false;
 
   // who was the last sender based on the lastInteractionDate etc.
-  const myTurn = false;
+  const isNewIncoming = useRecoilValue(
+    checkIncomingMessageSelector(props.conversation.id)
+  );
 
   // todo: implement method in conversation
   // const isOneonOne =

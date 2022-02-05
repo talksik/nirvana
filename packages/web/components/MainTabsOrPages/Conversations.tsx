@@ -64,7 +64,7 @@ export default function Conversations() {
           </span>
 
           {/* row of live room cards */}
-          <span className="flex flex-row flex-wrap">
+          <span className="flex flex-col w-full items-stretch">
             {liveRooms.map((lRoom) => (
               <LiveRoom key={lRoom.id} conversation={lRoom} />
             ))}
