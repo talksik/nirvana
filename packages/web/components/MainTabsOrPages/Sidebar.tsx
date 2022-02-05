@@ -16,6 +16,11 @@ import {
 } from "react-icons/fa";
 import { HiSpeakerphone } from "react-icons/hi";
 import Priority from "./Priority";
+import { useRecoilValue } from "recoil";
+import {
+  countNavigationContentSelector,
+  NavigationContentCount,
+} from "../../recoil/main";
 
 function Sidebar() {
   const router = useRouter();
@@ -27,6 +32,10 @@ function Sidebar() {
       query: { page: queryRoute },
     });
   };
+
+  const navCountObject: NavigationContentCount = useRecoilValue(
+    countNavigationContentSelector
+  );
 
   return (
     <div className="flex flex-col justify-start items-baseline w-[20rem]">
@@ -73,7 +82,11 @@ function Sidebar() {
             </span>
           </span>
 
-          <span className="text-slate-300 text-md ml-auto">4</span>
+          {navCountObject.defaultCount > 0 && (
+            <span className="text-slate-300 text-md ml-auto">
+              {navCountObject.defaultCount}
+            </span>
+          )}
         </span>
 
         <span
@@ -97,7 +110,11 @@ function Sidebar() {
             Later
           </span>
 
-          <span className="text-slate-300 text-md ml-auto">1</span>
+          {navCountObject.laterCount > 0 && (
+            <span className="text-slate-300 text-md ml-auto">
+              {navCountObject.laterCount}
+            </span>
+          )}
         </span>
 
         <span
@@ -120,6 +137,12 @@ function Sidebar() {
           <span className="text-md text-slate-400 font-semibold group-hover:text-slate-600">
             Done
           </span>
+
+          {navCountObject.doneCount > 0 && (
+            <span className="text-slate-300 text-md ml-auto">
+              {navCountObject.doneCount}
+            </span>
+          )}
         </span>
 
         <Divider />
@@ -145,10 +168,16 @@ function Sidebar() {
             Drawer
           </span>
 
-          <span className="ml-2 text-emerald-700 bg-emerald-200 bg-opacity-20 p-1 rounded-md text-xs font-semibold flex items-center flex-row space-x-1">
+          <span className="text-emerald-700 bg-emerald-200 bg-opacity-20 p-1 rounded-md text-xs font-semibold flex items-center flex-row space-x-1">
             <HiSpeakerphone />
             <span>new</span>
           </span>
+
+          {navCountObject.drawerCount > 0 && (
+            <span className="text-slate-300 text-md ml-auto">
+              {navCountObject.drawerCount}
+            </span>
+          )}
         </span>
 
         <Divider />

@@ -47,8 +47,6 @@ export default function Priority() {
 
   const selectingPriorityConvoHandler = (event) => {
     const key = event.key;
-    console.log(mapShortcutsToConvoId);
-    console.log(key);
 
     // select the convo based on the right convo
 

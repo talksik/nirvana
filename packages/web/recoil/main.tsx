@@ -40,6 +40,9 @@ export enum RecoilActions {
   USER_DATA = "USER_DATA",
 
   SELECTED_CONVERSATION_ATOM = "SELECTED_CONVERSATION_ATOM",
+
+  COUNT_DEFAULT_CONVOS_SELECTOR = "COUNT_DEFAULT_CONVOS_SELECTOR",
+  COUNT_NAVIGATION_ITEMS = "COUNT_NAVIGATION_ITEMS",
 }
 
 export const nirvanaUserDataAtom = atom<NirvanaUser | null>({
@@ -195,6 +198,48 @@ export const doneConvosSelector = selector<Conversation[]>({
     });
 
     return doneConvos;
+  },
+});
+
+export const countDefaultConvosSelector = selector<number>({
+  key: RecoilActions.COUNT_DEFAULT_CONVOS_SELECTOR,
+  get: ({ get }) => {
+    const sortedConvos = get(sortedRoomSelector);
+
+    const userMemberMap = get(allUsersConversationsAtom);
+    const defaultConvos = sortedConvos.filter((convo) => {
+      return (
+        userMemberMap.get(convo.id)?.state == ConversationMemberState.default &&
+        !convo.membersInLiveRoom?.length
+      );
+    });
+
+    return defaultConvos.length;
+  },
+});
+
+export interface NavigationContentCount {
+  doneCount: number;
+  defaultCount: number;
+  laterCount: number;
+  drawerCount: number;
+}
+
+export const countNavigationContentSelector = selector<NavigationContentCount>({
+  key: RecoilActions.COUNT_NAVIGATION_ITEMS,
+  get: ({ get }) => {
+    const laterConvos = get(laterConvosSelector);
+    const doneConvos = get(doneConvosSelector);
+    const defaultCount = get(countDefaultConvosSelector);
+
+    const navCountObject: NavigationContentCount = {
+      defaultCount,
+      laterCount: laterConvos.length,
+      doneCount: doneConvos.length,
+      drawerCount: 0,
+    };
+
+    return navCountObject;
   },
 });
 

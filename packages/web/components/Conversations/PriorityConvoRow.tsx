@@ -1,4 +1,4 @@
-import { Avatar } from "antd";
+import { Avatar, Tooltip } from "antd";
 import { useRecoilValue } from "recoil";
 import {
   checkIncomingMessageSelector,
@@ -7,6 +7,7 @@ import {
 import Conversation from "../../../common/models/conversation";
 import { MasterAvatarGroupWithUserFetch } from "../UserDetails/MasterAvatarGroup";
 import moment from "moment";
+import { FaMicrophoneAlt, FaPlay } from "react-icons/fa";
 
 export default function PriorityConvoRow(props: {
   conversation: Conversation;
@@ -51,6 +52,24 @@ justify-center rounded-lg text-slate-400 font-bold hover:cursor-pointer text-xs"
           {moment(props.conversation.lastActivityDate.toDate()).fromNow()}
         </span>
       </span>
+
+      {isSelected && (
+        <>
+          <Tooltip title={"Record by pressing and holding R on keyboard."}>
+            <span className="ml-auto p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
+              <FaMicrophoneAlt className="ml-auto text-md text-orange-800" />
+            </span>
+          </Tooltip>
+
+          <Tooltip
+            title={"Play last convo chunk by pressing SPACE on keyboard."}
+          >
+            <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
+              <FaPlay className="ml-auto text-md text-emerald-800" />
+            </span>
+          </Tooltip>
+        </>
+      )}
     </span>
   );
 }
