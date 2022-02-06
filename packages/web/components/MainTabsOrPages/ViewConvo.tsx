@@ -14,16 +14,23 @@ import {
   FaPlay,
   FaRegClock,
   FaRocket,
+  FaStream,
 } from "react-icons/fa";
 import LinkIcon from "../Drawer/LinkIcon";
 import UserAvatar, { UserAvatarSizes } from "../UserDetails/UserAvatar";
 import { useRecoilValue } from "recoil";
-import { allRelevantConversationsAtom } from "../../recoil/main";
+import {
+  allRelevantConversationsAtom,
+  userConvoAssociationSelector,
+} from "../../recoil/main";
 import { useRouter } from "next/router";
 import Conversation from "@nirvana/common/models/conversation";
 import { useAuth } from "../../contexts/authContext";
 import { QueryRoutes, Routes } from "@nirvana/common/helpers/routes";
 import { MasterAvatarGroupWithUserFetch } from "../UserDetails/MasterAvatarGroup";
+import { ConversationMemberState } from "../../../common/models/conversation";
+import { conversationService } from "@nirvana/common/services";
+import ConversationMemberStateIcon from "../Conversations/ConversationMemberStateIcon";
 
 const testDrawerItems: {
   linkType: LinkType;
@@ -129,6 +136,10 @@ export default function ViewConvo(props: { conversationId: string }) {
     props.conversationId
   );
 
+  const userConvoAssoc = useRecoilValue(
+    userConvoAssociationSelector(props.conversationId)
+  );
+
   useEffect(() => {
     if (!convo || !convo.activeMembers.includes(currUser!.uid)) {
       toast.error("Not authorized for this conversation");
@@ -139,6 +150,24 @@ export default function ViewConvo(props: { conversationId: string }) {
       });
     }
   }, []);
+
+  const handleOrganizeConversation = async (
+    toState: ConversationMemberState
+  ) => {
+    try {
+      // use service to make change in database which will change local data
+      await conversationService.updateUserConvoRelationship(
+        currUser!.uid,
+        props.conversationId,
+        toState
+      );
+
+      toast.success("Moved conversation to " + toState);
+    } catch (error) {
+      console.error(error);
+      toast.error("Problem in moving conversation");
+    }
+  };
 
   return (
     <>
@@ -151,20 +180,19 @@ export default function ViewConvo(props: { conversationId: string }) {
               <span className="flex flex-row items-center group">
                 <span
                   className="text-lg tracking-widest font-semibold 
-          text-slate-500 uppercase"
+                  text-slate-500 uppercase mr-2"
                 >
                   {convo?.name}
                 </span>
+
+                <ConversationMemberStateIcon
+                  convoUserAssocState={userConvoAssoc?.state}
+                />
+
                 <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 group-hover:visible invisible">
                   <FaEdit className="ml-auto text-md text-slate-400" />
                 </span>
               </span>
-
-              {convo?.tldr && (
-                <span className="max-w-md text-lg text-teal-800 mb-2">
-                  tldr: {convo?.tldr}
-                </span>
-              )}
 
               <span className="flex flex-row items-center space-x-2 hover:cursor-pointer group">
                 <MasterAvatarGroupWithUserFetch
@@ -180,30 +208,63 @@ export default function ViewConvo(props: { conversationId: string }) {
             </span>
 
             <span className="flex flex-row items-center space-x-3">
-              <button
-                className="rounded-lg p-2 flex flex-row items-center space-x-2
+              {userConvoAssoc?.state != ConversationMemberState.later && (
+                <button
+                  onClick={() =>
+                    handleOrganizeConversation(ConversationMemberState.later)
+                  }
+                  className="rounded-lg p-2 border flex flex-row items-center space-x-2
              text-slate-400 text-xs hover:bg-slate-50"
-              >
-                <FaRocket className="text-sky-500" />
-                <span>Priority</span>
-              </button>
-              <button
-                className="rounded-lg p-2 border flex flex-row items-center space-x-2
-             text-slate-400 text-xs hover:bg-slate-50"
-              >
-                <FaRegClock />
-                <span>Later</span>
-              </button>
+                >
+                  <FaRegClock />
+                  <span>Later</span>
+                </button>
+              )}
 
-              <button
-                className="rounded-lg p-2 border flex flex-row items-center space-x-2
+              {userConvoAssoc?.state != ConversationMemberState.priority && (
+                <button
+                  onClick={() =>
+                    handleOrganizeConversation(ConversationMemberState.priority)
+                  }
+                  className="rounded-lg p-2 border flex flex-row items-center space-x-2
              text-slate-400 text-xs hover:bg-slate-50"
-              >
-                <FaCheck />
-                <span>Done</span>
-              </button>
+                >
+                  <FaRocket />
+                  <span>Priority</span>
+                </button>
+              )}
+
+              {userConvoAssoc?.state == ConversationMemberState.done ? (
+                <button
+                  onClick={() =>
+                    handleOrganizeConversation(ConversationMemberState.default)
+                  }
+                  className="rounded-lg p-2 border flex flex-row items-center space-x-2
+           text-slate-400 text-xs hover:bg-slate-50"
+                >
+                  <FaStream />
+                  <span>Inbox</span>
+                </button>
+              ) : (
+                <button
+                  onClick={() =>
+                    handleOrganizeConversation(ConversationMemberState.done)
+                  }
+                  className="rounded-lg p-2 border flex flex-row items-center space-x-2
+             text-slate-400 text-xs hover:bg-slate-50"
+                >
+                  <FaCheck />
+                  <span>Done</span>
+                </button>
+              )}
             </span>
           </span>
+
+          {convo?.tldr && (
+            <span className="max-w-md text-lg text-teal-800 mb-2">
+              tldr: {convo?.tldr}
+            </span>
+          )}
 
           {/* have one row, but just translate it along y downward to put it in it's own place */}
           <span className="flex flex-row flex-nowrap pb-[10rem] py-[5rem] overflow-auto min-h-max">

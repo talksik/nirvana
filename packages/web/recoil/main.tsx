@@ -23,6 +23,8 @@ export enum RecoilActions {
 
   ALL_COMPLETE_CONVERSATIONS = "ALL_COMPLETE_CONVERSATIONS",
   ALL_USERS_CONVERSATION_RELATIONSHIPS = "ALL_USERS_CONVERSATION_RELATIONSHIPS",
+  USER_CONVO_ASSOCIATION_SELECTOR = "USER_CONVO_ASSOCIATION_SELECTOR",
+
   ALL_RELEVANT_CONVERSATIONS = "ALL_RELEVANT_CONVERSATIONS",
 
   SORTED_CONVERSATIONS = "SORTED_CONVERSATIONS",
@@ -66,9 +68,21 @@ import { earlierThisMonth } from "@nirvana/common/helpers/dateTime";
 
 // approach: fill in all "bottom" level atoms, and then build the tree later with selectors
 // convo id -> userMember object
-export const allUsersConversationsAtom = atom({
+export const allUsersConversationsAtom = atom<Map<string, ConversationMember>>({
   key: RecoilActions.ALL_USERS_CONVERSATION_RELATIONSHIPS,
   default: new Map<string, ConversationMember>(),
+});
+
+export const userConvoAssociationSelector = selectorFamily({
+  key: RecoilActions.USER_CONVO_ASSOCIATION_SELECTOR,
+  get:
+    (convoId: string) =>
+    ({ get }) => {
+      const userConvoMap = get(allUsersConversationsAtom);
+      const userConvoAssoc = userConvoMap.get(convoId);
+
+      return userConvoAssoc;
+    },
 });
 
 export const allRelevantConversationsAtom = atom({
