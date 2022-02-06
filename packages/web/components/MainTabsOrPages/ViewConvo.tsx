@@ -24,13 +24,27 @@ import {
   userConvoAssociationSelector,
 } from "../../recoil/main";
 import { useRouter } from "next/router";
-import Conversation from "@nirvana/common/models/conversation";
+import Conversation, { AudioClip } from "@nirvana/common/models/conversation";
 import { useAuth } from "../../contexts/authContext";
 import { QueryRoutes, Routes } from "@nirvana/common/helpers/routes";
 import { MasterAvatarGroupWithUserFetch } from "../UserDetails/MasterAvatarGroup";
-import { ConversationMemberState } from "../../../common/models/conversation";
+import {
+  ConversationMemberState,
+  AudioClip,
+} from "../../../common/models/conversation";
 import { conversationService } from "@nirvana/common/services";
 import ConversationMemberStateIcon from "../Conversations/ConversationMemberStateIcon";
+import {
+  collection,
+  limit,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
+
+import { firestoreDb as db } from "../../services/firebaseService";
+import Collections from "@nirvana/common/services/collections";
 
 const testDrawerItems: {
   linkType: LinkType;
@@ -115,6 +129,8 @@ const testAudioClips: {
   },
 ];
 
+const AUDIO_CLIP_FETCH_LIMIT = 50;
+
 export default function ViewConvo(props: { conversationId: string }) {
   const { currUser } = useAuth();
 
@@ -148,7 +164,38 @@ export default function ViewConvo(props: { conversationId: string }) {
         pathname: Routes.home,
         query: { page: QueryRoutes.convos },
       });
+
+      return;
     }
+
+    // subscribe to the data for the conversation such that we can render the timeline
+    // get all audioClips for this conversation realtime listener so that when I speak it's also put on the timeline
+    // any new message is seamlessly added to the timeline
+    const audioClipsQuery = query(
+      collection(
+        db,
+        Collections.conversations,
+        props.conversationId,
+        Collections.conversationAudioClips
+      ),
+      orderBy("createdDate", "desc"),
+      limit(AUDIO_CLIP_FETCH_LIMIT)
+    );
+    const unsubscribe = onSnapshot(audioClipsQuery, (querySnapshot) => {
+      const audioClips: AudioClip[] = [] as AudioClip[];
+
+      querySnapshot.forEach((doc) => {
+        const audClip = doc.data() as AudioClip;
+        audClip.id = doc.id;
+
+        // appending all messages in sort order
+        audioClips.push(audClip);
+      });
+
+      console.log(audioClips);
+    });
+
+    return unsubscribe;
   }, []);
 
   const handleOrganizeConversation = async (
