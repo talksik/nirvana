@@ -206,8 +206,9 @@ export default function AudioHandler() {
       return;
     }
 
-    const audio = new Audio(currConvo?.cachedAudioClip.audioDataUrl);
-    audio.play();
+    setAudioQueue((prevQueue) => {
+      return [...prevQueue, currConvo.cachedAudioClip!];
+    });
   };
 
   const selectingPriorityConvoHandler = (event) => {
