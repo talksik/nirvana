@@ -50,7 +50,7 @@ export default function TimelineAudioClip(props: {
   if (audioQueueCurrentClip?.id == props.audioClip.id) {
     customClasses = "animate-pulse bg-orange-200";
   } else if (
-    props.audioClip.createdDate <
+    props.audioClip.createdDate >
     (userConvoAssoc?.lastInteractionDate || yesterday)
   ) {
     customClasses = "bg-sky-100";
