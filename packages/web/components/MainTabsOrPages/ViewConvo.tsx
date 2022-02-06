@@ -255,6 +255,19 @@ export default function ViewConvo(props: { conversationId: string }) {
             </span>
 
             <span className="flex flex-row items-center space-x-3">
+              {userConvoAssoc?.state != ConversationMemberState.default && (
+                <button
+                  onClick={() =>
+                    handleOrganizeConversation(ConversationMemberState.default)
+                  }
+                  className="rounded-lg p-2 border flex flex-row items-center space-x-2
+           text-slate-400 text-xs hover:bg-slate-50"
+                >
+                  <FaStream />
+                  <span>Inbox</span>
+                </button>
+              )}
+
               {userConvoAssoc?.state != ConversationMemberState.later && (
                 <button
                   onClick={() =>
@@ -281,18 +294,7 @@ export default function ViewConvo(props: { conversationId: string }) {
                 </button>
               )}
 
-              {userConvoAssoc?.state == ConversationMemberState.done ? (
-                <button
-                  onClick={() =>
-                    handleOrganizeConversation(ConversationMemberState.default)
-                  }
-                  className="rounded-lg p-2 border flex flex-row items-center space-x-2
-           text-slate-400 text-xs hover:bg-slate-50"
-                >
-                  <FaStream />
-                  <span>Inbox</span>
-                </button>
-              ) : (
+              {userConvoAssoc?.state != ConversationMemberState.done && (
                 <button
                   onClick={() =>
                     handleOrganizeConversation(ConversationMemberState.done)
