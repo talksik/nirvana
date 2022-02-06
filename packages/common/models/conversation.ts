@@ -28,7 +28,10 @@ export default class Conversation {
     this.name = _name;
     this.createdByUserId = _createdByUserId;
     this.activeMembers = _initialUsers;
-    this.tldr = _tldr;
+
+    if (_tldr) {
+      this.tldr = _tldr;
+    }
   }
 }
 

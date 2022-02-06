@@ -1,6 +1,11 @@
 import { User } from "@nirvana/common/models/user";
 import { RefObject, useEffect, useMemo, useRef, useState } from "react";
-import { FaPlus, FaRegTimesCircle, FaSearch } from "react-icons/fa";
+import {
+  FaArrowRight,
+  FaPlus,
+  FaRegTimesCircle,
+  FaSearch,
+} from "react-icons/fa";
 import { usersIndex } from "../../services/algoliaSearchService";
 import SimpleLoadingDot from "../Loading/SimpleLoadingDot";
 import SimpleUserDetailsRow from "../UserDetails/SimpleUserDetailsRow";
@@ -17,6 +22,7 @@ import { QueryRoutes, Routes } from "@nirvana/common/helpers/routes";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { useAuth } from "../../contexts/authContext";
+import { HotKeys, KeyMap } from "react-hotkeys";
 
 const searchDebounceMsTime = 3000;
 
@@ -44,21 +50,21 @@ export default function CreateConversation() {
     input.current?.focus();
   }, []);
 
-  const handleChangeUserSearchInput = async (event) => {
-    const newInput = event?.target?.value;
-    console.log("searching for : " + newInput);
-    setUserSearchInput(newInput);
-
+  const handleUserSearch = async (event) => {
     // no search if empty input
-    if (!newInput) {
+    if (!userSearchInput) {
       setIsLoading(false);
       console.warn("no valid input to search...no point searching");
       return false;
     }
 
+    console.log("searching for : " + userSearchInput);
+
     try {
       // do the search on the search value
-      const searchedUsers: SearchResponse = await usersIndex.search(newInput);
+      const searchedUsers: SearchResponse = await usersIndex.search(
+        userSearchInput
+      );
       console.log(searchedUsers.hits);
 
       if (searchedUsers.hits) {
@@ -78,19 +84,6 @@ export default function CreateConversation() {
     // stop showing loading to say that we got results
     setIsLoading(false);
   };
-
-  const debounceHandler = useMemo(
-    () => debounce(handleChangeUserSearchInput, searchDebounceMsTime),
-    []
-  );
-
-  // Stop the invocation of the debounced function
-  // after unmounting
-  useEffect(() => {
-    return () => {
-      debounceHandler.cancel();
-    };
-  }, []);
 
   const selectUser = (addUser: User) => {
     if (addUser.id == currUser!.uid) {
@@ -165,7 +158,8 @@ export default function CreateConversation() {
       const newConversation = new Conversation(
         currUser!.uid,
         conversationName,
-        arrActiveMembers
+        arrActiveMembers,
+        tldr
       );
 
       console.log(members);
@@ -188,7 +182,7 @@ export default function CreateConversation() {
   };
 
   return (
-    <div className="mx-auto my-auto w-96 flex flex-col">
+    <div className="mx-auto my-auto max-w-screen-sm w-full flex flex-col">
       {/* <Select
         placeholder={"Look up emails, names, etc."}
         tagRender={tagRender}
@@ -203,20 +197,30 @@ export default function CreateConversation() {
 
       {/* search bar that debounces and has a loading button while debouncing */}
 
-      <span className="flex flex-row items-center space-x-2 mb-5">
+      <span className="relative bg-slate-50 p-2 rounded-lg flex flex-row items-center space-x-2 mb-5">
         <FaSearch className="text-slate-300 text-lg" />
 
         <input
-          className="p-2 flex-1 rounded bg-slate-50 border placeholder-slate-300"
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              handleUserSearch(e);
+            }
+          }}
+          className="p-2 flex-1 rounded bg-slate-50 placeholder-slate-300 focus:outline-none"
           placeholder="look up an email address or name"
           ref={input}
           onChange={(e) => {
             setIsLoading(true);
-            debounceHandler(e);
+            setUserSearchInput(e.target.value);
           }}
         />
 
-        {isLoading && <SimpleLoadingDot />}
+        {userSearchInput && (
+          <span className="text-slate-300 flex flex-row items-center space-x-2">
+            <FaArrowRight />
+            <span>enter to search</span>
+          </span>
+        )}
       </span>
 
       {/* show search results nicely like tailwind website */}
@@ -313,7 +317,7 @@ export default function CreateConversation() {
 
             <input
               className="p-3 rounded mt-2 bg-slate-50 border placeholder-slate-300"
-              placeholder="ex: code 'n chill, sales, birthdays, sprint 7..."
+              placeholder="ex: presentation review process..."
               value={tldr}
               onChange={(e) => setTldr(e.target.value)}
             />
