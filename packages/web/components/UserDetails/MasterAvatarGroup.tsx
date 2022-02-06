@@ -4,12 +4,15 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import { allRelevantContactsAtom } from "../../recoil/main";
 import { userService } from "@nirvana/common/services";
 import { Avatar } from "antd";
+import { UserAvatarSizes } from "./UserAvatar";
 
 const AVATAR_SHAPE = "circle";
 
 export default function MasterAvatarGroup(props: {
   listOfUsers: User[];
   showCurrUser?: boolean;
+  size?: UserAvatarSizes;
+  maxUserCount?: number;
 }) {
   const { currUser } = useAuth();
 
@@ -66,8 +69,8 @@ export default function MasterAvatarGroup(props: {
 
   return (
     <Avatar.Group
-      maxCount={2}
-      size="default"
+      maxCount={props.maxUserCount || 2}
+      size={props.size || "default"}
       maxStyle={{
         color: "rgb(148 163 184)",
         fontSize: "10px",
@@ -79,7 +82,7 @@ export default function MasterAvatarGroup(props: {
           key={oUser.id}
           src={oUser.avatarUrl}
           shape={AVATAR_SHAPE}
-          size={"default"}
+          size={props.size || "default"}
         />
       ))}
     </Avatar.Group>

@@ -23,6 +23,7 @@ import { useRouter } from "next/router";
 import Conversation from "@nirvana/common/models/conversation";
 import { useAuth } from "../../contexts/authContext";
 import { QueryRoutes, Routes } from "@nirvana/common/helpers/routes";
+import { MasterAvatarGroupWithUserFetch } from "../UserDetails/MasterAvatarGroup";
 
 const testDrawerItems: {
   linkType: LinkType;
@@ -149,7 +150,7 @@ export default function ViewConvo(props: { conversationId: string }) {
             <span className="flex flex-col">
               <span className="flex flex-row items-center group">
                 <span
-                  className="text-md tracking-widest font-semibold 
+                  className="text-lg tracking-widest font-semibold 
           text-slate-500 uppercase"
                 >
                   {convo?.name}
@@ -159,8 +160,22 @@ export default function ViewConvo(props: { conversationId: string }) {
                 </span>
               </span>
 
-              <span className="text-xs text-slate-300 hover:decoration-slate-400 hover:underline hover:cursor-pointer">
-                {convo?.activeMembers.length} members
+              {convo?.tldr && (
+                <span className="max-w-md text-lg text-teal-800 mb-2">
+                  tldr: {convo?.tldr}
+                </span>
+              )}
+
+              <span className="flex flex-row items-center space-x-2 hover:cursor-pointer group">
+                <MasterAvatarGroupWithUserFetch
+                  listOfUserIds={convo?.activeMembers}
+                  showCurrUser={true}
+                  maxUserCount={10}
+                  size={UserAvatarSizes.small}
+                />
+                <span className="text-xs text-slate-300 hover:decoration-slate-400 group-hover:underline ">
+                  {convo?.activeMembers.length} members
+                </span>
               </span>
             </span>
 
