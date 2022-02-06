@@ -71,16 +71,18 @@ function Sidebar() {
             Convos
           </span>
 
-          <span className="flex flex-row items-center ml-2">
-            <FaDotCircle className="text-orange-500 text-md animate-pulse" />
+          {navCountObject.liveCount > 0 && (
+            <span className="flex flex-row items-center ml-2">
+              <FaDotCircle className="text-orange-500 text-md animate-pulse" />
 
-            <span
-              className="text-xs tracking-widest font-semibold 
+              <span
+                className="text-xs tracking-widest font-semibold 
             text-slate-300 uppercase ml-1"
-            >
-              Live
+              >
+                Live
+              </span>
             </span>
-          </span>
+          )}
 
           {navCountObject.defaultCount > 0 && (
             <span className="text-slate-300 text-md ml-auto">

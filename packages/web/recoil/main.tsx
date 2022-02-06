@@ -245,6 +245,7 @@ export const countDefaultConvosSelector = selector<number>({
 });
 
 export interface NavigationContentCount {
+  liveCount: number;
   doneCount: number;
   defaultCount: number;
   laterCount: number;
@@ -258,7 +259,10 @@ export const countNavigationContentSelector = selector<NavigationContentCount>({
     const doneConvos = get(doneConvosSelector);
     const defaultCount = get(countDefaultConvosSelector);
 
+    const liveRooms = get(liveRoomsSelector);
+
     const navCountObject: NavigationContentCount = {
+      liveCount: liveRooms.length,
       defaultCount,
       laterCount: laterConvos.length,
       doneCount: doneConvos.length,

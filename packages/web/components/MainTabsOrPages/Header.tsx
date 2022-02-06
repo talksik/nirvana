@@ -1,5 +1,5 @@
 import { QueryRoutes, Routes } from "@nirvana/common/helpers/routes";
-import { Menu, Dropdown, Avatar } from "antd";
+import { Menu, Dropdown, Avatar, Tooltip } from "antd";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import { KeyMap, GlobalHotKeys } from "react-hotkeys";
@@ -10,14 +10,16 @@ import {
   FaHeadphones,
   FaMicrophoneAlt,
 } from "react-icons/fa";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { UserStatus } from "../../models/user";
 import MainLogo from "../Logo/MainLogo";
 import UserStatusBubble from "../UserDetails/UserStatusBubble";
 import { useAuth } from "../../contexts/authContext";
+import { nirvanaUserDataAtom } from "../../recoil/main";
 
 export default function Header() {
   const { currUser } = useAuth();
+  const nirvanaUserData = useRecoilValue(nirvanaUserDataAtom);
 
   const router = useRouter();
 
@@ -106,12 +108,14 @@ export default function Header() {
         />
       </div>
 
-      <button className="rounded-lg p-2 border text-slate-400 text-xs hover:bg-slate-100">
-        Flow State
-      </button>
+      <Tooltip title={"Turn off live listen mode, get deep work done."}>
+        <button className="rounded-lg p-2 border text-slate-400 text-xs hover:bg-slate-100">
+          Flow State
+        </button>
+      </Tooltip>
 
       {/* controls */}
-      <div className="flex flex-row items-center space-x-5 px-5">
+      {/* <div className="flex flex-row items-center space-x-5 px-5">
         <FaHeadphones
           className="text-xl text-teal-500 
         hover:cursor-pointer hover:scale-110 trasition-all animate-pulse"
@@ -120,19 +124,17 @@ export default function Header() {
           className="text-xl text-teal-500
         hover:cursor-pointer hover:scale-110 trasition-all animate-pulse"
         />
-      </div>
+      </div> */}
 
       {/* profile section */}
       <Dropdown
         overlay={UserMenu}
         trigger={["click"]}
-        className="ml-2 shrink-0"
+        className="ml-4 shrink-0"
       >
         <span className="relative flex hover:cursor-pointer">
-          <span className="bg-gray-200 bg-opacity-30 rounded-full shadow-md absolute w-full h-full"></span>
-          <UserStatusBubble status={UserStatus.online} />
           <Avatar
-            src={"https://avatars.githubusercontent.com/u/19339529?s=40&v=4"}
+            src={nirvanaUserData?.avatarUrl || nirvanaUserData?.firstName[0]}
             size={"large"}
           />
         </span>
