@@ -95,12 +95,16 @@ export default function ConversationFullRow(props: {
   return (
     <span
       onClick={handleViewConversationDetails}
-      className="py-5 px-4 border-t border-t-slate-200 flex flex-row last:border-b-slate-200 last:border-b
-       hover:bg-slate-50 transition-all items-center group relative"
+      className={`py-5 px-4 border-t border-t-slate-200 flex flex-row last:border-b-slate-200 last:border-b
+       hover:bg-slate-50 transition-all items-center group relative ${
+         isNewIncoming ? "bg-slate-50" : "text-slate-100"
+       }`}
     >
-      {isNewIncoming && (
-        <FaCircle className="text-orange-500 mr-2 animate-pulse text-[0.75rem]" />
-      )}
+      <FaCircle
+        className={`mr-2 animate-pulse text-[0.75rem] ${
+          isNewIncoming ? "text-orange-500" : "text-slate-100"
+        }`}
+      />
 
       <span className="w-[15rem] flex flex-row items-center">
         <span className="w-[5rem]">
@@ -110,7 +114,11 @@ export default function ConversationFullRow(props: {
           />
         </span>
 
-        <span className="text-slate-500 ml-2 font-semibold">
+        <span
+          className={`ml-2 ${
+            isNewIncoming ? "text-slate-500 font-semibold" : "text-slate-400"
+          }`}
+        >
           {props.conversation.name}
         </span>
       </span>
@@ -119,7 +127,11 @@ export default function ConversationFullRow(props: {
         {props.conversation.tldr}
       </span>
 
-      <span className="ml-auto text-slate-300 text-sm group-hover:invisible">
+      <span
+        className={`ml-auto  text-sm group-hover:invisible ${
+          isNewIncoming ? "text-slate-400 font-semibold" : "text-slate-300"
+        }`}
+      >
         {moment(props.conversation.lastActivityDate.toDate()).fromNow()}
       </span>
 
