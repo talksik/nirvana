@@ -62,6 +62,16 @@ export default function ConversationFullRow(props: {
     });
   };
 
+  const playLastClip = () => {
+    if (!props.conversation.cachedAudioClip) {
+      toast.error("Nothing to play");
+      return;
+    }
+    3;
+    const audio = new Audio(props.conversation.cachedAudioClip.audioDataUrl);
+    audio.play();
+  };
+
   return (
     <span
       onClick={handleViewConversationDetails}
@@ -99,7 +109,13 @@ export default function ConversationFullRow(props: {
       group-hover:visible invisible absolute right-5 text-slate-400"
       >
         <Tooltip title={"Play last convo chunk."}>
-          <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
+          <span
+            onClick={(e) => {
+              e.stopPropagation();
+              playLastClip();
+            }}
+            className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200"
+          >
             <FaPlay className="ml-auto text-lg text-emerald-500" />
           </span>
         </Tooltip>

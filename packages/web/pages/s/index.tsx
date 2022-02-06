@@ -15,6 +15,7 @@ import { QueryRoutes, Routes } from "@nirvana/common/helpers/routes";
 import ViewConvo from "../../components/MainTabsOrPages/ViewConvo";
 import MainRecoilDataHandler from "../../recoil/MainRecoilDataHandler";
 import { useAuth } from "../../contexts/authContext";
+import AudioHandler from "../../components/Audio/AudioHandler";
 
 export default function Me() {
   // TODO: if not authenticated, take user away
@@ -128,6 +129,8 @@ Me.getLayout = function (content: ReactElement) {
       <MainRecoilDataHandler />
 
       <KeyboardShortcutHandler />
+
+      <AudioHandler />
 
       <Header />
 
