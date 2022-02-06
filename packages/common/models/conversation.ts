@@ -22,11 +22,13 @@ export default class Conversation {
   constructor(
     _createdByUserId: string,
     _name: string,
-    _initialUsers: string[] = [] as string[]
+    _initialUsers: string[] = [] as string[],
+    _tldr?: string
   ) {
     this.name = _name;
     this.createdByUserId = _createdByUserId;
     this.activeMembers = _initialUsers;
+    this.tldr = _tldr;
   }
 }
 

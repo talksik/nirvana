@@ -30,6 +30,7 @@ export default function CreateConversation() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userSearchInput, setUserSearchInput] = useState<string>("");
   const [conversationName, setConversationName] = useState<string>("");
+  const [tldr, setTldr] = useState<string>("");
 
   // recommendations list: algolio results + cached "relevant users" from all cached conversations currently
   // options for the select
@@ -290,7 +291,7 @@ export default function CreateConversation() {
               Name<span className="text-orange-500">*</span>
             </span>
             <span className="text-slate-300 text-xs">
-              It can be casual or like an email subject line.
+              Think of a group or conversation name.
             </span>
 
             <input
@@ -298,6 +299,23 @@ export default function CreateConversation() {
               placeholder="ex: code 'n chill, sales, birthdays, sprint 7..."
               value={conversationName}
               onChange={(e) => setConversationName(e.target.value)}
+            />
+          </span>
+
+          <span className="flex flex-col mt-10">
+            <span className="uppercase tracking-widest text-slate-400 font-semibold">
+              tldr<span className="text-orange-500"></span>
+            </span>
+            <span className="text-slate-300 text-xs">
+              It can be casual or like an email subject line. Do this later if
+              you want.
+            </span>
+
+            <input
+              className="p-3 rounded mt-2 bg-slate-50 border placeholder-slate-300"
+              placeholder="ex: code 'n chill, sales, birthdays, sprint 7..."
+              value={tldr}
+              onChange={(e) => setTldr(e.target.value)}
             />
           </span>
 
