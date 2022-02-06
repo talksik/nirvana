@@ -2,16 +2,20 @@ import { useEffect, useState } from "react";
 import { configure, GlobalHotKeys, KeyMap } from "react-hotkeys";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
+  allRelevantConversationsAtom,
+  audioQueueAtom,
   hasMicPermissionsAtom,
   isRecordingAtom,
   priorityConvosSelector,
-  selectedPriorityConvoAtom,
+  selectedConvoAtom,
 } from "../../recoil/main";
 import MicRecorder from "mic-recorder-to-mp3";
 import toast from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
 import { conversationService } from "@nirvana/common/services";
 import { useAuth } from "../../contexts/authContext";
+import { useRouter } from "next/router";
+import { AudioClip } from "@nirvana/common/models/conversation";
 
 // New instance
 const recorder = new MicRecorder({
@@ -22,72 +26,48 @@ const MAX_SHORTCUT_MAPPINGS_PRIORITY = 8;
 
 export default function AudioHandler() {
   const { currUser } = useAuth();
+  const router = useRouter();
+
+  const { convoId } = router.query;
 
   const priorityConvos = useRecoilValue(priorityConvosSelector);
+  const mapAllConvos = useRecoilValue(allRelevantConversationsAtom);
+
   const [mapShortcutsToConvoId, setmapShortcutsToConvoId] = useState<
     Map<string, string>
   >(new Map<string, string>());
 
-  const [selectedConvoId, setSelectedConversationId] = useRecoilState(
-    selectedPriorityConvoAtom
-  );
+  const [selectedConvoId, setSelectedConversationId] =
+    useRecoilState(selectedConvoAtom);
+
+  const [audioQueue, setAudioQueue] = useRecoilState(audioQueueAtom);
+
+  function onEndedPlaying(e) {
+    toast.success("finished playing");
+
+    // remove from queue and the queue manager will handle the rest
+    setAudioQueue((prevQueue) => {
+      const newQueue: AudioClip[] = [...prevQueue];
+      newQueue.shift();
+      return newQueue;
+    });
+  }
+
+  useEffect(() => {
+    if (audioQueue.length > 0) {
+      const audio = new Audio(audioQueue[0].audioDataUrl);
+      audio.onended = onEndedPlaying;
+      audio.play();
+    }
+  }, [audioQueue]);
 
   const [hasMicPermissions, sethasMicPermissions] = useRecoilState(
     hasMicPermissionsAtom
   );
 
-  // set keyboard shortcuts for 1->8, but only if this component is shown, and not in stuff like
-  // convo view
-  useEffect(() => {
-    // reset entire map of shortcuts now with new list of priority convos
-
-    const newMap = new Map<string, string>();
-
-    priorityConvos.map((convo, i) => {
-      if (i < MAX_SHORTCUT_MAPPINGS_PRIORITY) {
-        const shortcut = (i + 1).toString();
-        newMap.set(shortcut, convo.id);
-      }
-    });
-    setmapShortcutsToConvoId(newMap);
-  }, [priorityConvos]);
-
-  const selectingPriorityConvoHandler = (event) => {
-    const key = event.key;
-
-    // select the convo based on the right convo
-
-    if (!mapShortcutsToConvoId.has(key)) {
-      toast.error("Not a valid conversation selected");
-      return;
-    }
-
-    const selectedConvoId = mapShortcutsToConvoId.get(key);
-
-    if (selectedConvoId) {
-      setSelectedConversationId(selectedConvoId);
-    }
-  };
-
-  // set keyboard shortcuts for 1->8, but only if this component is shown, and not in stuff like
-  // convo view
-  useEffect(() => {
-    // reset entire map of shortcuts now with new list of priority convos
-
-    const newMap = new Map<string, string>();
-
-    priorityConvos.map((convo, i) => {
-      if (i < MAX_SHORTCUT_MAPPINGS_PRIORITY) {
-        const shortcut = (i + 1).toString();
-        newMap.set(shortcut, convo.id);
-      }
-    });
-    setmapShortcutsToConvoId(newMap);
-  }, [priorityConvos]);
-
-  // checking for permissions for recording
   useEffect(() => {
     try {
+      // checking for permissions for recording
       // won't work in https!!!
       navigator.mediaDevices
         .getUserMedia({ audio: true })
@@ -110,6 +90,22 @@ export default function AudioHandler() {
       toast.error("something went wrong");
     }
   }, []);
+
+  // set keyboard shortcuts for 1->8, but only if this component is shown, and not in stuff like
+  // convo view
+  useEffect(() => {
+    // reset entire map of shortcuts now with new list of priority convos
+
+    const newMap = new Map<string, string>();
+
+    priorityConvos.map((convo, i) => {
+      if (i < MAX_SHORTCUT_MAPPINGS_PRIORITY) {
+        const shortcut = (i + 1).toString();
+        newMap.set(shortcut, convo.id);
+      }
+    });
+    setmapShortcutsToConvoId(newMap);
+  }, [priorityConvos]);
 
   configure({
     ignoreTags: ["input", "select", "textarea"],
@@ -205,9 +201,7 @@ export default function AudioHandler() {
       return;
     }
 
-    const currConvo = priorityConvos.find(
-      (convo) => convo.id == selectedConvoId
-    );
+    const currConvo = mapAllConvos.get(selectedConvoId);
 
     if (!currConvo?.cachedAudioClip) {
       toast.error("nothing to play");
@@ -216,6 +210,29 @@ export default function AudioHandler() {
 
     const audio = new Audio(currConvo?.cachedAudioClip.audioDataUrl);
     audio.play();
+  };
+
+  const selectingPriorityConvoHandler = (event) => {
+    const key = event.key;
+
+    // STOP if we are in a convo detail page, as we want to talk in this channel, if so
+    if (convoId) {
+      toast.error("Cannot select a priority convo from here!");
+      return;
+    }
+
+    // select the convo based on the shortcut
+
+    if (!mapShortcutsToConvoId.has(key)) {
+      toast.error("Not a valid conversation selected");
+      return;
+    }
+
+    const selectedConvoId = mapShortcutsToConvoId.get(key);
+
+    if (selectedConvoId) {
+      setSelectedConversationId(selectedConvoId);
+    }
   };
 
   const keyMap: KeyMap = {

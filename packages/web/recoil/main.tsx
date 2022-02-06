@@ -48,6 +48,9 @@ export enum RecoilActions {
 
   IS_RECORDING_ATOM = "IS_RECORDING_ATOM",
   HAS_MIC_PERMISSIONS = "HAS_MIC_PERMISSIONS",
+
+  AUDIO_QUEUE_ATOM = "AUDIO_QUEUE_ATOM",
+  AUDIO_QUEUE_CURRENT_ITEM_SELECTOR = "AUDIO_QUEUE_CURRENT_ITEM_SELECTOR",
 }
 
 export const nirvanaUserDataAtom = atom<NirvanaUser | null>({
@@ -410,7 +413,7 @@ export const isRecordingAtom = atom<boolean>({
   default: false,
 });
 
-export const selectedPriorityConvoAtom = atom<string | null>({
+export const selectedConvoAtom = atom<string | null>({
   // convoId
   key: RecoilActions.SELECTED_CONVERSATION_ATOM,
   default: null,
@@ -419,4 +422,22 @@ export const selectedPriorityConvoAtom = atom<string | null>({
 export const hasMicPermissionsAtom = atom<boolean>({
   key: RecoilActions.HAS_MIC_PERMISSIONS,
   default: false,
+});
+
+export const audioQueueAtom = atom<AudioClip[]>({
+  key: RecoilActions.AUDIO_QUEUE_ATOM,
+  default: [] as AudioClip[],
+});
+
+export const audioQueueCurrentClipSelector = selector<AudioClip | null>({
+  key: RecoilActions.AUDIO_QUEUE_CURRENT_ITEM_SELECTOR,
+  get: ({ get }) => {
+    const currentQueue = get(audioQueueAtom);
+
+    if (currentQueue[0]) {
+      return currentQueue[0];
+    }
+
+    return null;
+  },
 });

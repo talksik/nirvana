@@ -2,10 +2,13 @@ import { yesterday } from "@nirvana/common/helpers/dateTime";
 import { AudioClip } from "@nirvana/common/models/conversation";
 import moment from "moment";
 import toast from "react-hot-toast";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   allRelevantContactsAtom,
   allUsersConversationsAtom,
+  audioQueueAtom,
+  audioQueueCurrentClipSelector,
+  selectedConvoAtom,
 } from "../../recoil/main";
 import { MasterAvatarGroupWithUserFetch } from "../UserDetails/MasterAvatarGroup";
 import { useState } from "react";
@@ -21,6 +24,9 @@ export default function TimelineAudioClip(props: {
   const audioClipUser = relContactsMap.get(props.audioClip.senderUserId);
   const userConvoAssoc = userConvosMap.get(props.convoId);
 
+  const audioQueueCurrentClip = useRecoilValue(audioQueueCurrentClipSelector);
+  const [audioQueue, setAudioQueue] = useRecoilState(audioQueueAtom);
+
   const [audioDuration, setAudioDuration] = useState<number>();
 
   const loadedMetadata = (data) => {
@@ -33,10 +39,20 @@ export default function TimelineAudioClip(props: {
   // audio.onloadedmetadata = loadedMetadata;
 
   const playAudioClip = () => {
-    toast(`${audioClipUser?.firstName} speaking...`);
-
-    audio.play();
+    setAudioQueue((prevQueue) => {
+      return [...prevQueue, props.audioClip];
+    });
   };
+
+  let customClasses = "bg-slate-100 border";
+  if (audioQueueCurrentClip?.id == props.audioClip.id) {
+    customClasses = "animate-pulse bg-orange-200";
+  } else if (
+    props.audioClip.createdDate <
+    (userConvoAssoc?.lastInteractionDate || yesterday)
+  ) {
+    customClasses = "bg-sky-100";
+  }
 
   return (
     <span
@@ -47,12 +63,8 @@ export default function TimelineAudioClip(props: {
                  ${
                    props.index % 2 == 1 &&
                    "translate-y-[4.75rem] border-t-4 border-t-teal-600"
-                 } ${props.index % 2 == 0 && "border-b-4 border-b-teal-600"} ${
-        props.audioClip.createdDate <
-        (userConvoAssoc?.lastInteractionDate || yesterday)
-          ? "bg-slate-100 border"
-          : "bg-sky-100 "
-      }`}
+                 } ${props.index % 2 == 0 && "border-b-4 border-b-teal-600"} 
+                 ${customClasses}`}
       style={{
         minWidth: "max-content",
         width: `100px`,

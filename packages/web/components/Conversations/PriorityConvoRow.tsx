@@ -2,7 +2,7 @@ import { Avatar, Tooltip } from "antd";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   checkIncomingMessageSelector,
-  selectedPriorityConvoAtom,
+  selectedConvoAtom,
 } from "../../recoil/main";
 import Conversation from "../../../common/models/conversation";
 import { MasterAvatarGroupWithUserFetch } from "../UserDetails/MasterAvatarGroup";
@@ -23,9 +23,7 @@ export default function PriorityConvoRow(props: {
   itemIndex: number;
 }) {
   // figure out if this is a selectedConvo
-  const [selectedConvo, setSelectedConvo] = useRecoilState(
-    selectedPriorityConvoAtom
-  );
+  const [selectedConvo, setSelectedConvo] = useRecoilState(selectedConvoAtom);
 
   const isSelected = selectedConvo == props.conversation.id ? true : false;
 

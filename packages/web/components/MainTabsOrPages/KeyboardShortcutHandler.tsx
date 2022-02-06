@@ -1,7 +1,7 @@
 import { QueryRoutes } from "@nirvana/common/helpers/routes";
 import { useRouter } from "next/router";
 import { GlobalHotKeys, KeyMap, configure } from "react-hotkeys";
-import { selectedPriorityConvoAtom } from "../../recoil/main";
+import { selectedConvoAtom } from "../../recoil/main";
 import { useSetRecoilState } from "recoil";
 
 export default function KeyboardShortcutHandler() {
@@ -11,7 +11,7 @@ export default function KeyboardShortcutHandler() {
     ignoreTags: [],
   });
 
-  const setSelectedPriorityConvo = useSetRecoilState(selectedPriorityConvoAtom);
+  const setSelectedPriorityConvo = useSetRecoilState(selectedConvoAtom);
 
   const handleEscape = () => {
     console.log("woah");

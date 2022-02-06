@@ -92,6 +92,8 @@ export default function MasterAvatarGroup(props: {
 export function MasterAvatarGroupWithUserFetch(props: {
   listOfUserIds: string[];
   showCurrUser?: boolean;
+  maxUserCount?: number;
+  size?: UserAvatarSizes;
 }) {
   const relContactsMap = useRecoilValue(allRelevantContactsAtom);
 

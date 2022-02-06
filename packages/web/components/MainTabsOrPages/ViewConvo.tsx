@@ -18,9 +18,10 @@ import {
 } from "react-icons/fa";
 import LinkIcon from "../Drawer/LinkIcon";
 import UserAvatar, { UserAvatarSizes } from "../UserDetails/UserAvatar";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
   allRelevantConversationsAtom,
+  selectedConvoAtom,
   userConvoAssociationSelector,
 } from "../../recoil/main";
 import { useRouter } from "next/router";
@@ -73,62 +74,6 @@ const testDrawerItems: {
   },
 ];
 
-const testAudioClips: {
-  senderName: string;
-  relativeSentTime: string;
-  duration: number;
-  alreadyPlayed: boolean;
-  isGap?: boolean;
-  isLink?: boolean;
-}[] = [
-  {
-    senderName: "John",
-    relativeSentTime: "yesterday",
-    duration: 150,
-    alreadyPlayed: true,
-  },
-
-  {
-    senderName: "Moha",
-    relativeSentTime: "5 minutes ago",
-    duration: 600,
-    alreadyPlayed: false,
-    isGap: true,
-  },
-  {
-    senderName: "Alex",
-    relativeSentTime: "7 hours ago",
-    duration: 10,
-    alreadyPlayed: false,
-  },
-  {
-    senderName: "Ben",
-    relativeSentTime: "2 hours ago",
-    duration: 300,
-    alreadyPlayed: false,
-  },
-
-  {
-    senderName: "Alex",
-    relativeSentTime: "30 minutes ago",
-    duration: 200,
-    alreadyPlayed: false,
-  },
-  {
-    senderName: "Moha",
-    relativeSentTime: "8 minutes ago",
-    duration: 600,
-    alreadyPlayed: false,
-    isLink: true,
-  },
-  {
-    senderName: "Moha",
-    relativeSentTime: "5 minutes ago",
-    duration: 600,
-    alreadyPlayed: false,
-  },
-];
-
 const AUDIO_CLIP_FETCH_LIMIT = 50;
 
 export default function ViewConvo(props: { conversationId: string }) {
@@ -158,7 +103,10 @@ export default function ViewConvo(props: { conversationId: string }) {
 
   const [audioClips, setAudioClips] = useState<AudioClip[]>([] as AudioClip[]);
 
+  const setSelectedConvoId = useSetRecoilState(selectedConvoAtom);
+
   useEffect(() => {
+    // should have this convo, otherwise unauthorized
     if (!convo || !convo.activeMembers.includes(currUser!.uid)) {
       toast.error("Not authorized for this conversation");
 
@@ -169,6 +117,9 @@ export default function ViewConvo(props: { conversationId: string }) {
 
       return;
     }
+
+    // set the selected convo as this one as we are now on this page
+    setSelectedConvoId(props.conversationId);
 
     // subscribe to the data for the conversation such that we can render the timeline
     // get all audioClips for this conversation realtime listener so that when I speak it's also put on the timeline
@@ -235,22 +186,21 @@ export default function ViewConvo(props: { conversationId: string }) {
                   {convo?.name}
                 </span>
 
-                <ConversationMemberStateIcon
-                  convoUserAssocState={userConvoAssoc?.state}
-                />
-
                 <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 group-hover:visible invisible">
                   <FaEdit className="ml-auto text-md text-slate-400" />
                 </span>
               </span>
 
               <span className="flex flex-row items-center space-x-2 hover:cursor-pointer group">
-                <MasterAvatarGroupWithUserFetch
-                  listOfUserIds={convo?.activeMembers}
-                  showCurrUser={true}
-                  maxUserCount={10}
-                  size={UserAvatarSizes.small}
-                />
+                {convo?.activeMembers && (
+                  <MasterAvatarGroupWithUserFetch
+                    listOfUserIds={convo.activeMembers}
+                    showCurrUser={true}
+                    maxUserCount={10}
+                    size={UserAvatarSizes.small}
+                  />
+                )}
+
                 <span className="text-xs text-slate-300 hover:decoration-slate-400 group-hover:underline ">
                   {convo?.activeMembers.length} members
                 </span>
@@ -258,6 +208,12 @@ export default function ViewConvo(props: { conversationId: string }) {
             </span>
 
             <span className="flex flex-row items-center space-x-3">
+              {userConvoAssoc?.state && (
+                <ConversationMemberStateIcon
+                  convoUserAssocState={userConvoAssoc.state}
+                />
+              )}
+
               {userConvoAssoc?.state != ConversationMemberState.default && (
                 <button
                   onClick={() =>
