@@ -15,6 +15,8 @@ import {
 } from "react-icons/fa";
 import { useCallback } from "react";
 import { FaAngleRight } from "react-icons/fa";
+import { useRouter } from "next/router";
+import { Routes } from "@nirvana/common/helpers/routes";
 
 export default function PriorityConvoRow(props: {
   conversation: Conversation;
@@ -38,6 +40,17 @@ export default function PriorityConvoRow(props: {
   const handleSelectConvo = useCallback(() => {
     setSelectedConvo(props.conversation.id);
   }, [props.conversation]);
+
+  const router = useRouter();
+
+  const handleViewConversationDetails = (e) => {
+    e.stopPropagation();
+
+    router.push({
+      pathname: Routes.home,
+      query: { convoId: props.conversation.id },
+    });
+  };
 
   return (
     <span
@@ -88,7 +101,10 @@ justify-center rounded-lg text-slate-400 font-bold hover:cursor-pointer text-xs"
             </span>
           </Tooltip>
           <Tooltip title={"View Details"}>
-            <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
+            <span
+              onClick={handleViewConversationDetails}
+              className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200"
+            >
               <FaAngleRight className="ml-auto text-md text-slate-400" />
             </span>
           </Tooltip>

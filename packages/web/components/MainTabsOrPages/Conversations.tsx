@@ -45,13 +45,6 @@ export default function Conversations() {
     RelativeTimeConvosSections.oldJunk
   );
 
-  const handleViewConversationDetails = (convoId) => {
-    router.push({
-      pathname: Routes.home,
-      query: { convoId },
-    });
-  };
-
   return (
     <>
       {/*  live */}
@@ -81,10 +74,7 @@ export default function Conversations() {
               Today
             </span>
           </span>
-          <span
-            onClick={() => handleViewConversationDetails("woah")}
-            className="flex flex-col w-full items-stretch"
-          >
+          <span className="flex flex-col w-full items-stretch">
             {todayConvos.map((tRoom) => (
               <ConversationFullRow key={tRoom.id} conversation={tRoom} />
             ))}
@@ -100,10 +90,7 @@ export default function Conversations() {
               Last 7 Days
             </span>
           </span>
-          <span
-            onClick={() => handleViewConversationDetails("woah")}
-            className="flex flex-col w-full items-stretch"
-          >
+          <span className="flex flex-col w-full items-stretch">
             {last7DaysConvos.map((tRoom) => (
               <ConversationFullRow key={tRoom.id} conversation={tRoom} />
             ))}
@@ -119,10 +106,7 @@ export default function Conversations() {
               Earlier This Month
             </span>
           </span>
-          <span
-            onClick={() => handleViewConversationDetails("woah")}
-            className="flex flex-col w-full items-stretch"
-          >
+          <span className="flex flex-col w-full items-stretch">
             {earlierMonthConvos.map((tRoom) => (
               <ConversationFullRow key={tRoom.id} conversation={tRoom} />
             ))}
@@ -138,10 +122,7 @@ export default function Conversations() {
               Older Junk
             </span>
           </span>
-          <span
-            onClick={() => handleViewConversationDetails("woah")}
-            className="flex flex-col w-full items-stretch"
-          >
+          <span className="flex flex-col w-full items-stretch">
             {oldJunkConvos.map((tRoom) => (
               <ConversationFullRow key={tRoom.id} conversation={tRoom} />
             ))}

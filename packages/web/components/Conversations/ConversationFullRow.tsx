@@ -21,6 +21,8 @@ import { ConversationMemberState } from "../../../common/models/conversation";
 import { conversationService } from "@nirvana/common/services";
 import { useAuth } from "../../contexts/authContext";
 import toast from "react-hot-toast";
+import { useRouter } from "next/router";
+import { Routes } from "@nirvana/common/helpers/routes";
 
 export default function ConversationFullRow(props: {
   conversation: Conversation;
@@ -51,8 +53,18 @@ export default function ConversationFullRow(props: {
     }
   };
 
+  const router = useRouter();
+
+  const handleViewConversationDetails = (e) => {
+    router.push({
+      pathname: Routes.home,
+      query: { convoId: props.conversation.id },
+    });
+  };
+
   return (
     <span
+      onClick={handleViewConversationDetails}
       className="py-5 px-4 border-t border-t-slate-200 flex flex-row
        hover:bg-slate-50 transition-all items-center group relative"
     >
