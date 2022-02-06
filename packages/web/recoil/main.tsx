@@ -161,6 +161,12 @@ export const priorityConvosSelector = selector<Conversation[]>({
     });
 
     // todo: sort by createdDate, not lastActivityDate
+    priorityConvos.sort((a: Conversation, b: Conversation) => {
+      if (a.createdDate.toDate() > b.createdDate.toDate()) {
+        return -1;
+      }
+      return 0;
+    });
 
     return priorityConvos;
   },
