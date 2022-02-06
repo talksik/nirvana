@@ -2,7 +2,7 @@ import { LinkType } from "@nirvana/common/models/link";
 import { UserStatus } from "@nirvana/common/models/user";
 import { Tooltip } from "antd";
 import { duration } from "moment";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import {
   FaCheck,
@@ -24,14 +24,13 @@ import {
   userConvoAssociationSelector,
 } from "../../recoil/main";
 import { useRouter } from "next/router";
-import Conversation, { AudioClip } from "@nirvana/common/models/conversation";
+import Conversation, {
+  AudioClip,
+  ConversationMemberState,
+} from "@nirvana/common/models/conversation";
 import { useAuth } from "../../contexts/authContext";
 import { QueryRoutes, Routes } from "@nirvana/common/helpers/routes";
 import { MasterAvatarGroupWithUserFetch } from "../UserDetails/MasterAvatarGroup";
-import {
-  ConversationMemberState,
-  AudioClip,
-} from "../../../common/models/conversation";
 import { conversationService } from "@nirvana/common/services";
 import ConversationMemberStateIcon from "../Conversations/ConversationMemberStateIcon";
 import {
@@ -45,6 +44,7 @@ import {
 
 import { firestoreDb as db } from "../../services/firebaseService";
 import Collections from "@nirvana/common/services/collections";
+import TimelineAudioClip from "../Conversations/TimelineAudioClip";
 
 const testDrawerItems: {
   linkType: LinkType;
@@ -156,6 +156,8 @@ export default function ViewConvo(props: { conversationId: string }) {
     userConvoAssociationSelector(props.conversationId)
   );
 
+  const [audioClips, setAudioClips] = useState<AudioClip[]>([] as AudioClip[]);
+
   useEffect(() => {
     if (!convo || !convo.activeMembers.includes(currUser!.uid)) {
       toast.error("Not authorized for this conversation");
@@ -192,6 +194,7 @@ export default function ViewConvo(props: { conversationId: string }) {
         audioClips.push(audClip);
       });
 
+      setAudioClips(audioClips.reverse());
       console.log(audioClips);
     });
 
@@ -317,80 +320,14 @@ export default function ViewConvo(props: { conversationId: string }) {
 
           {/* have one row, but just translate it along y downward to put it in it's own place */}
           <span className="flex flex-row flex-nowrap pb-[10rem] py-[5rem] overflow-auto min-h-max">
-            {testAudioClips.map((audClip, index) => {
-              if (audClip.isGap) {
-                return (
-                  <span
-                    key={index}
-                    className={`flex flex-row justify-center items-center p-5 h-[5rem] shadow shrink-0
-                    ${
-                      index % 2 == 1 &&
-                      "translate-y-[4.75rem] border-t-4 border-t-teal-600"
-                    } ${index % 2 == 0 && "border-b-4 border-b-teal-600"}`}
-                    style={{
-                      // minWidth: "max-content",
-                      width: `5rem`,
-                    }}
-                  >
-                    ...
-                  </span>
-                );
-              } else if (audClip.isLink) {
-                return (
-                  <span
-                    key={index}
-                    className={`flex flex-row justify-center items-center p-5 h-[5rem] shadow shrink-0
-                    ${
-                      index % 2 == 1 &&
-                      "translate-y-[4.75rem] border-t-4 border-t-teal-600"
-                    } ${index % 2 == 0 && "border-b-4 border-b-teal-600"}`}
-                    style={{
-                      // minWidth: "max-content",
-                      width: `5rem`,
-                    }}
-                  >
-                    <LinkIcon
-                      linkType={LinkType.googleMeet}
-                      className="text-3xl"
-                    />
-                  </span>
-                );
-              }
+            {audioClips.reverse().map((audClip, index) => {
               return (
-                <span
-                  onClick={() => toast(`${audClip.senderName} speaking...`)}
-                  key={index}
-                  className={`hover:cursor-pointer flex flex-row items-center 
-                  p-5 h-[5rem] shadow shrink-0 last:animate-pulse last:bg-orange-200
-                 ${
-                   index % 2 == 1 &&
-                   "translate-y-[4.75rem] border-t-4 border-t-teal-600"
-                 } ${index % 2 == 0 && "border-b-4 border-b-teal-600"} ${
-                    audClip.alreadyPlayed
-                      ? "bg-slate-100 border"
-                      : "bg-sky-100 "
-                  }`}
-                  style={{
-                    minWidth: "max-content",
-                    width: `${Math.round(audClip.duration)}px`,
-                  }}
-                >
-                  <UserAvatar
-                    userFirstName={"s"}
-                    status={UserStatus.busy}
-                    size={UserAvatarSizes.large}
-                    avatarUrl={"https://joeschmoe.io/api/v1/" + Math.random()}
-                  />
-
-                  <span className="flex flex-col ml-2">
-                    <span className="text-slate-500 font-semibold">
-                      {audClip.senderName}
-                    </span>
-                    <span className="text-slate-400 text-xs">
-                      {audClip.relativeSentTime}
-                    </span>
-                  </span>
-                </span>
+                <TimelineAudioClip
+                  key={audClip.id}
+                  index={index}
+                  audioClip={audClip}
+                  convoId={props.conversationId}
+                />
               );
             })}
 
