@@ -8,6 +8,7 @@ import {
   FaRegClock,
   FaCheck,
   FaAngleRight,
+  FaStream,
 } from "react-icons/fa";
 import { useRecoilValue } from "recoil";
 import {
@@ -67,11 +68,30 @@ export default function ConversationFullRow(props: {
       toast.error("Nothing to play");
       return;
     }
-    3;
+
+    // todo: add to queue instead of playing here
     const audio = new Audio(props.conversation.cachedAudioClip.audioDataUrl);
     audio.play();
   };
 
+  // todo:
+  /**
+   * show actions based on which state it is currently in for this user
+   *
+   */
+  const currUserAssoc = usersConvosMap.get(props.conversation.id);
+
+  let currConvoMemberState: ConversationMemberState =
+    ConversationMemberState.default;
+  if (currUserAssoc) {
+    if (currUserAssoc.state == ConversationMemberState.later) {
+      currConvoMemberState = ConversationMemberState.later;
+    } else if (currUserAssoc.state == ConversationMemberState.done) {
+      currConvoMemberState = ConversationMemberState.done;
+    } else if (currUserAssoc.state == ConversationMemberState.priority) {
+      currConvoMemberState = ConversationMemberState.priority;
+    }
+  }
   return (
     <span
       onClick={handleViewConversationDetails}
@@ -120,39 +140,61 @@ export default function ConversationFullRow(props: {
           </span>
         </Tooltip>
 
-        <Tooltip title={"Priority"}>
-          <span
-            onClick={(e) => {
-              e.stopPropagation();
-              handleOrganizeConversation(ConversationMemberState.priority);
-            }}
-            className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200"
-          >
-            <FaRocket className="ml-auto text-lg" />
-          </span>
-        </Tooltip>
-        <Tooltip title={"Later"}>
-          <span
-            onClick={(e) => {
-              e.stopPropagation();
-              handleOrganizeConversation(ConversationMemberState.later);
-            }}
-            className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200"
-          >
-            <FaRegClock className="ml-auto text-lg" />
-          </span>
-        </Tooltip>
-        <Tooltip title={"Done"}>
-          <span
-            onClick={(e) => {
-              e.stopPropagation();
-              handleOrganizeConversation(ConversationMemberState.done);
-            }}
-            className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200"
-          >
-            <FaCheck className="ml-auto text-lg" />
-          </span>
-        </Tooltip>
+        {currConvoMemberState != ConversationMemberState.default && (
+          <Tooltip title={"Inbox"}>
+            <span
+              onClick={(e) => {
+                e.stopPropagation();
+                handleOrganizeConversation(ConversationMemberState.default);
+              }}
+              className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200"
+            >
+              <FaStream className="ml-auto text-lg" />
+            </span>
+          </Tooltip>
+        )}
+
+        {currConvoMemberState != ConversationMemberState.later && (
+          <Tooltip title={"Later"}>
+            <span
+              onClick={(e) => {
+                e.stopPropagation();
+                handleOrganizeConversation(ConversationMemberState.later);
+              }}
+              className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200"
+            >
+              <FaRegClock className="ml-auto text-lg" />
+            </span>
+          </Tooltip>
+        )}
+
+        {currConvoMemberState != ConversationMemberState.priority && (
+          <Tooltip title={"Priority"}>
+            <span
+              onClick={(e) => {
+                e.stopPropagation();
+                handleOrganizeConversation(ConversationMemberState.priority);
+              }}
+              className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200"
+            >
+              <FaRocket className="ml-auto text-lg" />
+            </span>
+          </Tooltip>
+        )}
+
+        {currConvoMemberState != ConversationMemberState.done && (
+          <Tooltip title={"Done"}>
+            <span
+              onClick={(e) => {
+                e.stopPropagation();
+                handleOrganizeConversation(ConversationMemberState.done);
+              }}
+              className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200"
+            >
+              <FaCheck className="ml-auto text-lg" />
+            </span>
+          </Tooltip>
+        )}
       </span>
     </span>
   );
