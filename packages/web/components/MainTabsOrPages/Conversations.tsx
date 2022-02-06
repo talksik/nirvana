@@ -130,7 +130,7 @@ export default function Conversations() {
         </>
       )}
 
-      <span className="mx-auto text-slate-300 flex-1 flex flex-col justify-end">
+      <span className="mx-auto my-auto text-slate-300 flex flex-col">
         <span className="mt-auto">{"That's all"}</span>
       </span>
     </>

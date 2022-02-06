@@ -30,7 +30,7 @@ export default function TimelineAudioClip(props: {
   };
 
   const audio = new Audio(props.audioClip.audioDataUrl);
-  audio.onloadedmetadata = loadedMetadata;
+  // audio.onloadedmetadata = loadedMetadata;
 
   const playAudioClip = () => {
     toast(`${audioClipUser?.firstName} speaking...`);
