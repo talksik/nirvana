@@ -130,11 +130,11 @@ Me.getLayout = function (content: ReactElement) {
 
       <KeyboardShortcutHandler />
 
-      <AudioHandler />
-
       <Header />
 
       {content}
+
+      <AudioHandler />
     </div>
   );
 };

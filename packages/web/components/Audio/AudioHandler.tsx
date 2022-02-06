@@ -284,7 +284,7 @@ export default function AudioHandler() {
           onPlay={(e) => console.log("onPlay")}
           showSkipControls={true}
           onEnded={onEndedPlaying}
-          className="w-screen flex flex-row"
+          className="w-screen flex flex-row fixed bottom-0"
         />
       )}
 
