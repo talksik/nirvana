@@ -42,17 +42,17 @@ console.log("initialized firebase");
 // Initialize firestore persistence for data caching
 export const firestoreDb = getFirestore(app);
 
-enableIndexedDbPersistence(firestoreDb).catch((err) => {
-  if (err.code == "failed-precondition") {
-    // Multiple tabs open, persistence can only be enabled
-    // in one tab at a a time.
-    // ...
-  } else if (err.code == "unimplemented") {
-    // The current browser does not support all of the
-    // features required to enable persistence
-    // ...
-  }
-});
+// enableIndexedDbPersistence(firestoreDb).catch((err) => {
+//   if (err.code == "failed-precondition") {
+//     // Multiple tabs open, persistence can only be enabled
+//     // in one tab at a a time.
+//     // ...
+//   } else if (err.code == "unimplemented") {
+//     // The current browser does not support all of the
+//     // features required to enable persistence
+//     // ...
+//   }
+// });
 
 setPersistence(getAuth(), browserSessionPersistence);
 

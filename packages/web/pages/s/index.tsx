@@ -45,7 +45,7 @@ export default function Me() {
   } else if (currPage === QueryRoutes.createConvo) {
     fullCleanPageContent = <CreateConversation />;
   } else if (currConvo) {
-    fullCleanPageContent = <ViewConvo conversationId={"woahhh"} />;
+    fullCleanPageContent = <ViewConvo conversationId={currConvo} />;
   }
 
   if (fullCleanPageContent) {

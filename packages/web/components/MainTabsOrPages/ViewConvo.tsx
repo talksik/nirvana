@@ -17,6 +17,12 @@ import {
 } from "react-icons/fa";
 import LinkIcon from "../Drawer/LinkIcon";
 import UserAvatar, { UserAvatarSizes } from "../UserDetails/UserAvatar";
+import { useRecoilValue } from "recoil";
+import { allRelevantConversationsAtom } from "../../recoil/main";
+import { useRouter } from "next/router";
+import Conversation from "@nirvana/common/models/conversation";
+import { useAuth } from "../../contexts/authContext";
+import { QueryRoutes, Routes } from "@nirvana/common/helpers/routes";
 
 const testDrawerItems: {
   linkType: LinkType;
@@ -102,15 +108,35 @@ const testAudioClips: {
 ];
 
 export default function ViewConvo(props: { conversationId: string }) {
-  // auth if do not have this conversation in react cache, then we are not authorized
+  const { currUser } = useAuth();
 
-  // if somehow it's still cached but we were removed,
-  // then authenticate by checking if we are in the array of users for the conversation
+  const allConvosMap = useRecoilValue(allRelevantConversationsAtom);
 
   const endOfTimeline = useRef<HTMLSpanElement>();
 
+  const router = useRouter();
+
   useEffect(() => {
     endOfTimeline.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
+
+  // auth if do not have this conversation in react cache, then we are not authorized
+  // if somehow it's still cached but we were removed,
+  // then authenticate by checking if we are in the array of users for the conversation
+
+  const convo: Conversation | undefined = allConvosMap.get(
+    props.conversationId
+  );
+
+  useEffect(() => {
+    if (!convo || !convo.activeMembers.includes(currUser!.uid)) {
+      toast.error("Not authorized for this conversation");
+
+      router.push({
+        pathname: Routes.home,
+        query: { page: QueryRoutes.convos },
+      });
+    }
   }, []);
 
   return (
@@ -120,21 +146,21 @@ export default function ViewConvo(props: { conversationId: string }) {
         <div className="flex-1 flex flex-col overflow-auto">
           {/* header */}
           <span className="flex flex-row justify-between items-center mb-5">
-            <span className="flex flex-col group">
-              <span className="flex flex-row items-center">
+            <span className="flex flex-col">
+              <span className="flex flex-row items-center group">
                 <span
                   className="text-md tracking-widest font-semibold 
           text-slate-500 uppercase"
                 >
-                  Engineering
+                  {convo?.name}
                 </span>
                 <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 group-hover:visible invisible">
                   <FaEdit className="ml-auto text-md text-slate-400" />
                 </span>
               </span>
 
-              <span className="text-xs text-slate-300 hover:decoration-slate-400">
-                25 members
+              <span className="text-xs text-slate-300 hover:decoration-slate-400 hover:underline hover:cursor-pointer">
+                {convo?.activeMembers.length} members
               </span>
             </span>
 
