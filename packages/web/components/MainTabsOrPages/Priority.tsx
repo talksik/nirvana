@@ -194,6 +194,25 @@ export default function Priority() {
       });
   };
 
+  const playLastClip = () => {
+    if (!selectedConvoId) {
+      toast.error("select a conversation before playing");
+      return;
+    }
+
+    const currConvo = priorityConvos.find(
+      (convo) => convo.id == selectedConvoId
+    );
+
+    if (!currConvo?.cachedAudioClip) {
+      toast.error("nothing to play");
+      return;
+    }
+
+    const audio = new Audio(currConvo?.cachedAudioClip.audioDataUrl);
+    audio.play();
+  };
+
   const keyMap: KeyMap = {
     SELECT_PRIORITY_CONVO: ["1", "2", "3", "4", "5", "6", "7", "8"],
     START_RECORDING: {
@@ -206,12 +225,14 @@ export default function Priority() {
       sequence: "r",
       action: "keyup",
     },
+    PLAY_LAST_CLIP: "space",
   };
 
   const handlers = {
     SELECT_PRIORITY_CONVO: selectingPriorityConvoHandler,
     START_RECORDING: startRecording,
     STOP_RECORDING: stopRecording,
+    PLAY_LAST_CLIP: playLastClip,
   };
 
   return (

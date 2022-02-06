@@ -13,7 +13,8 @@ export default class Conversation {
 
   cachedAudioClip?: AudioClip; // last message pretty much
   cachedDrawerItem?: Link; // last link pretty much
-  cachedTldrClip?: string;
+
+  tldr?: string; // description almost that people keep up to day in the convo
 
   createdDate: Timestamp = Timestamp.now();
   createdByUserId: string;

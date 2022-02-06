@@ -27,11 +27,6 @@ export default function ConversationFullRow(props: {
 }) {
   const { currUser } = useAuth();
   const usersConvosMap = useRecoilValue(allUsersConversationsAtom);
-  let quickUpdateText = "";
-
-  if (props.conversation.cachedAudioClips?.length > 0) {
-    quickUpdateText = `${props.conversation.cachedAudioClips[0].senderUserId} spoke just now...`;
-  }
 
   // check if I am outdate on a certain conversation
   const isNewIncoming = useRecoilValue(
@@ -79,7 +74,7 @@ export default function ConversationFullRow(props: {
       </span>
 
       <span className="text-slate-300 w-[20rem] truncate text-sm">
-        {quickUpdateText}
+        {props.conversation.tldr}
       </span>
 
       <span className="ml-auto text-slate-300 text-sm group-hover:invisible">
