@@ -115,7 +115,7 @@ export const sortedRoomSelector = selector<Conversation[]>({
         return 1;
       }
 
-      if (a.lastActivityDate.toDate() > b.lastActivityDate.toDate()) {
+      if (a.lastActivityDate.toDate() < b.lastActivityDate.toDate()) {
         return 1;
       }
 
