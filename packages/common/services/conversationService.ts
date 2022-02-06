@@ -9,9 +9,13 @@ import {
   runTransaction,
   writeBatch,
 } from "firebase/firestore";
-import Conversation, { ConversationMember } from "../models/conversation";
+import Conversation, {
+  AudioClip,
+  ConversationMember,
+  ConversationMemberState,
+} from "../models/conversation";
 import Collections from "./collections";
-import { ConversationMemberState } from "../models/conversation";
+import { cloudStorageService } from "./index";
 
 export default class ConversationService {
   private db: Firestore = getFirestore();
@@ -102,5 +106,48 @@ export default class ConversationService {
         };
 
     await setDoc(docRef, newUpdates, { merge: true });
+  }
+
+  async sendAudioClip(
+    createdByUserId: string,
+    audioMp3File: File,
+    convoId: string
+  ) {
+    // upload to cloud storage
+    const downloadUrl = await cloudStorageService.uploadMessageAudioFile(
+      audioMp3File
+    );
+    const newAudioClip = new AudioClip(downloadUrl, createdByUserId);
+    newAudioClip.audioDataUrl = downloadUrl;
+
+    const audioClipRef = doc(
+      this.db,
+      Collections.conversations,
+      convoId,
+      Collections.conversationAudioClips,
+      newAudioClip.id
+    );
+
+    const conversationDoc = doc(this.db, Collections.conversations, convoId);
+
+    await runTransaction(this.db, async (transaction) => {
+      // want to add to the long term collection of all audio clips for a conversation
+      transaction.set(
+        audioClipRef,
+        { ...newAudioClip, createdDate: serverTimestamp() },
+        { merge: true }
+      );
+
+      // want to make updates to the conversation document itself: set the last item for just the basic information to be
+      // published to users
+      transaction.set(
+        conversationDoc,
+        {
+          lastActivityDate: serverTimestamp(),
+          cachedAudioClip: { ...newAudioClip, createdDate: serverTimestamp() },
+        },
+        { merge: true }
+      );
+    });
   }
 }

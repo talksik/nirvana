@@ -20,6 +20,9 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import MicRecorder from "mic-recorder-to-mp3";
 import { v4 as uuidv4 } from "uuid";
+import { conversationService } from "../../../common/services/index";
+import { AudioClip } from "@nirvana/common/models/conversation";
+import { useAuth } from "../../contexts/authContext";
 
 // New instance
 const recorder = new MicRecorder({
@@ -29,12 +32,14 @@ const recorder = new MicRecorder({
 const MAX_SHORTCUT_MAPPINGS_PRIORITY = 8;
 
 export default function Priority() {
+  const { currUser } = useAuth();
+
   const priorityConvos = useRecoilValue(priorityConvosSelector);
   const [mapShortcutsToConvoId, setmapShortcutsToConvoId] = useState<
     Map<string, string>
   >(new Map<string, string>());
 
-  const setSelectedConversationId = useSetRecoilState(
+  const [selectedConvoId, setSelectedConversationId] = useRecoilState(
     selectedPriorityConvoAtom
   );
 
@@ -110,6 +115,10 @@ export default function Priority() {
 
   const startRecording = () => {
     // check if there is a person selected
+    if (!selectedConvoId) {
+      toast.error("You must select a person first!");
+      return;
+    }
 
     // check that we have mic permissions
     if (!hasMicPermissions) {
@@ -149,10 +158,15 @@ export default function Priority() {
 
     setIsRecording(false);
 
+    if (!selectedConvoId) {
+      toast.error("problem in sending clip");
+      return;
+    }
+
     recorder
       .stop()
       .getMp3()
-      .then(([buffer, blob]) => {
+      .then(async ([buffer, blob]) => {
         const blobURL = URL.createObjectURL(blob);
 
         const file = new File(buffer, uuidv4() + ".mp3", {
@@ -163,6 +177,16 @@ export default function Priority() {
         const player = new Audio(URL.createObjectURL(file));
         // player.onended = onEndedPlaying;
         player.play();
+
+        // send to service which handles the upload to blob and also the conversation database
+        await conversationService.sendAudioClip(
+          currUser!.uid,
+          file,
+          selectedConvoId
+        );
+
+        console.log("successfully sent audio clip");
+        toast.success("successfully sent audio clip");
       })
       .catch((error) => {
         console.log(error);

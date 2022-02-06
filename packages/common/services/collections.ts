@@ -14,6 +14,7 @@ enum Collections {
   // v2
   conversations = "conversations",
   conversationMembers = "members",
+  conversationAudioClips = "audioClips",
 }
 
 export default Collections;

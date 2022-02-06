@@ -11,9 +11,9 @@ export default class Conversation {
   activeMembers: string[]; // userIds
   membersInLiveRoom: string[] = [] as string[]; // all members in a live call right now for this convo
 
-  cachedAudioClips: AudioClip[] = [] as AudioClip[];
-  cachedDrawerItems: Link[] = [] as Link[];
-  tldrClips: AudioClip[] = [] as AudioClip[];
+  cachedAudioClip?: AudioClip; // last message pretty much
+  cachedDrawerItem?: Link; // last link pretty much
+  cachedTldrClip?: string;
 
   createdDate: Timestamp = Timestamp.now();
   createdByUserId: string;
@@ -68,7 +68,7 @@ export enum ConversationMemberState {
 export class AudioClip {
   id: string = uuid();
 
-  audioDataUrl: string;
+  audioDataUrl?: string;
 
   senderUserId: string;
   createdDate: Timestamp = Timestamp.now();
