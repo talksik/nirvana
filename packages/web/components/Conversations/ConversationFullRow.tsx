@@ -75,7 +75,7 @@ export default function ConversationFullRow(props: {
   return (
     <span
       onClick={handleViewConversationDetails}
-      className="py-5 px-4 border-t border-t-slate-200 flex flex-row
+      className="py-5 px-4 border-t border-t-slate-200 flex flex-row last:border-b-slate-200 last:border-b
        hover:bg-slate-50 transition-all items-center group relative"
     >
       {isNewIncoming && (
