@@ -129,6 +129,13 @@ export default class ConversationService {
     );
 
     const conversationDoc = doc(this.db, Collections.conversations, convoId);
+    const userConvoAssocDoc = doc(
+      this.db,
+      Collections.conversations,
+      convoId,
+      Collections.conversationMembers,
+      createdByUserId
+    );
 
     await runTransaction(this.db, async (transaction) => {
       // want to add to the long term collection of all audio clips for a conversation
@@ -145,6 +152,15 @@ export default class ConversationService {
         {
           lastActivityDate: serverTimestamp(),
           cachedAudioClip: { ...newAudioClip, createdDate: serverTimestamp() },
+        },
+        { merge: true }
+      );
+
+      // update the user's convo assoc so that their last interaction was set properly
+      transaction.set(
+        userConvoAssocDoc,
+        {
+          lastInteractionDate: serverTimestamp(),
         },
         { merge: true }
       );
