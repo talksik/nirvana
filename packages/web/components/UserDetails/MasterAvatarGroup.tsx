@@ -36,33 +36,33 @@ export default function MasterAvatarGroup(props: {
         key={finalistUsers[0].id}
         src={finalistUsers[0].avatarUrl}
         shape={AVATAR_SHAPE}
-        size={"large"}
+        size={"default"}
       />
     );
   }
 
-  if (finalistUsers?.length == 2) {
-    return (
-      <span className="flex flex-row items-center w-[4rem] relative">
-        <span className="absolute left-0">
-          <Avatar
-            key={finalistUsers[0].id}
-            src={finalistUsers[0].avatarUrl}
-            shape={AVATAR_SHAPE}
-            size={"default"}
-          />
-        </span>
-        <span className="absolute right-0">
-          <Avatar
-            key={finalistUsers[1].id}
-            src={finalistUsers[1].avatarUrl}
-            shape={AVATAR_SHAPE}
-            size={"default"}
-          />
-        </span>
-      </span>
-    );
-  }
+  // if (finalistUsers?.length == 2) {
+  //   return (
+  //     <span className="flex flex-row items-center w-[4rem] relative">
+  //       <span className="absolute left-0">
+  //         <Avatar
+  //           key={finalistUsers[0].id}
+  //           src={finalistUsers[0].avatarUrl}
+  //           shape={AVATAR_SHAPE}
+  //           size={"default"}
+  //         />
+  //       </span>
+  //       <span className="absolute right-0">
+  //         <Avatar
+  //           key={finalistUsers[1].id}
+  //           src={finalistUsers[1].avatarUrl}
+  //           shape={AVATAR_SHAPE}
+  //           size={"default"}
+  //         />
+  //       </span>
+  //     </span>
+  //   );
+  // }
 
   return (
     <Avatar.Group
