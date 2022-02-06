@@ -42,7 +42,7 @@ export default function TimelineAudioClip(props: {
   const playAudioClip = () => {
     // current audioclip included in the array of audioclipstoplay
     setAudioQueue((prevQueue) => {
-      return [...prevQueue, ...props.audioClipsToPlay];
+      return props.audioClipsToPlay;
     });
   };
 

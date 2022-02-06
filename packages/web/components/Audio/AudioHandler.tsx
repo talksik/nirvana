@@ -10,12 +10,14 @@ import {
   selectedConvoAtom,
 } from "../../recoil/main";
 import MicRecorder from "mic-recorder-to-mp3";
+import AudioPlayer from "react-h5-audio-player";
 import toast from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
 import { conversationService } from "@nirvana/common/services";
 import { useAuth } from "../../contexts/authContext";
 import { useRouter } from "next/router";
 import { AudioClip } from "@nirvana/common/models/conversation";
+import "react-h5-audio-player/lib/styles.css";
 
 // New instance
 const recorder = new MicRecorder({
@@ -52,10 +54,25 @@ export default function AudioHandler() {
   }
 
   useEffect(() => {
-    if (audioQueue.length > 0) {
-      const audio = new Audio(audioQueue[0].audioDataUrl);
-      audio.onended = onEndedPlaying;
-      audio.play();
+    if (audioQueue.length > 0 && audioQueue[0].audioDataUrl) {
+      console.log("Adding clip to Queue");
+
+      // edge case, if it's the same link again, then still play it somehow
+      if (playerSrc == audioQueue[0].audioDataUrl) {
+        // play empty one and then add the next audio file
+        setPlayerSrc("");
+
+        setTimeout(() => {
+          setPlayerSrc(audioQueue[0].audioDataUrl || null);
+        }, 1000);
+      } else {
+        setPlayerSrc(audioQueue[0].audioDataUrl);
+      }
+    }
+
+    if (!audioQueue || audioQueue.length == 0) {
+      console.log("clearing player");
+      setPlayerSrc(null);
     }
   }, [audioQueue]);
 
@@ -112,6 +129,8 @@ export default function AudioHandler() {
   const [recordingToastId, setRecordingToastId] = useState<string>("");
   const [isRecording, setIsRecording] = useRecoilState(isRecordingAtom);
 
+  const [playerSrc, setPlayerSrc] = useState<string | null>(null);
+
   const startRecording = () => {
     // check if there is a person selected
     if (!selectedConvoId) {
@@ -143,7 +162,7 @@ export default function AudioHandler() {
         toast.error("there was a problem in starting your recording")
       );
 
-    const toastId = toast.loading("speaking to Patels");
+    const toastId = toast.loading("recording");
     setRecordingToastId(toastId);
   };
 
@@ -257,6 +276,19 @@ export default function AudioHandler() {
   };
 
   return (
-    <GlobalHotKeys keyMap={keyMap} handlers={handlers} allowChanges={true} />
+    <>
+      {playerSrc && (
+        <AudioPlayer
+          autoPlay
+          src={playerSrc}
+          onPlay={(e) => console.log("onPlay")}
+          showSkipControls={true}
+          onEnded={onEndedPlaying}
+          className="w-screen flex flex-row"
+        />
+      )}
+
+      <GlobalHotKeys keyMap={keyMap} handlers={handlers} allowChanges={true} />
+    </>
   );
 }
