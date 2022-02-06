@@ -43,8 +43,6 @@ export default function AudioHandler() {
   const [audioQueue, setAudioQueue] = useRecoilState(audioQueueAtom);
 
   function onEndedPlaying(e) {
-    toast.success("finished playing");
-
     // remove from queue and the queue manager will handle the rest
     setAudioQueue((prevQueue) => {
       const newQueue: AudioClip[] = [...prevQueue];

@@ -17,6 +17,7 @@ export default function TimelineAudioClip(props: {
   index: number;
   audioClip: AudioClip;
   convoId: string;
+  audioClipsToPlay: AudioClip[];
 }) {
   const relContactsMap = useRecoilValue(allRelevantContactsAtom);
   const userConvosMap = useRecoilValue(allUsersConversationsAtom);
@@ -39,8 +40,9 @@ export default function TimelineAudioClip(props: {
   // audio.onloadedmetadata = loadedMetadata;
 
   const playAudioClip = () => {
+    // current audioclip included in the array of audioclipstoplay
     setAudioQueue((prevQueue) => {
-      return [...prevQueue, props.audioClip];
+      return [...prevQueue, ...props.audioClipsToPlay];
     });
   };
 

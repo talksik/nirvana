@@ -277,12 +277,14 @@ export default function ViewConvo(props: { conversationId: string }) {
           {/* have one row, but just translate it along y downward to put it in it's own place */}
           <span className="flex flex-row flex-nowrap pb-[10rem] py-[5rem] overflow-auto min-h-max">
             {audioClips.reverse().map((audClip, index) => {
+              const restAudioClips = audioClips.slice(index);
               return (
                 <TimelineAudioClip
                   key={audClip.id}
                   index={index}
                   audioClip={audClip}
                   convoId={props.conversationId}
+                  audioClipsToPlay={restAudioClips}
                 />
               );
             })}
