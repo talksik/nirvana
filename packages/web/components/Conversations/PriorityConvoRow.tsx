@@ -17,6 +17,7 @@ import { useCallback } from "react";
 import { FaAngleRight } from "react-icons/fa";
 import { useRouter } from "next/router";
 import { Routes } from "@nirvana/common/helpers/routes";
+import { isRecordingAtom } from "../../recoil/main";
 
 export default function PriorityConvoRow(props: {
   conversation: Conversation;
@@ -26,6 +27,7 @@ export default function PriorityConvoRow(props: {
   const [selectedConvo, setSelectedConvo] = useRecoilState(selectedConvoAtom);
 
   const isSelected = selectedConvo == props.conversation.id ? true : false;
+  const isRecording = useRecoilValue(isRecordingAtom);
 
   // who was the last sender based on the lastInteractionDate etc.
   const isNewIncoming = useRecoilValue(
@@ -86,8 +88,15 @@ justify-center rounded-lg text-slate-400 font-bold hover:cursor-pointer text-xs"
       {isSelected && (
         <>
           <Tooltip title={"Record by pressing and holding R on keyboard."}>
-            <span className="ml-auto p-2 rounded-full hover:cursor-pointer hover:bg-slate-200">
-              <FaMicrophoneAlt className="ml-auto text-lg text-orange-800" />
+            <span
+              className={`ml-auto p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 transition-all
+            ${
+              isRecording && isSelected
+                ? "bg-orange-700 text-white animate-pulse animate-ping scale-125"
+                : "text-orange-800"
+            }`}
+            >
+              <FaMicrophoneAlt className="ml-auto text-lg" />
             </span>
           </Tooltip>
 
