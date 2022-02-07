@@ -40,12 +40,12 @@ export default function Me() {
    *    4. profile edit? nah not needed...just keep current separate page
    */
 
-  var fullCleanPageContent: ReactElement = undefined;
+  let fullCleanPageContent: ReactElement | undefined = undefined;
   if (currPage === QueryRoutes.search) {
     fullCleanPageContent = <SearchResults />;
   } else if (currPage === QueryRoutes.createConvo) {
     fullCleanPageContent = <CreateConversation />;
-  } else if (currConvo) {
+  } else if (currConvo && typeof currConvo === "string") {
     fullCleanPageContent = <ViewConvo conversationId={currConvo} />;
   }
 
