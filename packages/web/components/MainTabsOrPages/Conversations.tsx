@@ -151,8 +151,8 @@ export default function Conversations() {
         </>
       )}
 
-      <span className="mx-auto my-auto text-slate-300 flex flex-col">
-        <span className="mt-auto">{"That's all"}</span>
+      <span className="mx-auto mt-5 text-slate-300 flex flex-col">
+        <span className="">{"That's all"}</span>
       </span>
     </>
   );
