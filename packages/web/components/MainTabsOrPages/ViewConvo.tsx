@@ -2,7 +2,13 @@ import { LinkType } from "@nirvana/common/models/conversation";
 import { UserStatus } from "@nirvana/common/models/user";
 import { Tooltip } from "antd";
 import { duration } from "moment";
-import { useEffect, useRef, useState } from "react";
+import {
+  LegacyRef,
+  useEffect,
+  useRef,
+  useState,
+  MutableRefObject,
+} from "react";
 import toast from "react-hot-toast";
 import {
   FaCheck,

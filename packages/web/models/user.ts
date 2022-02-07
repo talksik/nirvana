@@ -4,7 +4,6 @@ import {
   serverTimestamp,
   Timestamp,
 } from "firebase/firestore";
-import IFirestoreSerializable from "./firestoreSerializable";
 
 export class User {
   id: string;

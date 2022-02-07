@@ -1,8 +1,8 @@
 import { Divider } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { User } from "../../models/user";
-import UserService from "../../services/userService";
+import User from "@nirvana/common/models/user";
+import UserService from "@nirvana/common/services/userService";
 import { useAuth } from "../../contexts/authContext";
 
 export default function Profile() {
@@ -22,7 +22,8 @@ export default function Profile() {
           console.log(
             "not authenticated...routing from dashboard to teams home"
           );
-          // router.push('/teams/login')
+          router.push("/teams/login");
+          return;
         }
 
         // get user
@@ -32,10 +33,10 @@ export default function Profile() {
 
         // if the user is null, then go ahead and create the user even though it's not there yet
         if (!returnedUser) {
-          userService.createUser(
+          await userService.createUser(
             currUser.uid,
-            currUser.email,
-            currUser.photoURL
+            currUser.email!,
+            currUser.photoURL!
           );
         }
 
@@ -124,7 +125,7 @@ export default function Profile() {
           Please change your google image to change this.
         </span>
         <img
-          src={user ? user.avatarUrl : currUser.photoURL}
+          src={user ? user.avatarUrl : currUser!.photoURL}
           alt="asdf"
           className="rounded-lg mt-2"
         />

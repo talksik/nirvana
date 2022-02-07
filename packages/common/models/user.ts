@@ -6,9 +6,7 @@ import {
 } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 
-import IFirestoreSerializable from "./firestoreSerializable";
-
-export class User {
+export default class User {
   id: string = uuidv4();
   emailAddress: string;
 
