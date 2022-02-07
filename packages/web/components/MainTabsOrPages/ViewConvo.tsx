@@ -275,22 +275,31 @@ export default function ViewConvo(props: { conversationId: string }) {
           )}
 
           {/* have one row, but just translate it along y downward to put it in it's own place */}
+
           <span
             className="flex flex-row flex-nowrap pb-[10rem] py-[5rem] 
           overflow-auto min-h-max shadow-xl bg-slate-50 rounded"
           >
-            {audioClips.reverse().map((audClip, index) => {
-              const restAudioClips = audioClips.slice(index);
-              return (
-                <TimelineAudioClip
-                  key={audClip.id}
-                  index={index}
-                  audioClip={audClip}
-                  convoId={props.conversationId}
-                  audioClipsToPlay={restAudioClips}
-                />
-              );
-            })}
+            {audioClips?.length > 0 ? (
+              audioClips.reverse().map((audClip, index) => {
+                const restAudioClips = audioClips.slice(index);
+                return (
+                  <TimelineAudioClip
+                    key={audClip.id}
+                    index={index}
+                    audioClip={audClip}
+                    convoId={props.conversationId}
+                    audioClipsToPlay={restAudioClips}
+                  />
+                );
+              })
+            ) : (
+              <span className="text-slate-300 mx-auto my-auto text-center">
+                Please get this conversation started <br></br> by pressing and
+                holding{" "}
+                <span className="text-orange-500 font-semibold">R.</span>
+              </span>
+            )}
 
             <span ref={endOfTimeline}></span>
           </span>
