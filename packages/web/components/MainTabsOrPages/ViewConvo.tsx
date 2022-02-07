@@ -21,6 +21,8 @@ import UserAvatar, { UserAvatarSizes } from "../UserDetails/UserAvatar";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
   allRelevantConversationsAtom,
+  audioQueueCurrentClipSelector,
+  isRecordingAtom,
   selectedConvoAtom,
   userConvoAssociationSelector,
 } from "../../recoil/main";
@@ -229,6 +231,9 @@ export default function ViewConvo(props: { conversationId: string }) {
     toast("Coming soon!");
   };
 
+  const isRecording = useRecoilValue(isRecordingAtom);
+  const audioQueueCurrentItem = useRecoilValue(audioQueueCurrentClipSelector);
+
   return (
     <>
       {/* <Modal
@@ -423,19 +428,27 @@ export default function ViewConvo(props: { conversationId: string }) {
           <span className="mx-auto flex flex-row py-10 space-x-5">
             <Tooltip title={"Press and hold R to send a voice clip."}>
               <span
-                className="ml-auto shadow-lg flex flex-row items-center p-5 
-            justify-center rounded-lg bg-slate-50 font-bold hover:cursor-pointer"
+                className={`ml-auto shadow-lg flex flex-row items-center p-5 
+            justify-center rounded-lg font-bold hover:cursor-pointer ${
+              isRecording
+                ? "bg-orange-700 text-white"
+                : "bg-slate-50 text-orange-700"
+            }`}
               >
-                <FaMicrophone className="text-xl text-orange-700" />
+                <FaMicrophone className="text-xl " />
               </span>
             </Tooltip>
 
             <Tooltip title={"SPACE to play last conversation chunk."}>
               <span
-                className="shadow-lg flex flex-row items-center p-5 justify-center 
-          rounded-lg bg-slate-50 font-bold"
+                className={`shadow-lg flex flex-row items-center p-5 justify-center 
+          rounded-lg font-bold ${
+            !audioQueueCurrentItem
+              ? "bg-slate-50 text-teal-600"
+              : " bg-teal-600 text-white"
+          }`}
               >
-                <FaPlay className="text-teal-600 text-xl" />
+                <FaPlay className="text-xl" />
               </span>
             </Tooltip>
           </span>
