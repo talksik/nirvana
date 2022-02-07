@@ -341,9 +341,8 @@ export default function ViewConvo(props: { conversationId: string }) {
             </span>
           </span>
 
-          {convo?.tldr && !editTldrMode ? (
+          {!editTldrMode ? (
             <>
-              <span></span>
               <span
                 onClick={() => setEditTldrMode(true)}
                 className="flex flex-row group items-center"
