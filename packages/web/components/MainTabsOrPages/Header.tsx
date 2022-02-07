@@ -16,38 +16,15 @@ import MainLogo from "../Logo/MainLogo";
 import UserStatusBubble from "../UserDetails/UserStatusBubble";
 import { useAuth } from "../../contexts/authContext";
 import { nirvanaUserDataAtom } from "../../recoil/main";
+import { getAuth, signOut } from "firebase/auth";
+
+const auth = getAuth();
 
 export default function Header() {
   const { currUser } = useAuth();
   const nirvanaUserData = useRecoilValue(nirvanaUserDataAtom);
 
   const router = useRouter();
-
-  const UserMenu = (
-    <Menu title="user menu">
-      <Menu.Item
-        key={2}
-        onClick={() => router.push("/teams/profile")}
-        icon={<FaUser />}
-      >
-        <button>Profile</button>
-      </Menu.Item>
-
-      <Menu.Item
-        onClick={() => window.open("/teams", "_self")}
-        key={"team hub"}
-        icon={<FaLayerGroup />}
-      >
-        <button>Team Hub</button>
-      </Menu.Item>
-
-      <Menu.Divider />
-
-      <Menu.Item danger key={3} onClick={() => console.log("sign out")}>
-        <button>Sign Out</button>
-      </Menu.Item>
-    </Menu>
-  );
 
   const inputRef = useRef<HTMLInputElement | undefined>();
 
@@ -76,6 +53,42 @@ export default function Header() {
       query: { q: encodeURI(newSearchInput), page: QueryRoutes.search },
     });
   };
+
+  const logOut = async () => {
+    // setLoading(true);
+
+    console.log("logging user out");
+
+    router.push("/");
+
+    await signOut(auth);
+  };
+
+  const UserMenu = (
+    <Menu title="user menu">
+      <Menu.Item
+        key={2}
+        onClick={() => router.push("/teams/profile")}
+        icon={<FaUser />}
+      >
+        <button>Profile</button>
+      </Menu.Item>
+
+      <Menu.Item
+        onClick={() => window.open("/teams", "_self")}
+        key={"team hub"}
+        icon={<FaLayerGroup />}
+      >
+        <button>Team Hub</button>
+      </Menu.Item>
+
+      <Menu.Divider />
+
+      <Menu.Item danger key={3} onClick={logOut}>
+        <button>Sign Out</button>
+      </Menu.Item>
+    </Menu>
+  );
 
   const keyMap: KeyMap = {
     SELECT_SEARCH: {

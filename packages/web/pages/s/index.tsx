@@ -99,7 +99,7 @@ export default function Me() {
       case QueryRoutes.drawer:
         return <Drawer />;
       default:
-        return <></>;
+        return <Conversations />;
     }
   }
 
