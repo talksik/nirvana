@@ -18,6 +18,7 @@ import LiveRoom from "../Conversations/LiveRoom";
 import Conversation from "@nirvana/common/models/conversation";
 import { useRecoilValue } from "recoil";
 import {
+  countNavigationContentSelector,
   liveRoomsSelector,
   RelativeTimeConvosSections,
   RelativeTimeSeparatedConvosSelector,
@@ -44,6 +45,26 @@ export default function Conversations() {
   const oldJunkConvos = relativeConvoSections.get(
     RelativeTimeConvosSections.oldJunk
   );
+
+  const navConvoCounts = useRecoilValue(countNavigationContentSelector);
+  const isStaleState =
+    navConvoCounts.liveCount == 0 && navConvoCounts.defaultCount == 0;
+
+  if (isStaleState) {
+    return (
+      <div className="mx-auto my-auto flex flex-col">
+        <img
+          src="/illustrations/undraw_meditation_re_gll0.svg"
+          className="h-[15rem] mx-auto my-auto"
+        />
+
+        <span></span>
+        <span className="text-slate-400 text-center mt-5">
+          {"Oh the sound of silence..."}
+        </span>
+      </div>
+    );
+  }
 
   return (
     <>
