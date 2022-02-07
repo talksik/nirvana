@@ -47,6 +47,7 @@ import { firestoreDb as db } from "../../services/firebaseService";
 import Collections from "@nirvana/common/services/collections";
 import TimelineAudioClip from "../Conversations/TimelineAudioClip";
 import Modal from "antd/lib/modal/Modal";
+import { configure } from "react-hotkeys";
 
 const testDrawerItems: {
   linkType: LinkType;
@@ -185,6 +186,11 @@ export default function ViewConvo(props: { conversationId: string }) {
     setCurrConvoModal(ConvoModal.na);
   };
 
+  // to allow not having commands while editing the input
+  configure({
+    ignoreTags: ["input", "select", "textarea"],
+  });
+
   const handleEditTldr = () => {
     console.log("updating tldr with modal");
   };
@@ -219,6 +225,10 @@ export default function ViewConvo(props: { conversationId: string }) {
     setIsSubmitting(false);
   };
 
+  const handleAdminEdit = () => {
+    toast("Coming soon!");
+  };
+
   return (
     <>
       {/* <Modal
@@ -246,7 +256,10 @@ export default function ViewConvo(props: { conversationId: string }) {
                   {convo?.name}
                 </span>
 
-                <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 group-hover:visible invisible">
+                <span
+                  onClick={handleAdminEdit}
+                  className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 group-hover:visible invisible"
+                >
                   <FaEdit className="ml-auto text-md text-slate-400" />
                 </span>
               </span>
