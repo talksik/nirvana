@@ -1,7 +1,7 @@
 import Conversation, {
   ConversationMember,
 } from "@nirvana/common/models/conversation";
-import { User } from "@nirvana/common/models/user";
+import User from "@nirvana/common/models/user";
 import Collections from "@nirvana/common/services/collections";
 import {
   collection,

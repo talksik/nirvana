@@ -254,7 +254,7 @@ export default function AudioHandler() {
   };
 
   const keyMap: KeyMap = {
-    SELECT_PRIORITY_CONVO: ["1", "2", "3", "4", "5", "6", "7", "8"],
+    SELECT_PRIORITY_CONVO: ["1", "2", "3", "4", "5", "6", "7", "8"], // todo dynamically map
     START_RECORDING: {
       name: "START RECORDING",
       sequence: "r",

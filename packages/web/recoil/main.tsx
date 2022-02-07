@@ -5,7 +5,7 @@ import Conversation, {
   Link,
   ConversationMemberState,
 } from "@nirvana/common/models/conversation";
-import { User as NirvanaUser } from "@nirvana/common/models/user";
+import * as NirvanaUser from "@nirvana/common/models/user";
 import { conversationService, userService } from "@nirvana/common/services";
 
 import { atom, DefaultValue, selector, selectorFamily } from "recoil";
@@ -53,7 +53,7 @@ export enum RecoilActions {
   AUDIO_QUEUE_CURRENT_ITEM_SELECTOR = "AUDIO_QUEUE_CURRENT_ITEM_SELECTOR",
 }
 
-export const nirvanaUserDataAtom = atom<NirvanaUser | null>({
+export const nirvanaUserDataAtom = atom<NirvanaUser.default | null>({
   key: RecoilActions.ALL_COMPLETE_CONVERSATIONS,
   default: null,
 });
@@ -399,9 +399,9 @@ export const checkIncomingMessageSelector = selectorFamily({
 
 // map cache of all relevant users
 // get all of the users in all of the conversations, once through a simple service call
-export const allRelevantContactsAtom = atom<Map<string, NirvanaUser>>({
+export const allRelevantContactsAtom = atom<Map<string, NirvanaUser.default>>({
   key: RecoilActions.ALL_RELEVANT_CONTACTS,
-  default: new Map<string, NirvanaUser>(),
+  default: new Map<string, NirvanaUser.default>(),
 });
 
 // todo: useful selector where a component can pass in a list of users
