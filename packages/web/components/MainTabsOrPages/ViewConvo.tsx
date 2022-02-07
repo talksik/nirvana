@@ -85,10 +85,6 @@ export default function ViewConvo(props: { conversationId: string }) {
 
   const router = useRouter();
 
-  useEffect(() => {
-    endOfTimeline.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
-
   // auth if do not have this conversation in react cache, then we are not authorized
   // if somehow it's still cached but we were removed,
   // then authenticate by checking if we are in the array of users for the conversation
@@ -104,6 +100,10 @@ export default function ViewConvo(props: { conversationId: string }) {
   const [audioClips, setAudioClips] = useState<AudioClip[]>([] as AudioClip[]);
 
   const setSelectedConvoId = useSetRecoilState(selectedConvoAtom);
+
+  useEffect(() => {
+    endOfTimeline.current?.scrollIntoView({ behavior: "smooth" });
+  }, [audioClips]);
 
   useEffect(() => {
     // should have this convo, otherwise unauthorized
@@ -173,7 +173,7 @@ export default function ViewConvo(props: { conversationId: string }) {
   return (
     <>
       <div className="flex flex-col items-stretch mt-5 space-y-10">
-        {/* main timeline view with action buttons on top */}
+        {/* convo name and action buttons on top */}
         <div className="flex-1 flex flex-col overflow-auto">
           {/* header */}
           <span className="flex flex-row justify-between items-center mb-5">
@@ -275,7 +275,10 @@ export default function ViewConvo(props: { conversationId: string }) {
           )}
 
           {/* have one row, but just translate it along y downward to put it in it's own place */}
-          <span className="flex flex-row flex-nowrap pb-[10rem] py-[5rem] overflow-auto min-h-max">
+          <span
+            className="flex flex-row flex-nowrap pb-[10rem] py-[5rem] 
+          overflow-auto min-h-max shadow-xl bg-slate-50 rounded"
+          >
             {audioClips.reverse().map((audClip, index) => {
               const restAudioClips = audioClips.slice(index);
               return (
