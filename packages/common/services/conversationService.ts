@@ -166,4 +166,20 @@ export default class ConversationService {
       );
     });
   }
+
+  async updateTldr(convoId: string, newTldr: string, updateUserId: string) {
+    // todo make sure that this user is allowed to update it
+    const docRef = doc(this.db, Collections.conversations, convoId);
+    await setDoc(
+      docRef,
+      {
+        tldr: newTldr,
+        lastActivityDate: serverTimestamp(),
+        lastUpdatedBy: updateUserId,
+      },
+      { merge: true }
+    );
+
+    return false;
+  }
 }

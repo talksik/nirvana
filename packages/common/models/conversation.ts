@@ -19,6 +19,8 @@ export default class Conversation {
   createdDate: Timestamp = Timestamp.now();
   createdByUserId: string;
 
+  lastUpdatedBy?: string; // some sort of security data collection whenever updating convo
+
   constructor(
     _createdByUserId: string,
     _name: string,

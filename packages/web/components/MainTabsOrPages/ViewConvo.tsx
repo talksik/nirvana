@@ -46,6 +46,7 @@ import {
 import { firestoreDb as db } from "../../services/firebaseService";
 import Collections from "@nirvana/common/services/collections";
 import TimelineAudioClip from "../Conversations/TimelineAudioClip";
+import Modal from "antd/lib/modal/Modal";
 
 const testDrawerItems: {
   linkType: LinkType;
@@ -76,12 +77,22 @@ const testDrawerItems: {
 
 const AUDIO_CLIP_FETCH_LIMIT = 50;
 
+enum ConvoModal {
+  na = "na",
+  editTldr = "editTldr",
+  adminEdit = "adminEdit",
+}
+
 export default function ViewConvo(props: { conversationId: string }) {
   const { currUser } = useAuth();
 
   const allConvosMap = useRecoilValue(allRelevantConversationsAtom);
 
   const endOfTimeline = useRef<HTMLSpanElement>();
+
+  const [currentConvoModal, setCurrConvoModal] = useState<ConvoModal>(
+    ConvoModal.na
+  );
 
   const router = useRouter();
 
@@ -170,8 +181,57 @@ export default function ViewConvo(props: { conversationId: string }) {
     }
   };
 
+  const handleCloseModal = () => {
+    setCurrConvoModal(ConvoModal.na);
+  };
+
+  const handleEditTldr = () => {
+    console.log("updating tldr with modal");
+  };
+
+  const [editTldrMode, setEditTldrMode] = useState<boolean>(false);
+  const [newTldr, setNewTldr] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  const saveNewTldr = async (e) => {
+    if (!newTldr) {
+      toast.error("can't have a blank tldr!");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      await conversationService.updateTldr(
+        props.conversationId,
+        newTldr,
+        currUser!.uid
+      );
+
+      toast.success("Updated TLDR;");
+
+      setEditTldrMode(false);
+    } catch (error) {
+      toast.error("problem in updating tldr");
+      console.error(error);
+    }
+
+    setIsSubmitting(false);
+  };
+
   return (
     <>
+      {/* <Modal
+        title="Basic Modal"
+        visible={currentConvoModal == ConvoModal.editTldr}
+        onOk={handleEditTldr}
+        onCancel={handleCloseModal}
+      >
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </Modal> */}
+
       <div className="flex flex-col items-stretch mt-5 space-y-10">
         {/* convo name and action buttons on top */}
         <div className="flex-1 flex flex-col overflow-auto">
@@ -268,9 +328,52 @@ export default function ViewConvo(props: { conversationId: string }) {
             </span>
           </span>
 
-          {convo?.tldr && (
-            <span className="max-w-md text-lg text-teal-800 mb-2">
-              tldr: {convo?.tldr}
+          {convo?.tldr && !editTldrMode ? (
+            <>
+              <span></span>
+              <span
+                onClick={() => setEditTldrMode(true)}
+                className="flex flex-row group items-center"
+              >
+                <span className="max-w-md text-md text-slate-400 uppercase cursor-pointer whitespace-pre-line">
+                  tldr;
+                </span>
+
+                <span className="p-2 ml-2 rounded-full hover:cursor-pointer hover:bg-slate-200 group-hover:visible invisible">
+                  <FaEdit className="ml-auto text-md text-slate-400" />
+                </span>
+              </span>
+
+              <span className="max-w-md text-lg text-slate-600 cursor-pointer whitespace-pre-line">
+                {convo?.tldr}
+              </span>
+            </>
+          ) : (
+            <span className="flex flex-row items-center space-x-2">
+              <textarea
+                autoFocus
+                className="p-2 my-2 flex-1 rounded-md placeholder:text-slate-300 focus:outline-none"
+                placeholder="update with a new tldr"
+                value={newTldr}
+                onChange={(e) => setNewTldr(e.target.value)}
+              />
+
+              <button
+                onClick={() => setEditTldrMode(false)}
+                className="rounded-lg p-2 border border-orange-500 flex flex-row items-center space-x-2
+            text-xs hover:bg-orange-500 hover:text-white mx-2 text-orange-500"
+              >
+                <span>Cancel</span>
+              </button>
+
+              <button
+                disabled={isSubmitting}
+                onClick={saveNewTldr}
+                className="rounded-lg p-2 border border-teal-500 flex flex-row items-center space-x-2
+            text-xs bg-teal-500 hover:font-semibold mx-2 text-white"
+              >
+                <span>Save</span>
+              </button>
             </span>
           )}
 
@@ -278,7 +381,7 @@ export default function ViewConvo(props: { conversationId: string }) {
 
           <span
             className="flex flex-row flex-nowrap pb-[10rem] py-[5rem] 
-          overflow-auto min-h-max shadow-xl bg-slate-50 rounded"
+          overflow-auto min-h-max shadow-xl bg-slate-50 rounded mt-5"
           >
             {audioClips?.length > 0 ? (
               audioClips.reverse().map((audClip, index) => {
