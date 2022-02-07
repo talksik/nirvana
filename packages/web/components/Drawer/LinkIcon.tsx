@@ -8,7 +8,7 @@ import {
   FaGlobe,
   FaGoogleDrive,
 } from "react-icons/fa";
-import Link, { LinkType } from "@nirvana/common/models/link";
+import Link, { LinkType } from "@nirvana/common/models/conversation";
 
 import { SiGooglemeet } from "react-icons/si";
 

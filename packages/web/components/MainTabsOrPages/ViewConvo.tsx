@@ -1,4 +1,4 @@
-import { LinkType } from "@nirvana/common/models/link";
+import { LinkType } from "@nirvana/common/models/conversation";
 import { UserStatus } from "@nirvana/common/models/user";
 import { Tooltip } from "antd";
 import { duration } from "moment";
