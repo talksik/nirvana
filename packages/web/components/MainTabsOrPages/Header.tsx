@@ -101,7 +101,7 @@ export default function Header() {
         <FaSearch className="text-lg text-slate-300" />
         <input
           placeholder="Type / to search"
-          className="bg-transparent placeholder-slate-300 p-2 w-96"
+          className="bg-transparent placeholder-slate-300 p-2 w-96 focus:outline-none"
           ref={inputRef}
           onChange={updateInput}
           value={searchInput}

@@ -96,7 +96,7 @@ export default function ConversationFullRow(props: {
     <span
       onClick={handleViewConversationDetails}
       className={`py-5 px-4 border-t border-t-slate-200 flex flex-row last:border-b-slate-200 last:border-b
-       hover:bg-slate-50 transition-all items-center group relative ${
+       hover:bg-slate-50 transition-all items-center group relative hover:cursor-pointer ${
          isNewIncoming ? "bg-slate-50" : "text-slate-100"
        }`}
     >

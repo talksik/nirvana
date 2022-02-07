@@ -122,9 +122,9 @@ export default function AudioHandler() {
     setmapShortcutsToConvoId(newMap);
   }, [priorityConvos]);
 
-  configure({
-    ignoreTags: ["input", "select", "textarea"],
-  });
+  // configure({
+  //   ignoreTags: ["input", "select", "textarea"],
+  // });
 
   const [recordingToastId, setRecordingToastId] = useState<string>("");
   const [isRecording, setIsRecording] = useRecoilState(isRecordingAtom);
