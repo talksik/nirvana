@@ -9,6 +9,7 @@ import {
   FaCheck,
   FaAngleRight,
   FaStream,
+  FaDotCircle,
 } from "react-icons/fa";
 import { useRecoilValue } from "recoil";
 import {
@@ -74,10 +75,12 @@ export default function ConversationFullRow(props: {
     audio.play();
   };
 
-  // todo:
+  const joinLive = () => {
+    toast("connecting");
+  };
+
   /**
    * show actions based on which state it is currently in for this user
-   *
    */
   const currUserAssoc = usersConvosMap.get(props.conversation.id);
 
@@ -106,7 +109,7 @@ export default function ConversationFullRow(props: {
         }`}
       />
 
-      <span className="w-[15rem] flex flex-row items-center">
+      <span className="flex flex-row items-center">
         <span className="w-[5rem]">
           <MasterAvatarGroupWithUserFetch
             listOfUserIds={props.conversation.activeMembers}
@@ -121,6 +124,35 @@ export default function ConversationFullRow(props: {
         >
           {props.conversation.name}
         </span>
+      </span>
+
+      <span
+        className="ml-2 flex flex-row items-center 
+      group-hover:visible invisible text-slate-400"
+      >
+        <Tooltip title={"Join live."}>
+          <span
+            onClick={(e) => {
+              e.stopPropagation();
+              joinLive();
+            }}
+            className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200"
+          >
+            <FaDotCircle className="ml-auto text-lg text-red-500" />
+          </span>
+        </Tooltip>
+
+        <Tooltip title={"Play last convo chunk."}>
+          <span
+            onClick={(e) => {
+              e.stopPropagation();
+              playLastClip();
+            }}
+            className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200"
+          >
+            <FaPlay className="ml-auto text-lg text-emerald-500" />
+          </span>
+        </Tooltip>
       </span>
 
       <span className="text-slate-300 w-[20rem] truncate text-sm">
@@ -140,18 +172,6 @@ export default function ConversationFullRow(props: {
         className="ml-auto flex flex-row items-center 
       group-hover:visible invisible absolute right-5 text-slate-400"
       >
-        <Tooltip title={"Play last convo chunk."}>
-          <span
-            onClick={(e) => {
-              e.stopPropagation();
-              playLastClip();
-            }}
-            className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200"
-          >
-            <FaPlay className="ml-auto text-lg text-emerald-500" />
-          </span>
-        </Tooltip>
-
         {currConvoMemberState != ConversationMemberState.default && (
           <Tooltip title={"Inbox"}>
             <span
