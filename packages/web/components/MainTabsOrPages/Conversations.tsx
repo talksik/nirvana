@@ -123,7 +123,8 @@ export default function Conversations() {
       // agora token from CF
       const agoraToken = await agoraService.getAgoraToken(conversationId);
 
-      console.log(agoraToken);
+      // agora join/init
+      await handleJoinChannel(conversationId, agoraToken);
 
       await conversationService.joinLiveConversation(
         conversationId,
