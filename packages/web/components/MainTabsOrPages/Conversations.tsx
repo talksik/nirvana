@@ -135,12 +135,16 @@ export default function Conversations() {
     }
 
     toast.remove(connectingToast);
+    toast.success("joined room");
   };
 
   const handleLeaveLive = async (conversationId: string) => {
     const leavingToast = toast.loading("leaving");
 
     try {
+      // agora leave channel
+      await handleLeaveChannel();
+
       await conversationService.leaveLiveConversation(
         conversationId,
         currUser!.uid
@@ -150,6 +154,7 @@ export default function Conversations() {
     }
 
     toast.remove(leavingToast);
+    toast.success("left room");
   };
 
   // agora start the call stream
