@@ -384,6 +384,10 @@ export const checkIncomingMessageSelector = selectorFamily({
         return true;
       }
 
+      if (!currConvo?.lastActivityDate) {
+        return false;
+      }
+
       if (
         currConvo.lastActivityDate.toDate() >
         currUserConvoAssoc.lastInteractionDate?.toDate()

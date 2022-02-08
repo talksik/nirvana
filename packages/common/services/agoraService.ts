@@ -13,7 +13,7 @@ import AgoraRTC, {
 import { getFunctions, httpsCallable } from "firebase/functions";
 import toast from "react-hot-toast";
 
-const config: ClientConfig = {
+export const config: ClientConfig = {
   mode: "rtc",
   codec: "vp8",
 };
@@ -22,7 +22,7 @@ const config: ClientConfig = {
 // const useMicrophoneTracks = createMicrophoneAudioTrack();
 
 // TODO: move this to env file
-const appId: string = "c8dfd65deb5c4741bd564085627139d0"; //ENTER APP ID HERE
+export const appId: string = "c8dfd65deb5c4741bd564085627139d0"; //ENTER APP ID HERE
 
 export default class AgoraService {
   private functions = getFunctions();
@@ -90,5 +90,3 @@ export default class AgoraService {
   //   }
   // }
 }
-
-export { appId };

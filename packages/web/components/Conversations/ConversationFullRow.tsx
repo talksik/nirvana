@@ -28,6 +28,8 @@ import { Routes } from "@nirvana/common/helpers/routes";
 
 export default function ConversationFullRow(props: {
   conversation: Conversation;
+  handleJoinLive: (conversationId: string) => Promise<void>;
+  handleLeaveLive: (conversationId: string) => Promise<void>;
 }) {
   const { currUser } = useAuth();
   const usersConvosMap = useRecoilValue(allUsersConversationsAtom);
@@ -73,10 +75,6 @@ export default function ConversationFullRow(props: {
     // todo: add to queue instead of playing here
     const audio = new Audio(props.conversation.cachedAudioClip.audioDataUrl);
     audio.play();
-  };
-
-  const joinLive = () => {
-    toast("connecting");
   };
 
   /**
@@ -134,7 +132,7 @@ export default function ConversationFullRow(props: {
           <span
             onClick={(e) => {
               e.stopPropagation();
-              joinLive();
+              props.handleJoinLive(props.conversation.id);
             }}
             className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200"
           >
@@ -164,7 +162,7 @@ export default function ConversationFullRow(props: {
           isNewIncoming ? "text-slate-400 font-semibold" : "text-slate-300"
         }`}
       >
-        {moment(props.conversation.lastActivityDate.toDate()).fromNow()}
+        {moment(props.conversation.lastActivityDate?.toDate()).fromNow()}
       </span>
 
       {/* actions */}

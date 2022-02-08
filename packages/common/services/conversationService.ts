@@ -8,6 +8,8 @@ import {
   setDoc,
   runTransaction,
   writeBatch,
+  arrayUnion,
+  arrayRemove,
 } from "firebase/firestore";
 import Conversation, {
   AudioClip,
@@ -179,7 +181,33 @@ export default class ConversationService {
       },
       { merge: true }
     );
+  }
 
-    return false;
+  async joinLiveConversation(convoId: string, userJoiningId: string) {
+    // todo: make sure that user is part of the convo or valid in it
+    const docRef = doc(this.db, Collections.conversations, convoId);
+    await setDoc(
+      docRef,
+      {
+        membersInLiveRoom: arrayUnion(userJoiningId),
+        lastActivityDate: serverTimestamp(),
+        lastUpdatedBy: userJoiningId,
+      },
+      { merge: true }
+    );
+  }
+
+  async leaveLiveConversation(convoId: string, userJoiningId: string) {
+    // todo: make sure that user is part of the convo or valid in it
+    const docRef = doc(this.db, Collections.conversations, convoId);
+    await setDoc(
+      docRef,
+      {
+        membersInLiveRoom: arrayRemove(userJoiningId),
+        lastActivityDate: serverTimestamp(),
+        lastUpdatedBy: userJoiningId,
+      },
+      { merge: true }
+    );
   }
 }
