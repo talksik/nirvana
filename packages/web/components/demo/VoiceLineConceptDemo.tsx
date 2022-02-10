@@ -16,7 +16,7 @@ export enum DemoStep {
 export interface IVoiceDemoProps {
   demoStep: DemoStep;
 
-  handleChangeDemoStep: Function;
+  handleChangeDemoStep: (newStep: DemoStep) => void;
 }
 
 export default function VoiceLineConceptDemo() {

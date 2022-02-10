@@ -19,7 +19,7 @@ export default function Announcements(props: IVoiceDemoProps) {
       setTimeout(function () {
         setShowAnnouncement(true);
 
-        var audio = new Audio(
+        const audio = new Audio(
           "https://firebasestorage.googleapis.com/v0/b/nirvana-for-business.appspot.com/o/messages%2Fb2858200-4a15-478a-b863-bdf88b26b2e4.mp3?alt=media&token=3ffc8955-50fa-4418-a146-1c73f56409d1"
         );
         audio.play();
