@@ -60,7 +60,7 @@ export default function LangingPageLayout({ children }) {
       {currUser ? (
         <Menu.Item key="5">
           <button
-            onClick={() => window.open("/teams", "_self")}
+            onClick={() => window.open("/s", "_self")}
             className="rounded font-semibold bg-gray-200 p-2 text-teal-600 shadow-lg flex flex-row items-center space-x-2"
           >
             Continue
@@ -141,7 +141,7 @@ export default function LangingPageLayout({ children }) {
               <>
                 <span className="text-gray-500">Welcome back!</span>
                 <button
-                  onClick={() => window.open("/teams", "_self")}
+                  onClick={() => window.open("/s", "_self")}
                   className="rounded font-semibold bg-gray-200 p-2 text-teal-600 shadow-lg flex flex-row items-center space-x-2"
                 >
                   Continue

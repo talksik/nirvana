@@ -75,7 +75,7 @@ export default function Header() {
       </Menu.Item>
 
       <Menu.Item
-        onClick={() => window.open("/teams", "_self")}
+        onClick={() => window.open("/s", "_self")}
         key={"team hub"}
         icon={<FaLayerGroup />}
       >
