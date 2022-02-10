@@ -1,25 +1,7 @@
-import Head from "next/head";
-import {
-  FaSlackHash,
-  FaNewspaper,
-  FaCalendarAlt,
-  FaRocketchat,
-  FaAngleRight,
-  FaCheck,
-  FaInfo,
-  FaInfoCircle,
-  FaClock,
-  FaLink,
-  FaPlay,
-} from "react-icons/fa";
+import { FaAngleRight, FaCheck, FaInfoCircle, FaPlay } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import { BsThreeDots } from "react-icons/bs";
-import TeamVoiceLine from "../components/demo/TeamVoiceLine";
-import Announcements from "../components/demo/Announcements";
-import Rooms from "../components/demo/Rooms";
 import VoiceLineConceptDemo from "../components/demo/VoiceLineConceptDemo";
 
-import MainLogo from "../components/Logo/MainLogo";
 import { Divider, Tooltip, Image as AntDImage } from "antd";
 import LangingPageLayout from "../components/Layouts/LandingPageLayout";
 import LandingPageActionBar from "../components/demo/LandingPageActionBar";

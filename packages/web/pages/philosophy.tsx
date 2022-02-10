@@ -1,9 +1,6 @@
-import { Divider } from "antd";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { FaAngleRight } from "react-icons/fa";
 import LandingPageActionBar from "../components/demo/LandingPageActionBar";
-import Rooms from "../components/demo/Rooms";
 import LangingPageLayout from "../components/Layouts/LandingPageLayout";
 
 export default function Philosophy() {

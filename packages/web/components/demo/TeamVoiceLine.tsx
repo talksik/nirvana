@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 
 import { GlobalHotKeys, HotKeys, KeySequence, KeyMap } from "react-hotkeys";
 
-let testFriends = [
+const testFriends = [
   {
     name: "Harold",
     role: "engineer",
@@ -91,7 +91,7 @@ function TeamVoiceLine(props: IVoiceDemoProps) {
     if (props.demoStep == DemoStep.playIncomingMessage) {
       // play audio of paul talking
 
-      var audio = new Audio(
+      const audio = new Audio(
         "https://firebasestorage.googleapis.com/v0/b/nirvana-for-business.appspot.com/o/messages%2F62ca7369-7c0c-4b3e-a382-12d4a237d1af.mp3?alt=media&token=b6d4acb0-afc9-4a9f-8c58-cf60a6079003"
       );
       audio.play();
@@ -100,8 +100,9 @@ function TeamVoiceLine(props: IVoiceDemoProps) {
         props.handleChangeDemoStep(DemoStep.sendReply);
       }, 10000);
     } else if (props.demoStep == DemoStep.sendReply) {
+      console.log("nothin");
     } else if (props.demoStep == DemoStep.hearReply) {
-      var audio = new Audio(
+      const audio = new Audio(
         "https://firebasestorage.googleapis.com/v0/b/nirvana-for-business.appspot.com/o/deep%20fakes%2Fvocodes_728915c1-eb1f-4f16-8f70-c7b0c2235b3e.wav?alt=media&token=76afd74c-7499-4bd8-9c10-dd6ff4f81c48"
       );
       audio.play();

@@ -1,8 +1,8 @@
 import algoliaSearch, { SearchClient } from "algoliasearch";
 
 const searchClient: SearchClient = algoliaSearch(
-  process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
-  process.env.NEXT_PUBLIC_ALGOLIA_API_KEY
+  process.env.NEXT_PUBLIC_ALGOLIA_APP_ID || "",
+  process.env.NEXT_PUBLIC_ALGOLIA_API_KEY || ""
 );
 
 console.log("set up algolia search successfully");
