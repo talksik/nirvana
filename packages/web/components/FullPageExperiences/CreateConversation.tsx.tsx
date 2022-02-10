@@ -1,4 +1,4 @@
-import { User } from "@nirvana/common/models/user";
+import User from "@nirvana/common/models/user";
 import { RefObject, useEffect, useMemo, useRef, useState } from "react";
 import {
   FaArrowRight,
