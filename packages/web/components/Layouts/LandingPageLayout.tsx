@@ -25,7 +25,7 @@ export default function LangingPageLayout({ children }) {
 
   function handleLogin() {
     setLoading(true);
-    router.push("/teams");
+    window.open("/teams/login", "_self");
   }
 
   const getStartedButton = (

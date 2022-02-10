@@ -51,7 +51,7 @@ section {
 
 #main-title {
   font-family: "Satisfy", cursive;
-  @apply text-teal-600;
+  @apply text-teal-600 cursor-pointer;
 }
 #side-note {
   font-size: 1.5em;
