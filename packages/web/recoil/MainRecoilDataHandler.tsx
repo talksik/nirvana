@@ -1,5 +1,7 @@
 import Conversation, {
+  AudioClip,
   ConversationMember,
+  ConversationMemberState,
 } from "@nirvana/common/models/conversation";
 import User from "@nirvana/common/models/user";
 import Collections from "@nirvana/common/services/collections";
@@ -13,14 +15,15 @@ import {
   Unsubscribe,
   where,
 } from "firebase/firestore";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState, useRecoilValue } from "recoil";
 import { useAuth } from "../contexts/authContext";
 import {
   allRelevantContactsAtom,
   allRelevantConversationsAtom,
   allUsersConversationsAtom,
+  audioQueueAtom,
   nirvanaUserDataAtom,
 } from "./main";
 
@@ -36,7 +39,11 @@ export default function MainRecoilDataHandler() {
     allRelevantConversationsAtom
   );
 
+  const setAudioQueue = useSetRecoilState(audioQueueAtom);
+
   const [relContacts, setRelContacts] = useRecoilState(allRelevantContactsAtom);
+
+  const [firstUpdate, setFirstUpdate] = useState<boolean>(true);
 
   useEffect(() => {
     const unsubs: Unsubscribe[] = [] as Unsubscribe[];
@@ -80,24 +87,75 @@ export default function MainRecoilDataHandler() {
               // if we are adding a new convo relevant to me, then start a convo listener for this convo
 
               // find if this is a done, later, or inbox, and only add listeners accordingly
-              // if (change.type === "added" && convoId) {
-              //   const unsubConvo = onSnapshot(
-              //     doc(db, Collections.conversations, convoId),
-              //     (convoDoc) => {
-              //       const updatedConvo = convoDoc.data() as Conversation;
-              //       console.log("got convo data and subscribed");
-              //       console.log(updatedConvo);
+              if (change.type === "added" && convoId) {
+                const unsubConvo = onSnapshot(
+                  doc(db, Collections.conversations, convoId),
+                  (convoDoc) => {
+                    const updatedConvo = convoDoc.data() as Conversation;
+                    console.log("got convo data and subscribed");
+                    console.log(updatedConvo);
 
-              //       setRelevantConvos((prevMap) => {
-              //         return new Map(prevMap.set(convoId, updatedConvo));
-              //       });
-              //     }
-              //   );
+                    setRelevantConvos((prevMap) => {
+                      return new Map(prevMap.set(convoId, updatedConvo));
+                    });
+                  }
+                );
 
-              //   // todo : remove specific listeners if they are no longer priority conversations
+                // todo : remove specific listeners if they are no longer priority conversations
 
-              //   unsubs.push(unsubConvo);
-              // }
+                unsubs.push(unsubConvo);
+              }
+
+              // for priority convos, listen to all messages
+              if (
+                newConvoMember.state == ConversationMemberState.priority &&
+                convoId
+              ) {
+                const queryAudioClips = query(
+                  collection(
+                    db,
+                    Collections.conversations,
+                    convoId,
+                    Collections.conversationAudioClips
+                  )
+                );
+
+                const unsubConvoAudioClips = onSnapshot(
+                  queryAudioClips,
+                  (snapshot) => {
+                    const newClips: AudioClip[] = [] as AudioClip[];
+                    snapshot.docChanges().forEach((change) => {
+                      const newClip = change.doc.data() as AudioClip;
+                      newClip.id = change.doc.id;
+
+                      console.log(newClip);
+
+                      if (change.type === "added") {
+                        // console.log("New city: ", change.doc.data());
+                        // add to the list of audioClips for the right conversation
+                        newClips.push(newClip);
+                      }
+                      if (change.type === "modified") {
+                        // console.log("Modified city: ", change.doc.data());
+                      }
+                      if (change.type === "removed") {
+                        // console.log("Removed city: ", change.doc.data());
+                      }
+                    });
+
+                    // add first of the new audioClips to the audioqueue
+                    if (
+                      newClips?.length === 1 &&
+                      newClips[0].senderUserId != currUser!.uid
+                    ) {
+                      console.log("putting new clip in audio queue");
+                      setAudioQueue((prevQueue) => [...prevQueue, newClips[0]]);
+                    }
+                  }
+                );
+
+                unsubs.push(unsubConvoAudioClips);
+              }
             }
             if (change.type === "removed") {
               console.log("Removed convo member: ", change.doc.data());
@@ -174,6 +232,8 @@ export default function MainRecoilDataHandler() {
           });
         });
         unsubs.push(unsubConvosListener);
+
+        setFirstUpdate(false);
       } catch (error) {
         console.log(error);
         toast.error("Problem in retrieving data");
