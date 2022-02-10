@@ -26,13 +26,15 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
-    <RecoilRoot>
-      <SiteLayout>
-        <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
+    <AuthProvider>
+      <RecoilRoot>
+        <SiteLayout>
+          {getLayout(<Component {...pageProps} />)}
 
-        <Toaster position="top-center" />
-      </SiteLayout>
-    </RecoilRoot>
+          <Toaster position="top-center" />
+        </SiteLayout>
+      </RecoilRoot>
+    </AuthProvider>
   );
 }
 

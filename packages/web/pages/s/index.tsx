@@ -16,20 +16,13 @@ import ViewConvo from "../../components/MainTabsOrPages/ViewConvo";
 import MainRecoilDataHandler from "../../recoil/MainRecoilDataHandler";
 import { useAuth } from "../../contexts/authContext";
 import AudioHandler from "../../components/Audio/AudioHandler";
+import toast from "react-hot-toast";
+import ProtectedRoute from "../../contexts/ProtectedRoute";
 
 export default function Me() {
-  // TODO: if not authenticated, take user away
-  const { currUser } = useAuth();
-  useEffect(() => {
-    if (!currUser) {
-      console.log("not authenticated...routing from dashboard to teams home");
-      router.push("/teams/login");
-      return;
-    }
-  }, []);
-
   // figure out what content to render from here
   const router = useRouter();
+
   const currPage = router.query.page;
   const currConvo = router.query.convoId;
 
@@ -128,15 +121,17 @@ export default function Me() {
 Me.getLayout = function (content: ReactElement) {
   return (
     <div className="flex flex-col">
-      <MainRecoilDataHandler />
+      <ProtectedRoute>
+        <MainRecoilDataHandler />
 
-      <KeyboardShortcutHandler />
+        <KeyboardShortcutHandler />
 
-      <Header />
+        <Header />
 
-      {content}
+        {content}
 
-      <AudioHandler />
+        <AudioHandler />
+      </ProtectedRoute>
     </div>
   );
 };

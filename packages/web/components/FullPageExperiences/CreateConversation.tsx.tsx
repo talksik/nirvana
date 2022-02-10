@@ -30,7 +30,7 @@ export default function CreateConversation() {
   const { currUser } = useAuth();
   const router = useRouter();
 
-  const input = useRef<HTMLInputElement>();
+  const input = useRef<HTMLInputElement>(null);
 
   const [selectedUsers, setSelectedUsers] = useState<User[]>([] as User[]);
   const [isLoading, setIsLoading] = useState<boolean>(false);

@@ -26,7 +26,7 @@ export default function Header() {
 
   const router = useRouter();
 
-  const inputRef = useRef<HTMLInputElement | undefined>();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const [searchInput, setSearchInput] = useState<string>("");
 

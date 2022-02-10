@@ -1,4 +1,4 @@
-import { User } from "@nirvana/common/models/user";
+import User from "@nirvana/common/models/user";
 import { useAuth } from "../../contexts/authContext";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { allRelevantContactsAtom } from "../../recoil/main";

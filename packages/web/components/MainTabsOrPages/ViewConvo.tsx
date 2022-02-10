@@ -97,7 +97,7 @@ export default function ViewConvo(props: { conversationId: string }) {
 
   const allConvosMap = useRecoilValue(allRelevantConversationsAtom);
 
-  const endOfTimeline = useRef<HTMLSpanElement>();
+  const endOfTimeline = useRef<HTMLSpanElement>(null);
 
   const [currentConvoModal, setCurrConvoModal] = useState<ConvoModal>(
     ConvoModal.na
