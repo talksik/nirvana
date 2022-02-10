@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import User from "@nirvana/common/models/user";
 import UserService from "@nirvana/common/services/userService";
 import { useAuth } from "../../contexts/authContext";
+import { UserStatus } from "../../../common/models/user";
 
 export default function Profile() {
   const { currUser } = useAuth();
@@ -43,12 +44,10 @@ export default function Profile() {
         console.log("got user from the backend");
 
         setUser(returnedUser);
-        setNickname(returnedUser.nickName ?? "");
         setFirstName(
-          returnedUser.firstName ?? currUser.displayName.split(" ")[0]
+          returnedUser?.firstName ?? currUser.displayName!.split(" ")[0]
         );
-        setLastName(returnedUser.lastName ?? "");
-        setTeamRole(returnedUser.teamRole ?? "");
+        setLastName(returnedUser?.lastName ?? "");
       } catch (error) {
         console.log(error);
         router.push("/teams/login");
@@ -67,29 +66,25 @@ export default function Profile() {
     } else if (!lastName) {
       setError("Must input last name");
       return;
-    } else if (!nickname) {
-      setError("Must input nickname");
-      return;
-    } else if (nickname.length > 22) {
-      setError("nickname must be less than 22 characters");
-      return;
-    } else if (!teamRole) {
-      setError("Must input team role!");
-      return;
     }
 
     // create the user in the backend or just merge results
-    let newUser = new User();
-    newUser.id = currUser.uid;
+    const newUser = new User(
+      user?.id,
+      currUser!.email!,
+      firstName,
+      lastName,
+      currUser!.photoURL!,
+      UserStatus.online
+    );
+    newUser.id = currUser!.uid;
     newUser.firstName = firstName;
     newUser.lastName = lastName;
-    newUser.nickName = nickname;
-    newUser.avatarUrl = currUser.photoURL;
-    newUser.teamRole = teamRole;
+    newUser.avatarUrl = currUser!.photoURL!;
 
     try {
       await userService.updateUser(newUser);
-      router.push("/teams");
+      window.open("/s", "_self");
     } catch (error) {
       setError(
         "Something went wrong in saving your information. Please try again."
@@ -100,7 +95,7 @@ export default function Profile() {
   }
 
   const [firstName, setFirstName] = useState<string>(
-    currUser.displayName.split(" ")[0]
+    currUser!.displayName?.split(" ")[0] ?? ""
   );
   const [lastName, setLastName] = useState<string>("");
   const [nickname, setNickname] = useState<string>("");
@@ -120,7 +115,9 @@ export default function Profile() {
       <Divider />
 
       <span className="flex flex-col items-start">
-        <span className="text-md">Avatar*</span>
+        <span className="text-md">
+          Avatar<span className="text-orange-500">*</span>
+        </span>
         <span className="text-gray-300 text-xs">
           Please change your google image to change this.
         </span>
@@ -132,7 +129,9 @@ export default function Profile() {
       </span>
 
       <span className="flex flex-col items-start">
-        <span className="text-md">Email*</span>
+        <span className="text-md">
+          Email<span className="text-orange-500">*</span>
+        </span>
         <span className="text-gray-300 text-xs mb-2">
           This is set from your Google account and cannot be changed.
         </span>
@@ -146,7 +145,9 @@ export default function Profile() {
 
       <div className="flex flex-row justify-between space-x-3">
         <span className="flex flex-col items-start flex-1">
-          <span className="text-md">First Name*</span>
+          <span className="text-md">
+            First Name<span className="text-orange-500">*</span>
+          </span>
           <span className="text-gray-300 text-xs mb-2"></span>
           <input
             placeholder="ex. John"
@@ -157,7 +158,9 @@ export default function Profile() {
         </span>
 
         <span className="flex flex-col items-start flex-1">
-          <span className="text-md">Last Name*</span>
+          <span className="text-md">
+            Last Name<span className="text-orange-500">*</span>
+          </span>
           <span className="text-gray-300 text-xs mb-2"></span>
           <input
             placeholder="ex. Brown"
@@ -167,34 +170,6 @@ export default function Profile() {
           />
         </span>
       </div>
-
-      <Divider />
-
-      <span className="flex flex-col items-start">
-        <span className="text-md">Nickname*</span>
-        <span className="text-gray-300 text-xs mb-2">
-          What does your team call you? This is what is displayed.
-        </span>
-        <input
-          placeholder="ex. nicky"
-          className="w-full rounded-lg bg-gray-50 p-3"
-          value={nickname}
-          onChange={(e) => setNickname(e.target.value)}
-        />
-      </span>
-
-      <span className="flex flex-col items-start">
-        <span className="text-md">Role*</span>
-        <span className="text-gray-300 text-xs mb-2">
-          Are you a developer? designer? manager?
-        </span>
-        <input
-          placeholder="ex. designer"
-          className="w-full rounded-lg bg-gray-50 p-3"
-          value={teamRole}
-          onChange={(e) => setTeamRole(e.target.value)}
-        />
-      </span>
 
       <Divider />
 

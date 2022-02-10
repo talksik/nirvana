@@ -30,6 +30,7 @@ export default function Login() {
         // setCurrUser(new UserData(user));
 
         console.log(user);
+        window.open("/s", "_self");
       })
       .catch((error) => {
         // Handle Errors here.
@@ -48,7 +49,7 @@ export default function Login() {
     // if auth, go to dashboard
     if (currUser) {
       console.log("already logged in, redirecting to router");
-      router.push("/s");
+      window.open("/s", "_self");
     }
   }, [currUser]);
 

@@ -43,6 +43,20 @@ export default function MainRecoilDataHandler() {
 
     (async function () {
       try {
+        // get my current user profile and stay updated to my status
+        const unsubUser = onSnapshot(
+          doc(db, Collections.users, currUser!.uid),
+          (doc) => {
+            if (doc.exists()) {
+              const nirvanaUser = doc.data() as User;
+              setNirvanaUser(nirvanaUser);
+            } else {
+              window.open("/teams/profile", "_self");
+            }
+          }
+        );
+        unsubs.push(unsubUser);
+
         // get all conversations that I am a part of
         const q = query(
           collectionGroup(db, Collections.conversationMembers),
@@ -92,16 +106,6 @@ export default function MainRecoilDataHandler() {
         });
 
         unsubs.push(unsubscribeUserConvoMember);
-
-        // get my current user profile and stay updated to my status
-        const unsubUser = onSnapshot(
-          doc(db, Collections.users, currUser!.uid),
-          (doc) => {
-            const nirvanaUser = doc.data() as User;
-            setNirvanaUser(nirvanaUser);
-          }
-        );
-        unsubs.push(unsubUser);
 
         // get every conversation where I am in the activeMembers list
         const convoQuery = query(
