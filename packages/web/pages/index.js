@@ -14,15 +14,15 @@ import {
 } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { BsThreeDots } from "react-icons/bs";
-import TeamVoiceLine from "../../components/demo/TeamVoiceLine";
-import Announcements from "../../components/demo/Announcements";
-import Rooms from "../../components/demo/Rooms";
-import VoiceLineConceptDemo from "../../components/demo/VoiceLineConceptDemo";
+import TeamVoiceLine from "../components/demo/TeamVoiceLine";
+import Announcements from "../components/demo/Announcements";
+import Rooms from "../components/demo/Rooms";
+import VoiceLineConceptDemo from "../components/demo/VoiceLineConceptDemo";
 
-import MainLogo from "../../components/Logo/MainLogo";
+import MainLogo from "../components/Logo/MainLogo";
 import { Divider, Tooltip, Image as AntDImage } from "antd";
-import LangingPageLayout from "../../components/Layouts/LandingPageLayout";
-import LandingPageActionBar from "../../components/demo/LandingPageActionBar";
+import LangingPageLayout from "../components/Layouts/LandingPageLayout";
+import LandingPageActionBar from "../components/demo/LandingPageActionBar";
 import Link from "next/link";
 
 export default function Home() {
@@ -115,7 +115,7 @@ export default function Home() {
 
       {/* voice line section */}
       <span className="flex flex-row md:py-32 py-10 flex-wrap">
-        <span className="mx-auto flex flex-col grow max-w-sm rounded-lg shadow-lg bg-gray-200 bg-opacity-40 backdrop-blur-xl p-10">
+        <span className="mx-auto flex flex-col grow max-w-sm rounded-lg shadow-lg bg-slate-50 bg-opacity-40 backdrop-blur-xl p-10">
           <span className="bg-clip-text font-bold text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
             VOICE ONLY
           </span>
@@ -200,7 +200,7 @@ export default function Home() {
         </span>
 
         {/* description text */}
-        <span className="mx-auto text-left flex flex-col grow max-w-lg shadow-lg rounded-lg bg-gray-200 bg-opacity-40 backdrop-blur-xl p-10">
+        <span className="mx-auto text-left flex flex-col grow max-w-lg shadow-lg rounded-lg bg-slate-50 bg-opacity-40 backdrop-blur-xl p-10">
           <span className="bg-clip-text font-bold text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
             TEAM
           </span>
@@ -282,7 +282,7 @@ export default function Home() {
       {/* focus on today section */}
       <span className="flex flex-row items-center md:py-20 py-10 flex-wrap">
         {/* description card */}
-        <span className="mx-auto text-left flex flex-col grow max-w-lg shadow-lg rounded-lg bg-gray-200 bg-opacity-40 backdrop-blur-xl p-10">
+        <span className="mx-auto text-left flex flex-col grow max-w-lg shadow-lg rounded-lg bg-slate-50 bg-opacity-40 backdrop-blur-xl p-10">
           <span className="bg-clip-text font-bold text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
             CLARITY
           </span>
@@ -369,7 +369,7 @@ export default function Home() {
       <LandingPageActionBar />
 
       {/* customer testimonial section */}
-      <span className="flex my-20 mx-auto flex-col items-center max-w-screen-lg p-10 backdrop-blur-md bg-gray-200 bg-opacity-40 rounded-lg">
+      <span className="flex my-20 mx-auto flex-col items-center max-w-screen-lg p-10 backdrop-blur-md bg-slate-50 bg-opacity-40 rounded-lg">
         <span className="text-3xl font-bold">Our Customers</span>
         <span>
           <span className="text-teal-600">Listen</span> to what they have to

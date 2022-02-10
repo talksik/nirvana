@@ -88,7 +88,7 @@ export default function LangingPageLayout({ children }) {
   );
 
   return (
-    <div className="landing-page-bg bg-left-bottom bg-fixed bg-cover bg-no-repeat min-h-screen">
+    <div className="bg-left-bottom bg-fixed bg-cover bg-no-repeat min-h-screen">
       <div className="container mx-auto px-5 lg:px-20 min-h-screen">
         {/* header */}
         <div className="flex flex-row py-5 px-5 items-center justify-start mx-auto">

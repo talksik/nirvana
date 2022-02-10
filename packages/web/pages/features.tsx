@@ -1,4 +1,4 @@
-import LangingPageLayout from "../../components/Layouts/LandingPageLayout";
+import LangingPageLayout from "../components/Layouts/LandingPageLayout";
 import {
   FcAssistant,
   FcCollaboration,
@@ -8,7 +8,7 @@ import {
   FcOrgUnit,
   FcVideoCall,
 } from "react-icons/fc";
-import LandingPageActionBar from "../../components/demo/LandingPageActionBar";
+import LandingPageActionBar from "../components/demo/LandingPageActionBar";
 
 export default function Features() {
   return (
