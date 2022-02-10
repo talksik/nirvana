@@ -138,7 +138,7 @@ export default function Profile() {
         <input
           disabled
           className="w-full rounded-lg bg-gray-100 p-3"
-          value={user ? user.emailAddress : currUser?.email}
+          value={user?.emailAddress || currUser?.email || ""}
           readOnly
         />
       </span>
