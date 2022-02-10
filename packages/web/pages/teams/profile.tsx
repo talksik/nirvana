@@ -122,7 +122,7 @@ export default function Profile() {
           Please change your google image to change this.
         </span>
         <img
-          src={user ? user.avatarUrl : currUser!.photoURL}
+          src={user ? user.avatarUrl : currUser!.photoURL!}
           alt="asdf"
           className="rounded-lg mt-2"
         />
