@@ -28,8 +28,8 @@ import { Routes } from "@nirvana/common/helpers/routes";
 
 export default function ConversationFullRow(props: {
   conversation: Conversation;
-  handleJoinLive: (conversationId: string) => Promise<void>;
-  handleLeaveLive: (conversationId: string) => Promise<void>;
+  handleJoinLive?: (conversationId: string) => Promise<void>;
+  handleLeaveLive?: (conversationId: string) => Promise<void>;
 }) {
   const { currUser } = useAuth();
   const usersConvosMap = useRecoilValue(allUsersConversationsAtom);
@@ -128,17 +128,21 @@ export default function ConversationFullRow(props: {
         className="ml-2 flex flex-row items-center 
       group-hover:visible invisible text-slate-400"
       >
-        <Tooltip title={"Join live."}>
-          <span
-            onClick={(e) => {
-              e.stopPropagation();
-              props.handleJoinLive(props.conversation.id);
-            }}
-            className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200"
-          >
-            <FaDotCircle className="ml-auto text-lg text-red-500" />
-          </span>
-        </Tooltip>
+        {props.handleJoinLive && (
+          <Tooltip title={"Join live."}>
+            <span
+              onClick={(e) => {
+                e.stopPropagation();
+                if (props.handleJoinLive) {
+                  props.handleJoinLive(props.conversation.id);
+                }
+              }}
+              className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200"
+            >
+              <FaDotCircle className="ml-auto text-lg text-red-500" />
+            </span>
+          </Tooltip>
+        )}
 
         <Tooltip title={"Play last convo chunk."}>
           <span
