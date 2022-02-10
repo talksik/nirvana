@@ -1,4 +1,4 @@
-import { User, UserStatus } from "../models/user";
+import User, { UserStatus } from "../models/user";
 
 function getStatusValue(status: UserStatus) {
   switch (status) {

@@ -1,4 +1,4 @@
-import { User } from "@nirvana/common/models/user";
+import User from "@nirvana/common/models/user";
 import UserAvatar from "./UserAvatar";
 import { ReactElement } from "react";
 

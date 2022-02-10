@@ -11,7 +11,7 @@ import {
   Unsubscribe,
   DocumentSnapshot,
 } from "firebase/firestore";
-import { User, UserStatus } from "../models/user";
+import User, { UserStatus } from "../models/user";
 import Collections from "./collections";
 
 export default class UserService {

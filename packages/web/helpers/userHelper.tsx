@@ -1,4 +1,4 @@
-import { User, UserStatus } from "../models/user";
+import User, { UserStatus } from "@nirvana/common/models/user";
 
 function getStatusValue(status: UserStatus) {
   switch (status) {
