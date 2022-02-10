@@ -230,7 +230,7 @@ export default function CreateConversation() {
       <span className="text-slate-400 text-xs text-center">
         Click{" "}
         <a href="mailto:?subject=Join my conversation on Nirvana!">here</a> to
-        invite a user to Nirvana.
+        invite a friend to Nirvana.
       </span>
 
       {recommendedUsers?.length > 0 ? (
