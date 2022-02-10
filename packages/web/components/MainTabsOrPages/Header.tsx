@@ -59,9 +59,9 @@ export default function Header() {
 
     console.log("logging user out");
 
-    router.push("/");
-
     await signOut(auth);
+
+    router.push("/");
   };
 
   const UserMenu = (
