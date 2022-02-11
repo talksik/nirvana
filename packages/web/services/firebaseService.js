@@ -11,7 +11,11 @@
 // Import the functions you need from the SDKs you need
 import * as firebase from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
-import { getFirestore, enableIndexedDbPersistence } from "firebase/firestore";
+import {
+  getFirestore,
+  enableIndexedDbPersistence,
+  initializeFirestore,
+} from "firebase/firestore";
 import {
   browserSessionPersistence,
   getAuth,
@@ -38,6 +42,10 @@ const app = firebase.initializeApp(firebaseConfig);
 console.log("initialized firebase");
 
 // const analytics = getAnalytics(app);
+
+initializeFirestore(app, {
+  ignoreUndefinedProperties: true,
+});
 
 // Initialize firestore persistence for data caching
 export const firestoreDb = getFirestore(app);

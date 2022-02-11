@@ -176,6 +176,7 @@ export default function CreateConversation() {
       });
     } catch (error) {
       toast.error("Problem in creating conversation");
+      console.log(error);
     }
 
     setIsSubmitting(false);
