@@ -126,6 +126,10 @@ export class Link {
       return LinkType.pdf;
     } else if (url.includes(LinkType.codePile)) {
       return LinkType.codePile;
+    } else if (url.includes("meet.google.com")) {
+      return LinkType.googleMeet;
+    } else if (url.includes(".zoom.")) {
+      return LinkType.zoom;
     } else {
       return LinkType.default;
     }
@@ -143,4 +147,5 @@ export enum LinkType {
   codePile = "codepile",
   pastePics = "paste.pics",
   googleMeet = "googleMeet",
+  zoom = "zoom",
 }

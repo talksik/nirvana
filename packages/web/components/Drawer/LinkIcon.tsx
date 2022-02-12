@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 import Link, { LinkType } from "@nirvana/common/models/conversation";
 
-import { SiGooglemeet } from "react-icons/si";
+import { SiGooglemeet, SiZoom } from "react-icons/si";
 
 export default function LinkIcon(props: {
   className?: string;
@@ -61,6 +61,8 @@ export default function LinkIcon(props: {
       return (
         <SiGooglemeet {...rest} className={`${className} text-emerald-500 `} />
       );
+    case LinkType.zoom:
+      return <SiZoom {...rest} className={`${className} text-sky-500 `} />;
     default:
       return (
         <FaFileAlt {...rest} className={`${className} text-orange-500 `} />
