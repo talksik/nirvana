@@ -62,7 +62,7 @@ export default function CreateItemModal(props: {
         <span className="flex flex-col">
           <span className="text-lg font-semibold">Title</span>
           <span className="text-gray-300 text-sm mb-2">
-            Make sure this makes sense to everyone.
+            Be clear and concise.
           </span>
           <input
             autoFocus

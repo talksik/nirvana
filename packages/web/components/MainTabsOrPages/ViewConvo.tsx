@@ -370,21 +370,21 @@ export default function ViewConvo(props: { conversationId: string }) {
 
         <div className="flex flex-row items-start space-x-5">
           <div className="flex-1 flex flex-col overflow-auto">
+            <span
+              onClick={() => setEditTldrMode(true)}
+              className="flex flex-row group items-center"
+            >
+              <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
+                TLDR;
+              </span>
+
+              <span className="p-2 ml-2 rounded-full hover:cursor-pointer hover:bg-slate-200 group-hover:visible invisible">
+                <FaEdit className="ml-auto text-md text-slate-400" />
+              </span>
+            </span>
+
             {!editTldrMode ? (
               <>
-                <span
-                  onClick={() => setEditTldrMode(true)}
-                  className="flex flex-row group items-center"
-                >
-                  <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
-                    TLDR;
-                  </span>
-
-                  <span className="p-2 ml-2 rounded-full hover:cursor-pointer hover:bg-slate-200 group-hover:visible invisible">
-                    <FaEdit className="ml-auto text-md text-slate-400" />
-                  </span>
-                </span>
-
                 <span className="max-w-md text-lg text-slate-600 cursor-pointer whitespace-pre-line">
                   {convo?.tldr}
                 </span>
@@ -423,7 +423,7 @@ export default function ViewConvo(props: { conversationId: string }) {
               Conversation
             </span>
 
-            <span className="flex flex-ro flex-nowrap pb-[10rem] mt-5">
+            <span className="flex flex-row flex-nowrap pb-[10rem] mt-5 overflow-auto">
               {audioClips?.length > 0 ? (
                 audioClips.reverse().map((audClip, index) => {
                   const restAudioClips = audioClips.slice(index);
