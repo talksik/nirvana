@@ -245,6 +245,10 @@ export default function ViewConvo(props: { conversationId: string }) {
   const [showItemModal, setShowItemModal] = useState<boolean>(false);
   const [pastedLink, setPastedLink] = useState<string>("");
 
+  const handleCloseDrawerItemModal = () => {
+    setShowItemModal(false);
+  };
+
   const handleOpenDrawerItemModal = () => {
     navigator.clipboard
       .readText()
@@ -279,7 +283,11 @@ export default function ViewConvo(props: { conversationId: string }) {
   return (
     <>
       <GlobalHotKeys keyMap={keyMap} handlers={handlers} />
-      <CreateItemModal pastedLink={pastedLink} show={showItemModal} />
+      <CreateItemModal
+        handleClose={handleCloseDrawerItemModal}
+        pastedLink={pastedLink}
+        show={showItemModal}
+      />
 
       <div className="flex flex-col items-stretch mt-5 space-y-10">
         {/* convo name and action buttons on top */}

@@ -7,8 +7,10 @@ import LinkIcon from "./LinkIcon";
 export default function CreateItemModal(props: {
   pastedLink: string;
   show: boolean;
+  handleClose: () => void;
 }) {
   const [linkVal, setLinkVal] = useState<string>("");
+  const [linkDesc, setLinkDesc] = useState<string>("");
 
   useEffect(() => {
     if (props.pastedLink) {
@@ -23,20 +25,21 @@ export default function CreateItemModal(props: {
 
   const handleCancel = () => {
     toast.success("closing");
+    props.handleClose();
   };
 
   return (
     <Modal
-      title="Basic Modal"
+      title="Share"
       onOk={handleCreate}
       onCancel={handleCancel}
       visible={props.show}
       {...props}
     >
-      <span className="flex flex-col">
+      <span className="flex flex-col space-y-5">
         <span className="flex flex-col items-start">
-          <span className="text-lg">Link</span>
-          <span className="text-gray-300 text-xs mb-2">
+          <span className="text-lg font-semibold">Link</span>
+          <span className="text-gray-300 text-sm mb-2">
             Please make sure this is valid for others to access.
           </span>
           {/* icon and link input */}
@@ -54,6 +57,20 @@ export default function CreateItemModal(props: {
               onChange={(e) => setLinkVal(e.target.value)}
             />
           </span>
+        </span>
+
+        <span className="flex flex-col">
+          <span className="text-lg font-semibold">Title</span>
+          <span className="text-gray-300 text-sm mb-2">
+            Make sure this makes sense to everyone.
+          </span>
+          <input
+            autoFocus
+            className="flex-1 rounded-lg bg-gray-50 p-3"
+            value={linkDesc}
+            placeholder="ex. User Story - Customer Creating Orders"
+            onChange={(e) => setLinkDesc(e.target.value)}
+          />
         </span>
       </span>
     </Modal>
