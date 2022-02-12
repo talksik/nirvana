@@ -88,22 +88,12 @@ const testDrawerItems: {
 
 const AUDIO_CLIP_FETCH_LIMIT = 50;
 
-enum ConvoModal {
-  na = "na",
-  editTldr = "editTldr",
-  adminEdit = "adminEdit",
-}
-
 export default function ViewConvo(props: { conversationId: string }) {
   const { currUser } = useAuth();
 
   const allConvosMap = useRecoilValue(allRelevantConversationsAtom);
 
   const endOfTimeline = useRef<HTMLSpanElement>(null);
-
-  const [currentConvoModal, setCurrConvoModal] = useState<ConvoModal>(
-    ConvoModal.na
-  );
 
   const router = useRouter();
 
@@ -192,18 +182,10 @@ export default function ViewConvo(props: { conversationId: string }) {
     }
   };
 
-  const handleCloseModal = () => {
-    setCurrConvoModal(ConvoModal.na);
-  };
-
   // to allow not having commands while editing the input
   configure({
     ignoreTags: ["input", "select", "textarea"],
   });
-
-  const handleEditTldr = () => {
-    console.log("updating tldr with modal");
-  };
 
   const [editTldrMode, setEditTldrMode] = useState<boolean>(false);
   const [newTldr, setNewTldr] = useState<string>("");
