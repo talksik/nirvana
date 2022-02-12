@@ -39,7 +39,7 @@ export default function MasterAvatarGroup(props: {
         key={finalistUsers[0].id}
         src={finalistUsers[0].avatarUrl}
         shape={AVATAR_SHAPE}
-        size={"default"}
+        size={props.size || UserAvatarSizes.default}
       />
     );
   }

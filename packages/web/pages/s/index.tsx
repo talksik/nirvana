@@ -74,7 +74,7 @@ export default function Me() {
             timeout={400}
             classNames="slide"
           >
-            <div className="flex-1 flex flex-col px-20 justify-start items-stretch container mx-auto">
+            <div className="flex-1 flex flex-col justify-start items-stretch container mx-auto">
               {fullCleanPageContent}
             </div>
           </CSSTransition>

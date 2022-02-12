@@ -24,7 +24,7 @@ export default function CreateItemModal(props: {
   };
 
   const handleCancel = () => {
-    toast.success("closing");
+    console.log("closing");
     props.handleClose();
   };
 

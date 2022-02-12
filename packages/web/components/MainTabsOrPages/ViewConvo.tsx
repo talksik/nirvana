@@ -16,6 +16,7 @@ import {
   FaExternalLinkAlt,
   FaGithub,
   FaImages,
+  FaLink,
   FaMicrophone,
   FaPlay,
   FaRegClock,
@@ -239,19 +240,18 @@ export default function ViewConvo(props: { conversationId: string }) {
 
         // check that the link is valid
         if (!isValidHttpUrl(text)) {
-          toast.error("Not a valid link");
-          return;
+          console.log("Not a valid link");
         }
 
         // set it as we should show modal regardless now
         setPastedLink(text);
-
-        setShowItemModal(true);
       })
       .catch((err) => {
         console.error("Failed to read clipboard contents: ", err);
         toast.error("Please enable permissions for clipboard");
       });
+
+    setShowItemModal(true);
   };
 
   const keyMap: KeyMap = {
@@ -376,7 +376,7 @@ export default function ViewConvo(props: { conversationId: string }) {
                   onClick={() => setEditTldrMode(true)}
                   className="flex flex-row group items-center"
                 >
-                  <span className="text-md tracking-widest font-semibold text-slate-300 uppercase mb-2">
+                  <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
                     TLDR;
                   </span>
 
@@ -418,12 +418,12 @@ export default function ViewConvo(props: { conversationId: string }) {
               </span>
             )}
 
-            {/* have one row, but just translate it along y downward to put it in it's own place */}
+            {/* timeline clips */}
+            <span className="text-md tracking-widest font-semibold text-slate-300 uppercase mt-[2rem]">
+              Conversation
+            </span>
 
-            <span
-              className="flex flex-row flex-nowrap pb-[10rem] py-[5rem] 
-          overflow-auto min-h-max shadow-xl bg-slate-50 rounded mt-5"
-            >
+            <span className="flex flex-col flex-nowrap pb-[10rem] mt-5">
               {audioClips?.length > 0 ? (
                 audioClips.reverse().map((audClip, index) => {
                   const restAudioClips = audioClips.slice(index);
@@ -446,35 +446,6 @@ export default function ViewConvo(props: { conversationId: string }) {
               )}
 
               <span ref={endOfTimeline}></span>
-            </span>
-
-            {/* stuff for recording and playing action */}
-            <span className="mx-auto flex flex-row py-10 space-x-5">
-              <Tooltip title={"Press and hold R to send a voice clip."}>
-                <span
-                  className={`ml-auto shadow-lg flex flex-row items-center p-5 
-            justify-center rounded-lg font-bold hover:cursor-pointer ${
-              isRecording
-                ? "bg-orange-700 text-white"
-                : "bg-slate-50 text-orange-700"
-            }`}
-                >
-                  <FaMicrophone className="text-xl " />
-                </span>
-              </Tooltip>
-
-              <Tooltip title={"SPACE to play last conversation chunk."}>
-                <span
-                  className={`shadow-lg flex flex-row items-center p-5 justify-center 
-          rounded-lg font-bold ${
-            !audioQueueCurrentItem
-              ? "bg-slate-50 text-teal-600"
-              : " bg-teal-600 text-white"
-          }`}
-                >
-                  <FaPlay className="text-xl" />
-                </span>
-              </Tooltip>
             </span>
           </div>
 
@@ -529,6 +500,44 @@ export default function ViewConvo(props: { conversationId: string }) {
           </div>
         </div>
       </div>
+
+      {/* stuff for recording and playing and sharing action */}
+      <span className="mx-auto flex flex-row space-x-5 p-5">
+        <Tooltip title={"Press and hold R to send a voice clip."}>
+          <span
+            className={`ml-auto shadow-lg flex flex-row items-center p-5 
+            justify-center rounded-lg font-bold hover:cursor-pointer ${
+              isRecording
+                ? "bg-orange-700 text-white"
+                : "bg-slate-50 text-orange-700"
+            }`}
+          >
+            <FaMicrophone className="text-xl " />
+          </span>
+        </Tooltip>
+
+        <Tooltip title={"SPACE to play last conversation chunk."}>
+          <span
+            className={`shadow-lg flex flex-row items-center p-5 justify-center 
+          rounded-lg font-bold ${
+            !audioQueueCurrentItem
+              ? "bg-slate-50 text-teal-600"
+              : " bg-teal-600 text-white"
+          }`}
+          >
+            <FaPlay className="text-xl" />
+          </span>
+        </Tooltip>
+
+        <Tooltip title={"CTRL+V to share a link."}>
+          <span
+            className={`shadow-lg flex flex-row items-center p-5 justify-center 
+          rounded-lg font-bold bg-slate-50 text-purple-600`}
+          >
+            <FaLink className="text-xl" />
+          </span>
+        </Tooltip>
+      </span>
     </>
   );
 }

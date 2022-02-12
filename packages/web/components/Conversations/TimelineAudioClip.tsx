@@ -12,6 +12,9 @@ import {
 } from "../../recoil/main";
 import { MasterAvatarGroupWithUserFetch } from "../UserDetails/MasterAvatarGroup";
 import { useState } from "react";
+import { UserAvatarSizes } from "../UserDetails/UserAvatar";
+import { FaPlay } from "react-icons/fa";
+import { Tooltip } from "antd";
 
 export default function TimelineAudioClip(props: {
   index: number;
@@ -46,7 +49,7 @@ export default function TimelineAudioClip(props: {
     });
   };
 
-  let customClasses = "bg-slate-100 border";
+  let customClasses = "bg-slate-100";
   if (audioQueueCurrentClip?.id == props.audioClip.id) {
     customClasses = "animate-pulse bg-orange-200";
   } else if (
@@ -55,6 +58,38 @@ export default function TimelineAudioClip(props: {
   ) {
     customClasses = "bg-sky-100";
   }
+
+  return (
+    <span
+      onClick={playAudioClip}
+      className={`flex flex-row px-5 items-start group ${customClasses}`}
+    >
+      <span className="flex flex-col border-dashed border-l-2 h-[5rem] border-l-slate-500">
+        <span className="-translate-x-5 z-10">
+          <MasterAvatarGroupWithUserFetch
+            showCurrUser={true}
+            listOfUserIds={audioClipUser?.id ? [audioClipUser?.id] : []}
+            size={UserAvatarSizes.large}
+          />
+        </span>
+      </span>
+
+      <span className="flex flex-col ml-2 mr-10">
+        <span className="text-slate-500 font-semibold">
+          {audioClipUser?.firstName + " " + audioClipUser?.lastName}
+        </span>
+        <span className="text-slate-400 text-xs">
+          {moment(props.audioClip.createdDate.toDate()).fromNow()}
+        </span>
+      </span>
+
+      <Tooltip title={"Play from here."}>
+        <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 group-hover:visible invisible">
+          <FaPlay className="ml-auto text-lg text-emerald-500" />
+        </span>
+      </Tooltip>
+    </span>
+  );
 
   return (
     <span
