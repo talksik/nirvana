@@ -213,6 +213,11 @@ export default function AudioHandler() {
   };
 
   const playLastClip = () => {
+    if (audioQueue.length > 0) {
+      setAudioQueue([]);
+      return;
+    }
+
     if (!selectedConvoId) {
       toast.error("select a conversation before playing");
       return;

@@ -423,7 +423,7 @@ export default function ViewConvo(props: { conversationId: string }) {
               Conversation
             </span>
 
-            <span className="flex flex-col flex-nowrap pb-[10rem] mt-5">
+            <span className="flex flex-ro flex-nowrap pb-[10rem] mt-5">
               {audioClips?.length > 0 ? (
                 audioClips.reverse().map((audClip, index) => {
                   const restAudioClips = audioClips.slice(index);
