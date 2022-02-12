@@ -485,12 +485,12 @@ export default function ViewConvo(props: { conversationId: string }) {
             </span>
 
             {/* row of cards drawer items  */}
-            <span className="flex flex-col items-stretch overflow-auto w-full pb-10">
+            <span className="flex flex-col items-stretch">
               {testDrawerItems.map((link) => (
                 <span
                   key={link.linkName}
                   className="group flex flex-row items-center border-t
-                p-2 hover:bg-slate-50 transition-all shrink-0 w-[15rem] text-ellipsis"
+                p-2 hover:bg-slate-50 transition-all shrink-0 text-ellipsis last:border-b"
                 >
                   {/* <span className="rounded-lg bg-slate-200 p-2 hover:cursor-pointer"></span> */}
 
@@ -499,14 +499,16 @@ export default function ViewConvo(props: { conversationId: string }) {
                     className="text-3xl shrink-0"
                   />
 
-                  <span className="flex flex-col ml-2">
-                    <span className="text-slate-400 text-sm">
-                      {link.linkName}
+                  <Tooltip title={link.linkName}>
+                    <span className="flex flex-col ml-2 max-w-[10rem]">
+                      <span className="text-slate-400 text-sm truncate">
+                        {link.linkName}
+                      </span>
+                      <span className="text-slate-300 text-xs">
+                        {link.relativeSentTime}
+                      </span>
                     </span>
-                    <span className="text-slate-300 text-xs">
-                      {link.relativeSentTime}
-                    </span>
-                  </span>
+                  </Tooltip>
 
                   <span className="flex flex-row ml-auto space-x-1 group-hover:visible invisible">
                     <Tooltip title={"Add to personal drawer."}>
@@ -515,9 +517,11 @@ export default function ViewConvo(props: { conversationId: string }) {
                       </span>
                     </Tooltip>
 
-                    <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 ">
-                      <FaExternalLinkAlt className="text-lg text-slate-400" />
-                    </span>
+                    <Tooltip title={"https://usenirvana.com"}>
+                      <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 ">
+                        <FaExternalLinkAlt className="text-lg text-slate-400" />
+                      </span>
+                    </Tooltip>
                   </span>
                 </span>
               ))}
