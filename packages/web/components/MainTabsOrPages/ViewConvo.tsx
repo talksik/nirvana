@@ -290,256 +290,257 @@ export default function ViewConvo(props: { conversationId: string }) {
       />
 
       <div className="flex flex-col items-stretch mt-5 space-y-10">
-        {/* convo name and action buttons on top */}
-        <div className="flex-1 flex flex-col overflow-auto">
-          {/* header */}
-          <span className="flex flex-row justify-between items-center mb-5">
-            <span className="flex flex-col">
-              <span className="flex flex-row items-center group">
-                <span
-                  className="text-lg tracking-widest font-semibold 
+        {/* header */}
+        <span className="flex flex-row justify-between items-center">
+          <span className="flex flex-col">
+            <span className="flex flex-row items-center group">
+              <span
+                className="text-lg tracking-widest font-semibold 
                   text-slate-500 uppercase mr-2"
-                >
-                  {convo?.name}
-                </span>
-
-                <span
-                  onClick={handleAdminEdit}
-                  className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 group-hover:visible invisible"
-                >
-                  <FaEdit className="ml-auto text-md text-slate-400" />
-                </span>
+              >
+                {convo?.name}
               </span>
 
-              <span className="flex flex-row items-center space-x-2 hover:cursor-pointer group">
-                {convo?.activeMembers && (
-                  <MasterAvatarGroupWithUserFetch
-                    listOfUserIds={convo.activeMembers}
-                    showCurrUser={true}
-                    maxUserCount={10}
-                    size={UserAvatarSizes.small}
-                  />
-                )}
-
-                <span className="text-xs text-slate-300 hover:decoration-slate-400 group-hover:underline ">
-                  {convo?.activeMembers.length} members
-                </span>
+              <span
+                onClick={handleAdminEdit}
+                className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 group-hover:visible invisible"
+              >
+                <FaEdit className="ml-auto text-md text-slate-400" />
               </span>
             </span>
 
-            <span className="flex flex-row items-center space-x-3">
-              {userConvoAssoc?.state && (
-                <ConversationMemberStateIcon
-                  convoUserAssocState={userConvoAssoc.state}
+            <span className="flex flex-row items-center space-x-2 hover:cursor-pointer group">
+              {convo?.activeMembers && (
+                <MasterAvatarGroupWithUserFetch
+                  listOfUserIds={convo.activeMembers}
+                  showCurrUser={true}
+                  maxUserCount={10}
+                  size={UserAvatarSizes.small}
                 />
               )}
 
-              {userConvoAssoc?.state != ConversationMemberState.default && (
-                <button
-                  onClick={() =>
-                    handleOrganizeConversation(ConversationMemberState.default)
-                  }
-                  className="rounded-lg p-2 border flex flex-row items-center space-x-2
-           text-slate-400 text-xs hover:bg-slate-50"
-                >
-                  <FaStream />
-                  <span>Inbox</span>
-                </button>
-              )}
-
-              {userConvoAssoc?.state != ConversationMemberState.later && (
-                <button
-                  onClick={() =>
-                    handleOrganizeConversation(ConversationMemberState.later)
-                  }
-                  className="rounded-lg p-2 border flex flex-row items-center space-x-2
-             text-slate-400 text-xs hover:bg-slate-50"
-                >
-                  <FaRegClock />
-                  <span>Later</span>
-                </button>
-              )}
-
-              {userConvoAssoc?.state != ConversationMemberState.priority && (
-                <button
-                  onClick={() =>
-                    handleOrganizeConversation(ConversationMemberState.priority)
-                  }
-                  className="rounded-lg p-2 border flex flex-row items-center space-x-2
-             text-slate-400 text-xs hover:bg-slate-50"
-                >
-                  <FaRocket />
-                  <span>Priority</span>
-                </button>
-              )}
-
-              {userConvoAssoc?.state != ConversationMemberState.done && (
-                <button
-                  onClick={() =>
-                    handleOrganizeConversation(ConversationMemberState.done)
-                  }
-                  className="rounded-lg p-2 border flex flex-row items-center space-x-2
-             text-slate-400 text-xs hover:bg-slate-50"
-                >
-                  <FaCheck />
-                  <span>Done</span>
-                </button>
-              )}
+              <span className="text-xs text-slate-300 hover:decoration-slate-400 group-hover:underline ">
+                {convo?.activeMembers.length} members
+              </span>
             </span>
           </span>
 
-          {!editTldrMode ? (
-            <>
-              <span
-                onClick={() => setEditTldrMode(true)}
-                className="flex flex-row group items-center"
-              >
-                <span className="max-w-md text-md text-slate-400 uppercase cursor-pointer whitespace-pre-line">
-                  tldr;
-                </span>
-
-                <span className="p-2 ml-2 rounded-full hover:cursor-pointer hover:bg-slate-200 group-hover:visible invisible">
-                  <FaEdit className="ml-auto text-md text-slate-400" />
-                </span>
-              </span>
-
-              <span className="max-w-md text-lg text-slate-600 cursor-pointer whitespace-pre-line">
-                {convo?.tldr}
-              </span>
-            </>
-          ) : (
-            <span className="flex flex-row items-center space-x-2">
-              <textarea
-                autoFocus
-                className="p-2 my-2 flex-1 rounded-md placeholder:text-slate-300 focus:outline-none"
-                placeholder="update with a new tldr"
-                value={newTldr}
-                onChange={(e) => setNewTldr(e.target.value)}
+          <span className="flex flex-row items-center space-x-3">
+            {userConvoAssoc?.state && (
+              <ConversationMemberStateIcon
+                convoUserAssocState={userConvoAssoc.state}
               />
+            )}
 
+            {userConvoAssoc?.state != ConversationMemberState.default && (
               <button
-                onClick={() => setEditTldrMode(false)}
-                className="rounded-lg p-2 border border-orange-500 flex flex-row items-center space-x-2
-            text-xs hover:bg-orange-500 hover:text-white mx-2 text-orange-500"
+                onClick={() =>
+                  handleOrganizeConversation(ConversationMemberState.default)
+                }
+                className="rounded-lg p-2 border flex flex-row items-center space-x-2
+           text-slate-400 text-xs hover:bg-slate-50"
               >
-                <span>Cancel</span>
+                <FaStream />
+                <span>Inbox</span>
               </button>
+            )}
 
+            {userConvoAssoc?.state != ConversationMemberState.later && (
               <button
-                disabled={isSubmitting}
-                onClick={saveNewTldr}
-                className="rounded-lg p-2 border border-teal-500 flex flex-row items-center space-x-2
-            text-xs bg-teal-500 hover:font-semibold mx-2 text-white"
+                onClick={() =>
+                  handleOrganizeConversation(ConversationMemberState.later)
+                }
+                className="rounded-lg p-2 border flex flex-row items-center space-x-2
+             text-slate-400 text-xs hover:bg-slate-50"
               >
-                <span>Save</span>
+                <FaRegClock />
+                <span>Later</span>
               </button>
-            </span>
-          )}
+            )}
 
-          {/* have one row, but just translate it along y downward to put it in it's own place */}
+            {userConvoAssoc?.state != ConversationMemberState.priority && (
+              <button
+                onClick={() =>
+                  handleOrganizeConversation(ConversationMemberState.priority)
+                }
+                className="rounded-lg p-2 border flex flex-row items-center space-x-2
+             text-slate-400 text-xs hover:bg-slate-50"
+              >
+                <FaRocket />
+                <span>Priority</span>
+              </button>
+            )}
 
-          <span
-            className="flex flex-row flex-nowrap pb-[10rem] py-[5rem] 
-          overflow-auto min-h-max shadow-xl bg-slate-50 rounded mt-5"
-          >
-            {audioClips?.length > 0 ? (
-              audioClips.reverse().map((audClip, index) => {
-                const restAudioClips = audioClips.slice(index);
-                return (
-                  <TimelineAudioClip
-                    key={audClip.id}
-                    index={index}
-                    audioClip={audClip}
-                    convoId={props.conversationId}
-                    audioClipsToPlay={restAudioClips}
-                  />
-                );
-              })
+            {userConvoAssoc?.state != ConversationMemberState.done && (
+              <button
+                onClick={() =>
+                  handleOrganizeConversation(ConversationMemberState.done)
+                }
+                className="rounded-lg p-2 border flex flex-row items-center space-x-2
+             text-slate-400 text-xs hover:bg-slate-50"
+              >
+                <FaCheck />
+                <span>Done</span>
+              </button>
+            )}
+          </span>
+        </span>
+
+        <div className="flex flex-row items-start space-x-5">
+          <div className="flex-1 flex flex-col overflow-auto">
+            {!editTldrMode ? (
+              <>
+                <span
+                  onClick={() => setEditTldrMode(true)}
+                  className="flex flex-row group items-center"
+                >
+                  <span className="text-md tracking-widest font-semibold text-slate-300 uppercase mb-2">
+                    TLDR;
+                  </span>
+
+                  <span className="p-2 ml-2 rounded-full hover:cursor-pointer hover:bg-slate-200 group-hover:visible invisible">
+                    <FaEdit className="ml-auto text-md text-slate-400" />
+                  </span>
+                </span>
+
+                <span className="max-w-md text-lg text-slate-600 cursor-pointer whitespace-pre-line">
+                  {convo?.tldr}
+                </span>
+              </>
             ) : (
-              <span className="text-slate-300 mx-auto my-auto text-center">
-                Please get this conversation started <br></br> by pressing and
-                holding{" "}
-                <span className="text-orange-500 font-semibold">R.</span>
+              <span className="flex flex-row items-center space-x-2">
+                <textarea
+                  autoFocus
+                  className="p-2 my-2 flex-1 rounded-md placeholder:text-slate-300 focus:outline-none"
+                  placeholder="update with a new tldr"
+                  value={newTldr}
+                  onChange={(e) => setNewTldr(e.target.value)}
+                />
+
+                <button
+                  onClick={() => setEditTldrMode(false)}
+                  className="rounded-lg p-2 border border-orange-500 flex flex-row items-center space-x-2
+            text-xs hover:bg-orange-500 hover:text-white mx-2 text-orange-500"
+                >
+                  <span>Cancel</span>
+                </button>
+
+                <button
+                  disabled={isSubmitting}
+                  onClick={saveNewTldr}
+                  className="rounded-lg p-2 border border-teal-500 flex flex-row items-center space-x-2
+            text-xs bg-teal-500 hover:font-semibold mx-2 text-white"
+                >
+                  <span>Save</span>
+                </button>
               </span>
             )}
 
-            <span ref={endOfTimeline}></span>
-          </span>
+            {/* have one row, but just translate it along y downward to put it in it's own place */}
 
-          {/* stuff for recording and playing action */}
-          <span className="mx-auto flex flex-row py-10 space-x-5">
-            <Tooltip title={"Press and hold R to send a voice clip."}>
-              <span
-                className={`ml-auto shadow-lg flex flex-row items-center p-5 
+            <span
+              className="flex flex-row flex-nowrap pb-[10rem] py-[5rem] 
+          overflow-auto min-h-max shadow-xl bg-slate-50 rounded mt-5"
+            >
+              {audioClips?.length > 0 ? (
+                audioClips.reverse().map((audClip, index) => {
+                  const restAudioClips = audioClips.slice(index);
+                  return (
+                    <TimelineAudioClip
+                      key={audClip.id}
+                      index={index}
+                      audioClip={audClip}
+                      convoId={props.conversationId}
+                      audioClipsToPlay={restAudioClips}
+                    />
+                  );
+                })
+              ) : (
+                <span className="text-slate-300 mx-auto my-auto text-center">
+                  Please get this conversation started <br></br> by pressing and
+                  holding{" "}
+                  <span className="text-orange-500 font-semibold">R.</span>
+                </span>
+              )}
+
+              <span ref={endOfTimeline}></span>
+            </span>
+
+            {/* stuff for recording and playing action */}
+            <span className="mx-auto flex flex-row py-10 space-x-5">
+              <Tooltip title={"Press and hold R to send a voice clip."}>
+                <span
+                  className={`ml-auto shadow-lg flex flex-row items-center p-5 
             justify-center rounded-lg font-bold hover:cursor-pointer ${
               isRecording
                 ? "bg-orange-700 text-white"
                 : "bg-slate-50 text-orange-700"
             }`}
-              >
-                <FaMicrophone className="text-xl " />
-              </span>
-            </Tooltip>
+                >
+                  <FaMicrophone className="text-xl " />
+                </span>
+              </Tooltip>
 
-            <Tooltip title={"SPACE to play last conversation chunk."}>
-              <span
-                className={`shadow-lg flex flex-row items-center p-5 justify-center 
+              <Tooltip title={"SPACE to play last conversation chunk."}>
+                <span
+                  className={`shadow-lg flex flex-row items-center p-5 justify-center 
           rounded-lg font-bold ${
             !audioQueueCurrentItem
               ? "bg-slate-50 text-teal-600"
               : " bg-teal-600 text-white"
           }`}
-              >
-                <FaPlay className="text-xl" />
-              </span>
-            </Tooltip>
-          </span>
-        </div>
-
-        {/* drawer items */}
-        <div className="flex-1 flex flex-col">
-          <span className="text-md tracking-widest font-semibold text-slate-300 uppercase mb-2">
-            Shared
-          </span>
-
-          {/* row of cards drawer items  */}
-          <span className="flex flex-row items-stretch gap-5 overflow-auto w-full pb-10">
-            {testDrawerItems.map((link) => (
-              <span
-                key={link.linkName}
-                className="group flex flex-row items-center border rounded 
-                p-2 hover:bg-slate-50 transition-all shrink-0 w-[15rem] bg-slate-50 text-ellipsis"
-              >
-                {/* <span className="rounded-lg bg-slate-200 p-2 hover:cursor-pointer"></span> */}
-
-                <LinkIcon
-                  linkType={link.linkType}
-                  className="text-3xl shrink-0"
-                />
-
-                <span className="flex flex-col ml-2">
-                  <span className="text-slate-400 text-sm">
-                    {link.linkName}
-                  </span>
-                  <span className="text-slate-300 text-xs">
-                    {link.relativeSentTime}
-                  </span>
+                >
+                  <FaPlay className="text-xl" />
                 </span>
+              </Tooltip>
+            </span>
+          </div>
 
-                <span className="flex flex-row ml-auto space-x-1 group-hover:visible invisible">
-                  <Tooltip title={"Add to personal drawer."}>
-                    <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 ">
-                      <FaImages className="text-xl text-slate-400" />
+          {/* drawer items */}
+          <div className="flex flex-col">
+            <span className="text-md tracking-widest font-semibold text-slate-300 uppercase mb-2">
+              Shared
+            </span>
+
+            {/* row of cards drawer items  */}
+            <span className="flex flex-col items-stretch overflow-auto w-full pb-10">
+              {testDrawerItems.map((link) => (
+                <span
+                  key={link.linkName}
+                  className="group flex flex-row items-center border-t
+                p-2 hover:bg-slate-50 transition-all shrink-0 w-[15rem] text-ellipsis"
+                >
+                  {/* <span className="rounded-lg bg-slate-200 p-2 hover:cursor-pointer"></span> */}
+
+                  <LinkIcon
+                    linkType={link.linkType}
+                    className="text-3xl shrink-0"
+                  />
+
+                  <span className="flex flex-col ml-2">
+                    <span className="text-slate-400 text-sm">
+                      {link.linkName}
                     </span>
-                  </Tooltip>
+                    <span className="text-slate-300 text-xs">
+                      {link.relativeSentTime}
+                    </span>
+                  </span>
 
-                  <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 ">
-                    <FaExternalLinkAlt className="text-lg text-slate-400" />
+                  <span className="flex flex-row ml-auto space-x-1 group-hover:visible invisible">
+                    <Tooltip title={"Add to personal drawer."}>
+                      <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 ">
+                        <FaImages className="text-xl text-slate-400" />
+                      </span>
+                    </Tooltip>
+
+                    <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 ">
+                      <FaExternalLinkAlt className="text-lg text-slate-400" />
+                    </span>
                   </span>
                 </span>
-              </span>
-            ))}
-          </span>
+              ))}
+            </span>
+          </div>
         </div>
       </div>
     </>
