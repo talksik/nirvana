@@ -63,35 +63,8 @@ import isValidHttpUrl from "../../helpers/urlHelper";
 import { FaPlus } from "react-icons/fa";
 import SharedItemsRow from "../Drawer/SharedItemsRow";
 
-const testDrawerItems: {
-  linkType: LinkType;
-  linkName: string;
-  relativeSentTime: string;
-}[] = [
-  {
-    linkType: LinkType.googleMeet,
-    linkName: "Gmeet - Meeting Link",
-    relativeSentTime: "5 seconds ago",
-  },
-  {
-    linkType: LinkType.atlassian,
-    linkName: "Jira Ticket - Ecommerce Plugin",
-    relativeSentTime: "20 minutes ago",
-  },
-  {
-    linkType: LinkType.github,
-    linkName: "React library for hotkeys",
-    relativeSentTime: "2 hours ago",
-  },
-  {
-    linkType: LinkType.googleDrive,
-    linkName: "Engineering - Team Drive Folder",
-    relativeSentTime: "last week",
-  },
-];
-
 const AUDIO_CLIP_FETCH_LIMIT = 50;
-const LINK_FETCH_LIMIT = 5;
+const LINK_FETCH_LIMIT = 10;
 
 export default function ViewConvo(props: { conversationId: string }) {
   const { currUser } = useAuth();
