@@ -400,7 +400,10 @@ export default function ViewConvo(props: { conversationId: string }) {
                 />
 
                 <button
-                  onClick={() => setEditTldrMode(false)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setEditTldrMode(false);
+                  }}
                   className="rounded-lg p-2 border border-orange-500 flex flex-row items-center space-x-2
             text-xs hover:bg-orange-500 hover:text-white mx-2 text-orange-500"
                 >
