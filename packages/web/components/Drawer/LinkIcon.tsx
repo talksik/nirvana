@@ -12,6 +12,11 @@ import Link, { LinkType } from "@nirvana/common/models/conversation";
 
 import { SiGooglemeet, SiZoom } from "react-icons/si";
 
+const faviconGrabberAPI = "https://api.statvoo.com/favicon/?url=";
+export function getFavicon(url: string): string {
+  return faviconGrabberAPI + url;
+}
+
 export default function LinkIcon(props: {
   className?: string;
   linkType: LinkType;

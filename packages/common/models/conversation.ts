@@ -12,7 +12,7 @@ export default class Conversation {
   membersInLiveRoom: string[] = [] as string[]; // all members in a live call right now for this convo
 
   cachedAudioClip?: AudioClip; // last message pretty much
-  cachedDrawerItem?: Link; // last link pretty much
+  cachedLink?: Link; // last link pretty much
 
   tldr?: string; // description almost that people keep up to day in the convo
 
@@ -92,7 +92,7 @@ export class Link {
 
   url: string;
   name: string;
-  type: LinkType;
+  // type: LinkType;
 
   createdByUserId: string;
   createdDate: Timestamp = Timestamp.now();
@@ -101,7 +101,7 @@ export class Link {
     this.createdByUserId = _senderUserId;
     this.url = _linkUrl;
     this.name = _name;
-    this.type = Link.getLinkType(_linkUrl);
+    // this.type = Link.getLinkType(_linkUrl);
   }
 
   static getLinkType(url: string): LinkType {

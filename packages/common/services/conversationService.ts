@@ -15,6 +15,7 @@ import Conversation, {
   AudioClip,
   ConversationMember,
   ConversationMemberState,
+  Link,
 } from "../models/conversation";
 import Collections from "./collections";
 import { cloudStorageService } from "./index";
@@ -209,5 +210,52 @@ export default class ConversationService {
       },
       { merge: true }
     );
+  }
+
+  async shareLink(createdByUserId: string, link: Link, convoId: string) {
+    const linkRef = doc(
+      this.db,
+      Collections.conversations,
+      convoId,
+      Collections.conversationLinks,
+      link.id
+    );
+    const conversationDoc = doc(this.db, Collections.conversations, convoId);
+    const userConvoAssocDoc = doc(
+      this.db,
+      Collections.conversations,
+      convoId,
+      Collections.conversationMembers,
+      createdByUserId
+    );
+
+    await runTransaction(this.db, async (transaction) => {
+      // want to add to the long term collection of all links for a conversation
+      transaction.set(
+        linkRef,
+        { ...link, createdDate: serverTimestamp() },
+        { merge: true }
+      );
+
+      // want to make updates to the conversation document itself: set the last item for just the basic information to be
+      // published to users
+      transaction.set(
+        conversationDoc,
+        {
+          lastActivityDate: serverTimestamp(),
+          cachedLink: { ...link, createdDate: serverTimestamp() },
+        },
+        { merge: true }
+      );
+
+      // update the user's convo assoc so that their last interaction was set properly
+      transaction.set(
+        userConvoAssocDoc,
+        {
+          lastInteractionDate: serverTimestamp(),
+        },
+        { merge: true }
+      );
+    });
   }
 }

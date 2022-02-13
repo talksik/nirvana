@@ -1,4 +1,4 @@
-import { LinkType } from "@nirvana/common/models/conversation";
+import { Link, LinkType } from "@nirvana/common/models/conversation";
 import { UserStatus } from "@nirvana/common/models/user";
 import { Tooltip } from "antd";
 import { duration } from "moment";
@@ -49,6 +49,7 @@ import {
   onSnapshot,
   orderBy,
   query,
+  Unsubscribe,
   where,
 } from "firebase/firestore";
 
@@ -59,6 +60,8 @@ import Modal from "antd/lib/modal/Modal";
 import { configure, GlobalHotKeys, KeyMap } from "react-hotkeys";
 import CreateItemModal from "../Drawer/CreateItemModal";
 import isValidHttpUrl from "../../helpers/urlHelper";
+import { FaPlus } from "react-icons/fa";
+import SharedItemsRow from "../Drawer/SharedItemsRow";
 
 const testDrawerItems: {
   linkType: LinkType;
@@ -88,6 +91,7 @@ const testDrawerItems: {
 ];
 
 const AUDIO_CLIP_FETCH_LIMIT = 50;
+const LINK_FETCH_LIMIT = 5;
 
 export default function ViewConvo(props: { conversationId: string }) {
   const { currUser } = useAuth();
@@ -114,11 +118,15 @@ export default function ViewConvo(props: { conversationId: string }) {
 
   const setSelectedConvoId = useSetRecoilState(selectedConvoAtom);
 
+  const [sharedItems, setSharedItems] = useState<Link[]>([] as Link[]);
+
   useEffect(() => {
     endOfTimeline.current?.scrollIntoView({ behavior: "smooth" });
   }, [audioClips]);
 
   useEffect(() => {
+    const unsubs: Unsubscribe[] = [] as Unsubscribe[];
+
     // should have this convo, otherwise unauthorized
     if (!convo || !convo.activeMembers.includes(currUser!.uid)) {
       toast.error("Not authorized for this conversation");
@@ -147,7 +155,7 @@ export default function ViewConvo(props: { conversationId: string }) {
       orderBy("createdDate", "desc"),
       limit(AUDIO_CLIP_FETCH_LIMIT)
     );
-    const unsubscribe = onSnapshot(audioClipsQuery, (querySnapshot) => {
+    const unsubscribeAudClips = onSnapshot(audioClipsQuery, (querySnapshot) => {
       const audioClips: AudioClip[] = [] as AudioClip[];
 
       querySnapshot.forEach((doc) => {
@@ -162,7 +170,40 @@ export default function ViewConvo(props: { conversationId: string }) {
       console.log(audioClips);
     });
 
-    return unsubscribe;
+    unsubs.push(unsubscribeAudClips);
+
+    // links retrieval real time
+    const linksQuery = query(
+      collection(
+        db,
+        Collections.conversations,
+        props.conversationId,
+        Collections.conversationLinks
+      ),
+      orderBy("createdDate", "desc"),
+      limit(LINK_FETCH_LIMIT)
+    );
+    const unsubscribeLinks = onSnapshot(linksQuery, (querySnapshot) => {
+      const links: Link[] = [] as Link[];
+
+      querySnapshot.forEach((doc) => {
+        const link = doc.data() as Link;
+        link.id = doc.id;
+
+        // appending all messages in sort order
+        links.push(link);
+      });
+
+      setSharedItems(links);
+    });
+
+    unsubs.push(unsubscribeLinks);
+
+    return () => {
+      unsubs.forEach((unsub) => {
+        unsub();
+      });
+    };
   }, []);
 
   const handleOrganizeConversation = async (
@@ -454,50 +495,25 @@ export default function ViewConvo(props: { conversationId: string }) {
 
           {/* drawer items */}
           <div className="flex flex-col">
-            <span className="text-md tracking-widest font-semibold text-slate-300 uppercase mb-2">
-              Shared
+            <span className="flex flex-row justify-between items-center mb-2">
+              <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
+                Shared
+              </span>
+
+              <Tooltip title={"CTRL+V to share a link."}>
+                <span
+                  onClick={handleOpenDrawerItemModal}
+                  className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 "
+                >
+                  <FaPlus className="ml-auto text-md text-slate-400" />
+                </span>
+              </Tooltip>
             </span>
 
             {/* row of cards drawer items  */}
             <span className="flex flex-col items-stretch">
-              {testDrawerItems.map((link) => (
-                <span
-                  key={link.linkName}
-                  className="group flex flex-row items-center border-t
-                p-2 hover:bg-slate-50 transition-all shrink-0 text-ellipsis last:border-b"
-                >
-                  {/* <span className="rounded-lg bg-slate-200 p-2 hover:cursor-pointer"></span> */}
-
-                  <LinkIcon
-                    linkType={link.linkType}
-                    className="text-3xl shrink-0"
-                  />
-
-                  <Tooltip title={link.linkName}>
-                    <span className="flex flex-col ml-2 max-w-[10rem]">
-                      <span className="text-slate-400 text-sm truncate">
-                        {link.linkName}
-                      </span>
-                      <span className="text-slate-300 text-xs">
-                        {link.relativeSentTime}
-                      </span>
-                    </span>
-                  </Tooltip>
-
-                  <span className="flex flex-row ml-auto space-x-1 group-hover:visible invisible">
-                    <Tooltip title={"Add to personal drawer."}>
-                      <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 ">
-                        <FaImages className="text-xl text-slate-400" />
-                      </span>
-                    </Tooltip>
-
-                    <Tooltip title={"https://usenirvana.com"}>
-                      <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 ">
-                        <FaExternalLinkAlt className="text-lg text-slate-400" />
-                      </span>
-                    </Tooltip>
-                  </span>
-                </span>
+              {sharedItems.map((link) => (
+                <SharedItemsRow key={link.id} link={link} />
               ))}
             </span>
           </div>
@@ -529,15 +545,6 @@ export default function ViewConvo(props: { conversationId: string }) {
           }`}
           >
             <FaPlay className="text-xl" />
-          </span>
-        </Tooltip>
-
-        <Tooltip title={"CTRL+V to share a link."}>
-          <span
-            className={`shadow-lg flex flex-row items-center p-5 justify-center 
-          rounded-lg font-bold bg-slate-50 text-purple-600`}
-          >
-            <FaLink className="text-xl" />
           </span>
         </Tooltip>
       </span>
