@@ -172,7 +172,7 @@ function Sidebar() {
 
           <span className="ml-2 text-emerald-700 bg-emerald-200 bg-opacity-20 p-1 rounded-md text-xs font-semibold flex items-center flex-row space-x-1">
             <HiSpeakerphone />
-            <span>new</span>
+            <span>coming soon</span>
           </span>
 
           {navCountObject.drawerCount > 0 && (

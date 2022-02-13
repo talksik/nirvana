@@ -1,6 +1,6 @@
 import { Link, LinkType } from "@nirvana/common/models/conversation";
 import { UserStatus } from "@nirvana/common/models/user";
-import { Tooltip } from "antd";
+import { Dropdown, Menu, Tooltip } from "antd";
 import { duration } from "moment";
 import {
   LegacyRef,
@@ -12,9 +12,12 @@ import {
 import toast from "react-hot-toast";
 import {
   FaCheck,
+  FaCode,
   FaEdit,
   FaExternalLinkAlt,
   FaGithub,
+  FaGoogle,
+  FaImage,
   FaImages,
   FaLink,
   FaMicrophone,
@@ -22,6 +25,8 @@ import {
   FaRegClock,
   FaRocket,
   FaStream,
+  FaTh,
+  FaThLarge,
 } from "react-icons/fa";
 import LinkIcon from "../Drawer/LinkIcon";
 import UserAvatar, { UserAvatarSizes } from "../UserDetails/UserAvatar";
@@ -276,6 +281,35 @@ export default function ViewConvo(props: { conversationId: string }) {
     PASTE_LINK: handleOpenDrawerItemModal,
   };
 
+  const itemSharingDropdownMenu = (
+    <Menu>
+      <Menu.Item icon={<FaImage />}>
+        <a target="_blank" rel="noopener noreferrer" href="https://paste.pics/">
+          Screenshot
+        </a>
+      </Menu.Item>
+      <Menu.Item icon={<FaCode />}>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.codepile.net/"
+        >
+          Code Snippet
+        </a>
+      </Menu.Item>
+
+      <Menu.Item icon={<FaGoogle />}>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://meet.google.com/"
+        >
+          Google Meet
+        </a>
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
     <>
       <GlobalHotKeys keyMap={keyMap} handlers={handlers} />
@@ -468,8 +502,8 @@ export default function ViewConvo(props: { conversationId: string }) {
 
           {/* drawer items */}
           <div className="flex flex-col">
-            <span className="flex flex-row justify-between items-center mb-2">
-              <span className="text-md tracking-widest font-semibold text-slate-300 uppercase">
+            <span className="flex flex-row justify-end items-center mb-2">
+              <span className="mr-auto text-md tracking-widest font-semibold text-slate-300 uppercase">
                 Shared
               </span>
 
@@ -481,6 +515,12 @@ export default function ViewConvo(props: { conversationId: string }) {
                   <FaPlus className="ml-auto text-md text-slate-400" />
                 </span>
               </Tooltip>
+
+              <Dropdown overlay={itemSharingDropdownMenu}>
+                <span className="p-2 rounded-full hover:cursor-pointer hover:bg-slate-200 ">
+                  <FaThLarge className="ml-auto text-md text-slate-400" />
+                </span>
+              </Dropdown>
             </span>
 
             {/* row of cards drawer items  */}
