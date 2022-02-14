@@ -38,8 +38,12 @@ export default function PriorityConvoRow(props: {
   // const isOneonOne =
 
   const handleSelectConvo = useCallback(() => {
-    setSelectedConvo(props.conversation.id);
-  }, [props.conversation]);
+    if (!isSelected) {
+      setSelectedConvo(props.conversation.id);
+    } else {
+      setSelectedConvo(null);
+    }
+  }, [props.conversation, isSelected]);
 
   const router = useRouter();
 
@@ -59,14 +63,18 @@ export default function PriorityConvoRow(props: {
         isSelected && "bg-slate-50 shadow-lg scale-125 w-[25rem]"
       }`}
     >
-      <MasterAvatarGroupWithUserFetch
-        listOfUserIds={props.conversation.activeMembers}
-        showCurrUser={false}
-      />
+      <span>
+        <MasterAvatarGroupWithUserFetch
+          listOfUserIds={props.conversation.activeMembers}
+          showCurrUser={false}
+        />
+      </span>
 
-      <span className="flex flex-col items-start ml-2">
+      <span className="flex flex-col items-start ml-2 ">
         <span className="flex flex-row items-center space-x-2">
-          <span className="text-slate-400">{props.conversation.name}</span>
+          <span className="text-slate-400 truncate max-w-[12rem]">
+            {props.conversation.name}
+          </span>
           <span
             className="ml-auto shadow-lg flex flex-row items-center h-[1.5rem] w-[1.5rem]
 justify-center rounded-lg text-slate-400 font-bold hover:cursor-pointer text-xs"
