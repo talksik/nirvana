@@ -8,6 +8,7 @@ import { useRecoilValue } from "recoil";
 import { useAuth } from "../../contexts/authContext";
 import { selectedConvoAtom } from "../../recoil/main";
 import LinkIcon, { getFavicon } from "./LinkIcon";
+import isValidHttpUrl from "@nirvana/common/helpers/urlHelper";
 
 export default function CreateItemModal(props: {
   pastedLink: string;
@@ -50,6 +51,12 @@ export default function CreateItemModal(props: {
       }
       if (!linkDesc) {
         toast.error("must put a name of some sort");
+        setLoading(false);
+        return;
+      }
+
+      if (!isValidHttpUrl(linkVal)) {
+        toast.error("not a valid url");
         setLoading(false);
         return;
       }
