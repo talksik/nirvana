@@ -18,7 +18,7 @@ export default function CreateItemModal(props: {
 
   const [linkVal, setLinkVal] = useState<string>("");
   const [linkDesc, setLinkDesc] = useState<string>("");
-  const linkInput = useRef<HTMLInputElement>();
+  const linkInput = useRef<HTMLInputElement | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
   const selectedConvoId = useRecoilValue(selectedConvoAtom);
