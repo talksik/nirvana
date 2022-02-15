@@ -75,12 +75,6 @@ export default function PriorityConvoRow(props: {
           <span className="text-slate-400 truncate max-w-[12rem]">
             {props.conversation.name}
           </span>
-          <span
-            className="ml-auto shadow-lg flex flex-row items-center h-[1.5rem] w-[1.5rem]
-justify-center rounded-lg text-slate-400 font-bold hover:cursor-pointer text-xs"
-          >
-            {props.itemIndex}
-          </span>
         </span>
 
         <span className="flex flex-row">
@@ -92,6 +86,15 @@ justify-center rounded-lg text-slate-400 font-bold hover:cursor-pointer text-xs"
           </span>
         </span>
       </span>
+
+      {!isSelected && (
+        <span
+          className="ml-auto shadow-lg flex flex-row items-center h-[1.5rem] w-[1.5rem]
+justify-center rounded-lg text-slate-400 font-bold hover:cursor-pointer text-xs"
+        >
+          {props.itemIndex}
+        </span>
+      )}
 
       {isSelected && (
         <>
