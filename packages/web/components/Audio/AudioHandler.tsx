@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { configure, GlobalHotKeys, KeyMap } from "react-hotkeys";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
+  allRelevantContactsAtom,
   allRelevantConversationsAtom,
   audioQueueAtom,
   hasMicPermissionsAtom,
@@ -43,15 +44,41 @@ export default function AudioHandler() {
     useRecoilState(selectedConvoAtom);
 
   const [audioQueue, setAudioQueue] = useRecoilState(audioQueueAtom);
+  const [playerSrc, setPlayerSrc] = useState<string | null>(null);
 
-  function onEndedPlaying(e) {
+  const [speakerToastId, setSpeakerToastId] = useState<string | null>(null);
+  const relevantContacts = useRecoilValue(allRelevantContactsAtom);
+
+  const onEndedPlaying = (e) => {
     // remove from queue and the queue manager will handle the rest
     setAudioQueue((prevQueue) => {
       const newQueue: AudioClip[] = [...prevQueue];
       newQueue.shift();
       return newQueue;
     });
+
+    console.log('done playing')
+    toast.dismiss()
   }
+
+  // main effect to play with js
+  useEffect(() => {
+    if (playerSrc) {
+      // play current audio clip
+      const audio = new Audio(playerSrc);
+      audio.onended = onEndedPlaying;
+      audio.play();
+
+      // have toast showing who is speaking
+      // find who is speaking if we can
+      const speaker = relevantContacts.get(audioQueue[0]?.senderUserId);
+      const speakingText = speaker
+        ? `${speaker.firstName} speaking`
+        : "someone is speaking";
+      const spToast = toast.loading(speakingText);
+      setSpeakerToastId(spToast);
+    }
+  }, [playerSrc]);
 
   useEffect(() => {
     if (audioQueue.length > 0 && audioQueue[0].audioDataUrl) {
@@ -80,6 +107,7 @@ export default function AudioHandler() {
     hasMicPermissionsAtom
   );
 
+  // setting up recording permissions
   useEffect(() => {
     try {
       // checking for permissions for recording
@@ -128,8 +156,6 @@ export default function AudioHandler() {
 
   const [recordingToastId, setRecordingToastId] = useState<string>("");
   const [isRecording, setIsRecording] = useRecoilState(isRecordingAtom);
-
-  const [playerSrc, setPlayerSrc] = useState<string | null>(null);
 
   const startRecording = () => {
     // check if there is a person selected
@@ -282,17 +308,6 @@ export default function AudioHandler() {
 
   return (
     <>
-      {playerSrc && (
-        <AudioPlayer
-          autoPlay
-          src={playerSrc}
-          onPlay={(e) => console.log("onPlay")}
-          showSkipControls={true}
-          onEnded={onEndedPlaying}
-          className="w-screen flex flex-row fixed bottom-0"
-        />
-      )}
-
       <GlobalHotKeys keyMap={keyMap} handlers={handlers} allowChanges={true} />
     </>
   );
