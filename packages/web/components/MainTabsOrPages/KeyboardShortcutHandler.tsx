@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { GlobalHotKeys, KeyMap, configure } from "react-hotkeys";
 import { selectedConvoAtom, audioQueueAtom } from "../../recoil/main";
 import { useSetRecoilState } from "recoil";
+import toast from 'react-hot-toast'
 
 export default function KeyboardShortcutHandler() {
   const router = useRouter();
@@ -20,6 +21,8 @@ export default function KeyboardShortcutHandler() {
 
     setSelectedPriorityConvo(null);
     setAudioQueue([]);
+
+    toast.dismiss()
   };
 
   const keyMap: KeyMap = {

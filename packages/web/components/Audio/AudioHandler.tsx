@@ -50,24 +50,23 @@ export default function AudioHandler() {
   const relevantContacts = useRecoilValue(allRelevantContactsAtom);
 
   const onEndedPlaying = (e) => {
+    console.log('done playing')
+    toast.dismiss()
+
     // remove from queue and the queue manager will handle the rest
     setAudioQueue((prevQueue) => {
       const newQueue: AudioClip[] = [...prevQueue];
       newQueue.shift();
       return newQueue;
     });
-
-    console.log('done playing')
-    toast.dismiss()
   }
-
   // main effect to play with js
   useEffect(() => {
     if (playerSrc) {
       // play current audio clip
-      const audio = new Audio(playerSrc);
-      audio.onended = onEndedPlaying;
-      audio.play();
+      // const audio = new Audio(playerSrc);
+      // audio.onended = onEndedPlaying;
+      // audio.play();
 
       // have toast showing who is speaking
       // find who is speaking if we can
@@ -308,6 +307,17 @@ export default function AudioHandler() {
 
   return (
     <>
+    {playerSrc && (
+        <AudioPlayer
+          autoPlay
+          src={playerSrc}
+          onPlay={(e) => console.log("onPlay")}
+          showSkipControls={true}
+          onEnded={onEndedPlaying}
+          className="w-screen flex flex-row fixed bottom-0 invisible"
+        />
+      )}
+      
       <GlobalHotKeys keyMap={keyMap} handlers={handlers} allowChanges={true} />
     </>
   );
